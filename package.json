@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx vite",
-    "build": "npx vite build",
+    "dev": "vite",
+    "build": "node_modules/.bin/vite build",
     "start": "node server/index.js"
   },
   "dependencies": {
