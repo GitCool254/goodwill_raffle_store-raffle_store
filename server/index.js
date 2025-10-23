@@ -18,9 +18,19 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const keyPath = path.join(__dirname, "creds", "goodwill_raffle_store.json");
-const keyFile = fs.readFileSync(keyPath, "utf8");
-const credentials = JSON.parse(keyFile);
+let credentials;
+
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+  // Load from environment variable on Render
+  credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+  console.log("✅ Loaded Google credentials from environment variable");
+} else {
+  // Fallback to local file for Termux/local dev
+  const keyPath = path.join(__dirname, "creds", "goodwill_raffle_store.json");
+  const keyFile = fs.readFileSync(keyPath, "utf8");
+  credentials = JSON.parse(keyFile);
+  console.log("✅ Loaded Google credentials from local file");
+}
 // Authenticate Google Sheets API
 const auth = new google.auth.GoogleAuth({
   keyFile: "./server/creds/goodwill_raffle_store.json",
