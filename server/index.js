@@ -12,10 +12,18 @@ app.use(express.json());
 
 // Load Google credentials
 // NEW: read from environment variable
-const creds = JSON.parse(process.env.GOODWILL_JSON);
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const keyPath = path.join(__dirname, "creds", "goodwill_raffle_store.json");
+const keyFile = fs.readFileSync(keyPath, "utf8");
+const credentials = JSON.parse(keyFile);
 // Authenticate Google Sheets API
 const auth = new google.auth.GoogleAuth({
-  credentials: creds,
+  keyFile: "./server/creds/goodwill_raffle_store.json",
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
@@ -50,16 +58,11 @@ app.post("/api/raffle-entry", async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to save entry." });
   }
 });
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Serve frontend build
 app.use(express.static(path.join(__dirname, "../dist")));
 
-app.get("*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
