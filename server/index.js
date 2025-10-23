@@ -11,9 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 // Load Google credentials
-const credsPath = "./creds/goodwill_raffle_store.json";
-const creds = JSON.parse(fs.readFileSync(credsPath));
-
+// NEW: read from environment variable
+const creds = JSON.parse(process.env.GOODWILL_JSON);
 // Authenticate Google Sheets API
 const auth = new google.auth.GoogleAuth({
   credentials: creds,
