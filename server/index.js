@@ -43,22 +43,45 @@ const SHEET_ID = process.env.SHEET_ID;
 console.log("🧠 Connected to Google Sheets API. Sheet ID:", SHEET_ID);
 // ✅ API endpoint to log raffle entries
 app.post("/api/raffle-entry", async (req, res) => {
+  const { name, email, product, quantity } = req.body;
+  console.log("Received POST request:", req.body);
+
+  if (!name || !email) {
+    return res.status(400).json({ success: false, message: "Name and email are required" });
+  }
+
+  const timestamp = new Date().toISOString();
+  const tabName = "Sheet1"; // change if you want a different tab
+
   try {
+    // Ensure the tab exists
+    const resTabs = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID });
+    const tabs = resTabs.data.sheets.map(s => s.properties.title);
+    if (!tabs.includes(tabName)) {
+      console.log(`Tab "${tabName}" not found. Creating it.`);
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: SHEET_ID,
+        requestBody: { requests: [{ addSheet: { properties: { title: tabName } } }] }
+      });
+      console.log(`Tab "${tabName}" created.`);
+    }
+
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: "Sheet1!A:E", // <-- update if tab name is different
+      range: `${tabName}!A:E`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[timestamp, name, email, product, quantity]],
+        values: [[timestamp, name, email, product || "", quantity || ""]],
       },
     });
 
-    console.log(`✅ Entry added to Google Sheets: ${name} (${email})`);
-    console.log("Spreadsheet response:", response.data);
+    console.log(`✅ Added entry to Google Sheets: ${name} (${email})`);
+    console.log("Spreadsheet append response:", response.data);
+    res.json({ success: true, message: "Entry logged successfully!" });
 
   } catch (err) {
-    console.error("❌ Failed to add entry to Google Sheets:");
-    console.error(err);
+    console.error("❌ Error writing to Google Sheets:", err);
+    res.status(500).json({ success: false, message: "Failed to save entry" });
   }
 });
 
