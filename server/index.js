@@ -44,29 +44,21 @@ console.log("🧠 Connected to Google Sheets API. Sheet ID:", SHEET_ID);
 // ✅ API endpoint to log raffle entries
 app.post("/api/raffle-entry", async (req, res) => {
   try {
-    const { name, email, product, quantity } = req.body;
-
-    if (!name || !email) {
-      return res.status(400).json({ success: false, message: "Name and email are required." });
-    }
-
-    const timestamp = new Date().toLocaleString();
-
-    // Append entry to Google Sheet
-    await sheets.spreadsheets.values.append({
+    const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: "Sheet1!A:E",
+      range: "Sheet1!A:E", // <-- update if tab name is different
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[timestamp, name, email, product, quantity]],
       },
     });
 
-    console.log(`New entry logged: ${name} (${email})`);
-    res.json({ success: true, message: "Entry logged successfully!" });
-  } catch (error) {
-    console.error("Error saving entry:", error);
-    res.status(500).json({ success: false, message: "Failed to save entry." });
+    console.log(`✅ Entry added to Google Sheets: ${name} (${email})`);
+    console.log("Spreadsheet response:", response.data);
+
+  } catch (err) {
+    console.error("❌ Failed to add entry to Google Sheets:");
+    console.error(err);
   }
 });
 
