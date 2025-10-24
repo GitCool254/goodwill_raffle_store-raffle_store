@@ -40,6 +40,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: "v4", auth });
 const SHEET_ID = process.env.SHEET_ID;
 
+console.log("🧠 Connected to Google Sheets API. Sheet ID:", SHEET_ID);
 // ✅ API endpoint to log raffle entries
 app.post("/api/raffle-entry", async (req, res) => {
   try {
