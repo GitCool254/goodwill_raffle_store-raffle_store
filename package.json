@@ -13,8 +13,10 @@
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "eruda": "^3.4.3",
     "express": "^4.21.2",
     "googleapis": "^164.1.0",
+    "pdf-lib": "^1.17.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "vite": "^7.1.12"
