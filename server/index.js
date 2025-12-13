@@ -2,7 +2,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fs from "fs";
 import { google } from "googleapis";
 
 dotenv.config();
@@ -19,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 // 🧾 Load service account credentials
-const creds = JSON.parse(fs.readFileSync("/data/data/com.termux/files/home/goodwill_raffle_store/raffle_store/server/creds/goodwill_raffle_store.json"));
+const creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
 // 🔑 Setup Google Auth
 const auth = new google.auth.GoogleAuth({
   credentials: creds,
