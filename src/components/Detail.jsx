@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
 
 export default function Detail({ product }) {
@@ -8,6 +8,10 @@ export default function Detail({ product }) {
   const [errors, setErrors] = useState({});
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);
+
+  useEffect(() => {
+    setHasDownloaded(false);
+  }, [lastOrder]);
 
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const amount = Number((price * quantity).toFixed(2));                
@@ -134,8 +138,10 @@ export default function Detail({ product }) {
           setLastOrder(orderObj);
           setDownloadReady(true);
 
+          if (!hasDownloaded) {
           // 🔥 AUTO-DOWNLOAD RIGHT AFTER PAYMENT
-          await handleInstantDownload();
+            await handleInstantDownload();
+          }
         }}
       />
 
