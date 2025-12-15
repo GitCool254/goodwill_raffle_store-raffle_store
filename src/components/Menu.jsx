@@ -56,16 +56,8 @@ export default function Menu({ setView }) {
               <span className="text-xl text-blue-400">›</span>                     </button>
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
-          <br />
 
-          <div className="mb-6">
-            <button                                                                  className="w-full text-left py-5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700/60 transition shadow-sm flex items-center justify-between"                                                                          onClick={() => setView("admin")}
-            >
-              <span className="text-lg text-white font-semibold">🔐 Admin</span>
-              <span className="text-xl text-blue-400">›</span>
-            </button>
-            <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
-          </div>                                                       
+                                                                 
           {/* spacer between sections */}                                        <div className="my-6" />
 
           <br />                                                                 <div className="mb-6">
