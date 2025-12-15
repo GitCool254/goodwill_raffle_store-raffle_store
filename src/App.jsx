@@ -45,7 +45,7 @@ export default function App() {
       title: "PlayStation 5",
       description: "PS5 console with DualSense controller.",
       price: 5,
-      image: "Screenshot_20251007-201731~2.png",
+      image: "/Screenshot_20251007-201731~2.png",
       ticketPrice: 5,
       totalTickets: 200,
       category: "Households",
@@ -55,7 +55,7 @@ export default function App() {
       title: "MacBook Air M3",
       description: "Lightweight MacBook Air with M3 chip.",
       price: 5,
-      image: "Screenshot_20251007-094253~2.png",
+      image: "/Screenshot_20251007-094253~2.png",
       ticketPrice: 5,
       totalTickets: 150,
       category: "Eletronics",
@@ -178,45 +178,71 @@ export default function App() {
               }}
             />
           </div>
-        </div>                                                               </section>
-    );                                                                   }
-                                                                         function Home() {
+        </div>
+      </section>
+    );
+  }
+
+  function Home() {
     console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
-    return (                                                                 <main className="max-w-6xl mx-auto p-6">
+    return (
+      <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p) => (                                                   <div
-              key={p.id}                                                             className="bg-white rounded-2xl shadow p-4 flex flex-col"
-            >                                                                        <img
-                src={p.image}                                                          alt={p.title}
-                className="h-44 w-full object-cover rounded-lg mb-3"                 />
-              <h3 className="font-semibold">{p.title}</h3>                           <p className="text-sm text-slate-600 mt-1">{p.description}</p>                                                                                <div className="mt-3 flex items-center justify-between">
-                <div className="text-slate-700 font-medium">                             $ {p.ticketPrice} / ticket
-                </div>                                                                 <button
+          {products.map((p) => (
+            <div
+              key={p.id}
+              className="bg-white rounded-2xl shadow p-4 flex flex-col"
+            >
+              <img
+                src={p.image}
+                alt={p.title}
+                className="h-44 w-full object-cover rounded-lg mb-3"
+              />
+              <h3 className="font-semibold">{p.title}</h3>
+              <p className="text-sm text-slate-600 mt-1">{p.description}</p>
+              <div className="mt-3 flex items-center justify-between">
+                <div className="text-slate-700 font-medium">
+                  $ {p.ticketPrice} / ticket
+                </div>
+                <button
                   className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                  onClick={() => openProduct(p)}                                       >
-                  Enter                                                                </button>
-              </div>                                                                 {p.winner && (
-                <div className="mt-3 text-sm text-green-700">                            Winner: {p.winner.name} ({p.winner.ticketNo})
-                </div>                                                               )}
-            </div>                                                               ))}                                                                  </div>
+                  onClick={() => openProduct(p)}
+                >
+                  Enter
+                </button>
+              </div>
+              {p.winner && (
+                <div className="mt-3 text-sm text-green-700">
+                  Winner: {p.winner.name} ({p.winner.ticketNo})
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </main>
-    );                                                                   }
+    );
+  }
 
   function Admin() {
     console.log("Admin render — adminAuth:", adminAuth);
     const [password, setPassword] = useState("");
     const [selectedPid, setSelectedPid] = useState(products[0]?.id || null);
 
-    if (!adminAuth) {                                                        return (
-        <div className="max-w-2xl mx-auto p-6">                                  <h2 className="text-xl font-semibold">Admin (demo)</h2>
+    if (!adminAuth) {
+      return (
+        <div className="max-w-2xl mx-auto p-6">
+          <h2 className="text-xl font-semibold">Admin (demo)</h2>
           <p className="text-sm text-slate-500">
             Demo password: <code>admin-pass</code>
           </p>
           <div className="mt-4">
             <input
-              value={password}                                                       onChange={(e) => setPassword(e.target.value)}                          className="p-2 border rounded mr-2"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="p-2 border rounded mr-2"
               placeholder="password"
-            />                                                                     <button
+            />
+            <button
               className="px-3 py-1 bg-sky-600 text-white rounded"
               onClick={() => loginAdmin(password)}
             >
@@ -224,57 +250,146 @@ export default function App() {
             </button>
           </div>
         </div>
-      );                                                                   }
-                                                                           return (
+      );
+    }
+
+    return (
       <div className="max-w-6xl mx-auto p-6">
         <div className="flex justify-between items-start gap-6">
           <div className="w-1/2">
             <h3 className="text-lg font-semibold">Raffles</h3>
             <ul className="mt-3 space-y-3">
-              {products.map((p) => (                                                   <li
-                  key={p.id}                                                             className="p-3 bg-white border rounded flex items-center justify-between"
-                >                                                                        <div>                                                                    <div className="font-medium">{p.title}</div>
-                    <div className="text-sm text-slate-500">                                 {(entries[p.id] || []).length} entries                               </div>
-                  </div>                                                                 <div className="flex gap-2">                                             <button
-                      className="px-2 py-1 border rounded"                                   onClick={() => setSelectedPid(p.id)}                                 >
-                      View                                                                 </button>                                                              <button
-                      className="px-2 py-1 bg-green-600 text-white rounded"                                                                                         onClick={() => {
-                        const w = pickWinner(p.id);                                            if (w)                                                                   alert(`Winner: ${w.name} (${w.ticketNo})`);
-                        else alert("No entries");                                            }}                                                                   >
-                      Pick winner                                                          </button>                                                            </div>
-                </li>                                                                ))}                                                                  </ul>
-          </div>                                                                                                                                        <div className="w-1/2">
-            <h3 className="text-lg font-semibold">Entries</h3>                     <div className="mt-3 bg-white border rounded p-3 max-h-96 overflow-auto">
-              <div className="mb-2 font-medium">                                       {products.find((x) => x.id === selectedPid)?.title}
-              </div>                                                                 {(entries[selectedPid] || []).map((r, i) => (                            <div key={r.ticketNo} className="text-sm border-b py-2">                                                                                        {i + 1}. {r.name} — {r.ticketNo} —{" "}                                <span className="text-xs text-slate-500">{r.email}</span>                                                                                   </div>                                                               ))}
-              {!(entries[selectedPid] || []).length && (                               <div className="text-sm text-slate-500">No entries yet.</div>
-              )}                                                                   </div>                                                                 <div className="mt-3 flex gap-2">
-              <button                                                                  className="px-3 py-1 border rounded"                                   onClick={() => {
-                  const pool = entries[selectedPid] || [];                               const csv = [                                                            "ticketNo,name,email,createdAt",
-                    ...pool.map((r) =>                                                       [r.ticketNo, r.name, r.email, r.createdAt].join(",")
-                    ),                                                                   ].join("\n");                                                          const blob = new Blob([csv], { type: "text/csv" });
-                  const url = URL.createObjectURL(blob);                                 const a = document.createElement("a");                                 a.href = url;
-                  a.download = `${selectedPid}_entries.csv`;                             a.click();                                                             URL.revokeObjectURL(url);
-                }}                                                                   >                                                                        Export CSV
-              </button>                                                              <button                                                                  className="px-3 py-1 bg-red-600 text-white rounded"
-                onClick={() => {                                                         if (confirm("Clear all entries for this raffle?")) {                     const c = { ...entries };
-                    c[selectedPid] = [];                                                   setEntries(c);
-                  }                                                                    }}                                                                   >
-                Clear Entries                                                        </button>                                                            </div>
-          </div>                                                               </div>                                                               </div>
-    );                                                                   }                                                                    
-  // -------------------- MAIN RETURN --------------------               return (                                                                 <div className="min-h-screen flex flex-col bg-slate-50">
-                                                                             {/* HEADER */}                                                         <Header setView={setView} />
-                                                                             {/* MAIN CONTENT - grows to push footer down */}                       <main className="flex-grow">
-        {view === "home" && (                                                    <>                                                                       <Hero />
-            <Home />                                                             </>                                                                  )}
-                                                                               {view === "detail" && selected && (                                      <Detail product={selected} onBack={() => setView("home")} />
-        )}                                                                                                                                            {view === "admin" && <Admin />}
-                                                                               {view === "catalog" && (
-          <Catalog openProduct={openProduct} />                                )}                                                             
-        {view === "address" && <Address />}                                    {view === "contact" && <Contact />}                                    {view === "about" && <About />}
-        {view === "menu" && <Menu setView={setView} />}                      </main>                                                          
-      {/* FOOTER (sticky bottom + broken line) */}                           <footer className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
-        style={{ borderTopStyle: "dotted" }}                                 >                                                                        © {new Date().getFullYear()} Goodwillstores
-      </footer>                                                                                                                                   </div>
-  );                                                                   }
+              {products.map((p) => (
+                <li
+                  key={p.id}
+                  className="p-3 bg-white border rounded flex items-center justify-between"
+                >
+                  <div>
+                    <div className="font-medium">{p.title}</div>
+                    <div className="text-sm text-slate-500">
+                      {(entries[p.id] || []).length} entries
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      className="px-2 py-1 border rounded"
+                      onClick={() => setSelectedPid(p.id)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="px-2 py-1 bg-green-600 text-white rounded"
+                      onClick={() => {
+                        const w = pickWinner(p.id);
+                        if (w)
+                          alert(`Winner: ${w.name} (${w.ticketNo})`);
+                        else alert("No entries");
+                      }}
+                    >
+                      Pick winner
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="w-1/2">
+            <h3 className="text-lg font-semibold">Entries</h3>
+            <div className="mt-3 bg-white border rounded p-3 max-h-96 overflow-auto">
+              <div className="mb-2 font-medium">
+                {products.find((x) => x.id === selectedPid)?.title}
+              </div>
+              {(entries[selectedPid] || []).map((r, i) => (
+                <div key={r.ticketNo} className="text-sm border-b py-2">
+                  {i + 1}. {r.name} — {r.ticketNo} —{" "}
+                  <span className="text-xs text-slate-500">{r.email}</span>
+                </div>
+              ))}
+              {!(entries[selectedPid] || []).length && (
+                <div className="text-sm text-slate-500">No entries yet.</div>
+              )}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button
+                className="px-3 py-1 border rounded"
+                onClick={() => {
+                  const pool = entries[selectedPid] || [];
+                  const csv = [
+                    "ticketNo,name,email,createdAt",
+                    ...pool.map((r) =>
+                      [r.ticketNo, r.name, r.email, r.createdAt].join(",")
+                    ),
+                  ].join("\n");
+                  const blob = new Blob([csv], { type: "text/csv" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `${selectedPid}_entries.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+              >
+                Export CSV
+              </button>
+              <button
+                className="px-3 py-1 bg-red-600 text-white rounded"
+                onClick={() => {
+                  if (confirm("Clear all entries for this raffle?")) {
+                    const c = { ...entries };
+                    c[selectedPid] = [];
+                    setEntries(c);
+                  }
+                }}
+              >
+                Clear Entries
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------- MAIN RETURN --------------------
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-50">
+
+      {/* HEADER */}
+      <Header setView={setView} />
+
+      {/* MAIN CONTENT - grows to push footer down */}
+      <main className="flex-grow">
+        {view === "home" && (
+          <>
+            <Hero />
+            <Home />
+          </>
+        )}
+
+        {view === "detail" && selected && (
+          <Detail product={selected} onBack={() => setView("home")} />
+        )}
+
+        {view === "admin" && <Admin />}
+
+        {view === "catalog" && (
+          <Catalog openProduct={openProduct} />
+        )}
+
+        {view === "address" && <Address />}
+        {view === "contact" && <Contact />}
+        {view === "about" && <About />}
+        {view === "menu" && <Menu setView={setView} />}
+      </main>
+
+      {/* FOOTER (sticky bottom + broken line) */}
+      <footer className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
+        style={{ borderTopStyle: "dotted" }}
+      >
+        © {new Date().getFullYear()} Goodwillstores
+      </footer>
+
+    </div>
+  );
+}
