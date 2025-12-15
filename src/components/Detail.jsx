@@ -8,7 +8,8 @@ export default function Detail({ product }) {
   const [errors, setErrors] = useState({});
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);
-
+  const [isGenerating, setIsGenerating] = useState(false);
+ 
   useEffect(() => {
     setHasDownloaded(false);
   }, [lastOrder]);
@@ -30,39 +31,50 @@ export default function Detail({ product }) {
   }
 
   async function handleInstantDownload() {
-    if (!lastOrder) {                                                        alert("No completed payment found.");
+    if (!lastOrder) {
+      alert("No completed payment found.");
       return;
     }
 
-    if (hasDownloaded) {                                                     alert("Ticket already downloaded.");
-      return;
-    }                                                                  
+    if (hasDownloaded || isGenerating) return;
+
+    setIsGenerating(true);
+
     try {
       const payload = { name, quantity };
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
-        {                                                                        method: "POST",
+        {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
         }
       );
 
       if (!res.ok) {
         alert("Ticket generation failed.");
+        setIsGenerating(false);
         return;
       }
 
       const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);                          const a = document.createElement("a");
-      a.href = url;
-      a.download = quantity > 1 ? "raffle_tickets.zip" : "raffle_ticket.pdf";
-      a.click();
-      window.URL.revokeObjectURL(url);
-                                                                             setHasDownloaded(true);   // 🔒 prevent future downloads
+      const url = window.URL.createObjectURL(blob);
 
+      const a = document.createElement("a");
+      a.href = url;
+      a.download =
+        quantity > 1 ? "raffle_tickets.zip" : "raffle_ticket.pdf";
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+
+      setHasDownloaded(true); // 🔒 lock permanently
     } catch (err) {
       console.error("Download error:", err);
       alert("Could not download ticket. Try again.");
+    } finally {
+      setIsGenerating(false);
     }
   }
                                                                          return (
@@ -137,20 +149,27 @@ export default function Detail({ product }) {
         onPaymentSuccess={async (orderObj) => {
           setLastOrder(orderObj);
           setDownloadReady(true);
-
-          if (!hasDownloaded) {
-          // 🔥 AUTO-DOWNLOAD RIGHT AFTER PAYMENT
-            await handleInstantDownload();
-          }
         }}
       />
 
-      {downloadReady && (                                                      <button
-          onClick={handleInstantDownload}                                        disabled={hasDownloaded}
-          className={`mt-4 px-4 py-2 rounded text-white
-            ${hasDownloaded ? "bg-gray-400" : "bg-green-600"}`}
+      {downloadReady && (
+        <button
+          onClick={handleInstantDownload}
+          disabled={hasDownloaded || isGenerating}
+          className={`mt-4 px-4 py-2 rounded text-white ${
+            hasDownloaded
+              ? "bg-gray-400"
+              : isGenerating
+              ? "bg-yellow-500"
+              : "bg-green-600"
+          }`}
         >
-          {hasDownloaded ? "Ticket Already Downloaded" : "Download Ticket"}                                                                           </button>
+          {hasDownloaded
+            ? "Ticket Already Downloaded"
+            : isGenerating
+            ? "Generating Ticket..."
+            : "Download Ticket"}
+        </button>
       )}
     </div>
   );
