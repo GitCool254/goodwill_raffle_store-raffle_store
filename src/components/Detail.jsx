@@ -125,6 +125,14 @@ export default function Detail({ product }) {
 
       <hr className="my-4" />
 
+      console.log("PAYPAL CHECK", {
+        name,
+        email,
+        quantity,
+        amount,
+        product
+      });
+
       {/* PAYPAL */}
       <PayPalButton
         amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
