@@ -90,6 +90,9 @@ export default function App() {
   const [galleryProduct, setGalleryProduct] = useState(null);
 
   const [activeImage, setActiveImage] = useState(null);
+
+  const [imageImages, setImageImages] = useState([]);
+  const [imageIndex, setImageIndex] = useState(0);
    
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
@@ -107,8 +110,10 @@ export default function App() {
     setView("detail");
   }
 
-  function openImage(imageUrl) {
-    setActiveImage(imageUrl);
+  function openImage(images, index = 0) {
+    setImageImages(images);
+    setImageIndex(index);
+    setActiveImage(images[index]);
     setView("image");
   }
 
@@ -274,16 +279,52 @@ export default function App() {
     );
   }
 
-  function ImagePage({ image }) {
+  function ImagePage({ images, index, setIndex, onBack }) {
+    const [touchStartX, setTouchStartX] = useState(null);
+
+    function next() {
+      setIndex((i) => (i < images.length - 1 ? i + 1 : i));
+    }
+
+    function prev() {
+      setIndex((i) => (i > 0 ? i - 1 : i));
+    }
+
+    function handleTouchStart(e) {
+      setTouchStartX(e.touches[0].clientX);
+    }
+
+    function handleTouchEnd(e) {
+      if (touchStartX === null) return;
+
+      const diff = touchStartX - e.changedTouches[0].clientX;
+
+      if (diff > 50) next();      // swipe left
+      if (diff < -50) prev();    // swipe right
+
+      setTouchStartX(null);
+    }
+
     return (
-      <div className="flex-grow bg-black flex items-center justify-center">
+      <div
+        className="flex-grow bg-black relative flex items-center justify-center overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* BACK BUTTON */}
+        <button
+          onClick={onBack}
+          className="absolute top-4 left-4 z-10 text-white text-2xl bg-black/50 rounded-full px-3 py-1"
+        >
+          ←
+        </button>
+
+        {/* IMAGE */}
         <img
-          src={image}
+          src={images[index]}
           alt="Full view"
-          className="max-w-full max-h-full object-contain"
-          style={{
-            touchAction: "pinch-zoom",
-          }}
+          className="max-w-full max-h-full object-contain transition-transform duration-300"
+          style={{ touchAction: "pinch-zoom" }}
         />
       </div>
     );
@@ -303,7 +344,7 @@ export default function App() {
                 src={p.image}
                 alt={p.title}
                 className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
-                onClick={() => openImage(p.image)}
+                onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
               />
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">{p.description}</p>
@@ -362,7 +403,15 @@ export default function App() {
       </main>
 
       {view === "image" && activeImage && (
-        <ImagePage image={activeImage} />
+        <ImagePage
+          images={imageImages}
+          index={imageIndex}
+          setIndex={(i) => {
+            setImageIndex(i);
+            setActiveImage(imageImages[i]);
+          }}
+          onBack={() => setView("home")}
+        />
       )}
 
       {view === "gallery" && galleryProduct && (
