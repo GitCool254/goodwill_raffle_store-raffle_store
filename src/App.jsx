@@ -88,6 +88,8 @@ export default function App() {
   const [selected, setSelected] = useState(null);
 
   const [galleryProduct, setGalleryProduct] = useState(null);
+
+  const [activeImage, setActiveImage] = useState(null);
    
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
@@ -103,6 +105,11 @@ export default function App() {
   function openProduct(p) {
     setSelected(p);
     setView("detail");
+  }
+
+  function openImage(imageUrl) {
+    setActiveImage(imageUrl);
+    setView("image");
   }
 
   function openGallery(product) {
@@ -266,6 +273,21 @@ export default function App() {
       </div>
     );
   }
+
+  function ImagePage({ image }) {
+    return (
+      <div className="flex-grow bg-black flex items-center justify-center">
+        <img
+          src={image}
+          alt="Full view"
+          className="max-w-full max-h-full object-contain"
+          style={{
+            touchAction: "pinch-zoom",
+          }}
+        />
+      </div>
+    );
+  }
   
   function Home() {
     console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
@@ -281,7 +303,7 @@ export default function App() {
                 src={p.image}
                 alt={p.title}
                 className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
-                onClick={() => openGallery(p)}
+                onClick={() => openImage(p.image)}
               />
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">{p.description}</p>
@@ -338,6 +360,10 @@ export default function App() {
         {view === "about" && <About />}
         {view === "menu" && <Menu setView={setView} />}
       </main>
+
+      {view === "image" && activeImage && (
+        <ImagePage image={activeImage} />
+      )}
 
       {view === "gallery" && galleryProduct && (
         <Gallery product={galleryProduct} />
