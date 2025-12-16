@@ -93,6 +93,9 @@ export default function App() {
 
   const [imageImages, setImageImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
+
+  const [zoomed, setZoomed] = useState(false);
+  const lastTapRef = React.useRef(0);
    
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
@@ -305,6 +308,14 @@ export default function App() {
       setTouchStartX(null);
     }
 
+    function handleDoubleTap() {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        setZoomed((z) => !z);
+      }
+      lastTapRef.current = now;
+    }
+
     return (
       <div
         className="flex-grow bg-black relative flex items-center justify-center overflow-hidden"
@@ -323,8 +334,13 @@ export default function App() {
         <img
           src={images[index]}
           alt="Full view"
+          onClick={handleDoubleTap}
           className="max-w-full max-h-full object-contain transition-transform duration-300"
-          style={{ touchAction: "pinch-zoom" }}
+          style={{
+            touchAction: "pinch-zoom",
+            transform: zoomed ? "scale(2)" : "scale(1)",
+            cursor: zoomed ? "zoom-out" : "zoom-in",
+          }}
         />
       </div>
     );
