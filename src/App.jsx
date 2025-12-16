@@ -150,9 +150,40 @@ export default function App() {
   }
 
   function Gallery({ product }) {
-    const [activeImage, setActiveImage] = useState(
-      product.images?.[0] || product.image
-    );
+    const images = product.images?.length
+      ? product.images
+      : [product.image];
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [touchStartX, setTouchStartX] = useState(null);
+
+    function next() {
+      setCurrentIndex((i) =>
+        i < images.length - 1 ? i + 1 : i
+      );
+    }
+
+    function prev() {
+      setCurrentIndex((i) =>
+        i > 0 ? i - 1 : i
+      );
+    }
+
+    function handleTouchStart(e) {
+      setTouchStartX(e.touches[0].clientX);
+    }
+
+    function handleTouchEnd(e) {
+      if (touchStartX === null) return;
+
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+
+      if (diff > 50) next();     // swipe left
+      if (diff < -50) prev();    // swipe right
+
+      setTouchStartX(null);
+    }
 
     return (
       <div className="max-w-5xl mx-auto p-6">
@@ -163,22 +194,59 @@ export default function App() {
           ← Back
         </button>
 
-        <div className="bg-white rounded-xl shadow p-6">
-          <img
-            src={activeImage}
-            alt={product.title}
-            className="w-full max-h-[70vh] object-contain rounded-lg mb-6"
-          />
+        <div className="bg-white rounded-xl shadow p-6 overflow-hidden">
+          {/* SLIDER */}
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+              width: `${images.length * 100}%`,
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {images.map((img, i) => (
+              <div
+                key={i}
+                className="w-full flex-shrink-0 flex justify-center"
+              >
+                <img
+                  src={img}
+                  alt={product.title}
+                  className="max-h-[70vh] object-contain rounded-lg"
+                />
+              </div>
+            ))}
+          </div>
 
-          <div className="flex gap-3 justify-center flex-wrap">
-            {(product.images || [product.image]).map((img, idx) => (
+          {/* ARROWS */}
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={prev}
+              disabled={currentIndex === 0}
+              className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
+            >
+              ‹
+            </button>
+
+            <button
+              onClick={next}
+              disabled={currentIndex === images.length - 1}
+              className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
+            >
+              ›
+            </button>
+          </div>
+
+          {/* THUMBNAILS */}
+          <div className="flex gap-3 justify-center flex-wrap mt-6">
+            {images.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
-                alt=""
-                onClick={() => setActiveImage(img)}
+                onClick={() => setCurrentIndex(idx)}
                 className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                  img === activeImage
+                  idx === currentIndex
                     ? "border-sky-600"
                     : "border-transparent"
                 }`}
