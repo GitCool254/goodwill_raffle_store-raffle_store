@@ -37,7 +37,7 @@ export default function App() {
       image: "/Screenshot_20251002-233129~2.png",
       images: [
         "/Screenshot_20251002-233129~2.png",
-        "/Screenshot_20251002-233129~2.png",
+        "/Screenshot_20251007-201731~2.png",
       ],
       ticketPrice: 5,
       totalTickets: 100,
@@ -51,7 +51,7 @@ export default function App() {
       image: "/Screenshot_20251007-201731~2.png",
       images: [
         "/Screenshot_20251007-201731~2.png",
-        "/Screenshot_20251007-201731~2.png",
+        "/Screenshot_20251002-233129~2.png",
       ],
       ticketPrice: 5,
       totalTickets: 200,
@@ -65,7 +65,7 @@ export default function App() {
       image: "/Screenshot_20251007-094253~2.png",
       images: [
         "/Screenshot_20251007-094253~2.png",
-        "/Screenshot_20251007-094253~2.png",
+        "/Screenshot_20251007-201731~2.png",
       ],
       ticketPrice: 5,
       totalTickets: 150,
@@ -197,7 +197,7 @@ export default function App() {
           ← Back
         </button>
 
-        <div className="bg-white rounded-xl shadow p-6 overflow-hidden">
+        <div className="bg-white rounded-xl shadow p-6 overflow-hidden h-[75vh]">
           <div className="w-full relative overflow-hidden">
             {/* SLIDER */}
             <div
@@ -213,7 +213,6 @@ export default function App() {
                 <div
                   key={i}
                   className="flex-shrink-0 flex justify-center"
-                  style={{ width: "100%" }}
                 >
                   <img
                     src={img}
