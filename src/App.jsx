@@ -87,15 +87,10 @@ export default function App() {
   const [view, setView] = useState("home"); // home | detail
   const [selected, setSelected] = useState(null);
 
-  const [galleryProduct, setGalleryProduct] = useState(null);
-
   const [activeImage, setActiveImage] = useState(null);
 
   const [imageImages, setImageImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
-
-  const [zoomed, setZoomed] = useState(false);
-  const lastTapRef = React.useRef(0);
    
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
@@ -120,10 +115,6 @@ export default function App() {
     setView("image");
   }
 
-  function openGallery(product) {
-    setGalleryProduct(product);
-    setView("gallery");
-  }
 
 
   // -------------------- COMPONENTS --------------------
@@ -167,123 +158,11 @@ export default function App() {
     );
   }
 
-  function Gallery({ product }) {
-    const images = product.images?.length
-      ? product.images
-      : [product.image];
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [touchStartX, setTouchStartX] = useState(null);
-
-    function next() {
-      setCurrentIndex((i) =>
-        i < images.length - 1 ? i + 1 : i
-      );
-    }
-
-    function prev() {
-      setCurrentIndex((i) =>
-        i > 0 ? i - 1 : i
-      );
-    }
-
-    function handleTouchStart(e) {
-      setTouchStartX(e.touches[0].clientX);
-    }
-
-    function handleTouchEnd(e) {
-      if (touchStartX === null) return;
-
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-
-      if (diff > 50) next();     // swipe left
-      if (diff < -50) prev();    // swipe right
-
-      setTouchStartX(null);
-    }
-
-    return (
-      <div className="max-w-5xl mx-auto p-6">
-        <button
-          onClick={() => setView("home")}
-          className="mb-4 text-sky-600 font-semibold"
-        >
-          ← Back
-        </button>
-
-        <div className="bg-white rounded-xl shadow p-6 overflow-hidden h-[75vh]">
-          <div className="w-full relative overflow-hidden">
-            {/* SLIDER */}
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-                width: `${images.length * 100}%`,
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-            >
-              {images.map((img, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 flex justify-center"
-                >
-                  <img
-                    src={img}
-                    alt={product.title}
-                    className="max-h-[70vh] object-contain rounded-lg"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* ARROWS */}
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={prev}
-                disabled={currentIndex === 0}
-                className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
-              >
-                ‹
-              </button>
-
-              <button
-                onClick={next}
-                disabled={currentIndex === images.length - 1}
-                className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
-              >
-                ›
-              </button>
-            </div>
-
-            {/* THUMBNAILS */}
-            <div className="flex gap-3 justify-center flex-wrap mt-6">
-              {images.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                    idx === currentIndex
-                      ? "border-sky-600"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <h2 className="mt-6 text-xl font-bold text-center">
-              {product.title}
-            </h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
+    
+    const [zoomed, setZoomed] = useState(false);
+    const lastTapRef = React.useRef(0);
 
     function next() {
       setIndex((i) => (i < images.length - 1 ? i + 1 : i));
@@ -428,10 +307,6 @@ export default function App() {
           }}
           onBack={() => setView("home")}
         />
-      )}
-
-      {view === "gallery" && galleryProduct && (
-        <Gallery product={galleryProduct} />
       )}
 
       {/* FOOTER (sticky bottom + broken line) */}
