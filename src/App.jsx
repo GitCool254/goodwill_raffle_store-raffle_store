@@ -37,6 +37,7 @@ export default function App() {
       image: "/Screenshot_20251002-233129~2.png",
       images: [
         "/Screenshot_20251002-233129~2.png",
+        "/Screenshot_20251002-233129~2.png",
       ],
       ticketPrice: 5,
       totalTickets: 100,
@@ -50,6 +51,7 @@ export default function App() {
       image: "/Screenshot_20251007-201731~2.png",
       images: [
         "/Screenshot_20251007-201731~2.png",
+        "/Screenshot_20251007-201731~2.png",
       ],
       ticketPrice: 5,
       totalTickets: 200,
@@ -62,6 +64,7 @@ export default function App() {
       price: 5,
       image: "/Screenshot_20251007-094253~2.png",
       images: [
+        "/Screenshot_20251007-094253~2.png",
         "/Screenshot_20251007-094253~2.png",
       ],
       ticketPrice: 5,
