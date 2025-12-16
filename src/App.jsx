@@ -211,7 +211,8 @@ export default function App() {
             {images.map((img, i) => (
               <div
                 key={i}
-                className="w-full flex-shrink-0 flex justify-center"
+                className="flex-shrink-0 flex justify-center"
+                style={{ width: "100%" }}
               >
                 <img
                   src={img}
