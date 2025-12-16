@@ -35,6 +35,9 @@ export default function App() {
       description: "Brand new iPhone 15 Pro — unopened box.",
       price: 5,
       image: "/Screenshot_20251002-233129~2.png",
+      images: [
+        "/Screenshot_20251002-233129~2.png",
+      ]
       ticketPrice: 5,
       totalTickets: 100,
       category: "Eletronics",
@@ -45,6 +48,9 @@ export default function App() {
       description: "PS5 console with DualSense controller.",
       price: 5,
       image: "/Screenshot_20251007-201731~2.png",
+      images: [
+        "/Screenshot_20251007-201731~2.png",
+      ]
       ticketPrice: 5,
       totalTickets: 200,
       category: "Households",
@@ -55,6 +61,9 @@ export default function App() {
       description: "Lightweight MacBook Air with M3 chip.",
       price: 5,
       image: "/Screenshot_20251007-094253~2.png",
+      images: [
+        "/Screenshot_20251007-094253~2.png",
+      ]
       ticketPrice: 5,
       totalTickets: 150,
       category: "Eletronics",
@@ -75,8 +84,8 @@ export default function App() {
   const [view, setView] = useState("home"); // home | detail
   const [selected, setSelected] = useState(null);
 
-  const [previewImage, setPreviewImage] = useState(null);
-  
+  const [galleryProduct, setGalleryProduct] = useState(null);
+   
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
@@ -91,6 +100,11 @@ export default function App() {
   function openProduct(p) {
     setSelected(p);
     setView("detail");
+  }
+
+  function openGallery(product) {
+    setGalleryProduct(product);
+    setView("gallery");
   }
 
 
@@ -135,6 +149,51 @@ export default function App() {
     );
   }
 
+  function Gallery({ product }) {
+    const [activeImage, setActiveImage] = useState(
+      product.images?.[0] || product.image
+    );
+
+    return (
+      <div className="max-w-5xl mx-auto p-6">
+        <button
+          onClick={() => setView("home")}
+          className="mb-4 text-sky-600 font-semibold"
+        >
+          ← Back
+        </button>
+
+        <div className="bg-white rounded-xl shadow p-6">
+          <img
+            src={activeImage}
+            alt={product.title}
+            className="w-full max-h-[70vh] object-contain rounded-lg mb-6"
+          />
+
+          <div className="flex gap-3 justify-center flex-wrap">
+            {(product.images || [product.image]).map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt=""
+                onClick={() => setActiveImage(img)}
+                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
+                  img === activeImage
+                    ? "border-sky-600"
+                    : "border-transparent"
+                }`}
+              />
+            ))}
+          </div>
+
+          <h2 className="mt-6 text-xl font-bold text-center">
+            {product.title}
+          </h2>
+        </div>
+      </div>
+    );
+  }
+  
   function Home() {
     console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
     return (
@@ -149,7 +208,7 @@ export default function App() {
                 src={p.image}
                 alt={p.title}
                 className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
-                onClick={() => setPreviewImage(p.image)}
+                onClick={() => openGallery(p)}
               />
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">{p.description}</p>
@@ -207,25 +266,8 @@ export default function App() {
         {view === "menu" && <Menu setView={setView} />}
       </main>
 
-      {previewImage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
-          onClick={() => setPreviewImage(null)}
-        >
-          <img
-            src={previewImage}
-            alt="Preview"
-            className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()} // prevent close when clicking image
-          />
-
-          <button
-            className="absolute top-4 right-4 text-white text-3xl font-bold"
-            onClick={() => setPreviewImage(null)}
-          >
-            ✕
-          </button>
-        </div>
+      {view === "gallery" && galleryProduct && (
+        <Gallery product={galleryProduct} />
       )}
 
       {/* FOOTER (sticky bottom + broken line) */}
