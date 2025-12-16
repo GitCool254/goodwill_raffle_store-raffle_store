@@ -198,69 +198,71 @@ export default function App() {
         </button>
 
         <div className="bg-white rounded-xl shadow p-6 overflow-hidden">
-          {/* SLIDER */}
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-              width: `${images.length * 100}%`,
-            }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            {images.map((img, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 flex justify-center"
-                style={{ width: "100%" }}
+          <div className="w-full relative overflow-hidden">
+            {/* SLIDER */}
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{
+                transform: `translateX(-${currentIndex * 100}%)`,
+                width: `${images.length * 100}%`,
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              {images.map((img, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 flex justify-center"
+                  style={{ width: "100%" }}
+                >
+                  <img
+                    src={img}
+                    alt={product.title}
+                    className="max-h-[70vh] object-contain rounded-lg"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* ARROWS */}
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={prev}
+                disabled={currentIndex === 0}
+                className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
               >
+                ‹
+              </button>
+
+              <button
+                onClick={next}
+                disabled={currentIndex === images.length - 1}
+                className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* THUMBNAILS */}
+            <div className="flex gap-3 justify-center flex-wrap mt-6">
+              {images.map((img, idx) => (
                 <img
+                  key={idx}
                   src={img}
-                  alt={product.title}
-                  className="max-h-[70vh] object-contain rounded-lg"
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
+                    idx === currentIndex
+                      ? "border-sky-600"
+                      : "border-transparent"
+                  }`}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <h2 className="mt-6 text-xl font-bold text-center">
+              {product.title}
+            </h2>
           </div>
-
-          {/* ARROWS */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={prev}
-              disabled={currentIndex === 0}
-              className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
-            >
-              ‹
-            </button>
-
-            <button
-              onClick={next}
-              disabled={currentIndex === images.length - 1}
-              className="px-4 py-2 bg-slate-200 rounded disabled:opacity-50"
-            >
-              ›
-            </button>
-          </div>
-
-          {/* THUMBNAILS */}
-          <div className="flex gap-3 justify-center flex-wrap mt-6">
-            {images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                onClick={() => setCurrentIndex(idx)}
-                className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                  idx === currentIndex
-                    ? "border-sky-600"
-                    : "border-transparent"
-                }`}
-              />
-            ))}
-          </div>
-
-          <h2 className="mt-6 text-xl font-bold text-center">
-            {product.title}
-          </h2>
         </div>
       </div>
     );
