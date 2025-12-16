@@ -75,6 +75,8 @@ export default function App() {
   const [view, setView] = useState("home"); // home | detail
   const [selected, setSelected] = useState(null);
 
+  const [previewImage, setPreviewImage] = useState(null);
+  
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
@@ -146,7 +148,8 @@ export default function App() {
               <img
                 src={p.image}
                 alt={p.title}
-                className="h-44 w-full object-cover rounded-lg mb-3"
+                className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
+                onClick={() => setPreviewImage(p.image)}
               />
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">{p.description}</p>
@@ -203,6 +206,27 @@ export default function App() {
         {view === "about" && <About />}
         {view === "menu" && <Menu setView={setView} />}
       </main>
+
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+          onClick={() => setPreviewImage(null)}
+        >
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()} // prevent close when clicking image
+          />
+
+          <button
+            className="absolute top-4 right-4 text-white text-3xl font-bold"
+            onClick={() => setPreviewImage(null)}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* FOOTER (sticky bottom + broken line) */}
       <footer className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
