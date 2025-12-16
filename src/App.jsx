@@ -164,6 +164,18 @@ export default function App() {
     const [zoomed, setZoomed] = useState(false);
     const lastTapRef = React.useRef(0);
 
+    const [pan, setPan] = useState({ x: 0, y: 0 });
+    const [dragStart, setDragStart] = useState(null);
+
+    useEffect(() => {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }, []);
+
     function next() {
       setIndex((i) => (i < images.length - 1 ? i + 1 : i));
     }
@@ -181,8 +193,10 @@ export default function App() {
 
       const diff = touchStartX - e.changedTouches[0].clientX;
 
-      if (diff > 50) next();      // swipe left
-      if (diff < -50) prev();    // swipe right
+      if (!zoomed) {
+        if (diff > 50) next();      // swipe left
+        if (diff < -50) prev();    // swipe right
+      }
 
       setTouchStartX(null);
     }
@@ -190,16 +204,50 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setZoomed((z) => !z);
+        setZoomed((z) => {
+          if (z) setPan({ x: 0, y: 0 }); // reset when zooming out
+          return !z;
+        });
       }
       lastTapRef.current = now;
+    }
+
+    function handlePanStart(e) {
+      if (!zoomed) return;
+
+      const touch = e.touches[0];
+      setDragStart({
+        x: touch.clientX - pan.x,
+        y: touch.clientY - pan.y,
+      });
+    }
+
+    function handlePanMove(e) {
+      if (!zoomed || !dragStart) return;
+
+      const touch = e.touches[0];
+      setPan({
+        x: touch.clientX - dragStart.x,
+        y: touch.clientY - dragStart.y,
+      });
+    }
+
+    function handlePanEnd() {
+      setDragStart(null);
     }
 
     return (
       <div
         className="flex-grow bg-black relative flex items-center justify-center overflow-hidden"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        onTouchStart={(e) => {
+          handleTouchStart(e);
+          handlePanStart(e);
+        }}
+        onTouchMove={handlePanMove}
+        onTouchEnd={(e) => {
+          handleTouchEnd(e);
+          handlePanEnd();
+        }}
       >
         {/* BACK BUTTON */}
         <button
@@ -209,6 +257,11 @@ export default function App() {
           ←
         </button>
 
+        {/* IMAGE INDEX */}
+        <div className="absolute top-4 right-4 z-10 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+          {index + 1} / {images.length}
+        </div>
+  
         {/* IMAGE */}
         <img
           src={images[index]}
@@ -217,7 +270,9 @@ export default function App() {
           className="max-w-full max-h-full object-contain transition-transform duration-300"
           style={{
             touchAction: "pinch-zoom",
-            transform: zoomed ? "scale(2)" : "scale(1)",
+            transform: zoomed
+              ? `scale(2) translate(${pan.x / 2}px, ${pan.y / 2}px)`
+              : "scale(1)",
             cursor: zoomed ? "zoom-out" : "zoom-in",
           }}
         />
