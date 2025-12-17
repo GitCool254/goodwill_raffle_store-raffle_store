@@ -260,9 +260,9 @@ export default function App() {
             onClick={handleDoubleTap}
             draggable={false}
             style={{
-              width: zoomed ? "200%" : "100%",
-              maxWidth: "100%",
-              height: "auto",
+              maxWidth: zoomed ? "200%" : "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
               cursor: zoomed ? "zoom-out" : "zoom-in",
               userSelect: "none",
             }}
