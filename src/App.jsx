@@ -229,17 +229,28 @@ export default function App() {
         </div>
   
         {/* IMAGE */}
-        <img
-          src={images[index]}
-          alt="Full view"
-          onClick={handleDoubleTap}
-          className="max-w-full max-h-full object-contain transition-transform duration-300"
+        <div
           style={{
-            touchAction: "pinch-zoom",
-            transform: zoomed ? "scale(2)" : "scale(1)",
-            cursor: zoomed ? "zoom-out" : "zoom-in",
+            width: zoomed ? "200%" : "100%",
+            height: zoomed ? "200%" : "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
+        >
+          <img
+            src={images[index]}
+            alt="Full view"
+            onClick={handleDoubleTap}
+            className="object-contain transition-transform duration-300"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              cursor: zoomed ? "zoom-out" : "zoom-in",
+              touchAction: "pinch-zoom",
+            }}
+          />
+        </div>
       </div>
     );
   }
