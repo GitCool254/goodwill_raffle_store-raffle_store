@@ -209,8 +209,8 @@ export default function App() {
 
     return (
       <div
-        className={`flex-grow bg-black relative flex items-center justify-center ${
-          zoomed ? "overflow-auto" : "overflow-hidden"
+        className={`flex-grow bg-black relative ${
+          zoomed ? "overflow-auto" : "flex items-center justify-center overflow-hidden"
         }`}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -229,28 +229,19 @@ export default function App() {
         </div>
   
         {/* IMAGE */}
-        <div
+        
+        <img
+          src={images[index]}
+          alt="Full view"
+          onClick={handleDoubleTap}
           style={{
-            width: zoomed ? "200%" : "100%",
-            height: zoomed ? "200%" : "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            width: zoomed ? "200vw" : "100%",
+            height: "auto",
+            maxWidth: "none",
+            cursor: zoomed ? "zoom-out" : "zoom-in",
+            touchAction: "pinch-zoom",
           }}
-        >
-          <img
-            src={images[index]}
-            alt="Full view"
-            onClick={handleDoubleTap}
-            className="object-contain transition-transform duration-300"
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              cursor: zoomed ? "zoom-out" : "zoom-in",
-              touchAction: "pinch-zoom",
-            }}
-          />
-        </div>
+        />
       </div>
     );
   }
