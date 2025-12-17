@@ -223,7 +223,7 @@ export default function App() {
     return (
       <div
         ref={containerRef}
-        className="fixed inset-0 bg-black z-50"
+        className="bg-black min-h-screen z-50"
         style={{
           position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
@@ -252,11 +252,9 @@ export default function App() {
         <div
           style={{
             width: "100vw",
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
+            paddingTop: "80px",
+            paddingBottom: "120px",
+            display: "block",
           }}
         >
           <img
