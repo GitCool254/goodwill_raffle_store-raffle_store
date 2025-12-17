@@ -230,6 +230,7 @@ export default function App() {
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
+          position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
           overflowY: zoomed ? "auto" : "hidden",
           WebkitOverflowScrolling: "touch",
@@ -265,8 +266,12 @@ export default function App() {
             transform: zoomed
               ? "translate(-50%, -50%) scale(2)"
               : "translate(-50%, -50%) scale(1)",
-            maxWidth: "100%",
-            maxHeight: "100%",
+
+            width: "auto",
+            height: "auto",
+            maxWidth: "100vw",
+            maxHeight: "100vh",
+
             objectFit: "contain",
             cursor: zoomed ? "zoom-out" : "zoom-in",
             userSelect: "none",
