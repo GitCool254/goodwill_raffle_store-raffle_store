@@ -254,20 +254,32 @@ export default function App() {
   
         {/* IMAGE */}
         
-        <div className="w-full h-full flex items-center justify-center">
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
           <img
+            key={index} // IMPORTANT: forces re-center on swipe
             src={images[index]}
             alt="Full view"
             onClick={handleDoubleTap}
             draggable={false}
             style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
+              width: "100%",
+              height: "100%",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
               objectFit: "contain",
               transform: zoomed ? "scale(2)" : "scale(1)",
               cursor: zoomed ? "zoom-out" : "zoom-in",
               userSelect: "none",
-              transition: "transform 0.2s ease",
+              transition: "transform 0.25s ease",
             }}
           />
         </div>
