@@ -164,9 +164,6 @@ export default function App() {
     const [zoomed, setZoomed] = useState(false);
     const lastTapRef = React.useRef(0);
 
-    const [pan, setPan] = useState({ x: 0, y: 0 });
-    const [dragStart, setDragStart] = useState(null);
-
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
@@ -204,50 +201,19 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setZoomed((z) => {
-          if (z) setPan({ x: 0, y: 0 }); // reset when zooming out
-          return !z;
-        });
+        setZoomed((z) => !z);
+          // nothing needed here anymore
       }
       lastTapRef.current = now;
     }
 
-    function handlePanStart(e) {
-      if (!zoomed) return;
-
-      const touch = e.touches[0];
-      setDragStart({
-        x: touch.clientX - pan.x,
-        y: touch.clientY - pan.y,
-      });
-    }
-
-    function handlePanMove(e) {
-      if (!zoomed || !dragStart) return;
-
-      const touch = e.touches[0];
-      setPan({
-        x: touch.clientX - dragStart.x,
-        y: touch.clientY - dragStart.y,
-      });
-    }
-
-    function handlePanEnd() {
-      setDragStart(null);
-    }
-
     return (
       <div
-        className="flex-grow bg-black relative flex items-center justify-center overflow-hidden"
-        onTouchStart={(e) => {
-          handleTouchStart(e);
-          handlePanStart(e);
-        }}
-        onTouchMove={handlePanMove}
-        onTouchEnd={(e) => {
-          handleTouchEnd(e);
-          handlePanEnd();
-        }}
+        className={`flex-grow bg-black relative flex items-center justify-center ${
+          zoomed ? "overflow-auto" : "overflow-hidden"
+        }`}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* BACK BUTTON */}
         <button
@@ -270,9 +236,7 @@ export default function App() {
           className="max-w-full max-h-full object-contain transition-transform duration-300"
           style={{
             touchAction: "pinch-zoom",
-            transform: zoomed
-              ? `scale(2) translate(${pan.x / 2}px, ${pan.y / 2}px)`
-              : "scale(1)",
+            transform: zoomed ? "scale(2)" : "scale(1)",
             cursor: zoomed ? "zoom-out" : "zoom-in",
           }}
         />
