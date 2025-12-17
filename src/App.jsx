@@ -253,21 +253,25 @@ export default function App() {
   
         {/* IMAGE */}
         
-        <div className="w-full h-full flex items-center justify-center">
-          <img
-            src={images[index]}
-            alt="Full view"
-            onClick={handleDoubleTap}
-            draggable={false}
-            style={{
-              maxWidth: zoomed ? "200%" : "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
-              cursor: zoomed ? "zoom-out" : "zoom-in",
-              userSelect: "none",
-            }}
-          />
-        </div>
+        <img
+          src={images[index]}
+          alt="Full view"
+          onClick={handleDoubleTap}
+          draggable={false}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: zoomed
+              ? "translate(-50%, -50%) scale(2)"
+              : "translate(-50%, -50%) scale(1)",
+            maxWidth: "100%",
+            maxHeight: "100%",
+            objectFit: "contain",
+            cursor: zoomed ? "zoom-out" : "zoom-in",
+            userSelect: "none",
+          }}
+        />
       </div>
     );
   }
