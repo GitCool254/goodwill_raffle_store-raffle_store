@@ -185,11 +185,15 @@ export default function App() {
     }, [index]);
 
     function next() {
-      setIndex((i) => (i < images.length - 1 ? i + 1 : i));
+      if (index < images.length - 1) {
+        setIndex(index + 1);
+      }
     }
 
     function prev() {
-      setIndex((i) => (i > 0 ? i - 1 : i));
+      if (index > 0) {
+        setIndex(index - 1);
+      }
     }
 
     function handleTouchStart(e) {
@@ -218,6 +222,8 @@ export default function App() {
       }
       lastTapRef.current = now;
     }
+
+    console.log("index:", index, "image:", images[index]);
 
     return (
       <div
