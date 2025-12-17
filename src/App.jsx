@@ -163,7 +163,8 @@ export default function App() {
     
     const [zoomed, setZoomed] = useState(false);
     const lastTapRef = React.useRef(0);
-
+    const containerRef = React.useRef(null);
+    
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
@@ -172,6 +173,16 @@ export default function App() {
         document.body.style.overflow = originalOverflow;
       };
     }, []);
+
+    useEffect(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "auto",
+        });
+      }
+    }, [index]);
 
     function next() {
       setIndex((i) => (i < images.length - 1 ? i + 1 : i));
@@ -209,6 +220,7 @@ export default function App() {
 
     return (
       <div
+        ref={containerRef}
         className={`flex-grow bg-black relative ${
           zoomed ? "overflow-auto" : "flex items-center justify-center overflow-hidden"
         }`}
