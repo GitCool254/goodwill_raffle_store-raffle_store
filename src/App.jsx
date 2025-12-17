@@ -212,6 +212,9 @@ export default function App() {
         className={`flex-grow bg-black relative ${
           zoomed ? "overflow-auto" : "flex items-center justify-center overflow-hidden"
         }`}
+        style={{
+          WebkitOverflowScrolling: "touch",
+        }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -239,7 +242,6 @@ export default function App() {
             height: "auto",
             maxWidth: "none",
             cursor: zoomed ? "zoom-out" : "zoom-in",
-            touchAction: "pinch-zoom",
           }}
         />
       </div>
