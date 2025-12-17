@@ -193,6 +193,7 @@ export default function App() {
     }
 
     function handleTouchStart(e) {
+      if (zoomed) return; // do NOT start swipe when zoomed
       setTouchStartX(e.touches[0].clientX);
     }
 
@@ -221,11 +222,12 @@ export default function App() {
     return (
       <div
         ref={containerRef}
-        className={`flex-grow bg-black relative ${
-          zoomed ? "overflow-auto" : "flex items-center justify-center overflow-hidden"
-        }`}
+        className="fixed inset-0 bg-black z-50"
         style={{
+          overflowX: zoomed ? "auto" : "hidden",
+          overflowY: zoomed ? "auto" : "hidden",
           WebkitOverflowScrolling: "touch",
+          touchAction: zoomed ? "pan-x pan-y" : "none",
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -245,17 +247,21 @@ export default function App() {
   
         {/* IMAGE */}
         
-        <img
-          src={images[index]}
-          alt="Full view"
-          onClick={handleDoubleTap}
-          style={{
-            width: zoomed ? "200vw" : "100%",
-            height: "auto",
-            maxWidth: "none",
-            cursor: zoomed ? "zoom-out" : "zoom-in",
-          }}
-        />
+        <div className="w-full h-full flex items-center justify-center">
+          <img
+            src={images[index]}
+            alt="Full view"
+            onClick={handleDoubleTap}
+            draggable={false}
+            style={{
+              width: zoomed ? "200%" : "100%",
+              maxWidth: "100%",
+              height: "auto",
+              cursor: zoomed ? "zoom-out" : "zoom-in",
+              userSelect: "none",
+            }}
+          />
+        </div>
       </div>
     );
   }
