@@ -166,12 +166,7 @@ export default function App() {
     const containerRef = React.useRef(null);
     
     useEffect(() => {
-      const originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-
-      return () => {
-        document.body.style.overflow = originalOverflow;
-      };
+      return () => {};
     }, []);
 
     useEffect(() => {
@@ -232,7 +227,7 @@ export default function App() {
         style={{
           position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
-          overflowY: zoomed ? "auto" : "hidden",
+          overflowY: "auto",
           WebkitOverflowScrolling: "touch",
           touchAction: zoomed ? "pan-x pan-y" : "none",
         }}
