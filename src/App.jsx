@@ -166,7 +166,12 @@ export default function App() {
     const containerRef = React.useRef(null);
     
     useEffect(() => {
-      return () => {};
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
     }, []);
 
     useEffect(() => {
@@ -223,11 +228,11 @@ export default function App() {
     return (
       <div
         ref={containerRef}
-        className="bg-black min-h-screen z-50"
+        className="fixed inset-0 bg-black z-50"
         style={{
           position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
-          overflowY: "auto",
+          overflowY: zoomed ? "auto" : "hidden",
           WebkitOverflowScrolling: "touch",
           touchAction: zoomed ? "pan-x pan-y" : "none",
         }}
@@ -252,9 +257,11 @@ export default function App() {
         <div
           style={{
             width: "100vw",
-            paddingTop: "80px",
-            paddingBottom: "120px",
-            display: "block",
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
           }}
         >
           <img
