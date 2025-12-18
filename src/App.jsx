@@ -239,26 +239,8 @@ export default function App() {
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* BACK BUTTON */}
-        <button
-          onClick={onBack}
-          style={{
-            position: "absolute",
-            top: "-48px",      // slightly above image
-            right: "0",
-          }}
-          className="text-white text-2xl bg-black/50 rounded-full px-3 py-1"
-        >
-          ←
-        </button>
+        {/* IMAGE + CONTROLS */}
 
-        {/* IMAGE INDEX */}
-        <div className="absolute bottom-6 right-6 z-10 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
-          {index + 1} / {images.length}
-        </div>
-  
-        {/* IMAGE */}
-        
         <div
           style={{
             width: "100vw",
@@ -267,27 +249,61 @@ export default function App() {
             alignItems: "center",
             justifyContent: "center",
             overflow: "hidden",
-            position: "relative",
           }}
         >
-          <img
-            key={index} // IMPORTANT: forces re-center on swipe
-            src={images[index]}
-            alt="Full view"
-            onClick={handleDoubleTap}
-            draggable={false}
+          {/* IMAGE WRAPPER (reference box) */}
+          <div
             style={{
-              width: "100%",
-              height: "100%",
+              position: "relative",
               maxWidth: "60vw",
               maxHeight: "60vh",
-              objectFit: "contain",
-              transform: zoomed ? "scale(2)" : "scale(1)",
-              cursor: zoomed ? "zoom-out" : "zoom-in",
-              userSelect: "none",
-              transition: "transform 0.25s ease",
+              width: "100%",
+              height: "100%",
             }}
-          />
+          >
+            {/* BACK BUTTON — top right of image */}
+            <button
+              onClick={onBack}
+              style={{
+                position: "absolute",
+                top: "-44px",
+                right: "0",
+              }}
+              className="text-white text-2xl bg-black/50 rounded-full px-3 py-1"
+            >
+              ←
+            </button>
+
+            {/* IMAGE */}
+            <img
+              key={index}
+              src={images[index]}
+              alt="Full view"
+              onClick={handleDoubleTap}
+              draggable={false}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                transform: zoomed ? "scale(2)" : "scale(1)",
+                cursor: zoomed ? "zoom-out" : "zoom-in",
+                userSelect: "none",
+                transition: "transform 0.25s ease",
+              }}
+            />
+
+            {/* IMAGE INDEX — bottom right of image */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "-36px",
+                right: "0",
+              }}
+              className="text-white text-sm bg-black/50 px-3 py-1 rounded-full"
+            >
+              {index + 1} / {images.length}
+            </div>
+          </div>
         </div>
       </div>
     );
