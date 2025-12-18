@@ -293,6 +293,7 @@ export default function App() {
                 cursor: zoomed ? "zoom-out" : "zoom-in",
                 userSelect: "none",
                 transition: "transform 0.25s ease",
+                zIndex: 1,
               }}
             />
 
@@ -302,7 +303,7 @@ export default function App() {
                 position: "absolute",
                 bottom: "12px",
                 right: "12px",
-                zIndex: 10,
+                zIndex: 50,
               }}
               className="text-white text-sm bg-black/50 px-3 py-1 rounded-full"
             >
