@@ -257,7 +257,7 @@ export default function App() {
         <div
           style={{
             width: "100vw",
-            minHeight: "100vh",
+            height: "100vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -273,7 +273,7 @@ export default function App() {
             style={{
               width: "100%",
               height: "100%",
-              maxWidth: "90vw",
+              maxWidth: "60vw",
               maxHeight: "60vh",
               objectFit: "contain",
               transform: zoomed ? "scale(2)" : "scale(1)",
@@ -334,7 +334,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-slate-50">
 
       {/* HEADER */}
-      <Header setView={setView} />
+      {view !== "image" && <Header setView={setView} />}
 
       {/* MAIN CONTENT - grows to push footer down */}
       <main className="flex-grow">
