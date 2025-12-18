@@ -242,13 +242,13 @@ export default function App() {
         {/* BACK BUTTON */}
         <button
           onClick={onBack}
-          className="absolute top-4 left-4 z-10 text-white text-2xl bg-black/50 rounded-full px-3 py-1"
+          className="absolute top-4 right-4 z-10 text-white text-2xl bg-black/50 rounded-full px-3 py-1"
         >
           ←
         </button>
 
         {/* IMAGE INDEX */}
-        <div className="absolute top-4 right-4 z-10 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+        <div className="absolute bottom-6 right-6 z-10 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
           {index + 1} / {images.length}
         </div>
   
