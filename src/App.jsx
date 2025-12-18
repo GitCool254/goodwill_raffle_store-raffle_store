@@ -242,7 +242,12 @@ export default function App() {
         {/* BACK BUTTON */}
         <button
           onClick={onBack}
-          className="absolute top-4 right-4 z-10 text-white text-2xl bg-black/50 rounded-full px-3 py-1"
+          style={{
+            position: "absolute",
+            top: "-48px",      // slightly above image
+            right: "0",
+          }}
+          className="text-white text-2xl bg-black/50 rounded-full px-3 py-1"
         >
           ←
         </button>
@@ -262,6 +267,7 @@ export default function App() {
             alignItems: "center",
             justifyContent: "center",
             overflow: "hidden",
+            position: "relative",
           }}
         >
           <img
