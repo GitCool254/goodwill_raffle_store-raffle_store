@@ -298,14 +298,20 @@ export default function App() {
             />
 
             {/* IMAGE INDEX — bottom right of image */}
+            {/* IMAGE INDEX — fixed overlay (always visible) */}
             <div
               style={{
-                position: "absolute",
-                bottom: "12px",
-                right: "12px",
-                zIndex: 50,
+                position: "fixed",
+                bottom: "24px",
+                right: "24px",
+                zIndex: 9999,
+                color: "#fff",
+                background: "rgba(0,0,0,0.7)",
+                padding: "6px 12px",
+                borderRadius: "999px",
+                fontSize: "14px",
+                pointerEvents: "none",
               }}
-              className="text-white text-sm bg-black/50 px-3 py-1 rounded-full"
             >
               {index + 1} / {images.length}
             </div>
