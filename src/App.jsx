@@ -394,11 +394,14 @@ export default function App() {
       )}
 
       {/* FOOTER (sticky bottom + broken line) */}
-      <footer className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
-        style={{ borderTopStyle: "dotted" }}
-      >
-        © {new Date().getFullYear()} Goodwillstores
-      </footer>
+      {view !== "image" && (
+        <footer
+          className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
+          style={{ borderTopStyle: "dotted" }}
+        >
+          © {new Date().getFullYear()} Goodwillstores
+        </footer>
+      )}
 
     </div>
   );
