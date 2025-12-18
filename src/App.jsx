@@ -353,7 +353,11 @@ export default function App() {
 
   // -------------------- MAIN RETURN --------------------
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div
+      className={`min-h-screen flex flex-col ${
+        view === "image" ? "bg-black" : "bg-slate-50"
+      }`}
+    >
 
       {/* HEADER */}
       {view !== "image" && <Header setView={setView} />}
