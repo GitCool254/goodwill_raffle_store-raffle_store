@@ -300,8 +300,9 @@ export default function App() {
             <div
               style={{
                 position: "absolute",
-                bottom: "-18px",
-                right: "0",
+                bottom: "12px",
+                right: "12px",
+                zIndex: 10,
               }}
               className="text-white text-sm bg-black/50 px-3 py-1 rounded-full"
             >
