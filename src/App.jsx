@@ -273,7 +273,7 @@ export default function App() {
             style={{
               width: "100%",
               height: "100%",
-              maxWidth: "60vw",
+              maxWidth: "90vw",
               maxHeight: "60vh",
               objectFit: "contain",
               transform: zoomed ? "scale(2)" : "scale(1)",
