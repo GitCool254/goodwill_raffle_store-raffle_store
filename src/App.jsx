@@ -271,7 +271,7 @@ export default function App() {
               }}
               className="text-white text-2xl bg-black/50 rounded-full px-3 py-1"
             >
-              ←
+              x
             </button>
 
             {/* IMAGE */}
