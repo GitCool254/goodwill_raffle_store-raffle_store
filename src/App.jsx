@@ -228,7 +228,7 @@ export default function App() {
     return (
       <div
         ref={containerRef}
-        className="fixed inset-0 bg-zinc-900 z-50"
+        className="fixed inset-0 bg-black z-50"
         style={{
           position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
@@ -269,7 +269,7 @@ export default function App() {
                 top: "-44px",
                 right: "0",
               }}
-              className="text-white text-3xl font-bold bg-black/60 rounded-full px-3 py-1"
+              className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
             >
               ×
             </button>
