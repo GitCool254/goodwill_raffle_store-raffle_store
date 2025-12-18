@@ -167,10 +167,14 @@ export default function App() {
     
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
+      const originalBg = document.body.style.backgroundColor;
+
       document.body.style.overflow = "hidden";
+      document.body.style.backgroundColor = "#000";
 
       return () => {
         document.body.style.overflow = originalOverflow;
+        document.body.style.backgroundColor = originalBg;
       };
     }, []);
 
