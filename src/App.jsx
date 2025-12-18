@@ -228,7 +228,7 @@ export default function App() {
     return (
       <div
         ref={containerRef}
-        className="fixed inset-0 bg-black z-50"
+        className="fixed inset-0 bg-zinc-900 z-50"
         style={{
           position: "relative",
           overflowX: zoomed ? "auto" : "hidden",
@@ -269,9 +269,9 @@ export default function App() {
                 top: "-44px",
                 right: "0",
               }}
-              className="text-white text-2xl bg-black/50 rounded-full px-3 py-1"
+              className="text-white text-3xl font-bold bg-black/60 rounded-full px-3 py-1"
             >
-              x
+              ×
             </button>
 
             {/* IMAGE */}
@@ -296,7 +296,7 @@ export default function App() {
             <div
               style={{
                 position: "absolute",
-                bottom: "-36px",
+                bottom: "-18px",
                 right: "0",
               }}
               className="text-white text-sm bg-black/50 px-3 py-1 rounded-full"
