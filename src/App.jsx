@@ -160,8 +160,9 @@ export default function App() {
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
-    
-    const [zoomed, setZoomed] = useState(false);
+
+    const [scale, setScale] = useState(1);
+    const lastDistanceRef = React.useRef(null);    
     const lastTapRef = React.useRef(0);
     const containerRef = React.useRef(null);
     
@@ -217,14 +218,40 @@ export default function App() {
 
       setTouchStartX(null);
     }
-
+    
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setZoomed((z) => !z);
+        setScale((s) => (s > 1 ? 1 : 2));
           // nothing needed here anymore
       }
       lastTapRef.current = now;
+    }
+
+    function getDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function handleTouchMove(e) {
+      if (e.touches.length === 2) {
+        const dist = getDistance(e.touches);
+
+        if (lastDistanceRef.current) {
+          const delta = dist - lastDistanceRef.current;
+          setScale((s) => {
+            let next = s + delta * 0.005;
+            return Math.min(3, Math.max(1, next));
+          });
+        }
+
+        lastDistanceRef.current = dist;
+      }
+    }
+
+    function handleTouchEndZoom() {
+      lastDistanceRef.current = null;
     }
 
     console.log("index:", index, "image:", images[index]);
@@ -235,13 +262,17 @@ export default function App() {
         className="fixed inset-0 bg-black z-50"
         style={{
           position: "relative",
-          overflowX: zoomed ? "auto" : "hidden",
-          overflowY: zoomed ? "auto" : "hidden",
+          overflowX: scale > 1 ? "auto" : "hidden",
+          overflowY: scale > 1 ? "auto" : "hidden",
+          touchAction: scale > 1 ? "pan-x pan-y" : "none",
           WebkitOverflowScrolling: "touch",
-          touchAction: zoomed ? "pan-x pan-y" : "none",
         }}
         onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={(e) => {
+          handleTouchEnd(e);
+          handleTouchEndZoom();
+        }}
       >
         {/* IMAGE + CONTROLS */}
 
@@ -289,8 +320,8 @@ export default function App() {
                 width: "100%",
                 height: "100%",
                 objectFit: "contain",
-                transform: zoomed ? "scale(2)" : "scale(1)",
-                cursor: zoomed ? "zoom-out" : "zoom-in",
+                transform: `scale(${scale})`,
+                cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
                 transition: "transform 0.25s ease",
                 zIndex: 1,
