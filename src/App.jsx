@@ -302,7 +302,7 @@ export default function App() {
             <div
               style={{
                 position: "fixed",
-                bottom: "36px",
+                bottom: "48px",
                 right: "24px",
                 zIndex: 9999,
                 color: "#fff",
