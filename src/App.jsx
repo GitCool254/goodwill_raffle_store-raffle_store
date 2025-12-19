@@ -291,7 +291,7 @@ export default function App() {
             style={{
               position: "relative",
               maxWidth: "90vw",
-              maxHeight: "30vh",
+              maxHeight: "60vh",
               width: "100%",
               height: "100%",
             }}
