@@ -202,7 +202,7 @@ export default function App() {
     }
 
     function handleTouchStart(e) {
-      if (zoomed) return; // do NOT start swipe when zoomed
+      if (scale > 1) return;
       setTouchStartX(e.touches[0].clientX);
     }
 
@@ -211,9 +211,9 @@ export default function App() {
 
       const diff = touchStartX - e.changedTouches[0].clientX;
 
-      if (!zoomed) {
-        if (diff > 50) next();      // swipe left
-        if (diff < -50) prev();    // swipe right
+      if (scale === 1) {
+        if (diff > 50) next();
+        if (diff < -50) prev();
       }
 
       setTouchStartX(null);
@@ -264,7 +264,7 @@ export default function App() {
           position: "relative",
           overflowX: scale > 1 ? "auto" : "hidden",
           overflowY: scale > 1 ? "auto" : "hidden",
-          touchAction: scale > 1 ? "pan-x pan-y" : "none",
+          touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
           WebkitOverflowScrolling: "touch",
         }}
         onTouchStart={handleTouchStart}
