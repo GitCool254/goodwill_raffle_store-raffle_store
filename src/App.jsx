@@ -293,7 +293,7 @@ export default function App() {
               maxWidth: "90vw",
               maxHeight: "60vh",
               width: "100%",
-              height: "100%",
+              height: "60%",
             }}
           >
             {/* BACK BUTTON — top right of image */}
