@@ -294,6 +294,8 @@ export default function App() {
               maxHeight: "60vh",
               width: "100%",
               height: "60%",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             {/* BACK BUTTON — top right of image */}
@@ -318,11 +320,9 @@ export default function App() {
               onClick={handleDoubleTap}
               draggable={false}
               style={{
-                width: "100%",
+                maxWidth: "100%",
                 height: "60%",
                 objectFit: "contain",
-                display: "block",
-                 margin: "0 auto",
                 transform: `scale(${scale})`,
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
