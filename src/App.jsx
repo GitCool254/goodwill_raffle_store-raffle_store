@@ -158,7 +158,7 @@ export default function App() {
     );
   }
 
-    function ImagePage({ images, index, setIndex, onBack }) {
+  function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
     const lastDistanceRef = React.useRef(null);
