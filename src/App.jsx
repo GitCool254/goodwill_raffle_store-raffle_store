@@ -160,12 +160,11 @@ export default function App() {
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
-
     const [scale, setScale] = useState(1);
-    const lastDistanceRef = React.useRef(null);    
+    const lastDistanceRef = React.useRef(null);
     const lastTapRef = React.useRef(0);
     const containerRef = React.useRef(null);
-    
+
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       const originalBg = document.body.style.backgroundColor;
@@ -190,15 +189,11 @@ export default function App() {
     }, [index]);
 
     function next() {
-      if (index < images.length - 1) {
-        setIndex(index + 1);
-      }
+      if (index < images.length - 1) setIndex(index + 1);
     }
 
     function prev() {
-      if (index > 0) {
-        setIndex(index - 1);
-      }
+      if (index > 0) setIndex(index - 1);
     }
 
     function handleTouchStart(e) {
@@ -208,22 +203,18 @@ export default function App() {
 
     function handleTouchEnd(e) {
       if (touchStartX === null) return;
-
       const diff = touchStartX - e.changedTouches[0].clientX;
-
       if (scale === 1) {
         if (diff > 50) next();
         if (diff < -50) prev();
       }
-
       setTouchStartX(null);
     }
-    
+
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
         setScale((s) => (s > 1 ? 1 : 2));
-          // nothing needed here anymore
       }
       lastTapRef.current = now;
     }
@@ -237,15 +228,10 @@ export default function App() {
     function handleTouchMove(e) {
       if (e.touches.length === 2) {
         const dist = getDistance(e.touches);
-
         if (lastDistanceRef.current) {
           const delta = dist - lastDistanceRef.current;
-          setScale((s) => {
-            let next = s + delta * 0.005;
-            return Math.min(3, Math.max(1, next));
-          });
+          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
-
         lastDistanceRef.current = dist;
       }
     }
@@ -253,8 +239,6 @@ export default function App() {
     function handleTouchEndZoom() {
       lastDistanceRef.current = null;
     }
-
-    console.log("index:", index, "image:", images[index]);
 
     return (
       <div
@@ -274,8 +258,6 @@ export default function App() {
           handleTouchEndZoom();
         }}
       >
-        {/* IMAGE + CONTROLS */}
-
         <div
           style={{
             width: "100vw",
@@ -286,18 +268,17 @@ export default function App() {
             overflow: "hidden",
           }}
         >
-          {/* IMAGE WRAPPER (reference box) */}
+          {/* IMAGE WRAPPER */}
           <div
             style={{
               position: "relative",
               maxWidth: "90vw",
-              maxHeight: "45vh",
+              maxHeight: "60vh",
               width: "100%",
               height: "60%",
-              margin: "0 auto",
             }}
           >
-            {/* BACK BUTTON — top right of image */}
+            {/* BACK BUTTON */}
             <button
               onClick={onBack}
               style={{
@@ -319,21 +300,21 @@ export default function App() {
               onClick={handleDoubleTap}
               draggable={false}
               style={{
+                position: "absolute",          // ✅ absolute for true centering
+                top: "50%",
+                left: "50%",
+                transform: `translate(-50%, -50%) scale(${scale})`,
                 maxWidth: "100%",
                 maxHeight: "100%",
                 objectFit: "contain",
-                transform: `scale(${scale})`,
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
                 transition: "transform 0.25s ease",
                 zIndex: 1,
-                margin: "0 auto",
-                display: "block",
               }}
             />
 
-            {/* IMAGE INDEX — bottom right of image */}
-            {/* IMAGE INDEX — fixed overlay (always visible) */}
+            {/* IMAGE INDEX */}
             <div
               style={{
                 position: "fixed",
