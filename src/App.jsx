@@ -328,6 +328,8 @@ export default function App() {
                 userSelect: "none",
                 transition: "transform 0.25s ease",
                 zIndex: 1,
+                margin: "0 auto",
+                display: "block",
               }}
             />
 
