@@ -274,8 +274,8 @@ export default function App() {
               position: "relative",
               maxWidth: "90vw",
               maxHeight: "45vh",
-              width: "100%",
-              height: "100%",
+              width: "auto",
+              height: "auto",
             }}
           >
             {/* BACK BUTTON */}
