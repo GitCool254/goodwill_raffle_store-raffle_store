@@ -321,6 +321,8 @@ export default function App() {
                 width: "100%",
                 height: "60%",
                 objectFit: "contain",
+                display: "block",
+                 margin: "0 auto",
                 transform: `scale(${scale})`,
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
