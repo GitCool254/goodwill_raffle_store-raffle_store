@@ -290,8 +290,8 @@ export default function App() {
           <div
             style={{
               position: "relative",
-              maxWidth: "60vw",
-              maxHeight: "60vh",
+              maxWidth: "80vw",
+              maxHeight: "20vh",
               width: "100%",
               height: "100%",
             }}
