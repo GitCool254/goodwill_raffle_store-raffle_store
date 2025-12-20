@@ -158,7 +158,7 @@ export default function App() {
     );
   }
 
-  function ImagePage({ images, index, setIndex, onBack }) {
+    function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
     const lastDistanceRef = React.useRef(null);
@@ -180,11 +180,7 @@ export default function App() {
 
     useEffect(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "auto",
-        });
+        containerRef.current.scrollTo({ top: 0, left: 0 });
       }
     }, [index]);
 
@@ -245,7 +241,6 @@ export default function App() {
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
-          position: "relative",
           overflowX: scale > 1 ? "auto" : "hidden",
           overflowY: scale > 1 ? "auto" : "hidden",
           touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
@@ -258,24 +253,23 @@ export default function App() {
           handleTouchEndZoom();
         }}
       >
+        {/* VIEWPORT */}
         <div
           style={{
+            position: "relative",
             width: "100vw",
             height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
           }}
         >
-          {/* IMAGE WRAPPER */}
+          {/* IMAGE WRAPPER — TRUE CENTER */}
           <div
             style={{
-              position: "relative",
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
               maxWidth: "90vw",
               maxHeight: "45vh",
-              width: "100%",
-              height: "100%",
             }}
           >
             {/* BACK BUTTON */}
@@ -292,7 +286,7 @@ export default function App() {
               ×
             </button>
 
-            {/* IMAGE */}
+            {/* IMAGE — PERFECTLY BALANCED */}
             <img
               key={index}
               src={images[index]}
@@ -300,37 +294,35 @@ export default function App() {
               onClick={handleDoubleTap}
               draggable={false}
               style={{
-                position: "absolute",          // ✅ absolute for true centering
-                top: "50%",
-                left: "50%",
-                transform: `translate(-50%, -50%) scale(${scale})`,
+                display: "block",
                 maxWidth: "100%",
                 maxHeight: "100%",
                 objectFit: "contain",
+                transform: `scale(${scale})`,
+                transformOrigin: "center center",
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
                 transition: "transform 0.25s ease",
-                zIndex: 1,
               }}
             />
+          </div>
 
-            {/* IMAGE INDEX */}
-            <div
-              style={{
-                position: "fixed",
-                bottom: "48px",
-                right: "24px",
-                zIndex: 9999,
-                color: "#fff",
-                background: "rgba(0,0,0,0.7)",
-                padding: "6px 12px",
-                borderRadius: "999px",
-                fontSize: "14px",
-                pointerEvents: "none",
-              }}
-            >
-              {index + 1} / {images.length}
-            </div>
+          {/* IMAGE INDEX */}
+          <div
+            style={{
+              position: "fixed",
+              bottom: "48px",
+              right: "24px",
+              zIndex: 9999,
+              color: "#fff",
+              background: "rgba(0,0,0,0.7)",
+              padding: "6px 12px",
+              borderRadius: "999px",
+              fontSize: "14px",
+              pointerEvents: "none",
+            }}
+          >
+            {index + 1} / {images.length}
           </div>
         </div>
       </div>
