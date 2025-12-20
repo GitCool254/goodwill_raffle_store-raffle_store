@@ -294,8 +294,7 @@ export default function App() {
               maxHeight: "45vh",
               width: "100%",
               height: "60%",
-              display: "flex",
-              justifyContent: "center",
+              margin: "0 auto",
             }}
           >
             {/* BACK BUTTON — top right of image */}
