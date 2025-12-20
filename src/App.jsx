@@ -180,7 +180,11 @@ export default function App() {
 
     useEffect(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTo({ top: 0, left: 0 });
+        containerRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "auto",
+        });
       }
     }, [index]);
 
@@ -241,6 +245,7 @@ export default function App() {
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
+          position: "relative",
           overflowX: scale > 1 ? "auto" : "hidden",
           overflowY: scale > 1 ? "auto" : "hidden",
           touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
@@ -253,23 +258,24 @@ export default function App() {
           handleTouchEndZoom();
         }}
       >
-        {/* VIEWPORT */}
         <div
           style={{
-            position: "relative",
             width: "100vw",
             height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
           }}
         >
-          {/* IMAGE WRAPPER — TRUE CENTER */}
+          {/* IMAGE WRAPPER */}
           <div
             style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
+              position: "relative",
               maxWidth: "90vw",
               maxHeight: "45vh",
+              width: "100%",
+              height: "100%",
             }}
           >
             {/* BACK BUTTON */}
@@ -286,7 +292,7 @@ export default function App() {
               ×
             </button>
 
-            {/* IMAGE — PERFECTLY BALANCED */}
+            {/* IMAGE */}
             <img
               key={index}
               src={images[index]}
@@ -294,35 +300,37 @@ export default function App() {
               onClick={handleDoubleTap}
               draggable={false}
               style={{
-                display: "block",
+                position: "absolute",          // ✅ absolute for true centering
+                top: "50%",
+                left: "50%",
+                transform: `translate(-50%, -50%) scale(${scale})`,
                 maxWidth: "100%",
                 maxHeight: "100%",
                 objectFit: "contain",
-                transform: `scale(${scale})`,
-                transformOrigin: "center center",
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
                 userSelect: "none",
                 transition: "transform 0.25s ease",
+                zIndex: 1,
               }}
             />
-          </div>
 
-          {/* IMAGE INDEX */}
-          <div
-            style={{
-              position: "fixed",
-              bottom: "48px",
-              right: "24px",
-              zIndex: 9999,
-              color: "#fff",
-              background: "rgba(0,0,0,0.7)",
-              padding: "6px 12px",
-              borderRadius: "999px",
-              fontSize: "14px",
-              pointerEvents: "none",
-            }}
-          >
-            {index + 1} / {images.length}
+            {/* IMAGE INDEX */}
+            <div
+              style={{
+                position: "fixed",
+                bottom: "48px",
+                right: "24px",
+                zIndex: 9999,
+                color: "#fff",
+                background: "rgba(0,0,0,0.7)",
+                padding: "6px 12px",
+                borderRadius: "999px",
+                fontSize: "14px",
+                pointerEvents: "none",
+              }}
+            >
+              {index + 1} / {images.length}
+            </div>
           </div>
         </div>
       </div>
