@@ -273,9 +273,9 @@ export default function App() {
             style={{
               position: "relative",
               maxWidth: "90vw",
-              maxHeight: "30vh",
+              maxHeight: "45vh",
               width: "100%",
-              height: "60%",
+              height: "100%",
             }}
           >
             {/* BACK BUTTON */}
