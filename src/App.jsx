@@ -319,7 +319,7 @@ export default function App() {
               draggable={false}
               style={{
                 width: "100%",
-                height: "100%",
+                height: "60%",
                 objectFit: "contain",
                 transform: `scale(${scale})`,
                 cursor: scale > 1 ? "zoom-out" : "zoom-in",
