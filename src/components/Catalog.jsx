@@ -54,7 +54,7 @@ export default function Catalog({ openProduct }) {
       title: "Treadmill",
       ticketPrice: 5,
       description: "Treadmill for you.",
-      image: "/Treadmill Pro.png",
+      image: "/'Treadmill Pro.png'",
     },
     {
       id: "p6",
@@ -72,15 +72,15 @@ export default function Catalog({ openProduct }) {
       title: "Beachcroft Patio",
       ticketPrice: 10,
       description: "High-quality living room sofa.",
-      image: "/Beachcroft Patio.jpg",
+      image: "/'Beachcroft Patio.jpg'",
     },
     {
       id: "p8",
-      category: "Kitchen Island",
-      title: "Office Desk",
+      category: "Furniture",
+      title: "Kitchen Island",
       ticketPrice: 8,
       description: "A highly customized Kitchen island.",
-      image: "/Kitchen Island1.jpg",
+      image: "/'Kitchen Island1.jpg'",
     },
 
     // ----- Household -----
@@ -90,7 +90,7 @@ export default function Catalog({ openProduct }) {
       title: "Washer &Dryer",
       ticketPrice: 2,
       description: "High-efficiency Dryer Washer.",
-      image: "/Washer &Dryer.png",
+      image: "/'Washer &Dryer.png'",
     },
     {
       id: "p10",
@@ -98,12 +98,12 @@ export default function Catalog({ openProduct }) {
       title: "Spa Hot Tub
       ticketPrice: 1,
       description: "Hot tub customized, high efficiency.",
-      image: "/Spa Hot Tub.jpg",
+      image: "/'Spa Hot Tub.jpg'",
     },
   ];
 
   // ----- CATEGORY LIST -----
-  const categories = ["All", "Phones", "Laptops", "Electronics", "Furniture", "Household"];
+  const categories = ["All", "Phones", "Sports", "Electronics", "Furniture", "Household"];
 
   // ----- STATE -----
   const [selectedCategory, setSelectedCategory] = useState("All");
