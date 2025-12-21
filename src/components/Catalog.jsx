@@ -95,7 +95,7 @@ export default function Catalog({ openProduct }) {
     {
       id: "p10",
       category: "Household",
-      title: "Spa Hot Tub
+      title: "Spa Hot Tub",
       ticketPrice: 1,
       description: "Hot tub customized, high efficiency.",
       image: "/'Spa Hot Tub.jpg'",
