@@ -23,82 +23,82 @@ export default function Catalog({ openProduct }) {
     {
       id: "p2",
       category: "Phones",
-      title: "Samsung Galaxy S23",
+      title: "Golf cart club car",
       ticketPrice: 4,
-      description: "Latest Samsung flagship.",
-      image: "/galaxy_s23.jpg",
+      description: "Golf club car.",
+      image: "/'Golf car.png'",
     },
 
-    // ----- Laptops -----
+    // ----- Sports -----
     {
       id: "p3",
-      category: "Laptops",
-      title: "MacBook Air M3",
+      category: "Sports",
+      title: "Yamaha Jetski",
       ticketPrice: 5,
-      description: "Lightweight Apple laptop.",
-      image: "/macbook_air_m3.jpg",
+      description: "Yamaha jetski.",
+      image: "/'Yamaha vx110 jetski.png'",
     },
     {
       id: "p4",
-      category: "Laptops",
-      title: "HP Pavilion 14",
+      category: "Sports",
+      title: "Surfboard",
       ticketPrice: 3,
-      description: "Affordable daily-use laptop.",
-      image: "/Screenshot_20251002-233129~2.png",
+      description: "Surfboard xxxx.",
+      image: "/Surfboard.png",
     },
 
     // ----- Electronics -----
     {
       id: "p5",
       category: "Electronics",
-      title: "Sony PS5",
+      title: "Treadmill",
       ticketPrice: 5,
-      description: "PlayStation 5 gaming console.",
-      image: "/ps5.jpg",
+      description: "Treadmill for you.",
+      image: "/Treadmill Pro.png",
     },
     {
       id: "p6",
       category: "Electronics",
-      title: "LG 55'' Smart TV",
+      title: "E bike",
       ticketPrice: 6,
-      description: "4K UHD Smart TV.",
-      image: "/lg_tv.jpg",
+      description: "Quality ebike for sale.",
+      image: "/'E bike Two.png'",
     },
 
     // ----- Furniture -----
     {
       id: "p7",
       category: "Furniture",
-      title: "Modern Sofa Set",
+      title: "Beachcroft Patio",
       ticketPrice: 10,
       description: "High-quality living room sofa.",
-      image: "/sofa.jpg",
+      image: "/Beachcroft Patio.jpg",
     },
     {
       id: "p8",
-      category: "Furniture",
+      category: "Kitchen Island",
       title: "Office Desk",
       ticketPrice: 8,
-      description: "Sturdy wooden office desk.",
-      image: "/desk.jpg",
+      description: "A highly customized Kitchen island.",
+      image: "/Kitchen Island1.jpg",
     },
 
     // ----- Household -----
     {
       id: "p9",
       category: "Household",
-      title: "Microwave Oven",
+      title: "Washer &Dryer",
       ticketPrice: 2,
-      description: "High-efficiency microwave.",
-      image: "/microwave.jpg",
+      description: "High-efficiency Dryer Washer.",
+      image: "/Washer &Dryer.png",
     },
     {
       id: "p10",
       category: "Household",
-      title: "Electric Kettle",
+      title: "Spa Hot Tub
       ticketPrice: 1,
-      description: "1.7L stainless steel kettle.",
-      image: "/kettle.jpg",
+      description: "Hot tub customized, high efficiency.",
+      image: "/Spa Hot Tub.jpg",
     },
   ];
 
