@@ -26,7 +26,7 @@ export default function Catalog({ openProduct }) {
       title: "Golf cart club car",
       ticketPrice: 4,
       description: "Golf club car.",
-      image: "/'Golf car.png'",
+      image: "/Golf car.png",
     },
 
     // ----- Sports -----
@@ -36,7 +36,7 @@ export default function Catalog({ openProduct }) {
       title: "Yamaha Jetski",
       ticketPrice: 5,
       description: "Yamaha jetski.",
-      image: "/'Yamaha vx110 jetski.png'",
+      image: "/Yamaha vx110 jetski.png",
     },
     {
       id: "p4",
@@ -54,7 +54,7 @@ export default function Catalog({ openProduct }) {
       title: "Treadmill",
       ticketPrice: 5,
       description: "Treadmill for you.",
-      image: "/'Treadmill Pro.png'",
+      image: "/Treadmill Pro.png",
     },
     {
       id: "p6",
@@ -62,7 +62,7 @@ export default function Catalog({ openProduct }) {
       title: "E bike",
       ticketPrice: 6,
       description: "Quality ebike for sale.",
-      image: "/'E bike Two.png'",
+      image: "/E bike Two.png",
     },
 
     // ----- Furniture -----
@@ -72,7 +72,7 @@ export default function Catalog({ openProduct }) {
       title: "Beachcroft Patio",
       ticketPrice: 10,
       description: "High-quality living room sofa.",
-      image: "/'Beachcroft Patio.jpg'",
+      image: "/Beachcroft Patio.jpg",
     },
     {
       id: "p8",
@@ -80,7 +80,7 @@ export default function Catalog({ openProduct }) {
       title: "Kitchen Island",
       ticketPrice: 8,
       description: "A highly customized Kitchen island.",
-      image: "/'Kitchen Island1.jpg'",
+      image: "/Kitchen Island1.jpg",
     },
 
     // ----- Household -----
@@ -90,7 +90,7 @@ export default function Catalog({ openProduct }) {
       title: "Washer &Dryer",
       ticketPrice: 2,
       description: "High-efficiency Dryer Washer.",
-      image: "/'Washer &Dryer.png'",
+      image: "/Washer &Dryer.png",
     },
     {
       id: "p10",
@@ -98,7 +98,7 @@ export default function Catalog({ openProduct }) {
       title: "Spa Hot Tub",
       ticketPrice: 1,
       description: "Hot tub customized, high efficiency.",
-      image: "/'Spa Hot Tub.jpg'",
+      image: "/Spa Hot Tub.jpg",
     },
   ];
 
