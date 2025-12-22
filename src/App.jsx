@@ -117,7 +117,7 @@ export default function App() {
     setView("detail");
   }
 
-  function openImage(images, index = 0) {
+  function openImage(images, index = 0, returnView = "home") {
     setImageImages(images);
     setImageIndex(index);
     setActiveImage(images[index]);
