@@ -408,7 +408,11 @@ export default function App() {
         )}
 
         {view === "detail" && selected && (
-          <Detail product={selected} onBack={() => setView("home")} />
+          <Detail
+            product={selected}
+            onBack={() => setView("home")}
+            openImage={openImage}
+          />
         )}
 
         {view === "catalog" && (

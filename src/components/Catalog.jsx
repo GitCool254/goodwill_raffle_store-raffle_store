@@ -73,6 +73,11 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 10,
       description: "High-quality living room sofa.",
       image: "/Beachcroft Patio.jpg",
+      images: [
+        "/Beachcroft Patio.jpg",
+        "/Beachcroft Patio1.jpg",
+        "/Beachcroft Patio2.jpg",
+      ],
     },
     {
       id: "p8",

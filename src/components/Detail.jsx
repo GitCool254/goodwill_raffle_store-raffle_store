@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
 
-export default function Detail({ product }) {
+export default function Detail({ product, openImage }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -83,7 +83,15 @@ export default function Detail({ product }) {
 
       <img
         src={product.image}
-        className="mx-auto w-64 h-64 rounded-xl object-cover mb-4"
+        className="mx-auto w-64 h-64 rounded-xl object-cover mb-4 cursor-zoom-in"
+        onClick={() =>
+          openImage(
+            product.images && product.images.length
+              ? product.images
+              : [product.image],
+            0
+          )
+        }
       />
 
       <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
