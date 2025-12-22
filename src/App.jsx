@@ -98,6 +98,8 @@ export default function App() {
 
   const [imageImages, setImageImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
+
+  const [imageReturnView, setImageReturnView] = useState("home");
    
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
@@ -119,6 +121,7 @@ export default function App() {
     setImageImages(images);
     setImageIndex(index);
     setActiveImage(images[index]);
+    setImageReturnView(returnView);
     setView("image");
   }
 
@@ -432,7 +435,7 @@ export default function App() {
             setImageIndex(i);
             setActiveImage(imageImages[i]);
           }}
-          onBack={() => setView("home")}
+          onBack={() => setView(imageReturnView)}
         />
       )}
 

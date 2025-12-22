@@ -89,7 +89,8 @@ export default function Detail({ product, openImage }) {
             product.images && product.images.length
               ? product.images
               : [product.image],
-            0
+            0,
+            "detail"
           )
         }
       />
