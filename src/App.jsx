@@ -10,7 +10,6 @@ eruda.init({
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Detail from "./components/Detail";
-import PayPalButton from "./components/PayPalButton";
 import Catalog from "./components/Catalog";
 import Address from "./components/Address";
 import Contact from "./components/Contact";
