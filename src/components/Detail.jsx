@@ -83,7 +83,7 @@ export default function Detail({ product, openImage }) {
 
       <img
         src={product.image}
-        className="mx-auto w-64 h-64 rounded-xl object-cover mb-4 cursor-zoom-in"
+        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
         onClick={() =>
           openImage(
             product.images && product.images.length
