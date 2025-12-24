@@ -108,7 +108,7 @@ export default function Catalog({ openProduct }) {
   ];
 
   // ----- CATEGORY LIST -----
-  const categories = ["All", "Phones", "Sports", "Electronics", "Furniture", "Household"];
+  const categories = ["All", "Casual & Outdoor Wear", "Sports", "Electronics", "Furniture", "Household"];
 
   // ----- STATE -----
   const [selectedCategory, setSelectedCategory] = useState("All");
