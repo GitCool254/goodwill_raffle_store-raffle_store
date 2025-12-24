@@ -14,7 +14,7 @@ export default function Catalog({ openProduct }) {
     // ----- Phones -----
     {
       id: "p1",
-      category: "Phones",
+      category: "Casual & Outdoor Wear",
       title: "iPhone 15 Pro",
       ticketPrice: 5,
       description: "Premium Apple flagship.",
@@ -22,7 +22,7 @@ export default function Catalog({ openProduct }) {
     },
     {
       id: "p2",
-      category: "Phones",
+      category: "Casual & Outdoor Wear",
       title: "Golf cart club car",
       ticketPrice: 4,
       description: "Golf club car.",
