@@ -53,9 +53,9 @@ export default function Catalog({ openProduct }) {
       images: [
         "/Yamaha vx110 jetski.png",
         "/Yamaha vx110 jetski1.png",
-        ”/Yamaha vx110 jetski2.png",
+        "/Yamaha vx110 jetski2.png",
         "/Yamaha vx110 jetski3.png",
-        ”/Yamaha vx110 jetski4.png",
+        "/Yamaha vx110 jetski4.png",
         "/Yamaha vx110 jetski5.png",
       ],  
     },
@@ -97,9 +97,9 @@ export default function Catalog({ openProduct }) {
       description: "Quality ebike for sale.",
       image: "/E bike Two.png",
       images: [
-        "/E bike Two.png'
-        "/E bike Two1.png'
-        ”/E bike Two2.png'
+        "/E bike Two.png",
+        "/E bike Two1.png",
+        "/E bike Two2.png",
       ],
     },
 
@@ -141,9 +141,9 @@ export default function Catalog({ openProduct }) {
       image: "/Washer &Dryer.png",
       images: [
         "/Washer &Dryer.png",
-        ”/Washer &Dryer1.png",
+        "/Washer &Dryer1.png",
         "/Washer &Dryer2.png",
-        ”/Washer &Dryer3.png",
+        "/Washer &Dryer3.png",
         "/Washer &Dryer4.png",
         "/Washer &Dryer5.png",
       ],
