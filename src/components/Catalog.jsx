@@ -57,6 +57,7 @@ export default function Catalog({ openProduct }) {
         "/Yamaha vx110 jetski3.png",
         ”/Yamaha vx110 jetski4.png",
         "/Yamaha vx110 jetski5.png",
+      ],  
     },
     {
       id: "p4",
