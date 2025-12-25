@@ -43,7 +43,7 @@ export default function Catalog({ openProduct }) {
     },
     {
       id: "p2",
-      category: "Casual & Outdoor Wear",
+      category: "Sports",
       title: "Golf cart club car",
       ticketPrice: 4,
       description: "Golf club car.",
@@ -198,6 +198,21 @@ export default function Catalog({ openProduct }) {
       image: "/Inflatable hot tub.png",
       images: [
         "/Inflatable hot tub.png",
+      ],
+    },
+    {
+      id: "p12",
+      category: "Household",
+      title: "Snoo Baby",
+      ticketPrice: 5,
+      description: "Snoo Baby.",
+      image: "/Snoo Baby.jpg",
+      images: [
+        "/Snoo Baby.jpg",
+        "/Snoo Baby1.jpg",
+        "/Snoo Baby2.jpg",
+        "/Snoo Baby3.jpg",
+        "/Snoo Baby4.jpg",
       ],
     },
   ];
