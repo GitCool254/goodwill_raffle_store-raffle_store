@@ -29,6 +29,21 @@ export default function Catalog({ openProduct }) {
     {
       id: "p2",
       category: "Casual & Outdoor Wear",
+      title: "Western boots",
+      ticketPrice: 4,
+      description: "Western boots - all varieties.",
+      image: "/Western Boots  Gld.jpg",
+      images: [
+        "/Western Boots  Gld.jpg",
+        "/Western Boots Bla1.jpg",
+        "/Western Boots Blu3.jpg",
+        "/Western Boots Bro1.jpg",
+        "/Western Boots Gld2.jpg",
+      ],
+    },
+    {
+      id: "p2",
+      category: "Casual & Outdoor Wear",
       title: "Golf cart club car",
       ticketPrice: 4,
       description: "Golf club car.",
@@ -103,7 +118,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
      {
-      id: "p6",
+      id: "p7",
       category: "Electronics",
       title: "Night Vision",
       ticketPrice: 6,
@@ -118,7 +133,7 @@ export default function Catalog({ openProduct }) {
 
     // ----- Furniture -----
     {
-      id: "p7",
+      id: "p8",
       category: "Furniture",
       title: "Beachcroft Patio",
       ticketPrice: 10,
@@ -131,7 +146,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p8",
+      id: "p9",
       category: "Furniture",
       title: "Kitchen Island",
       ticketPrice: 8,
@@ -146,7 +161,7 @@ export default function Catalog({ openProduct }) {
 
     // ----- Household -----
     {
-      id: "p9",
+      id: "p10",
       category: "Household",
       title: "Washer &Dryer",
       ticketPrice: 2,
@@ -162,7 +177,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p10",
+      id: "p11",
       category: "Household",
       title: "Spa Hot Tub",
       ticketPrice: 1,
@@ -175,7 +190,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p11",
+      id: "p12",
       category: "Household",
       title: "Inflatable Hot Tub",
       ticketPrice: 5,
