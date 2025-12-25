@@ -11,14 +11,20 @@ import React, { useState } from "react";
 export default function Catalog({ openProduct }) {
   // ----- PRODUCT DATA -----
   const catalogItems = [
-    // ----- Phones -----
+    // ----- Casual & Outdoor Wear -----
     {
       id: "p1",
       category: "Casual & Outdoor Wear",
-      title: "iPhone 15 Pro",
-      ticketPrice: 5,
-      description: "Premium Apple flagship.",
-      image: "/Screenshot_20251007-201731~2.png",
+      title: "Balaclava",
+      ticketPrice: 3,
+      description: "Best Quality & fitting.",
+      image: "/Balaclava.jpg",
+      images: [
+        "/Balaclava.jpg",
+        "/Balaclava1.jpg",
+        "/Balaclava2.jpg",
+        "/Balaclava3.jpg",
+      ],
     },
     {
       id: "p2",
@@ -27,6 +33,13 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 4,
       description: "Golf club car.",
       image: "/Golf car.png",
+      images: [
+        "/Golf car1.png",
+        "/Golf cart club car.png",
+        "/Golf cart club car1.png",
+        "/Golf cart club car2.png",
+        "/Golf cart club car3.png",
+      ],
     },
 
     // ----- Sports -----
@@ -37,6 +50,13 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 5,
       description: "Yamaha jetski.",
       image: "/Yamaha vx110 jetski.png",
+      images: [
+        "/Yamaha vx110 jetski.png",
+        "/Yamaha vx110 jetski1.png",
+        ”/Yamaha vx110 jetski2.png",
+        "/Yamaha vx110 jetski3.png",
+        ”/Yamaha vx110 jetski4.png",
+        "/Yamaha vx110 jetski5.png",
     },
     {
       id: "p4",
@@ -45,6 +65,12 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 3,
       description: "Surfboard xxxx.",
       image: "/Surfboard.png",
+      images: [
+        "/Surfboard.png",
+        "/Surfboard1.png",
+        "/Surfboard2.png",
+        "/Surfboard3.png",
+      ],
     },
 
     // ----- Electronics -----
@@ -55,6 +81,12 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 5,
       description: "Treadmill for you.",
       image: "/Treadmill Pro.png",
+      images: [
+        "/Treadmill Pro1.png",
+        "/Treadmill Pro2.png",
+        "/Treadmill Pro3.png",
+        "/Treadmill Pro4.png",
+      ],
     },
     {
       id: "p6",
@@ -63,6 +95,11 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 6,
       description: "Quality ebike for sale.",
       image: "/E bike Two.png",
+      images: [
+        "/E bike Two.png'
+        "/E bike Two1.png'
+        ”/E bike Two2.png'
+      ],
     },
 
     // ----- Furniture -----
@@ -86,6 +123,11 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 8,
       description: "A highly customized Kitchen island.",
       image: "/Kitchen Island1.jpg",
+      images: [
+        "Kitchen Island1.jpg",
+        "/Kitchen Island2.jpg",
+        "/Kitchen Island3.jpg",
+      ],
     },
 
     // ----- Household -----
@@ -96,6 +138,14 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 2,
       description: "High-efficiency Dryer Washer.",
       image: "/Washer &Dryer.png",
+      images: [
+        "/Washer &Dryer.png",
+        ”/Washer &Dryer1.png",
+        "/Washer &Dryer2.png",
+        ”/Washer &Dryer3.png",
+        "/Washer &Dryer4.png",
+        "/Washer &Dryer5.png",
+      ],
     },
     {
       id: "p10",
@@ -104,6 +154,22 @@ export default function Catalog({ openProduct }) {
       ticketPrice: 1,
       description: "Hot tub customized, high efficiency.",
       image: "/Spa Hot Tub.jpg",
+      images: [
+        "/Spa Hot Tub.jpg",
+        "/Spa Hot Tub1.jpg",
+        "/Spa Hot Tub2.jpg",
+      ],
+    },
+    {
+      id: "p11",
+      category: "Household",
+      title: "Inflatable Hot Tub",
+      ticketPrice: 5,
+      description: "Inflatable Tub, high efficiency.",
+      image: "/Inflatable hot tub.png",
+      images: [
+        "/Inflatable hot tub.png",
+      ],
     },
   ];
 
