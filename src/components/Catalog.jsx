@@ -102,6 +102,19 @@ export default function Catalog({ openProduct }) {
         "/E bike Two2.png",
       ],
     },
+     {
+      id: "p6",
+      category: "Electronics",
+      title: "Night Vision",
+      ticketPrice: 6,
+      description: "Night vision scope.",
+      image: "/Night vision scope.png",
+      images: [
+        "/Night vision scope.png",
+        "/Night vision scope1.png",
+        "/Night vision scope2.png",
+      ],
+    },
 
     // ----- Furniture -----
     {
