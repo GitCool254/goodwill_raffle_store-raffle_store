@@ -291,7 +291,7 @@ export default function Catalog({ openProduct }) {
       id: "p11",
       category: "Household",
       title: "Massage sit",
-      ticketPrice: 1,7
+      ticketPrice: 3,
       description: "Customized & comfortable massage sit.",
       image: "/Massage sit.jpg",
       images: [
