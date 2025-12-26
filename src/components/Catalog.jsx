@@ -41,6 +41,8 @@ export default function Catalog({ openProduct }) {
         "/Western Boots Gld2.jpg",
       ],
     },
+
+    // ----- Sports -----
     {
       id: "p3",
       category: "Sports",
@@ -57,7 +59,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
      {
-      id: "p3",
+      id: "p4",
       category: "Sports",
       title: "G2 Virtual Reality Headset",
       ticketPrice: 4,
@@ -69,11 +71,8 @@ export default function Catalog({ openProduct }) {
         "/G2 virtual reality headset2.png",
       ],
     },
-
-
-    // ----- Sports -----
     {
-      id: "p3",
+      id: "p5",
       category: "Sports",
       title: "Yamaha Jetski",
       ticketPrice: 5,
@@ -89,7 +88,7 @@ export default function Catalog({ openProduct }) {
       ],  
     },
     {
-      id: "p4",
+      id: "p6",
       category: "Sports",
       title: "Surfboard",
       ticketPrice: 3,
@@ -105,7 +104,7 @@ export default function Catalog({ openProduct }) {
 
     // ----- Electronics -----
     {
-      id: "p5",
+      id: "p7",
       category: "Electronics",
       title: "Treadmill",
       ticketPrice: 5,
@@ -119,7 +118,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p6",
+      id: "p8",
       category: "Electronics",
       title: "E bike",
       ticketPrice: 6,
@@ -132,7 +131,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
      {
-      id: "p7",
+      id: "p9",
       category: "Electronics",
       title: "Night Vision",
       ticketPrice: 6,
@@ -147,7 +146,7 @@ export default function Catalog({ openProduct }) {
 
     // ----- Furniture -----
     {
-      id: "p8",
+      id: "p10",
       category: "Furniture",
       title: "Beachcroft Patio",
       ticketPrice: 10,
@@ -160,7 +159,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p9",
+      id: "p11",
       category: "Furniture",
       title: "Kitchen Island",
       ticketPrice: 8,
@@ -173,7 +172,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p8",
+      id: "p12",
       category: "Furniture",
       title: "Sofa set",
       ticketPrice: 10,
@@ -186,7 +185,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p8",
+      id: "p13",
       category: "Furniture",
       title: "Light Grey Sectional",
       ticketPrice: 10,
@@ -203,7 +202,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p8",
+      id: "p14",
       category: "Furniture",
       title: "Power Recliner Set",
       ticketPrice: 10,
@@ -217,7 +216,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p8",
+      id: "p15",
       category: "Furniture",
       title: "Modern L - Shaped",
       ticketPrice: 10,
@@ -233,7 +232,7 @@ export default function Catalog({ openProduct }) {
 
     // ----- Household -----
     {
-      id: "p10",
+      id: "p16",
       category: "Household",
       title: "Washer &Dryer",
       ticketPrice: 2,
@@ -249,7 +248,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p11",
+      id: "p17",
       category: "Household",
       title: "Spa Hot Tub",
       ticketPrice: 1,
@@ -262,7 +261,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p12",
+      id: "p18",
       category: "Household",
       title: "Inflatable Hot Tub",
       ticketPrice: 5,
@@ -273,7 +272,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p12",
+      id: "p19",
       category: "Household",
       title: "Snoo Baby",
       ticketPrice: 5,
@@ -288,7 +287,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p11",
+      id: "p20",
       category: "Household",
       title: "Massage sit",
       ticketPrice: 3,
