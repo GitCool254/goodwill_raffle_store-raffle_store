@@ -158,6 +158,51 @@ export default function Catalog({ openProduct }) {
         "/Kitchen Island3.jpg",
       ],
     },
+    {
+      id: "p8",
+      category: "Furniture",
+      title: "Sofa set",
+      ticketPrice: 10,
+      description: "High-quality living room sofa.",
+      image: "/Sofa set.jpg",
+      images: [
+        "/Sofa set.jpg",
+        "/Sofa set1.jpg",
+        "/Sofa set2.jpg",
+      ],
+    },
+    {
+      id: "p8",
+      category: "Furniture",
+      title: "Light Grey Sectional",
+      ticketPrice: 10,
+      description: "High-quality living room sofa.",
+      image: "/Cross -sectional set1.jpg",
+      images: [
+        "/Cross -sectional set1.jpg",
+        "/Cross -sectional set.jpg",
+        "/Cross -sectional set2.jpg",
+        "/Cross -sectional set3.jpg",
+        "/Cross -sectional set4.jpg",
+        "/Cross -sectional set5.jpg",
+        "/Cross -sectional set6.jpg",
+      ],
+    },
+    {
+      id: "p8",
+      category: "Furniture",
+      title: "Power Recliner Set",
+      ticketPrice: 10,
+      description: "High-quality living room sofa.",
+      image: "/Beautiful Sofa.jpg",
+      images: [
+        "/Beautiful Sofa.jpg",
+        "/Beautiful Sofa1.jpg",
+        "/Beautiful Sofa2.jpg",
+        "/Beautiful Sofa3.jpg",
+      ],
+    },
+
 
     // ----- Household -----
     {
