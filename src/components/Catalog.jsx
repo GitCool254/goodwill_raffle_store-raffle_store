@@ -67,7 +67,7 @@ export default function Catalog({ openProduct }) {
       image: "/G2 virtual reality headset.png",
       images: [
         "/G2 virtual reality headset.png",
-        "/G2 virtual reality headset.1png",
+        "/G2 virtual reality headset1.png",
         "/G2 virtual reality headset2.png",
       ],
     },
