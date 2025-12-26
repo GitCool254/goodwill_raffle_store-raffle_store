@@ -42,7 +42,7 @@ export default function Catalog({ openProduct }) {
       ],
     },
     {
-      id: "p2",
+      id: "p3",
       category: "Sports",
       title: "Golf cart club car",
       ticketPrice: 4,
@@ -56,6 +56,20 @@ export default function Catalog({ openProduct }) {
         "/Golf cart club car3.png",
       ],
     },
+     {
+      id: "p3",
+      category: "Sports",
+      title: "G2 Virtual Reality Headset",
+      ticketPrice: 4,
+      description: "Reliable virtual reality headset.",
+      image: "/G2 virtual reality headset.png",
+      images: [
+        "/G2 virtual reality headset.png",
+        "/G2 virtual reality headset.1png",
+        "/G2 virtual reality headset2.png",
+      ],
+    },
+
 
     // ----- Sports -----
     {
@@ -202,6 +216,19 @@ export default function Catalog({ openProduct }) {
         "/Beautiful Sofa3.jpg",
       ],
     },
+    {
+      id: "p8",
+      category: "Furniture",
+      title: "Modern L - Shaped",
+      ticketPrice: 10,
+      description: "High-quality living room sofa.",
+      image: "/Modern L - shaped.jpg",
+      images: [
+        "/Modern L - shaped.jpg",
+        "/Modern L - shaped1.jpg",
+        "/Modern L - shaped2.jpg",
+      ],
+    },
 
 
     // ----- Household -----
@@ -258,6 +285,18 @@ export default function Catalog({ openProduct }) {
         "/Snoo Baby2.jpg",
         "/Snoo Baby3.jpg",
         "/Snoo Baby4.jpg",
+      ],
+    },
+    {
+      id: "p11",
+      category: "Household",
+      title: "Massage sit",
+      ticketPrice: 1,7
+      description: "Customized & comfortable massage sit.",
+      image: "/Massage sit.jpg",
+      images: [
+        "/Massage sit.jpg",
+        "/massage sit1.jpg",
       ],
     },
   ];
