@@ -364,7 +364,7 @@ export default function Catalog({ openProduct }) {
             <img
               src={item.image}
               alt={item.title}
-              className="h-28 w-full object-cover rounded mb-2"
+              className="h-28 w-full object-contain bg-white rounded mb-2"
               onError={(e) =>
                 (e.target.src = "https://via.placeholder.com/200x150")
               }
