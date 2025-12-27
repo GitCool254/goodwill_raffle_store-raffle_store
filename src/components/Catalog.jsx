@@ -292,7 +292,7 @@ export default function Catalog({ openProduct }) {
       title: "Massage sit",
       ticketPrice: 3,
       description: "Customized & comfortable massage sit.",
-      image: "/Massage sit.jpg",
+      image: "/Massage sit.png",
       images: [
         "/Massage sit.png",
         "/massage sit1.png",
