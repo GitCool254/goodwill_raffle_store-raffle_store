@@ -294,8 +294,8 @@ export default function Catalog({ openProduct }) {
       description: "Customized & comfortable massage sit.",
       image: "/Massage sit.jpg",
       images: [
-        "/Massage sit.jpg",
-        "/massage sit1.jpg",
+        "/Massage sit.png",
+        "/massage sit1.png",
       ],
     },
   ];
