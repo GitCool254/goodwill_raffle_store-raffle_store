@@ -289,9 +289,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p20",
       category: "Household",
-      title: "Massage sit",
+      title: "Massage seat",
       ticketPrice: 3,
-      description: "Customized & comfortable massage sit.",
+      description: "Customized & comfortable massage seat. It is electric powered",
       image: "/Massage sit.png",
       images: [
         "/Massage sit.png",
@@ -309,7 +309,7 @@ export default function Catalog({ openProduct }) {
 
   const [expandedDesc, setExpandedDesc] = useState({});
 
-  const DESCRIPTION_LIMIT = 70;
+  const DESCRIPTION_LIMIT = 20;
 
   function toggleDescription(e, id) {
     e.stopPropagation(); // prevent card click
