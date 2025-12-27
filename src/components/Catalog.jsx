@@ -307,17 +307,6 @@ export default function Catalog({ openProduct }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
 
-  const [expandedDesc, setExpandedDesc] = useState({});
-
-  const DESCRIPTION_LIMIT = 20;
-
-  function toggleDescription(e, id) {
-    e.stopPropagation(); // prevent card click
-    setExpandedDesc((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  }
 
   // ----- FILTER LOGIC -----
   const filtered = catalogItems.filter((item) => {
@@ -382,24 +371,7 @@ export default function Catalog({ openProduct }) {
             />
             <div className="text-sm font-semibold">{item.title}</div>
             <div className="text-xs text-slate-500">{item.category}</div>
-
-            {/* DESCRIPTION */}
-            <div className="text-xs text-slate-600 mt-1 leading-relaxed">
-              {item.description.length > DESCRIPTION_LIMIT && !expandedDesc[item.id]
-                ? item.description.slice(0, DESCRIPTION_LIMIT) + "…"
-                : item.description}
-            </div>
-
-            {/* SEE MORE / LESS */}
-            {item.description.length > DESCRIPTION_LIMIT && (
-              <button
-                className="text-xs text-sky-600 mt-0.5 self-start hover:underline"
-                onClick={(e) => toggleDescription(e, item.id)}
-              >
-                {expandedDesc[item.id] ? "See less" : "See more"}
-              </button>
-            )}
-
+            
             <div className="text-sm mt-2 font-medium">
               $ {item.ticketPrice} <span className="text-xs">/ticket</span>
             </div>

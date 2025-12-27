@@ -9,6 +9,15 @@ export default function Detail({ product, openImage }) {
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // Description toggle (same idea as Catalog)
+  const DESCRIPTION_LIMIT = 70;
+  const [expandedDesc, setExpandedDesc] = useState(false);
+
+  function toggleDescription(e) {
+    e.stopPropagation();
+    setExpandedDesc((prev) => !prev);
+  }
  
   useEffect(() => {
     setHasDownloaded(false);
@@ -96,6 +105,23 @@ export default function Detail({ product, openImage }) {
       />
 
       <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
+
+      {/* DESCRIPTION */}
+      <div className="text-sm text-slate-600 leading-relaxed mb-1">
+        {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
+          ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
+          : product.description}
+      </div>
+
+      {/* SEE MORE / LESS */}
+      {product.description.length > DESCRIPTION_LIMIT && (
+        <button
+          className="text-sm text-sky-600 hover:underline mb-3"
+          onClick={toggleDescription}
+        >
+          {expandedDesc ? "See less" : "See more"}
+        </button>
+      )}
 
       {/* NAME */}
       <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
