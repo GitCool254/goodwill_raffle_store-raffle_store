@@ -35,6 +35,7 @@ export default function App() {
       price: 5,
       image: "/Wonderfold.jpg",
       images: [
+        "/Wonderfold.jpg",
         "/Wonderfold1.jpg",
         "/Wonderfold2.jpg",
         "/Wonderfold3.jpg",
