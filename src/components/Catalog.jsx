@@ -361,14 +361,16 @@ export default function Catalog({ openProduct }) {
             className="bg-white shadow rounded-lg p-3 flex flex-col cursor-pointer hover:shadow-lg transition"
             onClick={() => openProduct(item)}
           >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="h-28 w-full object-contain bg-white rounded mb-2"
-              onError={(e) =>
-                (e.target.src = "https://via.placeholder.com/200x150")
-              }
-            />
+            <div className="h-28 w-full flex items-center justify-center bg-white rounded mb-2">
+              <img
+                src={item.image}
+                alt={item.title}
+                className="max-h-full max-w-full object-contain"
+                onError={(e) =>
+                  (e.target.src = "https://via.placeholder.com/200x150")
+                }
+              />
+            </div>
             <div className="text-sm font-semibold">{item.title}</div>
             <div className="text-xs text-slate-500">{item.category}</div>
             
