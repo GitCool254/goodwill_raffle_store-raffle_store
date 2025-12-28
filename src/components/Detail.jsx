@@ -106,22 +106,23 @@ export default function Detail({ product, openImage }) {
 
       <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
 
-      {/* DESCRIPTION */}
-      <div className="text-sm text-slate-600 leading-relaxed mb-1">
-        {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
-          ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
-          : product.description}
-      </div>
+      {/* DESCRIPTION SECTION */}
+      <div className="mb-6">
+        <div className="text-sm text-slate-600 leading-relaxed mb-1">
+          {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
+            ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
+            : product.description}
+        </div>
 
-      {/* SEE MORE / LESS */}
-      {product.description.length > DESCRIPTION_LIMIT && (
-        <button
-          className="text-sm text-sky-600 hover:underline mb-3"
-          onClick={toggleDescription}
-        >
-          {expandedDesc ? "See less" : "See more"}
-        </button>
-      )}
+        {product.description.length > DESCRIPTION_LIMIT && (
+          <button
+            className="text-sm text-sky-600 hover:underline"
+            onClick={toggleDescription}
+          >
+            {expandedDesc ? "See less" : "See more"}
+          </button>
+        )}
+      </div>
 
       {/* NAME */}
       <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
