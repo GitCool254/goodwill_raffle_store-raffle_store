@@ -107,7 +107,7 @@ export default function Detail({ product, openImage }) {
       <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
 
       {/* DESCRIPTION SECTION */}
-      <div className="mb-6">
+      <div className="mb-10">
         <div className="text-sm text-slate-600 leading-relaxed mb-1">
           {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
             ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
