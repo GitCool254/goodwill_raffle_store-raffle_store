@@ -124,6 +124,9 @@ export default function Detail({ product, openImage }) {
         )}
       </div>
 
+      <br />
+      <br />
+
       {/* NAME */}
       <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
         <input
