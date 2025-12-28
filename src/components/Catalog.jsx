@@ -361,7 +361,7 @@ export default function Catalog({ openProduct }) {
             className="bg-white shadow rounded-lg p-3 flex flex-col cursor-pointer hover:shadow-lg transition"
             onClick={() => openProduct(item)}
           >
-            <div className="w-full aspect-[4/3] flex items-center justify-center bg-white rounded mb-2 overflow-hidden">
+            <div className="w-full aspect-[4/3] flex items-center justify-center bg-white rounded mb-2 overflow-hidden p-2">
               <img
                 src={item.image}
                 alt={item.title}
