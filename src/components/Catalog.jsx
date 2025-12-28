@@ -150,9 +150,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Beachcroft Patio Set",
       ticketPrice: 10,
-      description: "FIRM ON PRICE! 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.
-                    Unboxed just a month ago 
-                    Retails over. Bought for a project and went  different direction . Brand is Beachcroft.",
+      description: "FIRM ON PRICE! 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.Unboxed just a month ago.Retails over. Bought for a project and went  different direction . Brand is Beachcroft.",
       image: "/Beachcroft Patio.jpg",
       images: [
         "/Beachcroft Patio.jpg",
@@ -165,9 +163,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Kitchen Island",
       ticketPrice: 8,
-      description: "Kitchen Island.
-                    Excellent condition no damages.
-                    Dimensions 1.5m long, 1m wide and 1m high.",
+      description: "Kitchen Island.Excellent condition no damages.Dimensions 1.5m long, 1m wide and 1m high.",
       image: "/Kitchen Island1.jpg",
       images: [
         "Kitchen Island1.jpg",
@@ -193,10 +189,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Light Grey Sectional",
       ticketPrice: 10,
-      description: "Light Grey weave fabric with piping on edge. It can give a hint of beige with the wood trim. Bought at The Brick, special ordered as colour not shown in store. The legs and bottom is wood trim in a medium to dark stain.   This sectional is very heavy and good quality. The extra seat can be attached to make one side longer or used as extra seat like here. 
-                    95”x 95” width and XSeat is 24”width, and all seating 34” in depth (Back to front),
-                    height is 34” floor to top of cushion. 
-                    There is no marks nicks or stains. No pets, no kids, non smoking very clean home! It never gets sat on only when company comes for seasonal holidays! I can show how to connect the extra seat. Serious inquiries only please and if add is up then still available.",
+      description: "Light Grey weave fabric with piping on edge. It can give a hint of beige with the wood trim. Bought at The Brick, special ordered as colour not shown in store. The legs and bottom is wood trim in a medium to dark stain.   This sectional is very heavy and good quality. The extra seat can be attached to make one side longer or used as extra seat like here.95”x 95” width and XSeat is 24”width, and all seating 34” in depth (Back to front),height is 34” floor to top of cushion. There is no marks nicks or stains. No pets, no kids, non smoking very clean home! It never gets sat on only when company comes for seasonal holidays! I can show how to connect the extra seat. Serious inquiries only please and if add is up then still available.",
       image: "/Cross -sectional set1.jpg",
       images: [
         "/Cross -sectional set1.jpg",
@@ -283,19 +276,7 @@ export default function Catalog({ openProduct }) {
       category: "Household",
       title: "Snoo Happiest Baby Bassinet",
       ticketPrice: 5,
-      description: "Snoo Happiest Baby Bassinet
-
-                    No smoking house :)
-
-                    1st owner. It's clean and looks great , I've included pictures for reference. Price includes ;
-
-                    -Smart Bassinet
-
-                    -Snoo Mattress
-
-                    -Snoo Mattress Sheet
-
-                    -3 sleep sacks, size small, medium and large.",
+      description: "Snoo Happiest Baby Bassinet No smoking house :)1st owner. It's clean and looks great , I've included pictures for reference. Price includes ; -Smart Bassinet-Snoo Mattress-Snoo Mattress Sheet-3 sleep sacks, size small, medium and large.",
       image: "/Snoo Baby.jpg",
       images: [
         "/Snoo Baby.jpg",
