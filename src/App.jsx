@@ -366,7 +366,7 @@ export default function App() {
               />
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">
-                {p.description?.slice(0, 20)}…
+                {p.description?.slice(0, 50)}…
               </p>
               <div className="mt-3 flex items-center justify-between">
                 <div className="text-slate-700 font-medium">
