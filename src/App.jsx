@@ -365,7 +365,9 @@ export default function App() {
                 onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
               />
               <h3 className="font-semibold">{p.title}</h3>
-              <p className="text-sm text-slate-600 mt-1">{p.description}</p>
+              <p className="text-sm text-slate-600 mt-1">
+                {p.description?.slice(0, 20)}…
+              </p>
               <div className="mt-3 flex items-center justify-between">
                 <div className="text-slate-700 font-medium">
                   $ {p.ticketPrice} / ticket
