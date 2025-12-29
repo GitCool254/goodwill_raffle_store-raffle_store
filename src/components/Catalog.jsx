@@ -46,9 +46,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p3",
       category: "Sports",
-      title: "Golf cart club car",
+      title: "2004 Golf cart club car",
       ticketPrice: 4,
-      description: "Golf club car.",
+      description: "The cart come with charger. Currently the cart doesn't move on its own since the battery is dead.\nClub car also have aluminum frames, so it'll never rust out.",
       image: "/Golf car.png",
       images: [
         "/Golf car1.png",
@@ -63,7 +63,7 @@ export default function Catalog({ openProduct }) {
       category: "Sports",
       title: "G2 Virtual Reality Headset",
       ticketPrice: 4,
-      description: "Reliable virtual reality headset.",
+      description: "HP Reverb G2 Virtual Reality Headset VR3000-0XX.\nBarely used. Works great!.",
       image: "/G2 virtual reality headset.png",
       images: [
         "/G2 virtual reality headset.png",
@@ -76,7 +76,7 @@ export default function Catalog({ openProduct }) {
       category: "Sports",
       title: "Yamaha Jetski",
       ticketPrice: 5,
-      description: "Yamaha jetski.",
+      description: "2008 Yamaha vx110 waverunner jetski.\nFresh rebuilt motor runs 52 mph. \nGood performance stator and battery.",
       image: "/Yamaha vx110 jetski.png",
       images: [
         "/Yamaha vx110 jetski.png",
@@ -166,7 +166,7 @@ export default function Catalog({ openProduct }) {
       description: "Kitchen Island.Excellent condition no damages.\nDimensions 1.5m long, 1m wide and 1m high.",
       image: "/Kitchen Island1.jpg",
       images: [
-        "Kitchen Island1.jpg",
+        "/Kitchen Island1.jpg",
         "/Kitchen Island2.jpg",
         "/Kitchen Island3.jpg",
       ],
@@ -206,7 +206,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Power Recliner Set",
       ticketPrice: 10,
-      description: "High-quality living room sofa.",
+      description: "Beautiful Sofa set with power recliners and USB charging ports. \nSofas are bonded leather white color fabric. Sofas include easily removable backrests which makes it ideal for transporting and maneuvering around into tight spaces. Sofas are just 6 months old, adult used and considered to be in mint condition.\nSofa is 85 inches long and Loveseat is 63 inches long.",
       image: "/Beautiful Sofa.jpg",
       images: [
         "/Beautiful Sofa.jpg",
@@ -218,9 +218,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p15",
       category: "Furniture",
-      title: "Modern L - Shaped",
+      title: "Modern L - Shaped Sofa",
       ticketPrice: 10,
-      description: "High-quality living room sofa.",
+      description: "Comfy 3-seater with reversible storage ottoman\n\n78" D x 53" W x 32" H (seat depth 21", seat height 18.5")\n\nCold beige linen (light gray-ish), sturdy iron frame, soft cushions\n\nModern, sleek, and super functional\n\nNo pets, no smoking home.",
       image: "/Modern L - shaped.jpg",
       images: [
         "/Modern L - shaped.jpg",
