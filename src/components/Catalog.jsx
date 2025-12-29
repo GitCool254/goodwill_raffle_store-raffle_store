@@ -220,7 +220,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Modern L - Shaped Sofa",
       ticketPrice: 10,
-      description: "Comfy 3-seater with reversible storage ottoman\n\n78" D x 53" W x 32" H (seat depth 21", seat height 18.5")`,\n\nCold beige linen (light gray-ish), sturdy iron frame, soft cushions.\n\nModern, sleek, and super functional.\n\nNo pets, no smoking home.",
+      description: `Comfy 3-seater with reversible storage ottoman\n\n78" D x 53" W x 32" H (seat depth 21", seat height 18.5")\n\nCold beige linen (light gray-ish), sturdy iron frame, soft cushions.\n\nModern, sleek, and super functional.\n\nNo pets, no smoking home.`,
       image: "/Modern L - shaped.jpg",
       images: [
         "/Modern L - shaped.jpg",
