@@ -252,7 +252,7 @@ export default function Catalog({ openProduct }) {
       category: "Household",
       title: "Eco Spa Hot Tub",
       ticketPrice: 1,
-      description: "Tuff Spa Seats 4, 72"x 60"x 30" 210 gallons, weighs 360 lbs. 12 jets, hydro therapy.\nPlug and play 110 v.",
+      description: `Tuff Spa Seats 4, 72"x 60"x 30" 210 gallons, weighs 360 lbs. 12 jets, hydro therapy.\nPlug and play 110 v.`,
       image: "/Spa Hot Tub.jpg",
       images: [
         "/Spa Hot Tub.jpg",
