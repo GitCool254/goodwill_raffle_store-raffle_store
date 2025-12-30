@@ -122,7 +122,7 @@ export default function Catalog({ openProduct }) {
       category: "Electronics",
       title: "E bike",
       ticketPrice: 6,
-      description: "Quality ebike for sale.",
+      description: "2 years old Mokwheel Mesa Lite e-bikes. They are well maintained and in perfect condition.",
       image: "/E bike Two.png",
       images: [
         "/E bike Two.png",
@@ -133,9 +133,9 @@ export default function Catalog({ openProduct }) {
      {
       id: "p9",
       category: "Electronics",
-      title: "Night Vision",
+      title: "Sightmark wraith night vision scope.",
       ticketPrice: 6,
-      description: "Night vision scope.",
+      description: "Night vision scope is barely used.",
       image: "/Night vision scope.png",
       images: [
         "/Night vision scope.png",
@@ -236,7 +236,7 @@ export default function Catalog({ openProduct }) {
       category: "Household",
       title: "Washer &Dryer",
       ticketPrice: 2,
-      description: "High-efficiency Dryer Washer.",
+      description: "Dryer works best.\nWasher works but make noise at high spin.",
       image: "/Washer &Dryer.png",
       images: [
         "/Washer &Dryer.png",
