@@ -31,7 +31,7 @@ export default function Catalog({ openProduct }) {
       category: "Casual & Outdoor Wear",
       title: "Western boots",
       ticketPrice: 4,
-      description: "Western boots - all varieties.",
+      description: "Different sizes & colors in stock.",
       image: "/Western Boots  Gld.jpg",
       images: [
         "/Western Boots  Gld.jpg",
@@ -250,9 +250,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p17",
       category: "Household",
-      title: "Spa Hot Tub",
+      title: "Eco Spa Hot Tub",
       ticketPrice: 1,
-      description: "Hot tub customized, high efficiency.",
+      description: "Tuff Spa Seats 4, 72"x 60"x 30" 210 gallons, weighs 360 lbs. 12 jets, hydro therapy.\nPlug and play 110 v.",
       image: "/Spa Hot Tub.jpg",
       images: [
         "/Spa Hot Tub.jpg",
@@ -265,7 +265,7 @@ export default function Catalog({ openProduct }) {
       category: "Household",
       title: "Inflatable Hot Tub",
       ticketPrice: 5,
-      description: "Inflatable Tub, high efficiency.",
+      description: "Used only 2 months.In perfect working condition.",
       image: "/Inflatable hot tub.png",
       images: [
         "/Inflatable hot tub.png",
@@ -289,9 +289,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p20",
       category: "Household",
-      title: "Massage seat",
+      title: "Irest massage chair",
       ticketPrice: 3,
-      description: "Customized & comfortable massage seat. It is electric powered",
+      description: "In almost new condition, works great.\nHas many nodes.\nMassages from neck to feet.",
       image: "/Massage sit.png",
       images: [
         "/Massage sit.png",

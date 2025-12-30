@@ -30,8 +30,8 @@ export default function App() {
   const sampleProducts = [
     {
       id: "p1",
-      title: "iPhone 15 Pro",
-      description: "Brand new iPhone 15 Pro — unopened box.",
+      title: "Wonderfold wagon",
+      description: "Barely used wagon, excellent condition(only selling because my kids have outgrown it)\nPick up or delivery\nThe W4Luxe stroller Wagon Model\nHolds up to 4passengers\nExtra storage all sides\nDeep carriage with mesh sides\nRemovable canopy with Adjustable canopy Fabric and Rods\nEasy to fold",
       price: 5,
       image: "/Wonderfold.jpg",
       images: [
@@ -47,8 +47,8 @@ export default function App() {
     },
     {
       id: "p2",
-      title: "PlayStation 5",
-      description: "PS5 console with DualSense controller.",
+      title: "Beachcroft Patio set",
+      description: "FIRM ON PRICE! 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nUnboxed just a month ago \nRetails over. Bought for a project and went  different direction . \nBrand is Beachcroft.",
       price: 5,
       image: "/Beachcroft Patio.jpg",
       images: [
@@ -62,18 +62,16 @@ export default function App() {
     },
     {
       id: "p3",
-      title: "MacBook Air M3",
-      description: "Lightweight MacBook Air with M3 chip.",
+      title: "Coolster 125cc",
+      description: "Coolster 125cc.\nGreat little starter for your kid",
       price: 5,
-      image: "/Lawn mower drive.jpg",
+      image: "/Coolster 125cc.jpg",
       images: [
-        "/Lawn mower drive.jpg",
-        "/Lawn mower drive1.jpg",
-        "/Lawn mower drive2.jpg",
-        "/Lawn mower drive3.jpg",
-        "/Lawn mower drive4.jpg",
-        "/Lawn mower drive5.jpg",
-        "/Lawn mower drive6.jpg",
+        "/Coolster 125cc.jpg",
+        "/Coolster 125cc1.jpg",
+        "/Coolster 125cc2.jpg",
+        "/Coolster 125cc3.jpg",
+        "/Coolster 125cc4.jpg",
       ],
       ticketPrice: 5,
       totalTickets: 150,
