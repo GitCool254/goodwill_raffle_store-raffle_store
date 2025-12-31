@@ -17,7 +17,7 @@ export default function Catalog({ openProduct }) {
       category: "Casual & Outdoor Wear",
       title: "Balaclava",
       ticketPrice: 3,
-      description: "Best Quality & fitting.",
+      description: "Breathable mess fabric balaclava.\nShield from sun, breathable, stretch and wear-resistant.",
       image: "/Balaclava.jpg",
       images: [
         "/Balaclava.jpg",
@@ -106,9 +106,9 @@ export default function Catalog({ openProduct }) {
     {
       id: "p7",
       category: "Electronics",
-      title: "Treadmill",
+      title: "Treadmill Proform Carbon",
       ticketPrice: 5,
-      description: "Treadmill for you.",
+      description: "Speed 10\nIncline 10\nMore models available.",
       image: "/Treadmill Pro.png",
       images: [
         "/Treadmill Pro1.png",

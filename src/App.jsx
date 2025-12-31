@@ -82,7 +82,16 @@ export default function App() {
   // -------------------- STATE --------------------
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem("gw_products");
-    return saved ? JSON.parse(saved) : sampleProducts;
+    const savedVersion = localStorage.getItem("gw_products_version");
+
+    if (saved && savedVersion === DATA_VERSION) {
+      return JSON.parse(saved);
+    }
+
+    // ⬇️ new code version → overwrite old cache
+    localStorage.setItem("gw_products_version", DATA_VERSION);
+    localStorage.setItem("gw_products", JSON.stringify(sampleProducts));
+    return sampleProducts;
   });
 
   const [entries, setEntries] = useState(() => {
@@ -99,7 +108,9 @@ export default function App() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const [imageReturnView, setImageReturnView] = useState("home");
-   
+
+  const DATA_VERSION = "v2"; // bump this when products change
+     
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
