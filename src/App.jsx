@@ -26,6 +26,7 @@ import Menu from "./components/Menu";
  */
 
 export default function App() {
+  const DATA_VERSION = "v2"; // bump this when products change
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -108,8 +109,6 @@ export default function App() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const [imageReturnView, setImageReturnView] = useState("home");
-
-  const DATA_VERSION = "v2"; // bump this when products change
      
   console.log("App mounted — view =", view);
   // -------------------- LOCAL STORAGE SYNC --------------------
