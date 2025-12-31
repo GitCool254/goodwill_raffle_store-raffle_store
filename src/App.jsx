@@ -63,7 +63,7 @@ export default function App() {
     },
     {
       id: "p3",
-      title: "Coolster 125cc",
+      title: "White Sofa set.jpg",
       description: "Coolster 125cc.\nGreat little starter for your kid",
       price: 5,
       image: "/Peloton bike2.png",
