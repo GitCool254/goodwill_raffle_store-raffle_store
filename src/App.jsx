@@ -26,7 +26,7 @@ import Menu from "./components/Menu";
  */
 
 export default function App() {
-  const DATA_VERSION = "v2"; // bump this when products change
+  const DATA_VERSION = "v3"; // bump this when products change
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -83,14 +83,20 @@ export default function App() {
   // -------------------- STATE --------------------
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem("gw_products");
-    const savedVersion = localStorage.getItem("gw_products_version");
 
-    if (saved && savedVersion === DATA_VERSION) {
-      return JSON.parse(saved);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+
+        // 🔍 compare images
+        const changed = parsed.some((p, i) =>
+          p.image !== sampleProducts[i]?.image
+        );
+
+        if (!changed) return parsed;
+      } catch {}
     }
 
-    // ⬇️ new code version → overwrite old cache
-    localStorage.setItem("gw_products_version", DATA_VERSION);
     localStorage.setItem("gw_products", JSON.stringify(sampleProducts));
     return sampleProducts;
   });
