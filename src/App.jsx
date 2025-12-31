@@ -66,7 +66,7 @@ export default function App() {
       title: "Coolster 125cc",
       description: "Coolster 125cc.\nGreat little starter for your kid",
       price: 5,
-      image: "/Sauna.jpg",
+      image: "/Big eye polarized sunglass.jpg",
       images: [
         "/Coolster 125cc.png",
         "/Coolster 125cc1.png",
