@@ -92,7 +92,7 @@ export default function Catalog({ openProduct }) {
       category: "Sports",
       title: "Surfboard",
       ticketPrice: 3,
-      description: `Brand is Nansfems\nDimension:5'9" × 19" × 2 3/8"\nConstruction: Polyurethane & Polyester resin\nCondition: Condition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \nWatertight and ready to surf.`,
+      description: `Brand is Nansfems\n\nDimension: 5'9" × 19" × 2 3/8"\n\nConstruction: Polyurethane & Polyester resin\n\nCondition: Condition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \n\nWatertight and ready to surf.`,
       image: "/Surfboard1.png",
       images: [
         "/Surfboard1.png",
