@@ -49,7 +49,7 @@ export default function App() {
     {
       id: "p2",
       title: "Beachcroft Patio set",
-      description: "Firm to price.2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
+      description: "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
       price: 5,
       image: "/Beachcroft Patio.jpg",
       images: [
@@ -65,7 +65,7 @@ export default function App() {
       id: "p3",
       title: "Coolster 125cc",
       description: "Coolster 125cc.\nGreat little starter for your kid",
-      price: 5,
+      price: 7,
       image: "/Coolster 125cc.png",
       images: [
         "/Coolster 125cc.png",
@@ -166,7 +166,7 @@ export default function App() {
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
                 onClick={() => setView("catalog")}
               >
-                Browse Raffles
+                Product Raffles
               </button>
               
             </div>
