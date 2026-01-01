@@ -89,9 +89,12 @@ export default function App() {
         const parsed = JSON.parse(saved);
 
         // 🔍 compare images
-        const changed = parsed.some((p, i) =>
-          p.image !== sampleProducts[i]?.image
-        );
+        // 🔍 compare full product content
+        const changed =
+          parsed.length !== sampleProducts.length ||
+          parsed.some((p, i) =>
+            JSON.stringify(p) !== JSON.stringify(sampleProducts[i])
+          );
 
         if (!changed) return parsed;
       } catch {}
