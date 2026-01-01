@@ -92,7 +92,7 @@ export default function Catalog({ openProduct }) {
       category: "Sports",
       title: "Surfboard",
       ticketPrice: 3,
-      description: `Brand is Nansfems\n\nDimension: 5'9" × 19" × 2 3/8"\n\nConstruction: Polyurethane & Polyester resin\n\nCondition: Condition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \n\nWatertight and ready to surf.`,
+      description: `Brand is Nansfems\n\nDimension: 5'9" × 19" × 2 3/8"\n\nConstruction: Polyurethane & Polyester resin\n\nCondition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \n\nWatertight and ready to surf.`,
       image: "/Surfboard1.png",
       images: [
         "/Surfboard1.png",
@@ -149,7 +149,7 @@ export default function Catalog({ openProduct }) {
       category: "Furniture",
       title: "Beachcroft Patio Set",
       ticketPrice: 10,
-      description: "FIRM ON PRICE! 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nUnboxed just a month ago.\nRetails over. Bought for a project and went  different direction . \nBrand is Beachcroft.",
+      description: "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
       image: "/Beachcroft Patio.jpg",
       images: [
         "/Beachcroft Patio.jpg",
