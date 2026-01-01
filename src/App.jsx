@@ -51,7 +51,7 @@ export default function App() {
       title: "Beachcroft Patio set",
       description: "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
       price: 5,
-      image: "/Beachcroft Patio.jpg",
+      image: "/Sauna.jpg",
       images: [
         "/Beachcroft Patio.jpg",
         "/Beachcroft Patio1.jpg",
@@ -63,7 +63,7 @@ export default function App() {
     },
     {
       id: "p3",
-      title: "Coolster 125cc",
+      title: "Coolster 125c",
       description: "Coolster 125cc.\nGreat little starter for your kid",
       price: 7,
       image: "/Coolster 125cc.png",
