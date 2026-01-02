@@ -68,7 +68,9 @@ export default function Detail({ product, openImage }) {
       );
 
       if (!res.ok) {
-        alert("Ticket generation failed.");
+        const errText = await res.text();
+        console.error("Backend error:", errText);
+        alert(errText);
         setIsGenerating(false);
         return;
       }
