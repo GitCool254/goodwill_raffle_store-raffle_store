@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
 import CryptoJS from "crypto-js";
 
-const SIGNING_SECRET = "goodwill_5490_secret"; // MUST MATCH BACKEND
+const SIGNING_SECRET = import.meta.env.VITE_API_SIGN_SECRET;   // MUST MATCH BACKEND
 
 function signPayload(payload) {
   return CryptoJS.HmacSHA256(payload, SIGNING_SECRET).toString();
