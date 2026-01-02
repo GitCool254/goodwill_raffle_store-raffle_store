@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
-import CryptoJS from "crypto-js";
 
-const SIGNING_SECRET = import.meta.env.VITE_API_SIGN_SECRET;   // MUST MATCH BACKEND
-
-function signPayload(payload) {
-  return CryptoJS.HmacSHA256(payload, SIGNING_SECRET).toString();
-}
 
 export default function Detail({ product, openImage }) {
   const [name, setName] = useState("");
@@ -57,20 +51,18 @@ export default function Detail({ product, openImage }) {
     setIsGenerating(true);
 
     try {
-      const payloadString = `${name}|${quantity}`;
-      const signature = signPayload(payloadString);
-
+    
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Signature": signature,
           },
           body: JSON.stringify({
             name,
             quantity,
+            order_id: lastOrder.id,
           }),
         }
       );

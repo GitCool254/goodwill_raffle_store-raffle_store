@@ -68,7 +68,10 @@ export default function PayPalButton({
               body: JSON.stringify({ secret, ...orderObj })
             }).catch(() => {});
 
-            onPaymentSuccess(orderObj);
+            onPaymentSuccess({
+              ...orderObj,
+              orderId: order.id
+            });
           }
         })
         .render(`#${containerId}`);
