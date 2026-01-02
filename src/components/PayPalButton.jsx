@@ -12,8 +12,7 @@ export default function PayPalButton({
   name,
   email
 }) {
-  const PAYPAL_CLIENT_ID =
-    "AYBAbWKQtvibNiDi7AiMc6LTQRgoQvCd25g8yapQ-3U9EEanpwNFM4i-LbGnXk5MYBRXViDoysR_snJw";
+  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
   const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
 
