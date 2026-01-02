@@ -12,6 +12,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "dotenv": "^17.2.3",
     "eruda": "^3.4.3",
     "express": "^4.21.2",
