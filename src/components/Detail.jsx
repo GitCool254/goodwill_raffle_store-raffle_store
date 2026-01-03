@@ -62,6 +62,7 @@ export default function Detail({ product, openImage }) {
           body: JSON.stringify({
             name,
             quantity,
+            ticket_price: product.ticketPrice,
             order_id: lastOrder.orderId,
           }),
         }
