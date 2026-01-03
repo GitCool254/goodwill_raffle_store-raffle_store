@@ -264,7 +264,7 @@ export default function Catalog({ openProduct }) {
       category: "Household",
       title: "Inflatable Hot Tub",
       ticketPrice: 4,
-      description: Used only 2 months.In perfect working condition.",
+      description: "Used only 2 months.In perfect working condition.",
       image: "/Inflatable hot tub.png",
       images: [
         "/Inflatable hot tub.png",
