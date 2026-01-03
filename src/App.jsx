@@ -27,6 +27,19 @@ import Menu from "./components/Menu";
 
 export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
+
+  // -------------------- TICKET COUNTDOWN --------------------
+  const RAFFLE_START_DATE = "2026-01-01"; // change only if needed
+  const INITIAL_TICKETS = 10;
+
+  const daysPassed = Math.floor(
+    (Date.now() - new Date(RAFFLE_START_DATE).getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  const remainingTickets = Math.max(
+    INITIAL_TICKETS - daysPassed,
+    0
+  );
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -169,6 +182,10 @@ export default function App() {
                 Product Raffles
               </button>
               
+            </div>
+
+            <div className="mt-3 text-sm text-slate-100/90 font-medium">
+              🎟️ {remainingTickets} tickets remaining — decreases daily
             </div>
           </div>
           <div className="flex-1">
