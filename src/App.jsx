@@ -184,8 +184,8 @@ export default function App() {
               
             </div>
 
-            <div className="mt-3 text-sm text-slate-100/90 font-medium">
-              🎟️ {remainingTickets} tickets remaining — decreases daily
+            <div className="mt-5 pl-1 text-sm font-bold text-slate-100 tracking-wide">
+              🎟️ {remainingTickets} tickets remaining
             </div>
           </div>
           <div className="flex-1">
