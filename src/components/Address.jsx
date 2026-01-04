@@ -18,7 +18,7 @@ export default function Address() {
           <strong>We're located at:</strong><br />
           <br />
 
-          // USA
+          {/* USA */}
           
           <strong>USA</strong><br />
           South San Francisco, CA<br />
@@ -38,7 +38,7 @@ export default function Address() {
           <br />
           <br />
           
-          // Canada
+          {/* Canada */}
           
           <strong>Canada</strong><br />
           303 Perry St<br />
@@ -55,7 +55,7 @@ export default function Address() {
           <br />
           <br />
 
-          // Australia
+          {/* Australia */}
 
           <strong>Australia</strong><br />
           12 John St<br />
