@@ -24,18 +24,14 @@ export default function Address() {
           South San Francisco, CA<br />
           66174
           <br />
-          <br />
           Jupiter, Florida<br />
           58298
-          <br />
           <br />
           Rio Rancho, New Mexico<br />
           91956
           <br />
-          <br />
           Mission, Texas<br />
           81050
-          <br />
           <br />
           Bismarck, North Dakota<br />
           67034
