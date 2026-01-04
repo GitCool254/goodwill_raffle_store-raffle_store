@@ -22,12 +22,11 @@ export default function Address() {
           
           <strong>USA</strong><br />
 
-          <div className="flex">
-            <span className="w-4">•</span>
+          <div className="grid grid-cols-[16px_1fr]">
+            <span>•</span>
             <span>South San Francisco, CA</span>
-          </div>
-          <div className="flex">
-            <span className="w-4"></span>
+
+            <span></span>
             <span>66174</span>
           </div>
           <br />
