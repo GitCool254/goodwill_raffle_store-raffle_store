@@ -24,7 +24,7 @@ export default function Address() {
 
           <div className="pl-4">
             • South San Francisco, CA<br />
-            66174
+              66174
           </div>
           <br />
           Jupiter, Florida<br />
