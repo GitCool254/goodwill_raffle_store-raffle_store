@@ -17,6 +17,9 @@ export default function Address() {
         <p className="mb-3">
           <strong>We're located at:</strong><br />
           <br />
+
+          // USA
+          
           <strong>USA</strong><br />
           South San Francisco, CA<br />
           66174
@@ -32,7 +35,48 @@ export default function Address() {
           <br />
           Bismarck, North Dakota<br />
           67034
+          <br />
+          <br />
           
+          // Canada
+          
+          <strong>Canada</strong><br />
+          303 Perry St<br />
+          Whitby, ON L1N 4C2
+          <br />
+          Near 524 Corbin Ct<br /> 
+          Mississauga, ON L5A 1M3
+          <br />
+          519 Wilson St<br /> 
+          Quesnel, BC V2J 2W2
+          <br />
+          194 Av. Brien<br /> 
+          Laval, QC H7N 3M5
+          <br />
+          <br />
+
+          // Australia
+
+          <strong>Australia</strong><br />
+          12 John St<br />
+          Blackburn VIC 3130
+          <br />
+          54 Pitt St<br />
+          Parramatta NSW 2150
+          <br />
+          12 Telford St<br />
+          Proserpine QLD 4800
+          <br />
+          55 Gairloch St<br />
+          Applecross WA 6153
+          <br />
+          24 Wattle Rd<br />
+          Dodges Ferry TAS 7173
+          <br />
+          Near St Albans VIC 3021
+          <br />
+          Near 12 Damson Pl<br />
+          Elanora QLD 4221
         </p>
 
         <p className="mb-3">
