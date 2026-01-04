@@ -18,7 +18,6 @@ export default function Address() {
           <strong>We're located at:</strong><br />
           <br />
           <strong>USA</strong><br />
-          <br />
           South San Francisco, CA<br />
           66174
           <br />
