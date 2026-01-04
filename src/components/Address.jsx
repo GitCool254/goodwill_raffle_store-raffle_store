@@ -16,8 +16,22 @@ export default function Address() {
 
         <p className="mb-3">
           <strong>We're located at:</strong><br />
-          Street Address<br />
-          City, Region
+          <strong>USA</strong><br />
+          South San Francisco, CA<br />
+          66174
+          <br />
+          Jupiter, Florida<br />
+          58298
+          <br />
+          Rio Rancho, New Mexico<br />
+          91956
+          <br />
+          Mission, Texas<br />
+          81050
+          <br />
+          Bismarck, North Dakota<br />
+          67034
+          
         </p>
 
         <p className="mb-3">
