@@ -45,14 +45,15 @@ export default function Header({ setView }) {
           </div>
 
           {/* TITLE + MENU (row) + SUBTITLE */}
-          <div className="mt-2">
+          <div className="mt-2 relative">
 
-            {/* Title left, menu right */}
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-extrabold">
-                Goodwillstores — Lucrative Raffles
-              </h1>
+            {/* Title left */}
+            <h1 className="text-xl font-extrabold pr-12">
+              Goodwillstores — Lucrative Raffles
+            </h1>
 
+            {/* Menu button positioned between title and subtitle */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2">
               <button
                 className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
                 onClick={() => setView("menu")}
