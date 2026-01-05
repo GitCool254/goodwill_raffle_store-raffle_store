@@ -2,8 +2,11 @@ export default function About() {
   return (
     <div className="max-w-3xl mx-auto p-6 text-left">
       {/* PAGE TITLE */}
-      <h1 className="text-xl font-bold mb-5">
-        ℹ️  About Us
+      <h1
+        className="font-bold mb-5"
+        style={{ fontSize: "24px" }}
+      >
+        ℹ️ About Us
       </h1>
 
       {/* INTRO */}
@@ -26,9 +29,13 @@ export default function About() {
       </p>
 
       {/* SECTION: WHAT MAKES US DIFFERENT */}
-      <h2 className="text-lg font-semibold mt-8 mb-3">
+      <h2
+        className="font-semibold mt-8 mb-2"
+        style={{ fontSize: "20px" }}
+      >
         🎟️ What Makes Us Different
       </h2>
+      <div className="w-full h-px bg-slate-200 mb-4" />
 
       <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-6">
         <li>
@@ -46,9 +53,13 @@ export default function About() {
       </ul>
 
       {/* SECTION: COMMITMENT */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">
+      <h2
+        className="font-semibold mt-8 mb-2"
+        style={{ fontSize: "20px" }}
+      >
         🌍 Our Commitment
       </h2>
+      <div className="w-full h-px bg-slate-200 mb-4" />
 
       <p className="text-base text-slate-700 leading-relaxed mb-4">
         We go beyond raffles. Goodwillstores is committed to sustainability and
@@ -63,9 +74,13 @@ export default function About() {
       </p>
 
       {/* SECTION: TRUST */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">
+      <h2
+        className="font-semibold mt-8 mb-2"
+        style={{ fontSize: "20px" }}
+      >
         🤝 Built on Trust
       </h2>
+      <div className="w-full h-px bg-slate-200 mb-4" />
 
       <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-4">
         <li>Operating for over 5 years</li>
@@ -74,21 +89,11 @@ export default function About() {
         <li>Growing community of repeat participants</li>
       </ul>
 
-      {/* TRUST BADGE ROW */}
-      <div className="flex flex-wrap gap-3 mt-4">
-        <span className="px-4 py-1 text-sm font-medium rounded-full bg-green-100 text-green-700">
-          🔒 Secure
-        </span>
-        <span className="px-4 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-700">
-          👁️ Transparent
-        </span>
-        <span className="px-4 py-1 text-sm font-medium rounded-full bg-indigo-100 text-indigo-700">
-          ✅ Verified Platform
-        </span>
-      </div>
-
       {/* CLOSING */}
-      <p className="text-lg text-slate-700 leading-relaxed mt-8 font-medium">
+      <p
+        className="text-slate-700 leading-relaxed mt-8 font-medium"
+        style={{ fontSize: "18px" }}
+      >
         Goodwillstores isn’t just about winning — it’s about trust,
         transparency, and giving everyone a fair chance.
       </p>
