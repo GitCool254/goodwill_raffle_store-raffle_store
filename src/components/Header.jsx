@@ -44,15 +44,15 @@ export default function Header({ setView }) {
             <div className="w-10" />
           </div>
 
-          {/* TITLE + MENU (row) + SUBTITLE */}
+          {/* TITLE + MENU + SUBTITLE */}
           <div className="mt-2">
+            {/* Title row only */}
+            <h1 className="text-xl font-extrabold">
+              Goodwillstores — Lucrative Raffles
+            </h1>
 
-            {/* Title left, menu right */}
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-extrabold">
-                Goodwillstores — Lucrative Raffles
-              </h1>
-
+            {/* Menu button row: right-aligned, immediately above subtitle */}
+            <div className="flex justify-end mt-1">
               <button
                 className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
                 onClick={() => setView("menu")}
@@ -62,7 +62,7 @@ export default function Header({ setView }) {
               </button>
             </div>
 
-            {/* Subtitle below */}
+            {/* Subtitle row */}
             <span
               className="block mt-1 text-sm font-medium"
               style={{ color: "#1E3A8A" }}
