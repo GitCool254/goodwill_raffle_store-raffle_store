@@ -45,28 +45,28 @@ export default function Address() {
         <strong>USA</strong>
 
         <AddressLine
-          line1="South San Francisco, CA"
-          line2="66174"
+          line1="313 Pine Ave, South San Francisco, CA"
+          line2="94080"
         />
 
         <AddressLine
-          line1="Jupiter, Florida"
-          line2="58298"
+          line1="506 W Whitney Dr, Jupiter, FL"
+          line2="33458"
         />
 
         <AddressLine
-          line1="Rio Rancho, New Mexico"
-          line2="91956"
+          line1="Near 882 Buckboard Rd SE, Rio Rancho, NM"
+          line2="87124"
         />
 
         <AddressLine
-          line1="Mission, Texas"
-          line2="81050"
+          line1="1211 N Keralum Ave, Mission, TX"
+          line2="78572"
         />
 
         <AddressLine
-          line1="Bismarck, North Dakota"
-          line2="67034"
+          line1="512 Sunset Pl, Bismarck, ND"
+          line2="58504"
         />
 
         <br />
