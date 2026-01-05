@@ -2,8 +2,8 @@ export default function About() {
   return (
     <div className="max-w-3xl mx-auto p-6 text-left">
       {/* PAGE TITLE */}
-      <h1 className="text-2xl font-bold mb-5">
-        ℹ️ About Goodwillstores
+      <h1 className="text-xl font-bold mb-5">
+        ℹ️  About Us
       </h1>
 
       {/* INTRO */}
@@ -26,7 +26,7 @@ export default function About() {
       </p>
 
       {/* SECTION: WHAT MAKES US DIFFERENT */}
-      <h2 className="text-xl font-semibold mt-8 mb-3">
+      <h2 className="text-lg font-semibold mt-8 mb-3">
         🎟️ What Makes Us Different
       </h2>
 
