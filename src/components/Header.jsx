@@ -23,7 +23,7 @@ export default function Header({ setView }) {
     <>
       {/* HEADER */}
       <header className="w-full bg-white shadow-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto p-4 relative">
+        <div className="max-w-6xl mx-auto p-4">
 
           {/* TOP ROW: centered logo */}
           <div className="flex items-center justify-between">
@@ -45,15 +45,14 @@ export default function Header({ setView }) {
           </div>
 
           {/* TITLE + MENU (row) + SUBTITLE */}
-          <div className="mt-2 relative">
+          <div className="mt-2">
 
-            {/* Title left */}
-            <h1 className="text-xl font-extrabold pr-12">
-              Goodwillstores — Lucrative Raffles
-            </h1>
+            {/* Title left, menu right */}
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-extrabold">
+                Goodwillstores — Lucrative Raffles
+              </h1>
 
-            {/* Menu button positioned between title and subtitle */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2" style={{ right: 'calc((100vw - 100%) / -2 + 1rem)' }}>
               <button
                 className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
                 onClick={() => setView("menu")}
