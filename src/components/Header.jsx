@@ -44,28 +44,27 @@ export default function Header({ setView }) {
             <div className="w-10" />
           </div>
 
-          {/* TITLE + MENU ROW */}
+          {/* TITLE + MENU + SUBTITLE */}
           <div className="mt-2 flex flex-col items-start">
             <h1 className="text-xl font-extrabold">
               Goodwillstores — Lucrative Raffles
             </h1>
 
-            <div className="flex items-center gap-3 mt-1">
-              <button
-                className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
-                onClick={() => setView("menu")}
-                aria-label="Open menu"
-              >
-                ☰
-              </button>
+            {/* MENU BUTTON — now between title and subtitle */}
+            <button
+              className="mt-1 px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
+              onClick={() => setView("menu")}
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
 
-              <span
-                className="text-sm font-medium"
-                style={{ color: "#1E3A8A" }}
-              >
-                Buy tickets. Win prizes. Transparent draws.
-              </span>
-            </div>
+            <span
+              className="mt-1 text-sm font-medium"
+              style={{ color: "#1E3A8A" }}
+            >
+              Buy tickets. Win prizes. Transparent draws.
+            </span>
           </div>
 
         </div>
