@@ -1,11 +1,22 @@
 function AddressLine({ line1, line2 }) {
+  const query = encodeURIComponent(`${line1} ${line2}`);
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+
   return (
     <div className="grid grid-cols-[16px_1fr] gap-y-0">
       <span>•</span>
-      <span>{line1}</span>
+
+      <a
+        href={mapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-sky-600 hover:underline transition-colors"
+      >
+        {line1}
+      </a>
 
       <span></span>
-      <span>{line2}</span>
+      <span className="text-sm text-slate-500">{line2}</span>
     </div>
   );
 }
