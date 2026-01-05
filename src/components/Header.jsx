@@ -62,6 +62,8 @@ export default function Header({ setView }) {
               </button>
             </div>
 
+            <br />
+            
             {/* Subtitle row */}
             <span
               className="block mt-1 text-sm font-medium"
