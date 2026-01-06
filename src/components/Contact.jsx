@@ -58,7 +58,7 @@ export default function Contact() {
           className="font-semibold mb-1"
           style={{ fontSize: "20px" }}
         >
-          📍 Business Hours
+          🕒 Business Hours
         </h2>
         <p className="text-sm">
           Monday – Friday: 8:00 AM – 6:00 PM<br />
