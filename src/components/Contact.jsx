@@ -24,7 +24,12 @@ export default function Contact() {
           📞 Phone Support
         </h2>
         <p>
-          +1 417-539-9237<br />
+          <strong>USA</strong><br />
+          +1 417-539-9237
+          <strong>Australia</strong><br />
+          +61427612892
+          <strong>Canada</strong><br />
+          +1 416-872-6723
           <span className="text-sm text-slate-600">
             Monday – Friday, 8:00 AM – 6:00 PM
           </span>
