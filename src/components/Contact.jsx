@@ -2,7 +2,11 @@ export default function Contact() {
   return (
     <div className="max-w-3xl mx-auto p-6 text-left text-slate-700">
 
-      <h1 className="text-xl font-extrabold mb-2">
+      {/* PAGE TITLE */}
+      <h1
+        className="font-bold mb-2"
+        style={{ fontSize: "24px" }}
+      >
         Contact & Support
       </h1>
 
@@ -13,7 +17,10 @@ export default function Contact() {
 
       {/* PHONE */}
       <div className="mb-5">
-        <h2 className="font-semibold text-base mb-1">
+        <h2
+          className="font-semibold mb-1"
+          style={{ fontSize: "20px" }}
+        >
           📞 Phone Support
         </h2>
         <p>
@@ -26,7 +33,10 @@ export default function Contact() {
 
       {/* EMAIL */}
       <div className="mb-5">
-        <h2 className="font-semibold text-base mb-1">
+        <h2
+          className="font-semibold mb-1"
+          style={{ fontSize: "20px" }}
+        >
           ✉️ Email Support
         </h2>
         <p>
@@ -39,7 +49,10 @@ export default function Contact() {
 
       {/* HOURS */}
       <div className="mb-6">
-        <h2 className="font-semibold text-base mb-1">
+        <h2
+          className="font-semibold mb-1"
+          style={{ fontSize: "20px" }}
+        >
           📍 Business Hours
         </h2>
         <p className="text-sm">
@@ -51,7 +64,10 @@ export default function Contact() {
 
       {/* SUPPORT LIST */}
       <div className="border-t pt-4">
-        <h3 className="font-semibold mb-2">
+        <h3
+          className="font-semibold mb-2"
+          style={{ fontSize: "18px" }}
+        >
           Need help with:
         </h3>
         <ul className="list-disc pl-5 space-y-1 text-sm">
