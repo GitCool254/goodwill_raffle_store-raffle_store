@@ -11,7 +11,7 @@ export default function Contact() {
       </h1>
 
       <p className="mb-6 text-slate-600">
-        We’re here to help. Reach out to our support team using any of the options
+        We’re here to help. Rea /ch out to our support team using any of the options
         below. We typically respond within one business day.
       </p>
 
@@ -25,11 +25,11 @@ export default function Contact() {
         </h2>
         <p>
           <strong>USA</strong><br />
-          +1 417-539-9237
+          +1 417-539-9237<br /><br />
           <strong>Australia</strong><br />
-          +61427612892
+          +61427612892<br /><br />
           <strong>Canada</strong><br />
-          +1 416-872-6723
+          +1 416-872-6723<br /><br />
           <span className="text-sm text-slate-600">
             Monday – Friday, 8:00 AM – 6:00 PM
           </span>
