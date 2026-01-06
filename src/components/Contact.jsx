@@ -11,7 +11,7 @@ export default function Contact() {
       </h1>
 
       <p className="mb-6 text-slate-600">
-        We’re here to help. Rea /ch out to our support team using any of the options
+        We’re here to help. Reach out to our support team using any of the options
         below. We typically respond within one business day.
       </p>
 
