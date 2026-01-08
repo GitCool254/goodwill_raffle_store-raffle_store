@@ -29,7 +29,7 @@ export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
 
   // -------------------- TICKET COUNTDOWN --------------------
-  const RAFFLE_START_DATE = "2026-01-01"; // change only if needed
+  const RAFFLE_START_DATE = "2026-01-07"; // change only if needed
   const INITIAL_TICKETS = 10;
 
   const daysPassed = Math.floor(
@@ -87,7 +87,7 @@ export default function App() {
         "/Coolster 125cc3.png",
         "/Coolster 125cc4.png",
       ],
-      ticketPrice: 7,
+      ticketPrice: 8,
       totalTickets: 150,
       category: "Eletronics",
     },
