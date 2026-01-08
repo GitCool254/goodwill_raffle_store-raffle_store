@@ -1,0 +1,5 @@
+/*
+  Content-Security-Policy:
+    default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;
+    frame-src https://www.paypal.com https://www.sandbox.paypal.com;
+    script-src * 'unsafe-inline' 'unsafe-eval';
