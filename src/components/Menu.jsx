@@ -54,6 +54,8 @@ export default function Menu({ setView }) {
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
 
+          <br />
+
           {/* PRODUCTS */}
           <div className="mb-6">
             <button
@@ -65,6 +67,8 @@ export default function Menu({ setView }) {
             </button>
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
+          
+          <br />
 
           {/* 🎟️ MY TICKETS (NEW) */}
           <div className="mb-6">
@@ -77,6 +81,8 @@ export default function Menu({ setView }) {
             </button>
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
+
+          <br />
 
           {/* ADDRESS */}
           <div className="mb-6">
@@ -95,6 +101,8 @@ export default function Menu({ setView }) {
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
 
+          <br />
+
           {/* CONTACT */}
           <div className="mb-6">
             <button
@@ -106,6 +114,8 @@ export default function Menu({ setView }) {
             </button>
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
+
+          <br />
 
           {/* ABOUT */}
           <div className="mb-6">
@@ -119,6 +129,11 @@ export default function Menu({ setView }) {
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
           </div>
         </div>
+
+        <br />
+        <br />
+        <br />
+        
 
         {/* FOOTER */}
         <div className="mt-10 text-center text-slate-400 text-sm pt-4">
