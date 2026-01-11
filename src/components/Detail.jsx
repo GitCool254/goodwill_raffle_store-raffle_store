@@ -82,7 +82,12 @@ export default function Detail({ product, openImage }) {
       // ✅ READ REAL TICKET NUMBERS FROM BACKEND
       const ticketHeader = res.headers.get("X-Ticket-Numbers");
       const ticketNumbers = ticketHeader ? ticketHeader.split(",") : [];
-      
+
+      if (!ticketNumbers.length) {
+        alert("Ticket generation failed. Please contact support with your Order ID.");
+        setIsGenerating(false);
+        return;
+      }
       // ✅ SAVE TICKET TO LOCAL STORAGE FOR "MY TICKETS"
       const stored = localStorage.getItem("gw_entries");
       const entries = stored ? JSON.parse(stored) : {};
