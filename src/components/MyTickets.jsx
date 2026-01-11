@@ -26,7 +26,8 @@ export default function MyTickets() {
     }
 
     const entries = JSON.parse(stored);
-    setTickets(entries[email] || []);
+    const emailKey = email.trim().toLowerCase();
+    setTickets(entries[emailKey] || []);
   }
 
   return (

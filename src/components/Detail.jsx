@@ -87,12 +87,14 @@ export default function Detail({ product, openImage }) {
       const stored = localStorage.getItem("gw_entries");
       const entries = stored ? JSON.parse(stored) : {};
 
-      if (!entries[email]) {
-        entries[email] = [];
+      const emailKey = email.trim().toLowerCase();
+
+      if (!entries[emailKey]) {
+        entries[emailKey] = [];
       }
 
       ticketNumbers.forEach((ticketNo) => {
-        entries[email].push({
+        entries[emailKey].push({
           productTitle: product.title,
           ticketNo,
           orderId: lastOrder.orderId,
