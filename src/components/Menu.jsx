@@ -84,9 +84,12 @@ export default function Menu({ setView }) {
               className="w-full text-left py-5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700/60 transition shadow-sm flex items-center justify-between"
               onClick={() => setView("address")}
             >
-              <span className="text-lg text-white font-semibold">
-                📍 Physical Address
-              </span>
+              <div className="flex items-center gap-3">
+                <svg                                                                     xmlns="http://www.w3.org/2000/svg"
+                  style={{ width: "16px", height: "16px" }}                              className="text-blue-400"                                              viewBox="0 0 24 24"
+                  fill="currentColor"                                                  >                                                                        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z" />                                                     </svg>
+                                                                                       <span className="text-lg text-white font-semibold">Physical Address</span>
+              </div>
               <span className="text-xl text-blue-400">›</span>
             </button>
             <div className="mx-auto mt-4 h-px w-1/2 bg-slate-700" />
