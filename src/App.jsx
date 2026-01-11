@@ -15,6 +15,7 @@ import Address from "./components/Address";
 import Contact from "./components/Contact";
 import About from "./components/About";
 import Menu from "./components/Menu";
+import MyTickets from "./components/MyTickets";
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -145,6 +146,17 @@ export default function App() {
   // -------------------- CORE FUNCTIONS --------------------
   function openProduct(p) {
     setSelected(p);
+    setView("detail");
+  }
+
+  function openTicketProduct(ticket) {
+    const product = products.find((p) => p.id === ticket.productId);
+    if (!product) return;
+
+    setSelected({
+      ...product,
+      _ticket: ticket, // marks read-only ticket view
+    });
     setView("detail");
   }
 
@@ -469,6 +481,9 @@ export default function App() {
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}
         {view === "about" && <About />}
+        {view === "tickets" && (
+          <MyTickets openTicketProduct={openTicketProduct} />
+        )}
         {view === "menu" && <Menu setView={setView} />}
       </main>
 

@@ -3,6 +3,7 @@ import PayPalButton from "./PayPalButton";
 
 
 export default function Detail({ product, openImage }) {
+  const ticket = product?._ticket || null;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -99,6 +100,12 @@ export default function Detail({ product, openImage }) {
     <div className="p-6 text-center">
       <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
 
+      {ticket && (
+        <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
+          🎟️ Viewing your ticket
+        </div>
+      )}
+
       <img
         src={product.image}
         className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
@@ -114,6 +121,12 @@ export default function Detail({ product, openImage }) {
       />
 
       <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
+
+      {ticket && (
+        <p className="text-sm text-slate-700 mb-4">
+          Ticket No: <strong>{ticket.ticketNo}</strong>
+        </p>
+      )}
 
       {/* DESCRIPTION SECTION */}
       <div className="mb-10">
@@ -135,89 +148,102 @@ export default function Detail({ product, openImage }) {
 
       <br />
 
-      {/* NAME */}
-      <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={`p-2 w-full border rounded ${
-            errors.name ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.name && <p className="text-red-500">{errors.name}</p>}       </div>                                                                                                                                        {/* EMAIL */}
-      <div className="mb-3 max-w-md mx-auto text-left">
-        <label>Email</label>
-        <input                                                                   value={email}
-          type="email"                                                           onChange={(e) => setEmail(e.target.value)}
-          className={`p-2 w-full border rounded ${
-            errors.email ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.email && <p className="text-red-500">{errors.email}</p>}
-      </div>
-                                                                             {/* QUANTITY */}
-      <div className="mb-5 max-w-md mx-auto text-left">
-        <label className="block mb-1">Quantity</label>
-        <input
-          type="number"
-          value={quantity}
-          min="1"
-          max="50"
-          onChange={(e) =>
-            setQuantity(Math.max(1, Number(e.target.value) || 1))                }
-          className={`p-2 w-28 border rounded mb-4 ${
-            errors.quantity ? "border-red-500" : "border-gray-300"               }`}                                                                  />
-        {errors.quantity && (
-          <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>                                                                              )}
-      </div>
 
-      <br />
+      {!ticket && (
+        <>
+          {/* NAME */}
+          <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={`p-2 w-full border rounded ${
+                errors.name ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}       </div>                                                                                                                                        {/* EMAIL */}
+          <div className="mb-3 max-w-md mx-auto text-left">
+            <label>Email</label>
+            <input                                                                   value={email}
+              type="email"                                                           onChange={(e) => setEmail(e.target.value)}
+              className={`p-2 w-full border rounded ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.email && <p className="text-red-500">{errors.email}</p>}
+          </div>
+                                                                                 {/* QUANTITY */}
+          <div className="mb-5 max-w-md mx-auto text-left">
+            <label className="block mb-1">Quantity</label>
+            <input
+              type="number"
+              value={quantity}
+              min="1"
+              max="50"
+              onChange={(e) =>
+                setQuantity(Math.max(1, Number(e.target.value) || 1))                }
+              className={`p-2 w-28 border rounded mb-4 ${
+                errors.quantity ? "border-red-500" : "border-gray-300"               }`}                                                                  />
+            {errors.quantity && (
+              <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>                                                                              )}
+          </div>
 
-      <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
-        <div className="text-xl font-semibold text-blue-700">
-          💵 Total: <b>${amount}</b> USD
-        </div>
-        <p className="text-sm text-gray-600 italic mt-1">
-          (This will be charged securely via PayPal)
-        </p>
-      </div>
+          <br />
 
-      <hr className="my-4" />
+          <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
+            <div className="text-xl font-semibold text-blue-700">
+              💵 Total: <b>${amount}</b> USD
+            </div>
+            <p className="text-sm text-gray-600 italic mt-1">
+              (This will be charged securely via PayPal)
+            </p>
+          </div>
 
-      {/* PAYPAL */}
-      <PayPalButton
-        amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
-        appsScriptUrl={appsScriptUrl}
-        secret={secret}
-        validateForm={validateForm}
-        product={product.title}
-        quantity={quantity}
-        name={name}                                                            email={email}
-        onPaymentSuccess={async (orderObj) => {
-          setLastOrder(orderObj);
-          setDownloadReady(true);
-        }}
-      />
+          <hr className="my-4" />
 
-      {downloadReady && (
-        <button
-          onClick={handleInstantDownload}
-          disabled={hasDownloaded || isGenerating}
-          className={`mt-4 px-4 py-2 rounded text-white ${
-            hasDownloaded
-              ? "bg-gray-400"
-              : isGenerating
-              ? "bg-yellow-500"
-              : "bg-green-600"
-          }`}
-        >
-          {hasDownloaded
-            ? "Ticket Already Downloaded"
-            : isGenerating
-            ? "Generating Ticket..."
-            : "Download Ticket"}
-        </button>
+          {/* PAYPAL */}
+          <PayPalButton
+            amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
+            appsScriptUrl={appsScriptUrl}
+            secret={secret}
+            validateForm={validateForm}
+            product={product.title}
+            quantity={quantity}
+            name={name}                                                            email={email}
+            onPaymentSuccess={async (orderObj) => {
+              setLastOrder(orderObj);
+              setDownloadReady(true);
+            }}
+          />
+
+          {downloadReady && (
+            <button
+              onClick={handleInstantDownload}
+              disabled={hasDownloaded || isGenerating}
+              className={`mt-4 px-4 py-2 rounded text-white ${
+                hasDownloaded
+                  ? "bg-gray-400"
+                  : isGenerating
+                  ? "bg-yellow-500"
+                  : "bg-green-600"
+              }`}
+            >
+              {hasDownloaded
+                ? "Ticket Already Downloaded"
+                : isGenerating
+                ? "Generating Ticket..."
+                : "Download Ticket"}
+            </button>
+          )}
+        </>
       )}
+      {ticket && (
+        <button
+          onClick={() => window.history.back()}
+          className="mt-6 text-sky-600 font-semibold underline"
+        >
+          ← Back to My Tickets
+        </button>
+      )}    
     </div>
   );
 }
