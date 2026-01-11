@@ -78,6 +78,10 @@ export default function Detail({ product, openImage }) {
       }
 
       const blob = await res.blob();
+
+      // ✅ READ REAL TICKET NUMBERS FROM BACKEND
+      const ticketHeader = res.headers.get("X-Ticket-Numbers");
+      const ticketNumbers = ticketHeader ? ticketHeader.split(",") : [];
       
       // ✅ SAVE TICKET TO LOCAL STORAGE FOR "MY TICKETS"
       const stored = localStorage.getItem("gw_entries");
@@ -87,27 +91,20 @@ export default function Detail({ product, openImage }) {
         entries[email] = [];
       }
 
-      // helper to generate official GWS ticket number
-      function generateTicketNo() {
-        const rand = Math.floor(100000 + Math.random() * 900000);
-        return `GWS-${rand}`;
-      }
-
-      // generate ticket numbers ONCE
-      const generatedTickets = Array.from({ length: quantity }, () => ({
-        productTitle: product.title,
-        ticketNo: generateTicketNo(),
-        orderId: lastOrder.orderId, // internal reference
-        date: new Date().toISOString(),
-      }));
-
-      // save to local storage
-      entries[email].push(...generatedTickets);
-
-      // expose first ticket for in-page viewing
-      product._ticket = generatedTickets[0];
+      ticketNumbers.forEach((ticketNo) => {
+        entries[email].push({
+          productTitle: product.title,
+          ticketNo,
+          orderId: lastOrder.orderId,
+          date: new Date().toISOString(),
+        });
+      });
 
       localStorage.setItem("gw_entries", JSON.stringify(entries));
+
+      product._ticket = {
+        ticketNo: ticketNumbers[0],
+      };
       
       const url = window.URL.createObjectURL(blob);
 
@@ -269,8 +266,8 @@ export default function Detail({ product, openImage }) {
       )}
       {ticket && (
         <button
-          onClick={() => window.history.back()}
-          className="mt-6 text-sky-600 font-semibold underline"
+          onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
+          className="mt-6 text-sky-600 font-semibold"
         >
           ← Back to My Tickets
         </button>

@@ -143,6 +143,12 @@ export default function App() {
     localStorage.setItem("gw_entries", JSON.stringify(entries));
   }, [entries]);
 
+  useEffect(() => {
+    window.addEventListener("goMyTickets", () => setView("myTickets"));
+    return () =>
+      window.removeEventListener("goMyTickets", () => setView("myTickets"));
+  }, []);
+
   // -------------------- CORE FUNCTIONS --------------------
   function openProduct(p) {
     setSelected(p);
