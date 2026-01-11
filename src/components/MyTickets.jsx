@@ -89,6 +89,12 @@ export default function MyTickets() {
                     Ticket No: <strong>{t.ticketNo}</strong>
                   </div>
 
+                  {t.orderId && (
+                    <div className="text-xs text-slate-500 mt-1">
+                      Order ID: {t.orderId}
+                    </div>
+                  )}
+
                   {t.date && (
                     <div className="text-xs text-slate-500 mt-1">
                       Generated on: {new Date(t.date).toLocaleString()}

@@ -87,16 +87,25 @@ export default function Detail({ product, openImage }) {
         entries[email] = [];
       }
 
-      for (let i = 0; i < quantity; i++) {
-        entries[email].push({
-          productTitle: product.title,
-          ticketNo:
-            quantity > 1
-              ? `${lastOrder.orderId}-${i + 1}`
-              : lastOrder.orderId,
-          date: new Date().toISOString(),
-        });
+      // helper to generate official GWS ticket number
+      function generateTicketNo() {
+        const rand = Math.floor(100000 + Math.random() * 900000);
+        return `GWS-${rand}`;
       }
+
+      // generate ticket numbers ONCE
+      const generatedTickets = Array.from({ length: quantity }, () => ({
+        productTitle: product.title,
+        ticketNo: generateTicketNo(),
+        orderId: lastOrder.orderId, // internal reference
+        date: new Date().toISOString(),
+      }));
+
+      // save to local storage
+      entries[email].push(...generatedTickets);
+
+      // expose first ticket for in-page viewing
+      product._ticket = generatedTickets[0];
 
       localStorage.setItem("gw_entries", JSON.stringify(entries));
       
