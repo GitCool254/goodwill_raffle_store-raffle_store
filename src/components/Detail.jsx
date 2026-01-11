@@ -78,6 +78,28 @@ export default function Detail({ product, openImage }) {
       }
 
       const blob = await res.blob();
+      
+      // ✅ SAVE TICKET TO LOCAL STORAGE FOR "MY TICKETS"
+      const stored = localStorage.getItem("gw_entries");
+      const entries = stored ? JSON.parse(stored) : {};
+
+      if (!entries[email]) {
+        entries[email] = [];
+      }
+
+      for (let i = 0; i < quantity; i++) {
+        entries[email].push({
+          productTitle: product.title,
+          ticketNo:
+            quantity > 1
+              ? `${lastOrder.orderId}-${i + 1}`
+              : lastOrder.orderId,
+          date: new Date().toISOString(),
+        });
+      }
+
+      localStorage.setItem("gw_entries", JSON.stringify(entries));
+      
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
