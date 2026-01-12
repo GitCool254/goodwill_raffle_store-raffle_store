@@ -33,7 +33,7 @@ export default function MyTickets() {
     setTickets(entries[emailKey] || []);
   }
 
-  function handleOrderRedownload(e) {
+  async function handleOrderRedownload(e) {
     e.preventDefault();
     setOrderError("");
 
@@ -50,7 +50,7 @@ export default function MyTickets() {
 
     const entries = JSON.parse(stored);
 
-    // 🔍 search across ALL emails
+    // 🔍 find matching tickets
     const matchedTickets = [];
     Object.values(entries).forEach((list) => {
       list.forEach((t) => {
@@ -65,14 +65,49 @@ export default function MyTickets() {
       return;
     }
 
-    // ⚠️ Client-side re-download notice
-    alert(
-      `Found ${matchedTickets.length} ticket(s).\nRe-download will start now.`
-    );
+    // 👉 Use FIRST ticket as reference (same order)
+    const ref = matchedTickets[0];
 
-    // ⛔ We cannot regenerate PDFs safely client-side
-    // ✅ This intentionally reuses existing flow
-    // 👉 Inform user to re-download from original device
+    try {
+      const res = await fetch(
+        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            order_id: orderId.trim(),
+            quantity: matchedTickets.length,
+            ticket_price: ref.ticketPrice || 7, // fallback if missing
+            name: ref.fullName || "Ticket Holder",
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Re-download failed");
+      }
+
+      // 📦 Get filename from headers
+      const disposition = res.headers.get("Content-Disposition");
+      const filenameMatch = disposition?.match(/filename="(.+)"/);
+      const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
+
+      // ⬇️ Trigger download
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      setOrderError("Re-download failed. Please contact support.");
+    }
   }
 
   return (
