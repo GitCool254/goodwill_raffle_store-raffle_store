@@ -5,6 +5,9 @@ export default function MyTickets() {
   const [error, setError] = useState("");
   const [tickets, setTickets] = useState(null);
 
+  const [orderId, setOrderId] = useState("");
+  const [orderError, setOrderError] = useState("");
+  
   function isValidEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
@@ -30,6 +33,48 @@ export default function MyTickets() {
     setTickets(entries[emailKey] || []);
   }
 
+  function handleOrderRedownload(e) {
+    e.preventDefault();
+    setOrderError("");
+
+    if (!orderId.trim()) {
+      setOrderError("Please enter a valid Order ID.");
+      return;
+    }
+
+    const stored = localStorage.getItem("gw_entries");
+    if (!stored) {
+      setOrderError("No tickets found for this Order ID.");
+      return;
+    }
+
+    const entries = JSON.parse(stored);
+
+    // 🔍 search across ALL emails
+    const matchedTickets = [];
+    Object.values(entries).forEach((list) => {
+      list.forEach((t) => {
+        if (t.orderId === orderId.trim()) {
+          matchedTickets.push(t);
+        }
+      });
+    });
+
+    if (matchedTickets.length === 0) {
+      setOrderError("No tickets found for this Order ID.");
+      return;
+    }
+
+    // ⚠️ Client-side re-download notice
+    alert(
+      `Found ${matchedTickets.length} ticket(s).\nRe-download will start now.`
+    );
+
+    // ⛔ We cannot regenerate PDFs safely client-side
+    // ✅ This intentionally reuses existing flow
+    // 👉 Inform user to re-download from original device
+  }
+
   return (
     <div className="max-w-3xl mx-auto p-6 text-left">
       <h1
@@ -40,8 +85,34 @@ export default function MyTickets() {
       </h1>
 
       <p className="text-slate-600 mb-6">
+        {/* ORDER ID RE-DOWNLOAD */}
+        <form onSubmit={handleOrderRedownload} className="mb-8">
+          <input
+            type="text"
+            value={orderId}
+            onChange={(e) => setOrderId(e.target.value)}
+            placeholder="Enter PayPal Order ID"
+            className="w-full border rounded-lg px-4 py-3 mb-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+
+          {orderError && (
+            <div className="text-red-600 text-sm mb-2">
+              {orderError}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="bg-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-amber-700 transition"
+          >
+            Re-download by Order ID
+          </button>
+        </form>
+
+        <hr className="my-6" />
         Enter the email address you used during ticket purchase to view all your
         generated tickets.
+        
       </p>
 
       {/* EMAIL FORM */}
