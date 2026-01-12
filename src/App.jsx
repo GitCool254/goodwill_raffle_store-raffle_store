@@ -487,7 +487,7 @@ export default function App() {
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}
         {view === "about" && <About />}
-        {view === "myTickets" && (
+        {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
         )}
         {view === "menu" && <Menu setView={setView} />}
