@@ -119,7 +119,7 @@ export default function MyTickets() {
         🎟️ My Tickets
       </h1>
 
-      <p className="text-slate-600 mb-6">
+      <div className="text-slate-600 mb-6">
         {/* ORDER ID RE-DOWNLOAD */}
         <form onSubmit={handleOrderRedownload} className="mb-8">
           <input
@@ -148,7 +148,7 @@ export default function MyTickets() {
         Enter the email address you used during ticket purchase to view all your
         generated tickets.
         
-      </p>
+      </div>
 
       {/* EMAIL FORM */}
       <form onSubmit={handleSearch} className="mb-6">
