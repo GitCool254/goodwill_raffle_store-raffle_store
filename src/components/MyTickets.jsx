@@ -3,6 +3,10 @@ import React, { useState } from "react";
 const FOCUS_BLUE = "#38bdf8"; // sky-400
 const ERROR_RED = "#ef4444";  // red-500
 
+const shakeStyle = {
+  animation: "shake 0.35s ease-in-out",
+};
+
 export default function MyTickets() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -147,6 +151,7 @@ export default function MyTickets() {
                 : "none",
               outline: "none",
               transition: "all 0.15s ease",
+              ...(orderError ? shakeStyle : {}),
             }}
             className="w-full rounded-lg px-4 py-3 mb-2"
           />
@@ -193,6 +198,7 @@ export default function MyTickets() {
               : "none",
             outline: "none",
             transition: "all 0.15s ease",
+            ...(error ? shakeStyle : {}),
           }}
           className="w-full rounded-lg px-4 py-3 mb-2"
         />

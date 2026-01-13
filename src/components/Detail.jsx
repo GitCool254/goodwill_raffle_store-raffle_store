@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
 
+const shakeStyle = {
+  animation: "shake 0.35s ease-in-out",
+};
 
 export default function Detail({ product, openImage }) {
   const ticket = product?._ticket || null;
@@ -211,6 +214,7 @@ export default function Detail({ product, openImage }) {
                   : "none",
                 outline: "none",
                 transition: "all 0.15s ease",
+                ...(errors.name ? shakeStyle : {}),
               }}
               className="p-2 w-full rounded"
             />
@@ -237,6 +241,7 @@ export default function Detail({ product, openImage }) {
                   : "none",
                 outline: "none",
                 transition: "all 0.15s ease",
+                ...(errors.email ? shakeStyle : {}),
               }}
               className="p-2 w-full rounded"
             />
@@ -266,6 +271,7 @@ export default function Detail({ product, openImage }) {
                   : "none",
                 outline: "none",
                 transition: "all 0.15s ease",
+                ...(errors.quantity ? shakeStyle : {}),
               }}
               className="p-2 w-28 rounded mb-4"
             />
