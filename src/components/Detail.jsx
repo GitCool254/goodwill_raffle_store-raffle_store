@@ -161,9 +161,9 @@ export default function Detail({ product, openImage }) {                 const t
               onFocus={() => setFocusedField("name")}
               onBlur={() => setFocusedField(null)}                                   style={{
                 border: errors.name
-                  ? "1px solid #ef4444" // red-500
+                  ? "1px solid #ef4444"
                   : focusedField === "name"
-                  ? "1px solid #38bdf8" // sky-400                                       : "1px solid #d1d5db", // gray-300
+                  ? "1px solid #38bdf8"                                                  : "1px solid #d1d5db",
                 boxShadow: errors.name
                   ? "0 0 0 2px rgba(239,68,68,0.3)"
                   : focusedField === "name"
