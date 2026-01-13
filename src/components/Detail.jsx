@@ -256,7 +256,7 @@ export default function Detail({ product, openImage }) {                 const t
           {!downloadReady && !ticket && (
             <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
               <div className="flex items-center gap-3 mb-1">
-                <span className="subtle-spinner" style={{ marginTop: "1px" }} />
+                <span className="subtle-spinner" style={{ marginRight: "8px" }} />
                 <span>Waiting for payment confirmation</span>
               </div>
               <div className="text-xs text-slate-400">
