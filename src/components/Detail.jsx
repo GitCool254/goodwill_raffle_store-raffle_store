@@ -314,6 +314,12 @@ export default function Detail({ product, openImage }) {
             }}
           />
 
+          {lastOrder && !downloadReady && (
+            <div className="mt-4 text-sm text-slate-600 italic">
+              Payment confirmed. Your ticket download will be available shortly.
+            </div>
+          )}
+
           {downloadReady && (
             <button
               onClick={handleInstantDownload}
