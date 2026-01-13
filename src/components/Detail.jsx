@@ -12,6 +12,7 @@ export default function Detail({ product, openImage }) {
   const [quantity, setQuantity] = useState("1");
   const [errors, setErrors] = useState({});
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [hasDownloaded, setHasDownloaded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -310,12 +311,23 @@ export default function Detail({ product, openImage }) {
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
+              setShowConfirmation(true);  // ✅ show message immediately
               setDownloadReady(true);
+
+              // optional: hide message automatically after 3 seconds
+              setTimeout(() => setShowConfirmation(false), 3000);
             }}
           />
 
-          {lastOrder && !downloadReady && (
-            <div className="mt-4 text-sm text-slate-600 italic">
+          {showConfirmation && (
+            <div
+              style={{
+                marginTop: "1rem",
+                fontSize: "0.875rem",
+                color: "#64748b", // slate-600
+                fontStyle: "italic",
+              }}
+            >
               Payment confirmed. Your ticket download will be available shortly.
             </div>
           )}
