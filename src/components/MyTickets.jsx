@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+const FOCUS_BLUE = "#38bdf8"; // sky-400
+const ERROR_RED = "#ef4444";  // red-500
+
 export default function MyTickets() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -7,6 +10,8 @@ export default function MyTickets() {
 
   const [orderId, setOrderId] = useState("");
   const [orderError, setOrderError] = useState("");
+
+  const [focusedField, setFocusedField] = useState(null);
   
   function isValidEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -125,9 +130,25 @@ export default function MyTickets() {
           <input
             type="text"
             value={orderId}
-            onChange={(e) => setOrderId(e.target.value)}
             placeholder="Enter PayPal Order ID"
-            className="w-full border rounded-lg px-4 py-3 mb-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            onChange={(e) => setOrderId(e.target.value)}
+            onFocus={() => setFocusedField("orderId")}
+            onBlur={() => setFocusedField(null)}
+            style={{
+              border: orderError
+                ? `1px solid ${ERROR_RED}`
+                : focusedField === "orderId"
+                ? `1px solid ${FOCUS_BLUE}`
+                : "1px solid #d1d5db",
+              boxShadow: orderError
+                ? "0 0 0 2px rgba(239,68,68,0.3)"
+                : focusedField === "orderId"
+                ? "0 0 0 2px rgba(56,189,248,0.4)"
+                : "none",
+              outline: "none",
+              transition: "all 0.15s ease",
+            }}
+            className="w-full rounded-lg px-4 py-3 mb-2"
           />
 
           {orderError && (
@@ -155,9 +176,25 @@ export default function MyTickets() {
         <input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="w-full border rounded-lg px-4 py-3 mb-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          onChange={(e) => setEmail(e.target.value)}
+          onFocus={() => setFocusedField("email")}
+          onBlur={() => setFocusedField(null)}
+          style={{
+            border: error
+              ? `1px solid ${ERROR_RED}`
+              : focusedField === "email"
+              ? `1px solid ${FOCUS_BLUE}`
+              : "1px solid #d1d5db",
+            boxShadow: error
+              ? "0 0 0 2px rgba(239,68,68,0.3)"
+              : focusedField === "email"
+              ? "0 0 0 2px rgba(56,189,248,0.4)"
+              : "none",
+            outline: "none",
+            transition: "all 0.15s ease",
+          }}
+          className="w-full rounded-lg px-4 py-3 mb-2"
         />
 
         {error && (
