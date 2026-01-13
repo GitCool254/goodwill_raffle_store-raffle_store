@@ -41,8 +41,15 @@ export default function Detail({ product, openImage }) {
     if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
-    if (!quantity || Number(quantity) < 1)
-      newErrors.quantity = "Quantity must be at least 1.";
+    const qtyNum = Number(quantity);
+
+    if (
+      !quantity ||
+      !Number.isInteger(qtyNum) ||
+      qtyNum < 1
+    ) {
+      newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
