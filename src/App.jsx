@@ -505,6 +505,8 @@ export default function App() {
         />
       )}
 
+      <br />
+
       {/* FOOTER (sticky bottom + broken line) */}
       {view !== "image" && (
         <footer
