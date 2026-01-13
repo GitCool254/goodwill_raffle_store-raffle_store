@@ -60,6 +60,9 @@ export default function App() {
       totalTickets: 100,
       category: "Eletronics",
     },
+
+    <br />
+    
     {
       id: "p2",
       title: "Beachcroft Patio set",
@@ -75,6 +78,9 @@ export default function App() {
       totalTickets: 200,
       category: "Households",
     },
+
+    <br />
+    
     {
       id: "p3",
       title: "Coolster 125cc",
