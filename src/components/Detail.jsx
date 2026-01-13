@@ -252,10 +252,16 @@ export default function Detail({ product, openImage }) {                 const t
               setDownloadReady(true);
             }}                                                                   />
           
-          {/* DOWNLOAD INFO (shown before payment) */}
+          {/* DOWNLOAD PLACEHOLDER (before payment) */}
           {!downloadReady && !ticket && (
-            <div className="mt-4 text-sm text-slate-500 italic">
-              After successful payment, your ticket download will appear here.
+            <div className="mt-4 flex flex-col items-center text-slate-500 text-sm">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="subtle-spinner" />
+                <span>Waiting for payment confirmation</span>
+              </div>
+              <div className="text-xs text-slate-400">
+                Your ticket download will appear here after successful payment
+              </div>
             </div>
           )} 
             
