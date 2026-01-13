@@ -60,8 +60,6 @@ export default function App() {
       totalTickets: 100,
       category: "Eletronics",
     },
-
-    <br />
     
     {
       id: "p2",
@@ -78,8 +76,6 @@ export default function App() {
       totalTickets: 200,
       category: "Households",
     },
-
-    <br />
     
     {
       id: "p3",
