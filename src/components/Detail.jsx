@@ -6,7 +6,7 @@ export default function Detail({ product, openImage }) {
   const ticket = product?._ticket || null;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("1");
   const [errors, setErrors] = useState({});
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);
@@ -26,7 +26,9 @@ export default function Detail({ product, openImage }) {
   }, [lastOrder]);
 
   const price =
-    parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const amount = Number((price * quantity).toFixed(2));                
+    parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
+  const amount = Number((price * safeQty).toFixed(2));                
+  
   const appsScriptUrl =
     "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";                         const secret = "goodwill_5490_secret";
                                                                          function validateForm() {
@@ -34,7 +36,7 @@ export default function Detail({ product, openImage }) {
     if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
-    if (!quantity || quantity < 1)
+    if (!quantity || Number(quantity) < 1)
       newErrors.quantity = "Quantity must be at least 1.";
 
     setErrors(newErrors);
@@ -190,19 +192,29 @@ export default function Detail({ product, openImage }) {
           <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
             <input
               value={name}
+              placeholder="Enter your full name"
               onChange={(e) => setName(e.target.value)}
-              className={`p-2 w-full border rounded ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`p-2 w-full border rounded
+                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
+                ${errors.name
+                  ? "border-red-500 ring-2 ring-red-300"
+                  : "border-gray-300"}
+              `}
             />
             {errors.name && <p className="text-red-500">{errors.name}</p>}       </div>                                                                                                                                        {/* EMAIL */}
           <div className="mb-3 max-w-md mx-auto text-left">
             <label>Email</label>
-            <input                                                                   value={email}
-              type="email"                                                           onChange={(e) => setEmail(e.target.value)}
-              className={`p-2 w-full border rounded ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
+            <input
+              value={email}
+              type="email"
+              placeholder="Enter your email address"
+              onChange={(e) => setEmail(e.target.value)}
+              className={`p-2 w-full border rounded
+                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
+                ${errors.email
+                  ? "border-red-500 ring-2 ring-red-300"
+                  : "border-gray-300"}
+              `}
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
@@ -214,10 +226,14 @@ export default function Detail({ product, openImage }) {
               value={quantity}
               min="1"
               max="50"
-              onChange={(e) =>
-                setQuantity(Math.max(1, Number(e.target.value) || 1))                }
-              className={`p-2 w-28 border rounded mb-4 ${
-                errors.quantity ? "border-red-500" : "border-gray-300"               }`}                                                                  />
+              onChange={(e) => setQuantity(e.target.value)}
+              className={`p-2 w-28 border rounded mb-4
+                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
+                ${errors.quantity
+                  ? "border-red-500 ring-2 ring-red-300"
+                  : "border-gray-300"}
+              `}
+            />
             {errors.quantity && (
               <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>                                                                              )}
           </div>
