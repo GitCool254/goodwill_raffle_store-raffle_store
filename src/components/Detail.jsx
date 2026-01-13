@@ -31,6 +31,16 @@ export default function Detail({ product, openImage }) {
     setHasDownloaded(false);
   }, [lastOrder]);
 
+  useEffect(() => {
+    if (lastOrder) {
+      setShowConfirmation(true);
+
+      // auto-hide after 3 seconds
+      const timer = setTimeout(() => setShowConfirmation(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [lastOrder]);
+
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
   const amount = Number((price * safeQty).toFixed(2));                
@@ -311,11 +321,7 @@ export default function Detail({ product, openImage }) {
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
-              setShowConfirmation(true);  // ✅ show message immediately
               setDownloadReady(true);
-
-              // optional: hide message automatically after 3 seconds
-              setTimeout(() => setShowConfirmation(false), 3000);
             }}
           />
 
