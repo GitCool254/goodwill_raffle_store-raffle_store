@@ -251,7 +251,14 @@ export default function Detail({ product, openImage }) {                 const t
               setLastOrder(orderObj);
               setDownloadReady(true);
             }}                                                                   />
-
+          
+          {/* DOWNLOAD INFO (shown before payment) */}
+          {!downloadReady && !ticket && (
+            <div className="mt-4 text-sm text-slate-500 italic">
+              After successful payment, your ticket download will appear here.
+            </div>
+          )} 
+            
           {downloadReady && (
             <button
               onClick={handleInstantDownload}
