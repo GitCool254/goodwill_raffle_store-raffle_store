@@ -16,6 +16,8 @@ export default function Detail({ product, openImage }) {
   const DESCRIPTION_LIMIT = 70;
   const [expandedDesc, setExpandedDesc] = useState(false);
 
+  const [focusedField, setFocusedField] = useState(null);
+
   function toggleDescription(e) {
     e.stopPropagation();
     setExpandedDesc((prev) => !prev);
@@ -194,12 +196,23 @@ export default function Detail({ product, openImage }) {
               value={name}
               placeholder="Enter your full name"
               onChange={(e) => setName(e.target.value)}
-              className={`p-2 w-full border rounded
-                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
-                ${errors.name
-                  ? "border-red-500 ring-2 ring-red-300"
-                  : "border-gray-300"}
-              `}
+              onFocus={() => setFocusedField("name")}
+              onBlur={() => setFocusedField(null)}
+              style={{
+                border: errors.name
+                  ? "1px solid #ef4444" // red-500
+                  : focusedField === "name"
+                  ? "1px solid #38bdf8" // sky-400
+                  : "1px solid #d1d5db", // gray-300
+                boxShadow: errors.name
+                  ? "0 0 0 2px rgba(239,68,68,0.3)"
+                  : focusedField === "name"
+                  ? "0 0 0 2px rgba(56,189,248,0.4)"
+                  : "none",
+                outline: "none",
+                transition: "all 0.15s ease",
+              }}
+              className="p-2 w-full rounded"
             />
             {errors.name && <p className="text-red-500">{errors.name}</p>}       </div>                                                                                                                                        {/* EMAIL */}
           <div className="mb-3 max-w-md mx-auto text-left">
@@ -209,12 +222,23 @@ export default function Detail({ product, openImage }) {
               type="email"
               placeholder="Enter your email address"
               onChange={(e) => setEmail(e.target.value)}
-              className={`p-2 w-full border rounded
-                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
-                ${errors.email
-                  ? "border-red-500 ring-2 ring-red-300"
-                  : "border-gray-300"}
-              `}
+              onFocus={() => setFocusedField("email")}
+              onBlur={() => setFocusedField(null)}
+              style={{
+                border: errors.email
+                  ? "1px solid #ef4444"
+                  : focusedField === "email"
+                  ? "1px solid #38bdf8"
+                  : "1px solid #d1d5db",
+                boxShadow: errors.email
+                  ? "0 0 0 2px rgba(239,68,68,0.3)"
+                  : focusedField === "email"
+                  ? "0 0 0 2px rgba(56,189,248,0.4)"
+                  : "none",
+                outline: "none",
+                transition: "all 0.15s ease",
+              }}
+              className="p-2 w-full rounded"
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
@@ -227,12 +251,23 @@ export default function Detail({ product, openImage }) {
               min="1"
               max="50"
               onChange={(e) => setQuantity(e.target.value)}
-              className={`p-2 w-28 border rounded mb-4
-                focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400
-                ${errors.quantity
-                  ? "border-red-500 ring-2 ring-red-300"
-                  : "border-gray-300"}
-              `}
+              onFocus={() => setFocusedField("quantity")}
+              onBlur={() => setFocusedField(null)}
+              style={{
+                border: errors.quantity
+                  ? "1px solid #ef4444"
+                  : focusedField === "quantity"
+                  ? "1px solid #38bdf8"
+                  : "1px solid #d1d5db",
+                boxShadow: errors.quantity
+                  ? "0 0 0 2px rgba(239,68,68,0.3)"
+                  : focusedField === "quantity"
+                  ? "0 0 0 2px rgba(56,189,248,0.4)"
+                  : "none",
+                outline: "none",
+                transition: "all 0.15s ease",
+              }}
+              className="p-2 w-28 rounded mb-4"
             />
             {errors.quantity && (
               <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>                                                                              )}
