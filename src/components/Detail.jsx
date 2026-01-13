@@ -251,12 +251,14 @@ export default function Detail({ product, openImage }) {                 const t
               setLastOrder(orderObj);
               setDownloadReady(true);
             }}                                                                   />
+
+          <br />  
           
           {/* DOWNLOAD PLACEHOLDER (before payment) */}
           {!downloadReady && !ticket && (
             <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
               <div className="flex items-center gap-3 mb-1">
-                <span className="subtle-spinner" style={{ marginRight: "8px" }} />
+                <span className="subtle-spinner" style={{ marginRight: "10px" }} />
                 <span>Waiting for payment confirmation</span>
               </div>
               <div className="text-xs text-slate-400">
