@@ -43,6 +43,8 @@ export default function Detail({ product, openImage }) {                 const t
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 
+  console.log("BACKEND URL =", import.meta.env.VITE_BACKEND_URL);
+
   async function handleInstantDownload() {                                 if (!lastOrder) {
       alert("No completed payment found.");
       return;
