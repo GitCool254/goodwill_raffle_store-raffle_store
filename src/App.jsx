@@ -30,7 +30,8 @@ export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
 
   // -------------------- TICKET COUNTDOWN --------------------
-  const RAFFLE_START_DATE = "2026-01-07"; // change only if needed
+  // change only if needed
+  const RAFFLE_START_DATE = "2026-01-10";
   const INITIAL_TICKETS = 10;
 
   const daysPassed = Math.floor(
