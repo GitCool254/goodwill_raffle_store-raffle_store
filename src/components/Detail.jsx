@@ -250,6 +250,18 @@ export default function Detail({ product, openImage }) {                 const t
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setDownloadReady(true);
+
+              // 🔐 SILENT TICKET GENERATION
+              fetch(`${import.meta.env.VITE_BACKEND_URL}/prepare_ticket`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  order_id: orderObj.orderId,
+                  name,
+                  quantity,
+                  ticket_price: product.ticketPrice,
+                }),
+              }).catch(() => {});
             }}                                                                   />
 
           <br />
