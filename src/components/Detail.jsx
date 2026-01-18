@@ -15,7 +15,7 @@ export default function Detail({ product, openImage }) {                 const t
   const DESCRIPTION_LIMIT = 70;
   const [expandedDesc, setExpandedDesc] = useState(false);
 
-  const [focusedField, setFocusedField] = useState(null);              
+  const [focusedField, setFocusedField] = useState(null);
   function toggleDescription(e) {
     e.stopPropagation();
     setExpandedDesc((prev) => !prev);
@@ -39,7 +39,7 @@ export default function Detail({ product, openImage }) {                 const t
       qtyNum < 1
     ) {
       newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
-    }                                                                  
+    }
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 
@@ -47,10 +47,10 @@ export default function Detail({ product, openImage }) {                 const t
       alert("No completed payment found.");
       return;
     }
-                                                                           if (hasDownloaded || isGenerating) return;                         
+                                                                           if (hasDownloaded || isGenerating) return;
     setIsGenerating(true);
 
-    try {                                                              
+    try {
       const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
         {
           method: "POST",                                                        headers: {
@@ -67,7 +67,7 @@ export default function Detail({ product, openImage }) {                 const t
         setIsGenerating(false);
         return;
       }
-                                                                             const blob = await res.blob();                                   
+                                                                             const blob = await res.blob();
       // ✅ READ REAL TICKET NUMBERS FROM BACKEND
       const ticketHeader = res.headers.get("X-Ticket-Numbers");              const ticketNumbers = ticketHeader ? ticketHeader.split(",") : [];
 
@@ -248,34 +248,12 @@ export default function Detail({ product, openImage }) {                 const t
             product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
-              // 1️⃣ Save order locally
               setLastOrder(orderObj);
-
-              // 2️⃣ SILENT ticket generation (Option B)
-              await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate_ticket`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  name,
-                  email,
-                  quantity,
-                  ticket_price: product.ticketPrice,
-                  order_id: orderObj.orderId,
-                  generate_only: true, // 🔑 silent generation
-                }),
-              });
-
-              // 3️⃣ Store order ID for later re-download
-              localStorage.setItem("last_order_id", orderObj.orderId);
-
-              // 4️⃣ Show download button (optional)
               setDownloadReady(true);
             }}                                                                   />
 
-          <br />  
-          
+          <br />
+
           {/* DOWNLOAD PLACEHOLDER (before payment) */}
           {!downloadReady && !ticket && (
             <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
@@ -287,8 +265,8 @@ export default function Detail({ product, openImage }) {                 const t
                 Your ticket download will appear here after successful payment
               </div>
             </div>
-          )} 
-            
+          )}
+
           {downloadReady && (
             <button
               onClick={handleInstantDownload}
