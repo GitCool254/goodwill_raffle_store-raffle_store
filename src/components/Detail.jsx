@@ -248,7 +248,29 @@ export default function Detail({ product, openImage }) {                 const t
             product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
+              // 1️⃣ Save order locally
               setLastOrder(orderObj);
+
+              // 2️⃣ SILENT ticket generation (Option B)
+              await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate_ticket`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name,
+                  email,
+                  quantity,
+                  ticket_price: product.ticketPrice,
+                  order_id: orderObj.orderId,
+                  generate_only: true, // 🔑 silent generation
+                }),
+              });
+
+              // 3️⃣ Store order ID for later re-download
+              localStorage.setItem("last_order_id", orderObj.orderId);
+
+              // 4️⃣ Show download button (optional)
               setDownloadReady(true);
             }}                                                                   />
 
