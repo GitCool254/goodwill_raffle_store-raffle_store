@@ -21,7 +21,7 @@ export default function MyTickets() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function handleSearch(e) {
+  async function handleSearch(e) {
     e.preventDefault();
     setError("");
     setTickets(null);
