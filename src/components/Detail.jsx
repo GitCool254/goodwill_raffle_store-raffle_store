@@ -57,7 +57,8 @@ export default function Detail({ product, openImage }) {                 const t
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name,                                                                  quantity,                                                              ticket_price: product.ticketPrice,
+            name,                                                                  email,
+            quantity,                                                              ticket_price: product.ticketPrice,
             order_id: lastOrder.orderId,
           }),                                                                  }                                                                    );
                                                                              if (!res.ok) {

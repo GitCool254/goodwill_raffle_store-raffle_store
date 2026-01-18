@@ -21,7 +21,7 @@ export default function MyTickets() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function handleSearch(e) {
+  async function handleSearch(e) {
     e.preventDefault();
     setError("");
     setTickets(null);
@@ -31,15 +31,36 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
-    if (!stored) {
-      setTickets([]);
-      return;
-    }
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/orders_by_email`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
 
-    const entries = JSON.parse(stored);
-    const emailKey = email.trim().toLowerCase();
-    setTickets(entries[emailKey] || []);
+      if (!res.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const orders = await res.json();
+
+      // Normalize for existing UI
+      const normalized = orders.map((o) => ({
+        productTitle: "Raffle Ticket",
+        orderId: o.order_id,
+        date: o.date,
+        ticketNo: "—", // not needed for re-download
+      }));
+
+      setTickets(normalized);
+    } catch (err) {
+      console.error(err);
+      setError("Could not retrieve tickets for this email.");
+      setTickets([]);
+    }
   }
 
   async function handleOrderRedownload(e) {
