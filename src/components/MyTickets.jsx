@@ -31,7 +31,17 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/orders_by_email`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      }
+    );
+
+    const orders = await res.json();
+    setTickets(orders);
     if (!stored) {
       setTickets([]);
       return;
@@ -51,57 +61,22 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
-    if (!stored) {
-      setOrderError("No tickets found for this Order ID.");
-      return;
-    }
-
-    const entries = JSON.parse(stored);
-
-    // 🔍 find matching tickets
-    const matchedTickets = [];
-    Object.values(entries).forEach((list) => {
-      list.forEach((t) => {
-        if (t.orderId === orderId.trim()) {
-          matchedTickets.push(t);
-        }
-      });
-    });
-
-    if (matchedTickets.length === 0) {
-      setOrderError("No tickets found for this Order ID.");
-      return;
-    }
-
-    // 👉 Use FIRST ticket as reference (same order)
-    const ref = matchedTickets[0];
-
     try {
       const res = await fetch(
-        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
+        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            order_id: orderId.trim(),
-            quantity: matchedTickets.length,
-            ticket_price: ref.ticketPrice || 7, // fallback if missing
-            name: ref.fullName || "Ticket Holder",
-          }),
+          body: JSON.stringify({ order_id: orderId.trim() }),
         }
       );
 
-      if (!res.ok) {
-        throw new Error("Re-download failed");
-      }
+      if (!res.ok) throw new Error("Re-download failed");
 
-      // 📦 Get filename from headers
       const disposition = res.headers.get("Content-Disposition");
       const filenameMatch = disposition?.match(/filename="(.+)"/);
       const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
 
-      // ⬇️ Trigger download
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
 
