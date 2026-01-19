@@ -72,57 +72,33 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
-    if (!stored) {
-      setOrderError("No tickets found for this Order ID.");
+    if (!isValidEmail(email)) {
+      setOrderError("Enter the email used during purchase.");
       return;
     }
-
-    const entries = JSON.parse(stored);
-
-    // 🔍 find matching tickets
-    const matchedTickets = [];
-    Object.values(entries).forEach((list) => {
-      list.forEach((t) => {
-        if (t.orderId === orderId.trim()) {
-          matchedTickets.push(t);
-        }
-      });
-    });
-
-    if (matchedTickets.length === 0) {
-      setOrderError("No tickets found for this Order ID.");
-      return;
-    }
-
-    // 👉 Use FIRST ticket as reference (same order)
-    const ref = matchedTickets[0];
 
     try {
       const res = await fetch(
-        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
+        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             order_id: orderId.trim(),
-            quantity: matchedTickets.length,
-            ticket_price: ref.ticketPrice || 7, // fallback if missing
-            name: ref.fullName || "Ticket Holder",
+            email: email.trim().toLowerCase(),
           }),
         }
       );
 
       if (!res.ok) {
-        throw new Error("Re-download failed");
+        const msg = await res.text();
+        throw new Error(msg);
       }
 
-      // 📦 Get filename from headers
       const disposition = res.headers.get("Content-Disposition");
       const filenameMatch = disposition?.match(/filename="(.+)"/);
-      const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
+      const filename = filenameMatch ? filenameMatch[1] : "ticket.pdf";
 
-      // ⬇️ Trigger download
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
 
@@ -136,7 +112,7 @@ export default function MyTickets() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error(err);
-      setOrderError("Re-download failed. Please contact support.");
+      setOrderError("Ticket not found for this Order ID.");
     }
   }
 

@@ -51,7 +51,7 @@ export default function Detail({ product, openImage }) {                 const t
     setIsGenerating(true);
 
     try {
-      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
+      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",                                                        headers: {
             "Content-Type": "application/json",
