@@ -135,6 +135,8 @@ export default function App() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const [imageReturnView, setImageReturnView] = useState("home");
+  
+  const navStackRef = React.useRef(["home"]);
      
   console.log("App mounted — view =", view);
 
@@ -151,43 +153,56 @@ export default function App() {
   }, [entries]);
 
   useEffect(() => {
-    window.addEventListener("goMyTickets", () => setView("myTickets"));
+    window.addEventListener("goMyTickets", () => navigate("myTickets"));
     return () =>
       window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
 
-  useEffect(() => {
-    // Save view to history + session
-    const state = { view };
-    window.history.pushState(state, "", `#${view}`);
-    sessionStorage.setItem(VIEW_KEY, view);
-  }, [view]);
-
-  useEffect(() => {
-    const handlePopState = (e) => {
-      if (e.state?.view) {
-        setView(e.state.view);
-      } else {
-        // Fallback to last known view
-        const saved = sessionStorage.getItem(VIEW_KEY);
-        if (saved) setView(saved);
-      }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
-  useEffect(() => {
-    if (view === "home") {
-      window.history.pushState({ view: "home" }, "", "#home");
-    }
-  }, []);
 
   // -------------------- CORE FUNCTIONS --------------------
+
+  function navigate(nextView) {
+    setView((prev) => {
+      if (prev !== nextView) {
+        navStackRef.current.push(nextView);
+        window.history.pushState(
+          { view: nextView },
+          "",
+          `#${nextView}`
+        );
+      }
+      return nextView;
+    });
+  }
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const stack = navStackRef.current;
+
+      // 🚫 Prevent browser exit
+      if (stack.length <= 1) {
+        window.history.pushState({ view: "home" }, "", "#home");
+        setView("home");
+        return;
+      }
+
+      // 🔙 Go back internally
+      stack.pop();
+      const previous = stack[stack.length - 1];
+      setView(previous);
+    };
+
+    // 🔒 Lock root
+    window.history.replaceState({ view: "home" }, "", "#home");
+    window.addEventListener("popstate", handlePopState);
+
+    return () =>
+      window.removeEventListener("popstate", handlePopState);
+  }, []);
+  
   function openProduct(p) {
     setSelected(p);
-    setView("detail");
+    navigate("detail");
   }
 
   function openTicketProduct(ticket) {
@@ -198,7 +213,7 @@ export default function App() {
       ...product,
       _ticket: ticket, // marks read-only ticket view
     });
-    setView("detail");
+    navigate("detail");
   }
 
   function openImage(images, index = 0, returnView = "home") {
@@ -230,7 +245,7 @@ export default function App() {
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
-                onClick={() => setView("catalog")}
+                onClick={() => navigate("catalog")}
               >
                 Product Raffles
               </button>
@@ -510,7 +525,7 @@ export default function App() {
         {view === "detail" && selected && (
           <Detail
             product={selected}
-            onBack={() => setView("home")}
+            onBack={() => navigate("home")}
             openImage={openImage}
           />
         )}
@@ -525,7 +540,7 @@ export default function App() {
         {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
         )}
-        {view === "menu" && <Menu setView={setView} />}
+        {view === "menu" && <Menu setView={navigate} />}
       </main>
 
       {view === "image" && activeImage && (
