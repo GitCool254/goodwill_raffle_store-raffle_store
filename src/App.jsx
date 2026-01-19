@@ -137,6 +137,10 @@ export default function App() {
   const [imageReturnView, setImageReturnView] = useState("home");
      
   console.log("App mounted — view =", view);
+
+  // -------------------- HISTORY SYNC --------------------
+  const VIEW_KEY = "gw_view";
+  
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
     localStorage.setItem("gw_products", JSON.stringify(products));
@@ -150,6 +154,34 @@ export default function App() {
     window.addEventListener("goMyTickets", () => setView("myTickets"));
     return () =>
       window.removeEventListener("goMyTickets", () => setView("myTickets"));
+  }, []);
+
+  useEffect(() => {
+    // Save view to history + session
+    const state = { view };
+    window.history.pushState(state, "", `#${view}`);
+    sessionStorage.setItem(VIEW_KEY, view);
+  }, [view]);
+
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (e.state?.view) {
+        setView(e.state.view);
+      } else {
+        // Fallback to last known view
+        const saved = sessionStorage.getItem(VIEW_KEY);
+        if (saved) setView(saved);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (view === "home") {
+      window.history.pushState({ view: "home" }, "", "#home");
+    }
   }, []);
 
   // -------------------- CORE FUNCTIONS --------------------
