@@ -51,14 +51,13 @@ export default function Detail({ product, openImage }) {                 const t
     setIsGenerating(true);
 
     try {
-      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
+      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
         {
           method: "POST",                                                        headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name,                                                                  email,
-            quantity,                                                              ticket_price: product.ticketPrice,
+            name,                                                                  quantity,                                                              ticket_price: product.ticketPrice,
             order_id: lastOrder.orderId,
           }),                                                                  }                                                                    );
                                                                              if (!res.ok) {
@@ -251,19 +250,6 @@ export default function Detail({ product, openImage }) {                 const t
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setDownloadReady(true);
-
-              // 🔐 SILENT TICKET GENERATION
-              fetch(`${import.meta.env.VITE_BACKEND_URL}/prepare_ticket`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  order_id: orderObj.orderId,
-                  name,
-                  email,
-                  quantity,
-                  ticket_price: product.ticketPrice,
-                }),
-              }).catch(() => {});
             }}                                                                   />
 
           <br />

@@ -21,7 +21,7 @@ export default function MyTickets() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  async function handleSearch(e) {
+  function handleSearch(e) {
     e.preventDefault();
     setError("");
     setTickets(null);
@@ -31,36 +31,15 @@ export default function MyTickets() {
       return;
     }
 
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/orders_by_email`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch orders");
-      }
-
-      const orders = await res.json();
-
-      // Normalize for existing UI
-      const normalized = orders.map((o) => ({
-        productTitle: "Raffle Ticket",
-        orderId: o.order_id,
-        date: o.date,
-        ticketNo: "—", // not needed for re-download
-      }));
-
-      setTickets(normalized);
-    } catch (err) {
-      console.error(err);
-      setError("Could not retrieve tickets for this email.");
+    const stored = localStorage.getItem("gw_entries");
+    if (!stored) {
       setTickets([]);
+      return;
     }
+
+    const entries = JSON.parse(stored);
+    const emailKey = email.trim().toLowerCase();
+    setTickets(entries[emailKey] || []);
   }
 
   async function handleOrderRedownload(e) {
@@ -72,33 +51,57 @@ export default function MyTickets() {
       return;
     }
 
-    if (!isValidEmail(email)) {
-      setOrderError("Enter the email used during purchase.");
+    const stored = localStorage.getItem("gw_entries");
+    if (!stored) {
+      setOrderError("No tickets found for this Order ID.");
       return;
     }
 
+    const entries = JSON.parse(stored);
+
+    // 🔍 find matching tickets
+    const matchedTickets = [];
+    Object.values(entries).forEach((list) => {
+      list.forEach((t) => {
+        if (t.orderId === orderId.trim()) {
+          matchedTickets.push(t);
+        }
+      });
+    });
+
+    if (matchedTickets.length === 0) {
+      setOrderError("No tickets found for this Order ID.");
+      return;
+    }
+
+    // 👉 Use FIRST ticket as reference (same order)
+    const ref = matchedTickets[0];
+
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
+        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             order_id: orderId.trim(),
-            email: email.trim().toLowerCase(),
+            quantity: matchedTickets.length,
+            ticket_price: ref.ticketPrice || 7, // fallback if missing
+            name: ref.fullName || "Ticket Holder",
           }),
         }
       );
 
       if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg);
+        throw new Error("Re-download failed");
       }
 
+      // 📦 Get filename from headers
       const disposition = res.headers.get("Content-Disposition");
       const filenameMatch = disposition?.match(/filename="(.+)"/);
-      const filename = filenameMatch ? filenameMatch[1] : "ticket.pdf";
+      const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
 
+      // ⬇️ Trigger download
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
 
@@ -112,7 +115,7 @@ export default function MyTickets() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error(err);
-      setOrderError("Ticket not found for this Order ID.");
+      setOrderError("Re-download failed. Please contact support.");
     }
   }
 
