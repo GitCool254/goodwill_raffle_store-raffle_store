@@ -259,6 +259,7 @@ export default function Detail({ product, openImage }) {                 const t
                 body: JSON.stringify({
                   order_id: orderObj.orderId,
                   name,
+                  email,
                   quantity,
                   ticket_price: product.ticketPrice,
                 }),
