@@ -8,6 +8,7 @@ export default function Detail({ product, openImage }) {                 const t
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [errors, setErrors] = useState({});
+  const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);             const [isGenerating, setIsGenerating] = useState(false);
 
   // Description toggle (same idea as Catalog)
@@ -42,36 +43,58 @@ export default function Detail({ product, openImage }) {                 const t
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 
-  async function handleInstantDownload() {
-    if (!lastOrder) {
+  async function handleInstantDownload() {                                 if (!lastOrder) {
       alert("No completed payment found.");
       return;
     }
-
-    if (hasDownloaded || isGenerating) return;
+                                                                           if (hasDownloaded || isGenerating) return;
     setIsGenerating(true);
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
+      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
         {
-          method: "POST",
-          headers: {
+          method: "POST",                                                        headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            name,                                                                  quantity,                                                              ticket_price: product.ticketPrice,
             order_id: lastOrder.orderId,
-          }),
-        }
-      );
-
-      if (!res.ok) {
+          }),                                                                  }                                                                    );
+                                                                             if (!res.ok) {
         const errText = await res.text();
+        console.error("Backend error:", errText);
         alert(errText);
+        setIsGenerating(false);
         return;
       }
+                                                                             const blob = await res.blob();
+      // ✅ READ REAL TICKET NUMBERS FROM BACKEND
+      const ticketHeader = res.headers.get("X-Ticket-Numbers");              const ticketNumbers = ticketHeader ? ticketHeader.split(",") : [];
 
-      const blob = await res.blob();
+      if (!ticketNumbers.length) {
+        alert("Ticket generation failed. Please contact support with your Order ID.");
+        setIsGenerating(false);
+        return;
+      }
+      // ✅ SAVE TICKET TO LOCAL STORAGE FOR "MY TICKETS"
+      const stored = localStorage.getItem("gw_entries");
+      const entries = stored ? JSON.parse(stored) : {};                                                                                             const emailKey = email.trim().toLowerCase();
+
+      if (!entries[emailKey]) {
+        entries[emailKey] = [];                                              }
+
+      ticketNumbers.forEach((ticketNo) => {
+        entries[emailKey].push({
+          productTitle: product.title,
+          ticketNo,
+          orderId: lastOrder.orderId,
+          date: new Date().toISOString(),
+        });
+      });                                                                                                                                           localStorage.setItem("gw_entries", JSON.stringify(entries));
+
+      product._ticket = {
+        ticketNo: ticketNumbers[0],                                          };
+
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
@@ -81,14 +104,12 @@ export default function Detail({ product, openImage }) {                 const t
       a.click();
 
       window.URL.revokeObjectURL(url);
-      setHasDownloaded(true);
+                                                                             setHasDownloaded(true); // 🔒 lock permanently
     } catch (err) {
       console.error("Download error:", err);
-      alert("Could not download ticket.");
-    } finally {
-      setIsGenerating(false);
-    }
-  }  
+      alert("Could not download ticket. Try again.");
+    } finally {                                                              setIsGenerating(false);
+    }                                                                    }
                                                                          return (
     <div className="p-6 text-center">
       <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
@@ -228,38 +249,6 @@ export default function Detail({ product, openImage }) {                 const t
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
-
-              // 🔥 SILENT GENERATION
-              await fetch(`${import.meta.env.VITE_BACKEND_URL}/generate_ticket`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  name,
-                  email,
-                  quantity,
-                  ticket_price: product.ticketPrice,
-                  order_id: orderObj.orderId,
-                }),
-              });
-
-              // ✅ SAVE ENTRY FOR "MY TICKETS"
-              const stored = localStorage.getItem("gw_entries");
-              const entries = stored ? JSON.parse(stored) : {};
-              const emailKey = email.trim().toLowerCase();
-
-              if (!entries[emailKey]) entries[emailKey] = [];
-
-              entries[emailKey].push({
-                productTitle: product.title,
-                orderId: orderObj.orderId,
-                quantity,
-                date: new Date().toISOString(),
-              });
-
-              localStorage.setItem("gw_entries", JSON.stringify(entries));
-
               setDownloadReady(true);
             }}                                                                   />
 
