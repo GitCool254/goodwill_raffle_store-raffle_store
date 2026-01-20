@@ -66,7 +66,7 @@ export default function MyTickets() {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
+        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -85,7 +85,9 @@ export default function MyTickets() {
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "raffle_tickets";
+      const disposition = res.headers.get("Content-Disposition");
+      const match = disposition?.match(/filename="(.+)"/);
+      a.download = match ? match[1] : "raffle_tickets";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -214,11 +216,7 @@ export default function MyTickets() {
                   </div>
 
                   <div className="text-sm text-slate-600 mt-1">
-                    {t.product} — {t.quantity} ticket(s)
-                  </div>
-
-                  <div className="text-xs text-slate-500 mt-1">
-                    Purchased on: {new Date(t.date).toLocaleString()}
+                    Ticket(s) available for download
                   </div>
                 </div>
               ))}

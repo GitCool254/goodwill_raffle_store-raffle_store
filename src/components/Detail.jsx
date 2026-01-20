@@ -58,7 +58,6 @@ export default function Detail({ product, openImage }) {                 const t
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: email.trim().toLowerCase(),
             order_id: lastOrder.orderId,
           }),
         }
@@ -76,9 +75,14 @@ export default function Detail({ product, openImage }) {                 const t
 
       const a = document.createElement("a");
       a.href = url;
-      a.download =
-        quantity > 1 ? "raffle_tickets.zip" : "raffle_ticket.pdf";
+
+      const disposition = res.headers.get("Content-Disposition");
+      const match = disposition?.match(/filename="?(.+)"?/);
+      a.download = match ? match[1] : "raffle_ticket";
+
+      document.body.appendChild(a);
       a.click();
+      a.remove();
 
       window.URL.revokeObjectURL(url);
                                                                              setHasDownloaded(true); // 🔒 lock permanently
@@ -226,6 +230,34 @@ export default function Detail({ product, openImage }) {                 const t
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
+
+              // 🔹 Generate tickets silently
+              const res = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name,
+                    email: email.trim().toLowerCase(),
+                    quantity,
+                    ticket_price: product.ticketPrice,
+                    order_id: orderObj.orderId,
+                  }),
+                }
+              );
+
+              if (!res.ok) {
+                alert("Ticket generation failed. Please contact support.");
+                return;
+              }
+
+              const data = await res.json();
+              if (data.status !== "tickets_generated") {
+                alert("Ticket generation incomplete.");
+                return;
+              }
+
               setDownloadReady(true);
             }}                                                                   />
 
