@@ -79,15 +79,12 @@ export default function MyTickets() {
 
     try {
       const res = await fetch(
-        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
+        `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             order_id: orderId.trim(),
-            quantity: matchedTickets.length,
-            ticket_price: ref.ticketPrice || 7, // fallback if missing
-            name: ref.fullName || "Ticket Holder",
           }),
         }
       );
@@ -99,7 +96,7 @@ export default function MyTickets() {
       // 📦 Get filename from headers
       const disposition = res.headers.get("Content-Disposition");
       const filenameMatch = disposition?.match(/filename="(.+)"/);
-      const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
+      const filename = filenameMatch ? filenameMatch[1] : "raffle_tickets.zip";
 
       // ⬇️ Trigger download
       const blob = await res.blob();
@@ -233,10 +230,6 @@ export default function MyTickets() {
                 >
                   <div className="font-semibold text-slate-800">
                     {t.productTitle}
-                  </div>
-
-                  <div className="text-sm text-slate-600 mt-1">
-                    Ticket No: <strong>{t.ticketNo}</strong>
                   </div>
 
                   {t.orderId && (
