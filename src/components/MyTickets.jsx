@@ -21,7 +21,7 @@ export default function MyTickets() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  function handleSearch(e) {
+  async function handleSearch(e) {
     e.preventDefault();
     setError("");
     setTickets(null);
@@ -31,15 +31,28 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
-    if (!stored) {
-      setTickets([]);
-      return;
-    }
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/my_tickets`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+          }),
+        }
+      );
 
-    const entries = JSON.parse(stored);
-    const emailKey = email.trim().toLowerCase();
-    setTickets(entries[emailKey] || []);
+      if (!res.ok) {
+        throw new Error("Fetch failed");
+      }
+
+      const data = await res.json();
+      setTickets(data.orders || []);
+    } catch (err) {
+      console.error(err);
+      setError("Could not retrieve tickets. Try again.");
+    }
   }
 
   async function handleOrderRedownload(e) {
@@ -51,63 +64,28 @@ export default function MyTickets() {
       return;
     }
 
-    const stored = localStorage.getItem("gw_entries");
-    if (!stored) {
-      setOrderError("No tickets found for this Order ID.");
-      return;
-    }
-
-    const entries = JSON.parse(stored);
-
-    // 🔍 find matching tickets
-    const matchedTickets = [];
-    Object.values(entries).forEach((list) => {
-      list.forEach((t) => {
-        if (t.orderId === orderId.trim()) {
-          matchedTickets.push(t);
-        }
-      });
-    });
-
-    if (matchedTickets.length === 0) {
-      setOrderError("No tickets found for this Order ID.");
-      return;
-    }
-
-    // 👉 Use FIRST ticket as reference (same order)
-    const ref = matchedTickets[0];
-
     try {
       const res = await fetch(
-        "https://goodwill-backend-kjn5.onrender.com/redownload_ticket",
+        `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             order_id: orderId.trim(),
-            quantity: matchedTickets.length,
-            ticket_price: ref.ticketPrice || 7, // fallback if missing
-            name: ref.fullName || "Ticket Holder",
           }),
         }
       );
 
       if (!res.ok) {
-        throw new Error("Re-download failed");
+        throw new Error("Download failed");
       }
 
-      // 📦 Get filename from headers
-      const disposition = res.headers.get("Content-Disposition");
-      const filenameMatch = disposition?.match(/filename="(.+)"/);
-      const filename = filenameMatch ? filenameMatch[1] : "tickets.zip";
-
-      // ⬇️ Trigger download
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = filename;
+      a.download = "raffle_tickets";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -232,24 +210,16 @@ export default function MyTickets() {
                   className="border rounded-xl p-4 bg-white shadow-sm"
                 >
                   <div className="font-semibold text-slate-800">
-                    {t.productTitle}
+                    Order ID: {t.order_id}
                   </div>
 
                   <div className="text-sm text-slate-600 mt-1">
-                    Ticket No: <strong>{t.ticketNo}</strong>
+                    {t.product} — {t.quantity} ticket(s)
                   </div>
 
-                  {t.orderId && (
-                    <div className="text-xs text-slate-500 mt-1">
-                      Order ID: {t.orderId}
-                    </div>
-                  )}
-
-                  {t.date && (
-                    <div className="text-xs text-slate-500 mt-1">
-                      Generated on: {new Date(t.date).toLocaleString()}
-                    </div>
-                  )}
+                  <div className="text-xs text-slate-500 mt-1">
+                    Purchased on: {new Date(t.date).toLocaleString()}
+                  </div>
                 </div>
               ))}
             </div>

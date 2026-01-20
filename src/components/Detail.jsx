@@ -43,7 +43,7 @@ export default function Detail({ product, openImage }) {                 const t
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 
-  async function handleInstantDownload() {                                 if (!lastOrder) {
+  async function handleTicketDownload() {                                  if (!lastOrder) {
       alert("No completed payment found.");
       return;
     }
@@ -51,15 +51,18 @@ export default function Detail({ product, openImage }) {                 const t
     setIsGenerating(true);
 
     try {
-      const res = await fetch(                                                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
+
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
         {
-          method: "POST",                                                        headers: {
-            "Content-Type": "application/json",
-          },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name,                                                                  quantity,                                                              ticket_price: product.ticketPrice,
+            email: email.trim().toLowerCase(),
             order_id: lastOrder.orderId,
-          }),                                                                  }                                                                    );
+          }),
+        }
+      );  
                                                                              if (!res.ok) {
         const errText = await res.text();
         console.error("Backend error:", errText);
@@ -68,33 +71,7 @@ export default function Detail({ product, openImage }) {                 const t
         return;
       }
                                                                              const blob = await res.blob();
-      // ✅ READ REAL TICKET NUMBERS FROM BACKEND
-      const ticketHeader = res.headers.get("X-Ticket-Numbers");              const ticketNumbers = ticketHeader ? ticketHeader.split(",") : [];
-
-      if (!ticketNumbers.length) {
-        alert("Ticket generation failed. Please contact support with your Order ID.");
-        setIsGenerating(false);
-        return;
-      }
-      // ✅ SAVE TICKET TO LOCAL STORAGE FOR "MY TICKETS"
-      const stored = localStorage.getItem("gw_entries");
-      const entries = stored ? JSON.parse(stored) : {};                                                                                             const emailKey = email.trim().toLowerCase();
-
-      if (!entries[emailKey]) {
-        entries[emailKey] = [];                                              }
-
-      ticketNumbers.forEach((ticketNo) => {
-        entries[emailKey].push({
-          productTitle: product.title,
-          ticketNo,
-          orderId: lastOrder.orderId,
-          date: new Date().toISOString(),
-        });
-      });                                                                                                                                           localStorage.setItem("gw_entries", JSON.stringify(entries));
-
-      product._ticket = {
-        ticketNo: ticketNumbers[0],                                          };
-
+      
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
@@ -269,7 +246,7 @@ export default function Detail({ product, openImage }) {                 const t
 
           {downloadReady && (
             <button
-              onClick={handleInstantDownload}
+              onClick={handleTicketDownload}
               disabled={hasDownloaded || isGenerating}                               className={`mt-4 px-4 py-2 rounded text-white ${                         hasDownloaded
                   ? "bg-gray-400"
                   : isGenerating                                                         ? "bg-yellow-500"
