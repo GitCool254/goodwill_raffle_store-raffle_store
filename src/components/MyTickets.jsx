@@ -217,32 +217,34 @@ export default function MyTickets() {
                   </div>
 
                   {/* PRODUCT */}
-                  {t.product && (
+                  {(product.title || t.product) && (
                     <div className="text-sm text-slate-700 mt-1">
-                      <span className="font-semibold">Product:</span> {t.product}
+                      <strong>Product:</strong>{" "}
+                      {product.title || t.product}
                     </div>
                   )}
 
                   {/* QUANTITY */}
                   {typeof t.quantity === "number" && (
                     <div className="text-sm text-slate-700 mt-1">
-                      <span className="font-semibold">Quantity:</span> {t.quantity}
+                      <strong>Quantity:</strong> {t.quantity}
                     </div>
                   )}
 
                   {/* TICKET NUMBERS — label + values SAME ROW */}
                   {Array.isArray(t.tickets) && t.tickets.length > 0 && (
                     <div className="text-sm text-slate-700 mt-1 flex flex-wrap items-center gap-2">
-                      <span className="font-semibold">
-                        Ticket No{t.tickets.length > 1 ? "s" : ""}:
-                      </span>
+                      <strong>
+                        Ticket No:
+                      </strong>
 
                       {t.tickets.map((no, idx) => (
                         <span
                           key={idx}
-                          className="px-2 py-0.5 rounded bg-slate-100 text-slate-800 text-xs font-mono"
+                          className="text-xs font-mono text-slate-800"
                         >
                           {no}
+                          {idx < t.tickets.length - 1 && ", "}
                         </span>
                       ))}
                     </div>
@@ -251,7 +253,7 @@ export default function MyTickets() {
                   {/* DATE / TIME */}
                   {t.date && (
                     <div className="text-xs text-slate-500 mt-2">
-                      <span className="font-semibold">Generated on:</span>{" "}
+                      <strong>Generated on:</strong>{" "}
                       {new Date(t.date).toLocaleString()}
                     </div>
                   )}
