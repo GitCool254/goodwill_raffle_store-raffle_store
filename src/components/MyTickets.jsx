@@ -217,10 +217,10 @@ export default function MyTickets() {
                   </div>
 
                   {/* PRODUCT */}
-                  {(product.title || t.product) && (
+                  {(t.product_name || t.product_id || t.product) && (
                     <div className="text-sm text-slate-700 mt-1">
                       <strong>Product:</strong>{" "}
-                      {product.title || t.product}
+                      {t.product_name || t.product_id || t.product}
                     </div>
                   )}
 
