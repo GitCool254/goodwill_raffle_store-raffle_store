@@ -213,14 +213,14 @@ export default function MyTickets() {
                 >
                   {/* ORDER ID (do not change) */}
                   <div className="text-sm text-slate-800">
-                    <strong>Order ID:</strong>
+                    <strong>• Order ID:</strong>
                     <div>{t.order_id}</div>
                   </div>
 
                   {/* PRODUCT */}
                   {(t.product_name || t.product_id || t.product) && (
                     <div className="text-sm text-slate-700 mt-2">
-                      <strong>Product:</strong>
+                      <strong>• Product:</strong>
                       <div>{t.product_name || t.product_id || t.product}</div>
                     </div>
                   )}
@@ -228,7 +228,7 @@ export default function MyTickets() {
                   {/* QUANTITY */}
                   {typeof t.quantity === "number" && (
                     <div className="text-sm text-slate-700 mt-2">
-                      <strong>Quantity:</strong>
+                      <strong>• Quantity:</strong>
                       <div>{t.quantity}</div>
                     </div>
                   )}
@@ -236,15 +236,14 @@ export default function MyTickets() {
                   {/* TICKET NUMBERS */}
                   {Array.isArray(t.tickets) && t.tickets.length > 0 && (
                     <div className="text-sm text-slate-700 mt-2">
-                      <strong>Ticket No:</strong>
-                      <div className="mt-1 flex flex-wrap gap-1">
+                      <strong>• Ticket No:</strong>
+                      <div className="mt-1 flex flex-col gap-1">
                         {t.tickets.map((no, idx) => (
                           <span
                             key={idx}
                             className="text-xs font-mono text-slate-800"
                           >
                             {no}
-                            {idx < t.tickets.length - 1 && ", "}
                           </span>
                         ))}
                       </div>
@@ -254,7 +253,7 @@ export default function MyTickets() {
                   {/* DATE / TIME */}
                   {t.date && (
                     <div className="text-xs text-slate-500 mt-3">
-                      <strong>Generated on:</strong>
+                      <strong>• Generated on:</strong>
                       <div>{new Date(t.date).toLocaleString()}</div>
                     </div>
                   )}
