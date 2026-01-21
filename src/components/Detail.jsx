@@ -251,13 +251,14 @@ export default function Detail({ product, openImage }) {                 const t
               );
 
               if (!res.ok) {
-                alert("Ticket generation failed. Please contact support.");
+                alert("Ticket generation failed. Please contact support.");            setIsTicketGenerating(false);
                 return;
               }
 
               const data = await res.json();
               if (data.status !== "tickets_generated") {
                 alert("Ticket generation incomplete.");
+                setIsTicketGenerating(false);
                 return;
               }
 
@@ -269,7 +270,7 @@ export default function Detail({ product, openImage }) {                 const t
           <br />
 
           {/* DOWNLOAD PLACEHOLDER (before payment ONLY) */}
-          {!ticket && !isTicketGenerating && !downloadReady && (
+          {!lastOrder && !downloadReady && (
             <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
               <div className="flex items-center gap-3 mb-1">
                 <span className="subtle-spinner" style={{ marginRight: "10px" }} />
