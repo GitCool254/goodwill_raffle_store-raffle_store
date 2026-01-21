@@ -20,7 +20,7 @@ import MyTickets from "./components/MyTickets";
 /**
  * Goodwill Raffle Store - Upgraded UI
  * Place logo at: public/logo.png
- * Place hero/banner at: public/banner.jpg
+ * Remove banne
  *
  * Minimal client-only app (localStorage) for testing.
  * Later we'll wire payments and Google Sheets via server endpoints.
@@ -263,16 +263,6 @@ export default function App() {
             >
               🎟️ {remainingTickets} tickets remaining
             </div>
-          </div>
-          <div className="flex-1">
-            <img
-              src="/banner.jpg"
-              alt="banner"
-              className="rounded-lg shadow-lg w-full h-56 object-cover"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/600x360";
-              }}
-            />
           </div>
         </div>
       </section>
