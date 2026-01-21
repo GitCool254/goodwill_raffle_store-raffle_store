@@ -243,6 +243,7 @@ export default function Detail({ product, openImage }) {                 const t
                     quantity,
                     ticket_price: product.ticketPrice,
                     order_id: orderObj.orderId,
+                    product_title: product.title,
                   }),
                 }
               );
