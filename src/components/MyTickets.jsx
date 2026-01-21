@@ -254,7 +254,7 @@ export default function MyTickets() {
                   {t.date && (
                     <div className="text-xs text-slate-500 mt-3">
                       <strong>• Generated on:</strong>
-                      <div>{new Date(t.date).toLocaleString()}</div>
+                      <div> {new Date(t.date).toLocaleString()}</div>
                     </div>
                   )}
                 </div>
