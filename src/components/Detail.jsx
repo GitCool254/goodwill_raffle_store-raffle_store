@@ -10,6 +10,7 @@ export default function Detail({ product, openImage }) {                 const t
   const [errors, setErrors] = useState({});
   const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
   const [hasDownloaded, setHasDownloaded] = useState(false);             const [isGenerating, setIsGenerating] = useState(false);
+  const [isTicketGenerating, setIsTicketGenerating] = useState(false);
 
   // Description toggle (same idea as Catalog)
   const DESCRIPTION_LIMIT = 70;
@@ -230,6 +231,7 @@ export default function Detail({ product, openImage }) {                 const t
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
+              setIsTicketGenerating(true);
 
               // 🔹 Generate tickets silently
               const res = await fetch(
@@ -259,7 +261,9 @@ export default function Detail({ product, openImage }) {                 const t
                 return;
               }
 
+              setIsTicketGenerating(false);
               setDownloadReady(true);
+              
             }}                                                                   />
 
           <br />
@@ -273,6 +277,21 @@ export default function Detail({ product, openImage }) {                 const t
               </div>
               <div className="text-xs text-slate-400">
                 Your ticket download will appear here after successful payment
+              </div>
+            </div>
+          )}
+
+          {/* TICKET GENERATION STATUS (after payment, before download) */}
+          {isTicketGenerating && !downloadReady && (
+            <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="subtle-spinner" />
+                <span className="font-medium">
+                  Generating your ticket…
+                </span>
+              </div>
+              <div className="text-xs text-slate-400">
+                This will only take a moment
               </div>
             </div>
           )}
