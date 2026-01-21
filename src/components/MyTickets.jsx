@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LabelWithBullet from "./LabelWithBullet";
 
 const FOCUS_BLUE = "#38bdf8"; // sky-400
 const ERROR_RED = "#ef4444";  // red-500
@@ -211,32 +212,28 @@ export default function MyTickets() {
                   key={i}
                   className="border rounded-xl p-4 bg-white shadow-sm"
                 >
-                  {/* ORDER ID (do not change) */}
-                  <div className="text-sm text-slate-800">
-                    <strong>• Order ID:</strong>
-                    <div>{t.order_id}</div>
-                  </div>
+                  {/* ORDER ID */}
+                  <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
+                    {t.order_id}
+                  </LabelWithBullet>
 
                   {/* PRODUCT */}
                   {(t.product_name || t.product_id || t.product) && (
-                    <div className="text-sm text-slate-700 mt-2">
-                      <strong>• Product:</strong>
-                      <div>{t.product_name || t.product_id || t.product}</div>
-                    </div>
+                    <LabelWithBullet label="Product:" className="text-sm text-slate-700 mt-2">
+                      {t.product_name || t.product_id || t.product}
+                    </LabelWithBullet>
                   )}
 
                   {/* QUANTITY */}
                   {typeof t.quantity === "number" && (
-                    <div className="text-sm text-slate-700 mt-2">
-                      <strong>• Quantity:</strong>
-                      <div>{t.quantity}</div>
-                    </div>
+                    <LabelWithBullet label="Quantity:" className="text-sm text-slate-700 mt-2">
+                      {t.quantity}
+                    </LabelWithBullet>
                   )}
 
                   {/* TICKET NUMBERS */}
                   {Array.isArray(t.tickets) && t.tickets.length > 0 && (
-                    <div className="text-sm text-slate-700 mt-2">
-                      <strong>• Ticket No:</strong>
+                    <LabelWithBullet label="Ticket No:" className="text-sm text-slate-700 mt-2">
                       <div className="mt-1 flex flex-col gap-1">
                         {t.tickets.map((no, idx) => (
                           <span
@@ -247,32 +244,14 @@ export default function MyTickets() {
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </LabelWithBullet>
                   )}
 
                   {/* DATE / TIME */}
                   {t.date && (
-                    <div className="text-xs text-slate-500 mt-3">
-                      <div>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            width: "1.1em",
-                          }}
-                        >
-                          •
-                        </span>
-                        <strong>Generated on:</strong>
-                      </div>
-
-                      <div
-                        style={{
-                          paddingLeft: "1.1em",
-                        }}
-                      >
-                        {new Date(t.date).toLocaleString()}
-                      </div>
-                    </div>
+                    <LabelWithBullet label="Generated on:" className="text-xs text-slate-500 mt-3">
+                      {new Date(t.date).toLocaleString()}
+                    </LabelWithBullet>
                   )}
                 </div>
               ))}
