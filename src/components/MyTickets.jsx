@@ -211,13 +211,48 @@ export default function MyTickets() {
                   key={i}
                   className="border rounded-xl p-4 bg-white shadow-sm"
                 >
+                  {/* ORDER ID (do not change) */}
                   <div className="font-semibold text-slate-800">
                     Order ID: {t.order_id}
                   </div>
 
-                  <div className="text-sm text-slate-600 mt-1">
-                    Ticket(s) available for download
-                  </div>
+                  {/* PRODUCT */}
+                  {t.product && (
+                    <div className="text-sm text-slate-700 mt-1">
+                      <span className="font-medium">Product:</span> {t.product}
+                    </div>
+                  )}
+
+                  {/* QUANTITY */}
+                  {typeof t.quantity === "number" && (
+                    <div className="text-sm text-slate-700 mt-1">
+                      <span className="font-medium">Quantity:</span> {t.quantity}
+                    </div>
+                  )}
+
+                  {/* TICKET NUMBERS */}
+                  {Array.isArray(t.tickets) && t.tickets.length > 0 && (
+                    <div className="text-sm text-slate-700 mt-1">
+                      <span className="font-medium">Ticket No{t.tickets.length > 1 ? "s" : ""}:</span>
+                      <div className="mt-1 flex flex-wrap gap-2">
+                        {t.tickets.map((no, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded bg-slate-100 text-slate-800 text-xs font-mono"
+                          >
+                            {no}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DATE / TIME */}
+                  {t.date && (
+                    <div className="text-xs text-slate-500 mt-2">
+                      Generated on: {new Date(t.date).toLocaleString()}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
