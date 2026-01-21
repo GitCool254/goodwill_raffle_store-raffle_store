@@ -213,7 +213,7 @@ export default function MyTickets() {
                 >
                   {/* ORDER ID (do not change) */}
                   <div className="text-sm text-slate-800">
-                    <span className="font-semibold">Order ID:</span> {t.order_id}
+                    <strong>Order ID:</strong> {t.order_id}
                   </div>
 
                   {/* PRODUCT */}
