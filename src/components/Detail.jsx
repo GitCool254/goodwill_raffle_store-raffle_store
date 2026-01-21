@@ -282,7 +282,7 @@ export default function Detail({ product, openImage }) {                 const t
           )}
 
           {/* TICKET GENERATION STATUS (after payment, before download) */}
-          {ticket && isTicketGenerating && !downloadReady && (
+          {lastOrder && isTicketGenerating && !downloadReady && (
             <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
               <div className="flex items-center gap-2 mb-1">
                 <span className="subtle-spinner" />
