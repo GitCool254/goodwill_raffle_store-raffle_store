@@ -268,8 +268,8 @@ export default function Detail({ product, openImage }) {                 const t
 
           <br />
 
-          {/* DOWNLOAD PLACEHOLDER (before payment) */}
-          {!downloadReady && !ticket && (
+          {/* DOWNLOAD PLACEHOLDER (before payment ONLY) */}
+          {!ticket && !isTicketGenerating && !downloadReady && (
             <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
               <div className="flex items-center gap-3 mb-1">
                 <span className="subtle-spinner" style={{ marginRight: "10px" }} />
@@ -282,7 +282,7 @@ export default function Detail({ product, openImage }) {                 const t
           )}
 
           {/* TICKET GENERATION STATUS (after payment, before download) */}
-          {isTicketGenerating && !downloadReady && (
+          {ticket && isTicketGenerating && !downloadReady && (
             <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
               <div className="flex items-center gap-2 mb-1">
                 <span className="subtle-spinner" />
