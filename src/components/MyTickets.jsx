@@ -252,11 +252,24 @@ export default function MyTickets() {
 
                   {/* DATE / TIME */}
                   {t.date && (
-                    <div className="text-xs text-slate-500 mt-3 grid grid-cols-[auto_1fr] gap-x-1">
-                      <strong className="col-span-2">
-                        • Generated on:
-                      </strong>
-                      <div className="col-start-2">
+                    <div className="text-xs text-slate-500 mt-3">
+                      <div>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            width: "1.1em",
+                          }}
+                        >
+                          •
+                        </span>
+                        <strong>Generated on:</strong>
+                      </div>
+
+                      <div
+                        style={{
+                          paddingLeft: "1.1em",
+                        }}
+                      >
                         {new Date(t.date).toLocaleString()}
                       </div>
                     </div>
