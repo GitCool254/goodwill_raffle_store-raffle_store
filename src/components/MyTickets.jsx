@@ -213,48 +213,49 @@ export default function MyTickets() {
                 >
                   {/* ORDER ID (do not change) */}
                   <div className="text-sm text-slate-800">
-                    <strong>Order ID:</strong> {t.order_id}
+                    <strong>Order ID:</strong>
+                    <div>{t.order_id}</div>
                   </div>
 
                   {/* PRODUCT */}
                   {(t.product_name || t.product_id || t.product) && (
-                    <div className="text-sm text-slate-700 mt-1">
-                      <strong>Product:</strong>{" "}
-                      {t.product_name || t.product_id || t.product}
+                    <div className="text-sm text-slate-700 mt-2">
+                      <strong>Product:</strong>
+                      <div>{t.product_name || t.product_id || t.product}</div>
                     </div>
                   )}
 
                   {/* QUANTITY */}
                   {typeof t.quantity === "number" && (
-                    <div className="text-sm text-slate-700 mt-1">
-                      <strong>Quantity:</strong> {t.quantity}
+                    <div className="text-sm text-slate-700 mt-2">
+                      <strong>Quantity:</strong>
+                      <div>{t.quantity}</div>
                     </div>
                   )}
 
-                  {/* TICKET NUMBERS — label + values SAME ROW */}
+                  {/* TICKET NUMBERS */}
                   {Array.isArray(t.tickets) && t.tickets.length > 0 && (
-                    <div className="text-sm text-slate-700 mt-1 flex flex-wrap items-center gap-2">
-                      <strong>
-                        Ticket No:
-                      </strong>
-
-                      {t.tickets.map((no, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs font-mono text-slate-800"
-                        >
-                          {no}
-                          {idx < t.tickets.length - 1 && ", "}
-                        </span>
-                      ))}
+                    <div className="text-sm text-slate-700 mt-2">
+                      <strong>Ticket No:</strong>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {t.tickets.map((no, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs font-mono text-slate-800"
+                          >
+                            {no}
+                            {idx < t.tickets.length - 1 && ", "}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {/* DATE / TIME */}
                   {t.date && (
-                    <div className="text-xs text-slate-500 mt-2">
-                      <strong>Generated on:</strong>{" "}
-                      {new Date(t.date).toLocaleString()}
+                    <div className="text-xs text-slate-500 mt-3">
+                      <strong>Generated on:</strong>
+                      <div>{new Date(t.date).toLocaleString()}</div>
                     </div>
                   )}
                 </div>
