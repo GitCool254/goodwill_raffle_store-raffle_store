@@ -13,23 +13,26 @@ export default function PayPalButton({
   email
 }) {
   const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-
   const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+  const containerId = "paypal-root";
 
-  const paypalRef = useRef(null);
   const renderedRef = useRef(false);
 
   useEffect(() => {
     if (renderedRef.current) return;
 
     const renderButton = () => {
-      if (!paypalRef.current || !window.paypal) return;
+      const container = document.getElementById(containerId);
+      if (!container || !window.paypal) return;
+
+      // Clear container only once before first render
+      container.innerHTML = "";
 
       window.paypal
         .Buttons({
           style: { layout: "vertical", shape: "pill", color: "gold" },
 
-          // Form validation before opening PayPal
+          // Keep form validation fully intact
           onClick: (data, actions) => {
             const ok = validateForm();
             if (!ok) return actions.reject();
@@ -74,7 +77,7 @@ export default function PayPalButton({
             });
           }
         })
-        .render(paypalRef.current);
+        .render(`#${containerId}`);
 
       renderedRef.current = true;
     };
@@ -90,5 +93,5 @@ export default function PayPalButton({
     }
   }, []);
 
-  return <div ref={paypalRef}></div>;
+  return <div id="paypal-root"></div>;
 }
