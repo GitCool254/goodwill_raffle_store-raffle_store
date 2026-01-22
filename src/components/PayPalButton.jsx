@@ -86,7 +86,7 @@ export default function PayPalButton({
     } else {
       renderButton();
     }
-  }, []);
+  }, [amount, name, email, quantity]);
 
   return <div ref={paypalRef}></div>;
 }
