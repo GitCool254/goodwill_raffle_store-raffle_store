@@ -76,16 +76,17 @@ export default function PayPalButton({
         .render(`#${containerId}`);
     }
 
-    if (!window.paypal) {
+    if (!window.paypal && !document.getElementById("paypal-sdk")) {
       const s = document.createElement("script");
+      s.id = "paypal-sdk";
       s.src = scriptUrl;
       s.async = true;
       s.onload = renderButton;
       document.body.appendChild(s);
-    } else {
+    } else if (window.paypal) {
       renderButton();
     }
-  }, [amount, name, email, quantity]);
+  }, []);
 
   return <div id="paypal-root"></div>;
 }
