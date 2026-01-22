@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function PayPalButton({
   amount,
@@ -14,24 +14,38 @@ export default function PayPalButton({
 }) {
   const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
-  const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-
-  const containerId = "paypal-root";
+  const paypalRef = useRef(null);
+  const buttonsRendered = useRef(false);
 
   useEffect(() => {
-    function renderButton() {
-      const container = document.getElementById(containerId);
-      if (!container) return;
+    if (buttonsRendered.current) return;
 
-      container.innerHTML = "";
+    const loadScript = () =>
+      new Promise((resolve) => {
+        if (window.paypal) return resolve();
+
+        const script = document.createElement("script");
+        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture`;
+        script.async = true;
+        script.onload = resolve;
+        document.body.appendChild(script);
+      });
+
+    loadScript().then(() => {
+      if (!paypalRef.current) return;
 
       window.paypal
         .Buttons({
-          style: { layout: "vertical", shape: "pill", color: "gold" },
+          style: {
+            layout: "vertical",
+            shape: "pill",
+            color: "gold"
+          },
 
           onClick: (data, actions) => {
-            const ok = validateForm();
-            if (!ok) return actions.reject();
+            if (!validateForm()) {
+              return actions.reject();
+            }
             return actions.resolve();
           },
 
@@ -39,7 +53,9 @@ export default function PayPalButton({
             return actions.order.create({
               purchase_units: [
                 {
-                  amount: { value: amount.toFixed(2) },
+                  amount: {
+                    value: Number(amount).toFixed(2)
+                  },
                   description
                 }
               ]
@@ -61,7 +77,6 @@ export default function PayPalButton({
                 .toUpperCase()}`
             };
 
-            // log to sheets
             fetch(appsScriptUrl, {
               method: "POST",
               body: JSON.stringify({ secret, ...orderObj })
@@ -71,21 +86,22 @@ export default function PayPalButton({
               ...orderObj,
               orderId: order.id
             });
+          },
+
+          onCancel: () => {
+            console.log("PayPal payment cancelled");
+          },
+
+          onError: (err) => {
+            console.error("PayPal error", err);
+            alert("Payment failed. Please try again.");
           }
         })
-        .render(`#${containerId}`);
-    }
+        .render(paypalRef.current);
 
-    if (!window.paypal) {
-      const s = document.createElement("script");
-      s.src = scriptUrl;
-      s.async = true;
-      s.onload = renderButton;
-      document.body.appendChild(s);
-    } else {
-      renderButton();
-    }
-  }, [amount, name, email, quantity]);
+      buttonsRendered.current = true;
+    });
+  }, []);
 
-  return <div id="paypal-root"></div>;
+  return <div ref={paypalRef}></div>;
 }
