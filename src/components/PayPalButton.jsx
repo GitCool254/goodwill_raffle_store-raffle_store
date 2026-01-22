@@ -14,38 +14,24 @@ export default function PayPalButton({
 }) {
   const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
+  const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
+
   const paypalRef = useRef(null);
-  const buttonsRendered = useRef(false);
+  const renderedRef = useRef(false);
 
   useEffect(() => {
-    if (buttonsRendered.current) return;
+    if (renderedRef.current) return;
 
-    const loadScript = () =>
-      new Promise((resolve) => {
-        if (window.paypal) return resolve();
-
-        const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture`;
-        script.async = true;
-        script.onload = resolve;
-        document.body.appendChild(script);
-      });
-
-    loadScript().then(() => {
-      if (!paypalRef.current) return;
+    const renderButton = () => {
+      if (!paypalRef.current || !window.paypal) return;
 
       window.paypal
         .Buttons({
-          style: {
-            layout: "vertical",
-            shape: "pill",
-            color: "gold"
-          },
+          style: { layout: "vertical", shape: "pill", color: "gold" },
 
           onClick: (data, actions) => {
-            if (!validateForm()) {
-              return actions.reject();
-            }
+            const ok = validateForm();
+            if (!ok) return actions.reject();
             return actions.resolve();
           },
 
@@ -53,9 +39,7 @@ export default function PayPalButton({
             return actions.order.create({
               purchase_units: [
                 {
-                  amount: {
-                    value: Number(amount).toFixed(2)
-                  },
+                  amount: { value: Number(amount).toFixed(2) },
                   description
                 }
               ]
@@ -86,21 +70,22 @@ export default function PayPalButton({
               ...orderObj,
               orderId: order.id
             });
-          },
-
-          onCancel: () => {
-            console.log("PayPal payment cancelled");
-          },
-
-          onError: (err) => {
-            console.error("PayPal error", err);
-            alert("Payment failed. Please try again.");
           }
         })
         .render(paypalRef.current);
 
-      buttonsRendered.current = true;
-    });
+      renderedRef.current = true;
+    };
+
+    if (!window.paypal) {
+      const s = document.createElement("script");
+      s.src = scriptUrl;
+      s.async = true;
+      s.onload = renderButton;
+      document.body.appendChild(s);
+    } else {
+      renderButton();
+    }
   }, []);
 
   return <div ref={paypalRef}></div>;
