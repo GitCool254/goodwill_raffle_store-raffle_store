@@ -29,6 +29,7 @@ export default function PayPalButton({
         .Buttons({
           style: { layout: "vertical", shape: "pill", color: "gold" },
 
+          // Form validation before opening PayPal
           onClick: (data, actions) => {
             const ok = validateForm();
             if (!ok) return actions.reject();
@@ -61,6 +62,7 @@ export default function PayPalButton({
                 .toUpperCase()}`
             };
 
+            // log to sheets
             fetch(appsScriptUrl, {
               method: "POST",
               body: JSON.stringify({ secret, ...orderObj })
@@ -86,7 +88,7 @@ export default function PayPalButton({
     } else {
       renderButton();
     }
-  }, [amount, name, email, quantity]);
+  }, []);
 
   return <div ref={paypalRef}></div>;
 }
