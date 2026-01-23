@@ -16,15 +16,24 @@ export default function PayPalButton({
   const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
   const containerId = "paypal-root";
 
-  // ✅ Keeps latest validation logic without re-rendering PayPal
+  // 🔒 Live refs (prevents stale data)
   const validateRef = useRef(validateForm);
+  const nameRef = useRef(name);
+  const emailRef = useRef(email);
+  const quantityRef = useRef(quantity);
+  const productRef = useRef(product);
+  const amountRef = useRef(amount);
 
-  // 🔄 Always keep validation function up-to-date
+  // 🔄 Keep refs up to date
   useEffect(() => {
     validateRef.current = validateForm;
+    nameRef.current = name;
+    emailRef.current = email;
+    quantityRef.current = quantity;
+    productRef.current = product;
+    amountRef.current = amount;
   });
 
-  // 🧠 Render PayPal ONCE (prevents iframe destruction bug)
   useEffect(() => {
     function renderButton() {
       const container = document.getElementById(containerId);
@@ -34,23 +43,18 @@ export default function PayPalButton({
 
       window.paypal
         .Buttons({
-          style: {
-            layout: "vertical",
-            shape: "pill",
-            color: "gold"
-          },
+          style: { layout: "vertical", shape: "pill", color: "gold" },
 
           onClick: (data, actions) => {
             const ok = validateRef.current();
-            if (!ok) return actions.reject();
-            return actions.resolve();
+            return ok ? actions.resolve() : actions.reject();
           },
 
           createOrder: (data, actions) => {
             return actions.order.create({
               purchase_units: [
                 {
-                  amount: { value: amount.toFixed(2) },
+                  amount: { value: amountRef.current.toFixed(2) },
                   description
                 }
               ]
@@ -62,17 +66,17 @@ export default function PayPalButton({
 
             const orderObj = {
               id: order.id,
-              fullname: name,
-              email,
-              quantity,
-              product,
+              fullname: nameRef.current,
+              email: emailRef.current,
+              quantity: quantityRef.current,
+              product: productRef.current,
               ticketNumber: `PP-${Math.random()
                 .toString(36)
                 .slice(2, 9)
                 .toUpperCase()}`
             };
 
-            // 🧾 Log to Google Sheets (non-blocking)
+            // Log to Sheets (non-blocking)
             fetch(appsScriptUrl, {
               method: "POST",
               body: JSON.stringify({ secret, ...orderObj })
@@ -87,7 +91,6 @@ export default function PayPalButton({
         .render(`#${containerId}`);
     }
 
-    // Load PayPal SDK ONCE
     if (!window.paypal && !document.getElementById("paypal-sdk")) {
       const s = document.createElement("script");
       s.id = "paypal-sdk";
@@ -98,7 +101,7 @@ export default function PayPalButton({
     } else if (window.paypal) {
       renderButton();
     }
-  }, []); // ❗ MUST stay empty
+  }, []); // MUST remain empty
 
   return <div id="paypal-root"></div>;
 }
