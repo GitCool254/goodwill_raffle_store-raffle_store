@@ -240,12 +240,12 @@ export default function Detail({ product, openImage }) {                 const t
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    name: name.trim(),
+                    name,
                     email: email.trim().toLowerCase(),
-                    quantity: Number(quantity), // ✅ FIX
-                    ticket_price: String(product.ticketPrice),
-                    order_id: String(orderObj.orderId),
-                    product_title: String(product.title),
+                    quantity,
+                    ticket_price: product.ticketPrice,
+                    order_id: orderObj.orderId,
+                    product_title: product.title,
                   }),
                 }
               );
