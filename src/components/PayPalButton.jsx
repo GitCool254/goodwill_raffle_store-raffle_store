@@ -16,17 +16,19 @@ export default function PayPalButton({
   const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
   const containerId = "paypal-root";
 
-  // 🔒 Live refs (prevents stale data)
+  // 🔒 Refs to prevent stale data
   const validateRef = useRef(validateForm);
+  const successRef = useRef(onPaymentSuccess);
   const nameRef = useRef(name);
   const emailRef = useRef(email);
   const quantityRef = useRef(quantity);
   const productRef = useRef(product);
   const amountRef = useRef(amount);
 
-  // 🔄 Keep refs up to date
+  // 🔄 Keep refs always fresh
   useEffect(() => {
     validateRef.current = validateForm;
+    successRef.current = onPaymentSuccess;
     nameRef.current = name;
     emailRef.current = email;
     quantityRef.current = quantity;
@@ -43,7 +45,11 @@ export default function PayPalButton({
 
       window.paypal
         .Buttons({
-          style: { layout: "vertical", shape: "pill", color: "gold" },
+          style: {
+            layout: "vertical",
+            shape: "pill",
+            color: "gold"
+          },
 
           onClick: (data, actions) => {
             const ok = validateRef.current();
@@ -54,7 +60,9 @@ export default function PayPalButton({
             return actions.order.create({
               purchase_units: [
                 {
-                  amount: { value: amountRef.current.toFixed(2) },
+                  amount: {
+                    value: amountRef.current.toFixed(2)
+                  },
                   description
                 }
               ]
@@ -76,13 +84,14 @@ export default function PayPalButton({
                 .toUpperCase()}`
             };
 
-            // Log to Sheets (non-blocking)
+            // 🔹 Non-blocking Sheets logging
             fetch(appsScriptUrl, {
               method: "POST",
               body: JSON.stringify({ secret, ...orderObj })
             }).catch(() => {});
 
-            onPaymentSuccess({
+            // 🔹 Guaranteed ticket generation
+            successRef.current({
               ...orderObj,
               orderId: order.id
             });
@@ -101,7 +110,7 @@ export default function PayPalButton({
     } else if (window.paypal) {
       renderButton();
     }
-  }, []); // MUST remain empty
+  }, []); // ✅ MUST stay empty
 
   return <div id="paypal-root"></div>;
 }
