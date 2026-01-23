@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function PayPalButton({
   amount,
@@ -13,24 +13,35 @@ export default function PayPalButton({
   email
 }) {
   const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-
   const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-
   const containerId = "paypal-root";
 
+  // ✅ Keeps latest validation logic without re-rendering PayPal
+  const validateRef = useRef(validateForm);
+
+  // 🔄 Always keep validation function up-to-date
+  useEffect(() => {
+    validateRef.current = validateForm;
+  });
+
+  // 🧠 Render PayPal ONCE (prevents iframe destruction bug)
   useEffect(() => {
     function renderButton() {
       const container = document.getElementById(containerId);
-      if (!container) return;
+      if (!container || !window.paypal) return;
 
       container.innerHTML = "";
 
       window.paypal
         .Buttons({
-          style: { layout: "vertical", shape: "pill", color: "gold" },
+          style: {
+            layout: "vertical",
+            shape: "pill",
+            color: "gold"
+          },
 
           onClick: (data, actions) => {
-            const ok = validateForm();
+            const ok = validateRef.current();
             if (!ok) return actions.reject();
             return actions.resolve();
           },
@@ -61,7 +72,7 @@ export default function PayPalButton({
                 .toUpperCase()}`
             };
 
-            // log to sheets
+            // 🧾 Log to Google Sheets (non-blocking)
             fetch(appsScriptUrl, {
               method: "POST",
               body: JSON.stringify({ secret, ...orderObj })
@@ -76,6 +87,7 @@ export default function PayPalButton({
         .render(`#${containerId}`);
     }
 
+    // Load PayPal SDK ONCE
     if (!window.paypal && !document.getElementById("paypal-sdk")) {
       const s = document.createElement("script");
       s.id = "paypal-sdk";
@@ -86,7 +98,7 @@ export default function PayPalButton({
     } else if (window.paypal) {
       renderButton();
     }
-  }, [amount, name, email, quantity]);
+  }, []); // ❗ MUST stay empty
 
   return <div id="paypal-root"></div>;
 }
