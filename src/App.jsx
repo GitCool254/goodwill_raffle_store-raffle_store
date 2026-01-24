@@ -42,8 +42,7 @@ export default function App() {
     INITIAL_TICKETS - daysPassed,
     0
   );
-
-  <br />
+  
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -263,7 +262,7 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              🎟️ {remainingTickets} tickets remaining
+              🎟️ {remainingTickets} tickets remaining <br />
             </div>
           </div>
         </div>
