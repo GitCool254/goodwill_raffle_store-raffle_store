@@ -262,7 +262,8 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              🎟️ {remainingTickets} tickets remaining <br />
+              🎟️ {remainingTickets} tickets remaining
+              style={{ marginBottom: "10px" }}
             </div>
           </div>
         </div>
