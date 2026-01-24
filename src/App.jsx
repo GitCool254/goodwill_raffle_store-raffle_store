@@ -42,6 +42,8 @@ export default function App() {
     INITIAL_TICKETS - daysPassed,
     0
   );
+
+  <br />
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
