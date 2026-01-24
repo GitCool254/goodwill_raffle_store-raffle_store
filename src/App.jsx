@@ -259,10 +259,11 @@ export default function App() {
                 fontWeight: "700",
                 marginTop: "20px",
                 marginLeft: "0",
+                marginBottom: "20px",
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              <span>🎟️ {remainingTickets} tickets remaining style={{ marginBottom: "10px" }} </span>
+              {remainingTickets} tickets remaining
             </div>
           </div>
         </div>
