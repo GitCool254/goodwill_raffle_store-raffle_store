@@ -31,7 +31,7 @@ export default function App() {
 
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
-  const RAFFLE_START_DATE = "2026-01-10";
+  const RAFFLE_START_DATE = "2026-01-23";
   const INITIAL_TICKETS = 50; // works even if less than 10
 
   // Days passed since raffle started
