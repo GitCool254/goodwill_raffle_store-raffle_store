@@ -33,14 +33,16 @@ export default function App() {
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-23";
   const INITIAL_TICKETS = 50;
+  const DEDICATED_DAYS = 10;
 
   // Days passed since raffle started
   const daysPassed = Math.floor(
-    (Date.now() - new Date(RAFFLE_START_DATE).getTime()) / (1000 * 60 * 60 * 24)
+    (Date.now() - new Date(RAFFLE_START_DATE).getTime()) /
+    (1000 * 60 * 60 * 24)
   );
 
-  // Decay factor over 14 days
-  const decayFactor = Math.min(daysPassed / 14, 1);
+  // Decay factor over dedicated days
+  const decayFactor = Math.min(daysPassed / DEDICATED_DAYS, 1);
 
   // Per-day min & max
   const minDaily = Math.min(
@@ -53,7 +55,7 @@ export default function App() {
     INITIAL_TICKETS / Math.max(daysPassed, 1)
   );
 
-  // ✅ deterministic "random" per day
+  // Deterministic daily random
   function seededRandom(seed) {
     const x = Math.sin(seed) * 10000;
     return x - Math.floor(x);
@@ -66,11 +68,11 @@ export default function App() {
     minDaily * daysPassed
   );
 
-  // Remaining tickets (never negative)
-  const remainingTickets = Math.max(
-    INITIAL_TICKETS - ticketsDecremented,
-    0
-  );
+  // ✅ Guaranteed fair finish at day 10
+  const remainingTickets =
+    daysPassed >= DEDICATED_DAYS
+      ? 0
+      : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
   console.log({
     daysPassed,
