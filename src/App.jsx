@@ -32,16 +32,36 @@ export default function App() {
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-10";
-  const INITIAL_TICKETS = 10;
+  const INITIAL_TICKETS = 50; // works even if less than 10
 
+  // Days passed since raffle started
   const daysPassed = Math.floor(
     (Date.now() - new Date(RAFFLE_START_DATE).getTime()) / (1000 * 60 * 60 * 24)
   );
 
-  const remainingTickets = Math.max(
-    INITIAL_TICKETS - daysPassed,
-    0
+  // Decay factor: trends natural increase in daily decrement over 14 days
+  const decayFactor = Math.min(daysPassed / 14, 1); // 0 -> 1 faster than before
+
+  // Calculate per-day min & max, clamped to avoid exceeding available tickets
+  const minDaily = Math.min(
+    10 + decayFactor * 5,                  // base min grows from 10 → 15
+    INITIAL_TICKETS / Math.max(daysPassed, 1) // clamp so we never oversell
   );
+
+  const maxDaily = Math.min(
+    15 + decayFactor * 5,                  // base max grows from 15 → 20
+    INITIAL_TICKETS / Math.max(daysPassed, 1) // clamp so we never oversell
+  );
+
+  // Total tickets decremented over all days, random but safe
+  const ticketsDecremented = Math.floor(
+    Math.random() * (maxDaily * daysPassed - minDaily * daysPassed + 1) + minDaily * daysPassed
+  );
+
+  // Remaining tickets, never negative
+  const remainingTickets = Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+
+  console.log({ daysPassed, decayFactor, minDaily, maxDaily, ticketsDecremented, remainingTickets });
   
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
