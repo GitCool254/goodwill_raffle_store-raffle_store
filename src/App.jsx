@@ -46,12 +46,12 @@ export default function App() {
 
   // Per-day min & max
   const minDaily = Math.min(
-    10 + decayFactor * 5,
+    5 + decayFactor * 3,
     INITIAL_TICKETS / Math.max(daysPassed, 1)
   );
 
   const maxDaily = Math.min(
-    15 + decayFactor * 5,
+    10 + decayFactor * 3,
     INITIAL_TICKETS / Math.max(daysPassed, 1)
   );
 
