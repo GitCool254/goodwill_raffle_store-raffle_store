@@ -4,6 +4,38 @@ import PayPalButton from "./PayPalButton";
   animation: "shake 0.35s ease-in-out",
 };
 
+async function signRequest(body) {
+  const encoder = new TextEncoder();
+  const secret = import.meta.env.VITE_API_SIGN_SECRET;
+
+  if (!secret) {
+    throw new Error("Missing API signing secret");
+  }
+
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const payload = `${timestamp}.${JSON.stringify(body)}`;
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signatureBuffer = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    encoder.encode(payload)
+  );
+
+  const signature = Array.from(new Uint8Array(signatureBuffer))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return { signature, timestamp };
+}
+
 export default function Detail({ product, openImage }) {                 const ticket = product?._ticket || null;                               const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("1");
@@ -28,7 +60,7 @@ export default function Detail({ product, openImage }) {                 const t
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
   const amount = Number((price * safeQty).toFixed(2));
                                                                          const appsScriptUrl =
-    "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";                         const secret = "goodwill_5490_secret";
+    "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";                      
                                                                          function validateForm() {                                                const newErrors = {};                                                  if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
@@ -53,16 +85,21 @@ export default function Detail({ product, openImage }) {                 const t
 
     try {
 
+      const payload = { order_id: lastOrder.orderId };
+      const { signature, timestamp } = await signRequest(payload);
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            order_id: lastOrder.orderId,
-          }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+          body: JSON.stringify(payload),
         }
-      );  
+      );
                                                                              if (!res.ok) {
         const errText = await res.text();
         console.error("Backend error:", errText);
@@ -71,7 +108,7 @@ export default function Detail({ product, openImage }) {                 const t
         return;
       }
                                                                              const blob = await res.blob();
-      
+
       const url = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
@@ -234,19 +271,27 @@ export default function Detail({ product, openImage }) {                 const t
               setIsTicketGenerating(true);
 
               // 🔹 Generate tickets silently
+              const payload = {
+                name,
+                email: email.trim().toLowerCase(),
+                quantity: Number(quantity),
+                ticket_price: product.ticketPrice,
+                order_id: orderObj.orderId,
+                product_title: product.title,
+              };
+
+              const { signature, timestamp } = await signRequest(payload);
+
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
                 {
                   method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    name,
-                    email: email.trim().toLowerCase(),
-                    quantity,
-                    ticket_price: product.ticketPrice,
-                    order_id: orderObj.orderId,
-                    product_title: product.title,
-                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Signature": signature,
+                    "X-Timestamp": timestamp,
+                  },
+                  body: JSON.stringify(payload),
                 }
               );
 
@@ -264,7 +309,7 @@ export default function Detail({ product, openImage }) {                 const t
 
               setIsTicketGenerating(false);
               setDownloadReady(true);
-              
+
             }}                                                                   />
 
           <br />

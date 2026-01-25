@@ -1,6 +1,38 @@
 import React, { useState } from "react";
 import LabelWithBullet from "./LabelWithBullet";
 
+async function signRequest(body) {
+  const encoder = new TextEncoder();
+  const secret = import.meta.env.VITE_API_SIGN_SECRET;
+
+  if (!secret) {
+    throw new Error("Missing API signing secret");
+  }
+
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const payload = `${timestamp}.${JSON.stringify(body)}`;
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signatureBuffer = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    encoder.encode(payload)
+  );
+
+  const signature = Array.from(new Uint8Array(signatureBuffer))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return { signature, timestamp };
+}
+
 const FOCUS_BLUE = "#38bdf8"; // sky-400
 const ERROR_RED = "#ef4444";  // red-500
 
@@ -33,14 +65,22 @@ export default function MyTickets() {
     }
 
     try {
+      const payload = {
+        email: email.trim().toLowerCase(),
+      };
+
+      const { signature, timestamp } = await signRequest(payload);
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/my_tickets`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email.trim().toLowerCase(),
-          }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+          body: JSON.stringify(payload),
         }
       );
 
@@ -66,14 +106,22 @@ export default function MyTickets() {
     }
 
     try {
+      const payload = {
+        order_id: orderId.trim(),
+      };
+
+      const { signature, timestamp } = await signRequest(payload);
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            order_id: orderId.trim(),
-          }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+          body: JSON.stringify(payload),
         }
       );
 
