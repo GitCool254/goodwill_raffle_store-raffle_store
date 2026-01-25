@@ -32,36 +32,53 @@ export default function App() {
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-23";
-  const INITIAL_TICKETS = 50; // works even if less than 10
+  const INITIAL_TICKETS = 50;
 
   // Days passed since raffle started
   const daysPassed = Math.floor(
     (Date.now() - new Date(RAFFLE_START_DATE).getTime()) / (1000 * 60 * 60 * 24)
   );
 
-  // Decay factor: trends natural increase in daily decrement over 14 days
-  const decayFactor = Math.min(daysPassed / 14, 1); // 0 -> 1 faster than before
+  // Decay factor over 14 days
+  const decayFactor = Math.min(daysPassed / 14, 1);
 
-  // Calculate per-day min & max, clamped to avoid exceeding available tickets
+  // Per-day min & max
   const minDaily = Math.min(
-    10 + decayFactor * 5,                  // base min grows from 10 → 15
-    INITIAL_TICKETS / Math.max(daysPassed, 1) // clamp so we never oversell
+    10 + decayFactor * 5,
+    INITIAL_TICKETS / Math.max(daysPassed, 1)
   );
 
   const maxDaily = Math.min(
-    15 + decayFactor * 5,                  // base max grows from 15 → 20
-    INITIAL_TICKETS / Math.max(daysPassed, 1) // clamp so we never oversell
+    15 + decayFactor * 5,
+    INITIAL_TICKETS / Math.max(daysPassed, 1)
   );
 
-  // Total tickets decremented over all days, random but safe
+  // ✅ deterministic "random" per day
+  function seededRandom(seed) {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+
+  // Total decrement (stable per day)
   const ticketsDecremented = Math.floor(
-    Math.random() * (maxDaily * daysPassed - minDaily * daysPassed + 1) + minDaily * daysPassed
+    seededRandom(daysPassed) *
+      (maxDaily * daysPassed - minDaily * daysPassed + 1) +
+    minDaily * daysPassed
   );
 
-  // Remaining tickets, never negative
-  const remainingTickets = Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+  // Remaining tickets (never negative)
+  const remainingTickets = Math.max(
+    INITIAL_TICKETS - ticketsDecremented,
+    0
+  );
 
-  console.log({ daysPassed, decayFactor, minDaily, maxDaily, ticketsDecremented, remainingTickets });
+  console.log({
+    daysPassed,
+    minDaily,
+    maxDaily,
+    ticketsDecremented,
+    remainingTickets
+  });
   
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
