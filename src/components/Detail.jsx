@@ -12,6 +12,10 @@ async function signRequest(body) {
     throw new Error("Missing API signing secret");
   }
 
+  if (!window.crypto || !crypto.subtle) {
+    throw new Error("Crypto API not available in this browser");
+  }
+
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const payload = `${timestamp}.${JSON.stringify(body)}`;
 
@@ -263,7 +267,7 @@ export default function Detail({ product, openImage }) {                 const t
           {/* PAYPAL */}                                                         <PayPalButton
             amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
             appsScriptUrl={appsScriptUrl}
-            secret={secret}                                                        validateForm={validateForm}
+            validateForm={validateForm}
             product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
