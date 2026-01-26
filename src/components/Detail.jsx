@@ -278,9 +278,26 @@ export default function Detail({ product, openImage, remainingTickets }) {
             validateForm={validateForm}
             product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
+            disabled={remainingTickets <= 0}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setIsTicketGenerating(true);
+
+              // After successful ticket generation
+              setIsTicketGenerating(false);
+              setDownloadReady(true);
+
+              // 🔁 Sync backend state (authoritative)
+              const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
+              const stateData = await stateRes.json();
+
+              window.dispatchEvent(new CustomEvent("ticketsPurchased", {
+                detail: {
+                  quantity: Number(quantity),
+                  total_sold: stateData.total_sold,
+                  remaining: stateData.remaining
+                }
+              }));
 
               // 🔹 Generate tickets silently
               const payload = {
@@ -318,6 +335,15 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 setIsTicketGenerating(false);
                 return;
               }
+
+              // After tickets are generated successfully
+              const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
+              const stateData = await stateRes.json();
+
+              // Update App.jsx authoritative state via CustomEvent
+              window.dispatchEvent(new CustomEvent("ticketsPurchased", {
+                detail: { quantity: safeQty, total_sold: stateData.total_sold, remaining: stateData.remaining }
+              }));
 
               setIsTicketGenerating(false);
               setDownloadReady(true);

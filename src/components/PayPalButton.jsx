@@ -52,6 +52,7 @@ export default function PayPalButton({
           },
 
           onClick: (data, actions) => {
+            if (props.disabled) return actions.reject(); 
             const ok = validateRef.current();
             return ok ? actions.resolve() : actions.reject();
           },
@@ -96,11 +97,23 @@ export default function PayPalButton({
               orderId: order.id
             });
 
-            window.dispatchEvent(
-              new CustomEvent("ticketsPurchased", {
-                detail: { quantity: quantityRef.current }
-              })
-            );
+            try {
+              // Fetch backend-authoritative state
+              const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
+              const stateData = await stateRes.json();
+
+              window.dispatchEvent(
+                new CustomEvent("ticketsPurchased", {
+                  detail: {
+                    quantity: quantityRef.current,
+                    total_sold: stateData.total_sold,
+                    remaining: stateData.remaining
+                  }
+                })
+              );
+            } catch (err) {
+              console.error("Failed to sync ticket state:", err);
+            }
           }
         })
         .render(`#${containerId}`);
