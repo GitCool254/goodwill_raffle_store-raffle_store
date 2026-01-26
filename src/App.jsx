@@ -73,15 +73,10 @@ export default function App() {
   const [ticketsSold, setTicketsSold] = useState(0);
 
   // ✅ Guaranteed fair finish at day 10
-  const computedRemaining =
+  const remainingTickets =
     daysPassed >= DEDICATED_DAYS
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
-
-  const finalRemainingTickets =
-    remainingTickets === null
-      ? 0
-      : Math.max(remainingTickets - ticketsSold, 0);
 
   console.log({
     daysPassed,
@@ -176,6 +171,11 @@ export default function App() {
   });
 
   const [remainingTickets, setRemainingTickets] = useState(null);
+
+  const finalRemainingTickets =
+    remainingTickets === null
+      ? 0
+      : Math.max(remainingTickets - ticketsSold, 0);
 
   const [view, setView] = useState("home"); // home | detail
   const [selected, setSelected] = useState(null);
