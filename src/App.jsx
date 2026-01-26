@@ -68,7 +68,11 @@ export default function App() {
     minDaily * daysPassed
   );
 
-  const [ticketsSold, setTicketsSold] = useState(0);
+  // Step 1: Initialize ticketsSold with localStorage fallback
+  const [ticketsSold, setTicketsSold] = useState(() => {
+    const saved = localStorage.getItem("ticketsSold");
+    return saved ? Number(saved) : 0;
+  });
 
   // ✅ Guaranteed fair finish at day 10
   const remainingTickets =
@@ -199,19 +203,32 @@ export default function App() {
     fetch("https://goodwill-backend-kjn5.onrender.com/tickets_sold")
       .then(res => res.json())
       .then(data => {
-        setTicketsSold(data.total_sold || 0);
+        const sold = data.total_sold || 0;
+        setTicketsSold(sold);
+        localStorage.setItem("ticketsSold", sold); // ✅ persist latest value
       })
       .catch(() => {
-        setTicketsSold(0);
+        // Fallback to last saved value in localStorage
+        const saved = localStorage.getItem("ticketsSold");
+        if (saved) setTicketsSold(Number(saved));
       });
   }, []);
+
+  // Step 3: Persist ticketsSold to localStorage on every change
+  useEffect(() => {
+    localStorage.setItem("ticketsSold", ticketsSold);
+  }, [ticketsSold]);
 
   useEffect(() => {
     async function handlePurchase(e) {
       const qty = Number(e.detail?.quantity || 0);
       if (qty > 0) {
         // Optimistic UI update
-        setTicketsSold(prev => prev + qty);
+        setTicketsSold(prev => {
+          const newTotal = prev + qty;
+          localStorage.setItem("ticketsSold", newTotal); // persist to localStorage
+          return newTotal;
+        });
 
         try {
           const res = await fetch(
