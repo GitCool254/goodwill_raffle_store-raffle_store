@@ -74,7 +74,7 @@ export default function App() {
   const [remainingTickets, setRemainingTickets] = useState(null);
 
   // ✅ Guaranteed fair finish at day 10
-  const remainingTickets =
+  const computedRemaining =
     daysPassed >= DEDICATED_DAYS
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
