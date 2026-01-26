@@ -29,9 +29,6 @@ import MyTickets from "./components/MyTickets";
 export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
 
-  const DAILY_BASELINE_KEY = "gw_daily_remaining";
-  const DAILY_DATE_KEY = "gw_daily_date";
-
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-26";
@@ -81,24 +78,10 @@ export default function App() {
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
-  let storedDailyRemaining = Number(
-    localStorage.getItem(DAILY_BASELINE_KEY)
-  );
-  const storedDate = localStorage.getItem(DAILY_DATE_KEY);
-
-  // 🔁 New day OR first run → recalc
-  if (storedDate !== todayKey || isNaN(storedDailyRemaining)) {
-    storedDailyRemaining = computedRemaining;
-    localStorage.setItem(DAILY_BASELINE_KEY, storedDailyRemaining);
-    localStorage.setItem(DAILY_DATE_KEY, todayKey);
-  }
-
-  const remainingTickets = storedDailyRemaining;
-
-  const finalRemainingTickets = Math.max(
-    remainingTickets - ticketsSold,
-    0
-  );
+  const finalRemainingTickets =
+    remainingTickets === null
+      ? 0
+      : Math.max(remainingTickets - ticketsSold, 0);
 
   console.log({
     daysPassed,
@@ -192,6 +175,8 @@ export default function App() {
     return saved ? JSON.parse(saved) : {};
   });
 
+  const [remainingTickets, setRemainingTickets] = useState(null);
+
   const [view, setView] = useState("home"); // home | detail
   const [selected, setSelected] = useState(null);
 
@@ -215,14 +200,45 @@ export default function App() {
   }, [products]);
 
   useEffect(() => {
-    fetch("https://goodwill-backend-kjn5.onrender.com/tickets_sold")
-      .then(res => res.json())
-      .then(data => {
+    async function loadTicketState() {
+      try {
+        const res = await fetch(
+          "https://goodwill-backend-kjn5.onrender.com/ticket_state"
+        );
+        const data = await res.json();
+
+        const backendDate = data.last_calc_date;
+        const backendRemaining = data.remaining;
+
+        // 🟢 Case 1: backend already has today's baseline
+        if (backendDate === todayKey && backendRemaining !== null) {
+          setRemainingTickets(backendRemaining);
+          setTicketsSold(data.total_sold || 0);
+          return;
+        }
+
+        // 🟡 Case 2: backend needs today's recalculation
+        const recalculated = computedRemaining;
+
+        setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
-      })
-      .catch(() => {
-        setTicketsSold(0);
-      });
+
+        // 🔁 Sync to backend ONCE per day
+        await fetch(
+          "https://goodwill-backend-kjn5.onrender.com/sync_remaining",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ remaining: recalculated }),
+          }
+        );
+
+      } catch (err) {
+        console.error("Failed to load ticket state:", err);
+      }
+    }
+
+    loadTicketState();
   }, []);
 
   useEffect(() => {
@@ -230,18 +246,7 @@ export default function App() {
       const qty = Number(e.detail?.quantity || 0);
       if (qty > 0) {
         // Optimistic UI update
-        setTicketsSold(prev => {
-          const newTotal = prev + qty;
-
-          const updatedRemaining = Math.max(
-            remainingTickets - newTotal,
-            0
-          );
-
-          localStorage.setItem(DAILY_BASELINE_KEY, updatedRemaining);
-
-          return newTotal;
-        });
+        setTicketsSold(prev => prev + qty);
 
         try {
           const res = await fetch(
@@ -257,6 +262,15 @@ export default function App() {
           if (!data.success) {
             console.warn("Server rejected ticket update:", data);
           }
+
+          const stateRes = await fetch(
+            "https://goodwill-backend-kjn5.onrender.com/ticket_state"
+          );
+          const stateData = await stateRes.json();
+
+          setRemainingTickets(stateData.remaining);
+          setTicketsSold(stateData.total_sold || 0);
+          
         } catch (err) {
           console.error("Failed to record sale:", err);
         }
