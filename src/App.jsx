@@ -333,7 +333,7 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              {finalRemainingTickets} tickets remaining
+              {Math.max(finalRemainingTickets, 0)} tickets remaining
             </div>
           </div>
         </div>
