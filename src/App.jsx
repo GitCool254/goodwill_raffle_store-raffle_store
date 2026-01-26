@@ -68,11 +68,7 @@ export default function App() {
     minDaily * daysPassed
   );
 
-  // Step 1: Initialize ticketsSold with localStorage fallback
-  const [ticketsSold, setTicketsSold] = useState(() => {
-    const saved = localStorage.getItem("ticketsSold");
-    return saved ? Number(saved) : 0;
-  });
+  const [ticketsSold, setTicketsSold] = useState(0);
 
   // ✅ Guaranteed fair finish at day 10
   const remainingTickets =
@@ -92,7 +88,7 @@ export default function App() {
     ticketsDecremented,
     remainingTickets
   });
-  
+
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -112,7 +108,7 @@ export default function App() {
       totalTickets: 100,
       category: "Eletronics",
     },
-    
+
     {
       id: "p2",
       title: "Beachcroft Patio set",
@@ -128,7 +124,7 @@ export default function App() {
       totalTickets: 200,
       category: "Households",
     },
-    
+
     {
       id: "p3",
       title: "Coolster 125cc",
@@ -186,14 +182,14 @@ export default function App() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const [imageReturnView, setImageReturnView] = useState("home");
-  
+
   const navStackRef = React.useRef(["home"]);
-     
+
   console.log("App mounted — view =", view);
 
   // -------------------- HISTORY SYNC --------------------
   const VIEW_KEY = "gw_view";
-  
+
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
     localStorage.setItem("gw_products", JSON.stringify(products));
@@ -203,32 +199,19 @@ export default function App() {
     fetch("https://goodwill-backend-kjn5.onrender.com/tickets_sold")
       .then(res => res.json())
       .then(data => {
-        const sold = data.total_sold || 0;
-        setTicketsSold(sold);
-        localStorage.setItem("ticketsSold", sold); // ✅ persist latest value
+        setTicketsSold(data.total_sold || 0);
       })
       .catch(() => {
-        // Fallback to last saved value in localStorage
-        const saved = localStorage.getItem("ticketsSold");
-        if (saved) setTicketsSold(Number(saved));
+        setTicketsSold(0);
       });
   }, []);
-
-  // Step 3: Persist ticketsSold to localStorage on every change
-  useEffect(() => {
-    localStorage.setItem("ticketsSold", ticketsSold);
-  }, [ticketsSold]);
 
   useEffect(() => {
     async function handlePurchase(e) {
       const qty = Number(e.detail?.quantity || 0);
       if (qty > 0) {
         // Optimistic UI update
-        setTicketsSold(prev => {
-          const newTotal = prev + qty;
-          localStorage.setItem("ticketsSold", newTotal); // persist to localStorage
-          return newTotal;
-        });
+        setTicketsSold(prev => prev + qty);
 
         try {
           const res = await fetch(
@@ -306,7 +289,7 @@ export default function App() {
     return () =>
       window.removeEventListener("popstate", handlePopState);
   }, []);
-  
+
   function openProduct(p) {
     setSelected(p);
     navigate("detail");
@@ -356,7 +339,7 @@ export default function App() {
               >
                 Product Raffles
               </button>
-              
+
             </div>
 
             <div
@@ -555,7 +538,7 @@ export default function App() {
       </div>
     );
   }
-  
+
   function Home() {
     console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
     return (
