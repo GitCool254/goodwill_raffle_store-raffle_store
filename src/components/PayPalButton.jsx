@@ -95,6 +95,12 @@ export default function PayPalButton({
               ...orderObj,
               orderId: order.id
             });
+
+            window.dispatchEvent(
+              new CustomEvent("ticketsPurchased", {
+                detail: { quantity: quantityRef.current }
+              })
+            );
           }
         })
         .render(`#${containerId}`);

@@ -40,7 +40,10 @@ async function signRequest(body) {
   return { signature, timestamp };
 }
 
-export default function Detail({ product, openImage }) {                 const ticket = product?._ticket || null;                               const [name, setName] = useState("");
+
+export default function Detail({ product, openImage, remainingTickets }) {
+  const ticket = product?._ticket || null;
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [errors, setErrors] = useState({});
@@ -77,6 +80,11 @@ export default function Detail({ product, openImage }) {                 const t
     ) {
       newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
     }
+
+    if (qtyNum > remainingTickets) {
+     newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
+    }
+    
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 

@@ -68,11 +68,18 @@ export default function App() {
     minDaily * daysPassed
   );
 
+  const [ticketsSold, setTicketsSold] = useState(0);
+
   // ✅ Guaranteed fair finish at day 10
   const remainingTickets =
     daysPassed >= DEDICATED_DAYS
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+
+  const finalRemainingTickets = Math.max(
+    remainingTickets - ticketsSold,
+    0
+  );
 
   console.log({
     daysPassed,
@@ -189,6 +196,30 @@ export default function App() {
   }, [products]);
 
   useEffect(() => {
+    fetch("https://goodwill-backend-kjn5.onrender.com/tickets_sold")
+      .then(res => res.json())
+      .then(data => {
+        setTicketsSold(data.total_sold || 0);
+      })
+      .catch(() => {
+        setTicketsSold(0);
+      });
+  }, []);
+
+  useEffect(() => {
+    function handlePurchase(e) {
+      const qty = Number(e.detail?.quantity || 0);
+      if (qty > 0) {
+        setTicketsSold((prev) => prev + qty);
+      }
+    }
+
+    window.addEventListener("ticketsPurchased", handlePurchase);
+    return () =>
+      window.removeEventListener("ticketsPurchased", handlePurchase);
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("gw_entries", JSON.stringify(entries));
   }, [entries]);
 
@@ -302,7 +333,7 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              {remainingTickets} tickets remaining
+              {finalRemainingTickets} tickets remaining
             </div>
           </div>
         </div>
@@ -556,6 +587,7 @@ export default function App() {
         {view === "detail" && selected && (
           <Detail
             product={selected}
+            remainingTickets={finalRemainingTickets}
             onBack={() => navigate("home")}
             openImage={openImage}
           />
