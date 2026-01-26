@@ -109,7 +109,7 @@ export default function App() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
-      ticketPrice: 7,
+      ticketPrice: 6,
       totalTickets: 100,
       category: "Eletronics",
     },
