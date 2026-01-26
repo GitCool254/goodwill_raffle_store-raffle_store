@@ -28,6 +28,7 @@ import MyTickets from "./components/MyTickets";
 
 export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
+  const SYNC_KEY = "gw_last_sync_date";
 
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
@@ -224,14 +225,20 @@ export default function App() {
         setTicketsSold(data.total_sold || 0);
 
         // 🔁 Sync to backend ONCE per day
-        await fetch(
-          "https://goodwill-backend-kjn5.onrender.com/sync_remaining",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ remaining: recalculated }),
-          }
-        );
+        const lastSync = localStorage.getItem(SYNC_KEY);
+
+        if (lastSync !== todayKey) {
+          await fetch(
+            "https://goodwill-backend-kjn5.onrender.com/sync_remaining",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ remaining: recalculated }),
+            }
+          );
+
+          localStorage.setItem(SYNC_KEY, todayKey);
+        }
 
       } catch (err) {
         console.error("Failed to load ticket state:", err);
