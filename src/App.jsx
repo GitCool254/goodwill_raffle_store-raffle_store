@@ -207,10 +207,29 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    function handlePurchase(e) {
+    async function handlePurchase(e) {
       const qty = Number(e.detail?.quantity || 0);
       if (qty > 0) {
-        setTicketsSold((prev) => prev + qty);
+        // Optimistic UI update
+        setTicketsSold(prev => prev + qty);
+
+        try {
+          const res = await fetch(
+            "https://goodwill-backend-kjn5.onrender.com/record_sale",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ tickets: qty }),
+            }
+          );
+          const data = await res.json();
+
+          if (!data.success) {
+            console.warn("Server rejected ticket update:", data);
+          }
+        } catch (err) {
+          console.error("Failed to record sale:", err);
+        }
       }
     }
 
