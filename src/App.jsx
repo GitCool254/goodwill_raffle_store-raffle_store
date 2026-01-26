@@ -29,11 +29,16 @@ import MyTickets from "./components/MyTickets";
 export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
 
+  const DAILY_BASELINE_KEY = "gw_daily_remaining";
+  const DAILY_DATE_KEY = "gw_daily_date";
+
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-26";
   const INITIAL_TICKETS = 50;
   const DEDICATED_DAYS = 10;
+
+  const todayKey = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
   // Days passed since raffle started
   const daysPassed = Math.floor(
@@ -71,10 +76,24 @@ export default function App() {
   const [ticketsSold, setTicketsSold] = useState(0);
 
   // ✅ Guaranteed fair finish at day 10
-  const remainingTickets =
+  const computedRemaining =
     daysPassed >= DEDICATED_DAYS
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+
+  let storedDailyRemaining = Number(
+    localStorage.getItem(DAILY_BASELINE_KEY)
+  );
+  const storedDate = localStorage.getItem(DAILY_DATE_KEY);
+
+  // 🔁 New day OR first run → recalc
+  if (storedDate !== todayKey || isNaN(storedDailyRemaining)) {
+    storedDailyRemaining = computedRemaining;
+    localStorage.setItem(DAILY_BASELINE_KEY, storedDailyRemaining);
+    localStorage.setItem(DAILY_DATE_KEY, todayKey);
+  }
+
+  const remainingTickets = storedDailyRemaining;
 
   const finalRemainingTickets = Math.max(
     remainingTickets - ticketsSold,
@@ -211,7 +230,18 @@ export default function App() {
       const qty = Number(e.detail?.quantity || 0);
       if (qty > 0) {
         // Optimistic UI update
-        setTicketsSold(prev => prev + qty);
+        setTicketsSold(prev => {
+          const newTotal = prev + qty;
+
+          const updatedRemaining = Math.max(
+            remainingTickets - newTotal,
+            0
+          );
+
+          localStorage.setItem(DAILY_BASELINE_KEY, updatedRemaining);
+
+          return newTotal;
+        });
 
         try {
           const res = await fetch(
