@@ -219,7 +219,12 @@ export default function App() {
         }
 
         // 🟡 Case 2: backend needs today's recalculation
-        const recalculated = computedRemaining;
+        const sold = data.total_sold || 0;
+
+        const recalculated = Math.max(
+          computedRemaining - sold,
+          0
+        );
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
