@@ -82,8 +82,8 @@ export default function App() {
 
   const finalRemainingTickets =
     remainingTickets === null
-      ? 0
-      : Math.max(remainingTickets - ticketsSold, 0);
+      ? computedRemaining   // safe fallback for first render
+      : remainingTickets;   // backend authoritative
   
 
   console.log({
