@@ -331,7 +331,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 detail: {
                   quantity: Number(quantity),
                   total_sold: ticketstateData.total_sold,
-                  remaining: ticketstateData.remaining
+                  remaining: ticketstateData.remaining,
                   authoritative: true
                 }
               }));
