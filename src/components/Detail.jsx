@@ -323,16 +323,17 @@ export default function Detail({ product, openImage, remainingTickets }) {
               setIsTicketGenerating(false);
               setDownloadReady(true);
 
-              const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
-              const stateData = await stateRes.json();
+              // 🔁 Sync backend state (authoritative)
+              const ticketstateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
+              const ticketstateData = await ticketstateRes.json();
 
-              // Update App.jsx authoritative state via CustomEvent
               window.dispatchEvent(new CustomEvent("ticketsPurchased", {
-                detail: { quantity: safeQty, total_sold: stateData.total_sold, remaining: stateData.remaining }
+                detail: {
+                  quantity: Number(quantity),
+                  total_sold: ticketstateData.total_sold,
+                  remaining: ticketstateData.remaining
+                }
               }));
-
-              // setIsTicketGenerating(false);
-              // setDownloadReady(true);
 
             }}                                                                   />
 
