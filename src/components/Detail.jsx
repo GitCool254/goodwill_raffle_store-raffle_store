@@ -97,7 +97,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
     try {
 
-      const payload = { order_id: lastOrder.orderId };
+      const orderId = lastOrder?.orderId || localStorage.getItem("lastOrderId");
+
+      if (!orderId) {
+        alert("No completed payment found.");
+        return;
+      }
+
+      const payload = { order_id: orderId };
       const { signature, timestamp } = await signRequest(payload);
 
       const res = await fetch(
@@ -280,6 +287,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
+              // 🔹 NEW LINE: persist orderId for download
+              localStorage.setItem("lastOrderId", orderObj.orderId);
               setIsTicketGenerating(true);
 
               // After successful ticket generation
