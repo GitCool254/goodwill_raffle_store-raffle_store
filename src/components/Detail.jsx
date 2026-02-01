@@ -63,6 +63,15 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   useEffect(() => {                                                        setHasDownloaded(false);                                             }, [lastOrder]);
 
+  useEffect(() => {
+    const downloaded = localStorage.getItem("hasDownloaded_" + (lastOrder?.orderId || ""));
+    setHasDownloaded(downloaded === "true");
+  }, [lastOrder]);
+
+  // after successful download:
+  setHasDownloaded(true);
+  localStorage.setItem("hasDownloaded_" + orderId, "true");
+
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
   const amount = Number((price * safeQty).toFixed(2));
