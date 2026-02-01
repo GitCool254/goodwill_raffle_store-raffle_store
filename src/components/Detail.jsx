@@ -278,7 +278,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
             validateForm={validateForm}
             product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
-            disabled={remainingTickets <= 0}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setIsTicketGenerating(true);

@@ -52,7 +52,6 @@ export default function PayPalButton({
           },
 
           onClick: (data, actions) => {
-            if (props.disabled) return actions.reject(); 
             const ok = validateRef.current();
             return ok ? actions.resolve() : actions.reject();
           },
