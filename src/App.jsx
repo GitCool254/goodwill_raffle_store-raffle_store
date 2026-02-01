@@ -80,11 +80,9 @@ export default function App() {
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
-  const finalRemainingTickets =
-    remainingTickets === null
-      ? computedRemaining   // safe fallback for first render
-      : remainingTickets;   // backend authoritative
   
+  const finalRemainingTickets =
+    remainingTickets !== null ? remainingTickets : computedRemaining;
 
   console.log({
     daysPassed,
@@ -212,19 +210,14 @@ export default function App() {
         const backendRemaining = data.remaining;
 
         // 🟢 Case 1: backend already has today's baseline
-        if (backendDate === todayKey && backendRemaining !== null) {
+        if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
           return;
         }
 
         // 🟡 Case 2: backend needs today's recalculation
-        const sold = data.total_sold || 0;
-
-        const recalculated = Math.max(
-          computedRemaining - sold,
-          0
-        );
+        const recalculated = computedRemaining;
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
@@ -232,7 +225,10 @@ export default function App() {
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
 
-        if (lastSync !== todayKey) {
+        if (
+          lastSync !== todayKey &&
+          (backendRemaining === null || recalculated < backendRemaining)
+        ) {
           await fetch(
             "https://goodwill-backend-kjn5.onrender.com/sync_remaining",
             {
