@@ -282,22 +282,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
               setLastOrder(orderObj);
               setIsTicketGenerating(true);
 
-              // After successful ticket generation
-              // setIsTicketGenerating(false);
-              // setDownloadReady(true);
-
-              // 🔁 Sync backend state (authoritative)
-              const ticketstateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
-              const ticketstateData = await ticketstateRes.json();
-
-              window.dispatchEvent(new CustomEvent("ticketsPurchased", {
-                detail: {
-                  quantity: Number(quantity),
-                  total_sold: ticketstateData.total_sold,
-                  remaining: ticketstateData.remaining
-                }
-              }));
-
               // 🔹 Generate tickets silently
               const payload = {
                 name,
