@@ -283,8 +283,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
               setIsTicketGenerating(true);
 
               // After successful ticket generation
-              setIsTicketGenerating(false);
-              setDownloadReady(true);
+              // setIsTicketGenerating(false);
+              // setDownloadReady(true);
 
               // 🔁 Sync backend state (authoritative)
               const ticketstateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
@@ -336,6 +336,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
               }
 
               // After tickets are generated successfully
+              setIsTicketGenerating(false);
+              setDownloadReady(true);
+
               const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
               const stateData = await stateRes.json();
 
@@ -344,8 +347,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 detail: { quantity: safeQty, total_sold: stateData.total_sold, remaining: stateData.remaining }
               }));
 
-              setIsTicketGenerating(false);
-              setDownloadReady(true);
+              // setIsTicketGenerating(false);
+              // setDownloadReady(true);
 
             }}                                                                   />
 
