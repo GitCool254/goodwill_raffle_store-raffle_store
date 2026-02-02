@@ -76,6 +76,7 @@ export default function App() {
 
   const [ticketsSold, setTicketsSold] = useState(0);
   const [remainingTickets, setRemainingTickets] = useState(null);
+  const [ticketStateReady, setTicketStateReady] = useState(false); // ✅ ADD
 
   // ✅ Guaranteed fair finish at day 10
   const computedRemaining =
@@ -214,6 +215,7 @@ export default function App() {
         if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
+          setTicketStateReady(true); // ✅ ADD
           return;
         }
 
@@ -222,6 +224,7 @@ export default function App() {
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
+        setTicketStateReady(true); // ✅ ADD
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
@@ -426,7 +429,11 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              {Math.max(finalRemainingTickets, 0)} tickets remaining
+              {ticketStateReady ? (
+                `${Math.max(finalRemainingTickets, 0)} tickets remaining`
+              ) : (
+                "Loading ticket availability…"
+              )}
             </div>
           </div>
         </div>
