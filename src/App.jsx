@@ -394,19 +394,25 @@ export default function App() {
   // -------------------- COMPONENTS --------------------
 
 
-  function Hero() {
-    console.log("Hero render");
-
-    const ticketStateReady = finalRemainingTickets !== null && finalRemainingTickets >= 0;
-    
+  // -------------------- HERO COMPONENT --------------------
+  function Hero({ remainingTickets, computedRemaining }) {
     const [scale, setScale] = useState(1);
 
+    // Determine actual remaining tickets
+    const finalRemainingTickets =
+      remainingTickets !== null ? remainingTickets : computedRemaining;
+
+    const ticketStateReady =
+      finalRemainingTickets !== null && finalRemainingTickets >= 0;
+
+    // Animate when ticket count changes
     useEffect(() => {
-      // Trigger pop animation whenever finalRemainingTickets changes
+      if (!ticketStateReady) return; // skip if not ready
       setScale(1.3); // grow
-      const timeout = setTimeout(() => setScale(1), 300); // shrink back
+      const timeout = setTimeout(() => setScale(1), 300); // shrink
       return () => clearTimeout(timeout);
-    }, [finalRemainingTickets]); // ✅ watch the ticket count
+    }, [finalRemainingTickets, ticketStateReady]);
+
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 px-4">
@@ -418,6 +424,23 @@ export default function App() {
               Buy low-cost tickets for a chance to win high-value tech items.
               Each ticket helps us support community initiatives.
             </p>
+            <div
+              style={{ marginTop: "20px", fontWeight: "700" }}
+              className="text-sm text-slate-100 tracking-wide"
+            >
+              <span
+                key={finalRemainingTickets} // trigger re-render on change
+                style={{
+                  display: "inline-block",
+                  transform: `scale(${scale})`,
+                  transition: "transform 0.3s ease-out",
+                }}
+              >
+                {ticketStateReady
+                  ? `${finalRemainingTickets} tickets remaining`
+                  : "Loading ticket availability…"}
+              </span>
+            </div>
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
@@ -425,32 +448,6 @@ export default function App() {
               >
                 Product Raffles
               </button>
-
-            </div>
-
-            <div
-              style={{
-                textAlign: "left",
-                fontWeight: "700",
-                marginTop: "20px",
-                marginLeft: "0",
-                marginBottom: "20px",
-              }}
-              className="text-sm text-slate-100 tracking-wide"
-            >
-              <span
-                key={finalRemainingTickets} // re-render trigger
-                style={{
-                  display: "inline-block",
-                  transform: `scale(${scale})`,
-                  transition: "transform 0.3s ease-out",
-                  color: "#fff",
-                }}
-              >
-                {ticketStateReady
-                  ? `${Math.max(finalRemainingTickets, 0)} tickets remaining`
-                  : "Loading ticket availability…"}
-              </span>
             </div>
           </div>
         </div>
@@ -696,7 +693,10 @@ export default function App() {
       <main className="flex-grow">
         {view === "home" && (
           <>
-            <Hero />
+            <Hero
+              remainingTickets={remainingTickets}
+              computedRemaining={computedRemaining}
+            />
             <Home />
           </>
         )}
