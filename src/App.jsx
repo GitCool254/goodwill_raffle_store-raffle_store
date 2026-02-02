@@ -76,7 +76,6 @@ export default function App() {
 
   const [ticketsSold, setTicketsSold] = useState(0);
   const [remainingTickets, setRemainingTickets] = useState(null);
-  const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   // ✅ Guaranteed fair finish at day 10
   const computedRemaining =
@@ -216,7 +215,6 @@ export default function App() {
         if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
-          setTicketStateLoaded(true); // ✅ ADD THIS
           return;
         }
 
@@ -225,7 +223,6 @@ export default function App() {
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
-        setTicketStateLoaded(true); // ✅ ADD THIS
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
@@ -290,11 +287,16 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         // ✅ Backend is authoritative after purchase
-        if (!isNaN(backendRemaining)) {
-          setRemainingTickets(backendRemaining);
-        }
+        setRemainingTickets(prev => {
+          const base =
+            prev !== null
+              ? prev
+              : !isNaN(backendRemaining)
+                ? backendRemaining
+                : computedRemaining;
 
-        setTicketStateLoaded(true);
+          return Math.max(base - qty, 0);
+        });
 
       
 
@@ -394,7 +396,7 @@ export default function App() {
 
 
   // -------------------- HERO COMPONENT --------------------
-  function Hero({ remainingTickets, computedRemaining,ticketStateLoaded }) {
+  function Hero({ remainingTickets, computedRemaining }) {
     const [scale, setScale] = useState(1);
 
     // Determine actual remaining tickets
@@ -402,7 +404,7 @@ export default function App() {
       ticketStateLoaded ? remainingTickets : null;
 
     const ticketStateReady =
-      ticketStateLoaded && finalRemainingTickets !== null;
+      finalRemainingTickets !== null && finalRemainingTickets >= 0;
 
     // Animate when ticket count changes
     useEffect(() => {
@@ -704,7 +706,6 @@ export default function App() {
             <Hero
               remainingTickets={remainingTickets}
               computedRemaining={computedRemaining}
-              ticketStateLoaded={ticketStateLoaded}
             />
             <Home />
           </>
