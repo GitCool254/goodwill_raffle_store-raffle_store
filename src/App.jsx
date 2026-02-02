@@ -250,46 +250,62 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    function handleTicketsPurchased(e) {
+    async function handleTicketsPurchased(e) {
       const detail = e.detail || {};
       const qty = Number(detail.quantity || 0);
-      const backendSold = Number(detail.total_sold);
-      const backendRemaining = Number(detail.remaining);
+      if (qty <= 0) return;
 
-      // ----------------------------
-      // 1️⃣ Update ticketsSold
-      // Always reflect backend authoritative total sold
-      if (!isNaN(backendSold)) {
-        setTicketsSold(backendSold);
-      } else if (qty > 0) {
-        // fallback: optimistic increment
-        setTicketsSold(prev => prev + qty);
-      }
-
-      // ----------------------------
-      // 2️⃣ Update remainingTickets
-      if (!isNaN(backendRemaining)) {
-        setRemainingTickets(prevRemaining => {
-          // prevRemaining might be null on first load
-          const currentRemaining = prevRemaining !== null ? prevRemaining : backendRemaining;
-
-          // Apply your frontend math / decay
-          const computedDecayRemaining = Math.max(
-            0,
-            currentRemaining - (qty || 0) // deduct purchased quantity
-          );
-
-          // Ensure we never go below zero or exceed backend remaining
-          return Math.min(Math.max(computedDecayRemaining, 0), backendRemaining);
+      try {
+        // ----------------------------
+        // 1️⃣ Record sale to backend
+        const res = await fetch(`${backendUrl}/record_sale`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tickets: qty }),
         });
-      }
+        const data = await res.json();
+        if (!data.success) {
+          console.warn("Server rejected ticket update:", data);
+        }
 
-      console.log("Tickets synced from backend:", {
-        qty,
-        backendSold,
-        backendRemaining,
-        remainingTickets: backendRemaining,
-      });
+        // ----------------------------
+        // 2️⃣ Fetch authoritative ticket state
+        const stateRes = await fetch(`${backendUrl}/ticket_state`);
+        const stateData = await stateRes.json();
+        const backendSold = Number(stateData.total_sold);
+        const backendRemaining = Number(stateData.remaining);
+
+        // ----------------------------
+        // 3️⃣ Update ticketsSold (authoritative)
+        if (!isNaN(backendSold)) {
+          setTicketsSold(backendSold);
+        } else {
+          setTicketsSold(prev => prev + qty); // fallback
+        }
+
+        // ----------------------------
+        // 4️⃣ Update remainingTickets (decay-based)
+        setRemainingTickets(prev => {
+          // Use your existing frontend formula as base
+          const baseRemaining = computedRemaining;
+
+          // Deduct purchased quantity
+          const afterPurchase = Math.max(baseRemaining - qty, 0);
+
+          // Cap at backend remaining if backend value exists
+          return !isNaN(backendRemaining)
+            ? Math.min(afterPurchase, backendRemaining)
+            : afterPurchase;
+        });
+
+        console.log("Tickets synced after purchase:", {
+          qty,
+          backendSold,
+          backendRemaining,
+        });
+      } catch (err) {
+        console.error("Failed to record purchase or fetch state:", err);
+      }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
