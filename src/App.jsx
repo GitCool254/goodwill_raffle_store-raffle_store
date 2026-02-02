@@ -286,21 +286,16 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         setRemainingTickets(prev => {
-          // Start from current live remaining, or backend, or decay baseline
-          const current =
+          // Start from live UI state first
+          const base =
             prev !== null
               ? prev
               : !isNaN(backendRemaining)
                 ? backendRemaining
                 : computedRemaining;
 
-          // Deduct purchased quantity
-          const afterPurchase = Math.max(current - qty, 0);
-
-          // Respect backend cap if present
-          return !isNaN(backendRemaining)
-            ? Math.min(afterPurchase, backendRemaining)
-            : afterPurchase;
+          // Optimistic deduction ONLY
+          return Math.max(base - qty, 0);
         });
 
         console.log("Tickets synced after purchase:", {
