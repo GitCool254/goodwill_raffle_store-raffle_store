@@ -76,7 +76,6 @@ export default function App() {
 
   const [ticketsSold, setTicketsSold] = useState(0);
   const [remainingTickets, setRemainingTickets] = useState(null);
-  const [ticketStateReady, setTicketStateReady] = useState(false); // ✅ ADD
 
   // ✅ Guaranteed fair finish at day 10
   const computedRemaining =
@@ -85,11 +84,9 @@ export default function App() {
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
   
-  const finalRemainingTickets = ticketStateReady
-    ? remainingTickets
-    : computedRemaining;
+  const finalRemainingTickets =
+    remainingTickets !== null ? remainingTickets : computedRemaining;
 
-  console.log("UI remaining updated →", finalRemainingTickets);
 
   console.log({
     daysPassed,
@@ -218,7 +215,6 @@ export default function App() {
         if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
-          setTicketStateReady(true); // ✅ ADD
           return;
         }
 
@@ -227,7 +223,6 @@ export default function App() {
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
-        setTicketStateReady(true); // ✅ ADD
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
@@ -292,10 +287,14 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         setRemainingTickets(prev => {
-          // ticketStateReady guarantees prev is valid
-          if (prev === null) return prev;
+          const base =
+            prev !== null
+              ? prev
+              : !isNaN(backendRemaining)
+                ? backendRemaining
+                : computedRemaining;
 
-          return Math.max(prev - qty, 0);
+          return Math.max(base - qty, 0);
         });
 
       
@@ -428,11 +427,19 @@ export default function App() {
               }}
               className="text-sm text-slate-100 tracking-wide"
             >
-              {ticketStateReady ? (
-                `${Math.max(finalRemainingTickets, 0)} tickets remaining`
-              ) : (
-                "Loading ticket availability…"
-              )}
+              <span
+                key={finalRemainingTickets} // re-render trigger
+                style={{
+                  display: "inline-block",
+                  transform: `scale(${scale})`,
+                  transition: "transform 0.3s ease-out",
+                  color: "#fff",
+                }}
+              >
+                {ticketStateReady
+                  ? `${Math.max(finalRemainingTickets, 0)} tickets remaining`
+                  : "Loading ticket availability…"}
+              </span>
             </div>
           </div>
         </div>
