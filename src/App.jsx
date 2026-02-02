@@ -286,13 +286,18 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         setRemainingTickets(prev => {
-          // Use your existing frontend formula as base
-          const baseRemaining = computedRemaining;
+          // Start from current live remaining, or backend, or decay baseline
+          const current =
+            prev !== null
+              ? prev
+              : !isNaN(backendRemaining)
+                ? backendRemaining
+                : computedRemaining;
 
           // Deduct purchased quantity
-          const afterPurchase = Math.max(baseRemaining - qty, 0);
+          const afterPurchase = Math.max(current - qty, 0);
 
-          // Cap at backend remaining if backend value exists
+          // Respect backend cap if present
           return !isNaN(backendRemaining)
             ? Math.min(afterPurchase, backendRemaining)
             : afterPurchase;
