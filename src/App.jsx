@@ -85,8 +85,11 @@ export default function App() {
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
   
-  const finalRemainingTickets =
-    remainingTickets !== null ? remainingTickets : computedRemaining;
+  const finalRemainingTickets = ticketStateReady
+    ? remainingTickets
+    : computedRemaining;
+
+  console.log("UI remaining updated →", finalRemainingTickets);
 
   console.log({
     daysPassed,
@@ -289,17 +292,13 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         setRemainingTickets(prev => {
-          // Start from live UI state first
-          const base =
-            prev !== null
-              ? prev
-              : !isNaN(backendRemaining)
-                ? backendRemaining
-                : computedRemaining;
+          // ticketStateReady guarantees prev is valid
+          if (prev === null) return prev;
 
-          // Optimistic deduction ONLY
-          return Math.max(base - qty, 0);
+          return Math.max(prev - qty, 0);
         });
+
+      
 
         console.log("Tickets synced after purchase:", {
           qty,
