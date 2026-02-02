@@ -76,6 +76,7 @@ export default function App() {
 
   const [ticketsSold, setTicketsSold] = useState(0);
   const [remainingTickets, setRemainingTickets] = useState(null);
+  const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   // ✅ Guaranteed fair finish at day 10
   const computedRemaining =
@@ -215,6 +216,7 @@ export default function App() {
         if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
+          setTicketStateLoaded(true); // ✅ ADD THIS
           return;
         }
 
@@ -223,6 +225,7 @@ export default function App() {
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
+        setTicketStateLoaded(true); // ✅ ADD THIS
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
@@ -395,7 +398,7 @@ export default function App() {
 
 
   // -------------------- HERO COMPONENT --------------------
-  function Hero({ remainingTickets, computedRemaining }) {
+  function Hero({ remainingTickets, computedRemaining,ticketStateLoaded }) {
     const [scale, setScale] = useState(1);
 
     // Determine actual remaining tickets
@@ -403,7 +406,7 @@ export default function App() {
       remainingTickets !== null ? remainingTickets : computedRemaining;
 
     const ticketStateReady =
-      finalRemainingTickets !== null && finalRemainingTickets >= 0;
+      ticketStateLoaded && finalRemainingTickets !== null;
 
     // Animate when ticket count changes
     useEffect(() => {
@@ -705,6 +708,7 @@ export default function App() {
             <Hero
               remainingTickets={remainingTickets}
               computedRemaining={computedRemaining}
+              ticketStateLoaded={ticketStateLoaded}
             />
             <Home />
           </>
