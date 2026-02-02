@@ -396,6 +396,17 @@ export default function App() {
 
   function Hero() {
     console.log("Hero render");
+
+    const ticketStateReady = finalRemainingTickets !== null && finalRemainingTickets >= 0;
+    
+    const [scale, setScale] = useState(1);
+
+    useEffect(() => {
+      // Trigger pop animation whenever finalRemainingTickets changes
+      setScale(1.3); // grow
+      const timeout = setTimeout(() => setScale(1), 300); // shrink back
+      return () => clearTimeout(timeout);
+    }, [finalRemainingTickets]); // ✅ watch the ticket count
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 px-4">
