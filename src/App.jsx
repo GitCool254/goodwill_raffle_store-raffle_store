@@ -404,12 +404,11 @@ export default function App() {
 
 
   // -------------------- HERO COMPONENT --------------------
-  function Hero({ remainingTickets, computedRemaining }) {
+  function Hero({ remainingTickets }) {
     const [scale, setScale] = useState(1);
 
     // Determine actual remaining tickets
-    const finalRemainingTickets =
-      remainingTickets !== null ? remainingTickets : computedRemaining;
+    const finalRemainingTickets = remainingTickets;
 
     const ticketStateReady =
       finalRemainingTickets !== null && finalRemainingTickets >= 0;
