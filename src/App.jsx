@@ -205,7 +205,7 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const res = await fetch(${backendUrl}/ticket_state);
+        const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
         const backendDate = data.last_calc_date;
