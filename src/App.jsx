@@ -88,7 +88,7 @@ export default function App() {
   const finalRemainingTickets =
     ticketStateLoaded && remainingTickets !== null
       ? remainingTickets
-      : computedRemaining;
+      : null;
 
 
   console.log({
