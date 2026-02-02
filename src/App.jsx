@@ -30,6 +30,9 @@ export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
   const SYNC_KEY = "gw_last_sync_date";
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (!backendUrl) console.error("VITE_BACKEND_URL is not set!");
+
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
   const RAFFLE_START_DATE = "2026-01-30";
@@ -201,9 +204,7 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const res = await fetch(
-          "https://goodwill-backend-kjn5.onrender.com/ticket_state"
-        );
+        const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
         const backendDate = data.last_calc_date;
@@ -229,8 +230,7 @@ export default function App() {
           lastSync !== todayKey &&
           (backendRemaining === null || recalculated < backendRemaining)
         ) {
-          await fetch(
-            "https://goodwill-backend-kjn5.onrender.com/sync_remaining",
+          await fetch(`${backendUrl}/sync_remaining`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -250,44 +250,50 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    async function handlePurchase(e) {
-      const qty = Number(e.detail?.quantity || 0);
-      if (qty > 0) {
-        // Optimistic UI update
+    function handleTicketsPurchased(e) {
+      const detail = e.detail || {};
+      const qty = Number(detail.quantity || 0);
+      const backendSold = Number(detail.total_sold);
+      const backendRemaining = Number(detail.remaining);
+
+      // ----------------------------
+      // 1️⃣ Update ticketsSold
+      // Always reflect backend authoritative total sold
+      if (!isNaN(backendSold)) {
+        setTicketsSold(backendSold);
+      } else if (qty > 0) {
+        // fallback: optimistic increment
         setTicketsSold(prev => prev + qty);
-
-        try {
-          const res = await fetch(
-            "https://goodwill-backend-kjn5.onrender.com/record_sale",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ tickets: qty }),
-            }
-          );
-          const data = await res.json();
-
-          if (!data.success) {
-            console.warn("Server rejected ticket update:", data);
-          }
-
-          const stateRes = await fetch(
-            "https://goodwill-backend-kjn5.onrender.com/ticket_state"
-          );
-          const stateData = await stateRes.json();
-
-          setRemainingTickets(stateData.remaining);
-          setTicketsSold(stateData.total_sold || 0);
-          
-        } catch (err) {
-          console.error("Failed to record sale:", err);
-        }
       }
+
+      // ----------------------------
+      // 2️⃣ Update remainingTickets
+      if (!isNaN(backendRemaining)) {
+        setRemainingTickets(prevRemaining => {
+          // prevRemaining might be null on first load
+          const currentRemaining = prevRemaining !== null ? prevRemaining : backendRemaining;
+
+          // Apply your frontend math / decay
+          const computedDecayRemaining = Math.max(
+            0,
+            currentRemaining - (qty || 0) // deduct purchased quantity
+          );
+
+          // Ensure we never go below zero or exceed backend remaining
+          return Math.min(Math.max(computedDecayRemaining, 0), backendRemaining);
+        });
+      }
+
+      console.log("Tickets synced from backend:", {
+        qty,
+        backendSold,
+        backendRemaining,
+        remainingTickets: backendRemaining,
+      });
     }
 
-    window.addEventListener("ticketsPurchased", handlePurchase);
-    return () =>
-      window.removeEventListener("ticketsPurchased", handlePurchase);
+    window.addEventListener("ticketsPurchased", handleTicketsPurchased);
+    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
 
   useEffect(() => {
