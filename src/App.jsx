@@ -424,8 +424,25 @@ export default function App() {
               Buy low-cost tickets for a chance to win high-value tech items.
               Each ticket helps us support community initiatives.
             </p>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
+                onClick={() => navigate("catalog")}
+              >
+                Product Raffles
+              </button>
+            </div>
+
+            {/* Tickets remaining — now below button */}
             <div
-              style={{ marginTop: "20px", fontWeight: "700" }}
+              style={{
+                textAlign: "left",
+                fontWeight: "700",
+                marginTop: "12px",
+                marginLeft: "0",
+                marginBottom: "20px",
+              }}
               className="text-sm text-slate-100 tracking-wide"
             >
               <span
@@ -441,19 +458,11 @@ export default function App() {
                   : "Loading ticket availability…"}
               </span>
             </div>
-            <div className="mt-6 flex gap-3">
-              <button
-                className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
-                onClick={() => navigate("catalog")}
-              >
-                Product Raffles
-              </button>
-            </div>
           </div>
         </div>
       </section>
     );
-  }
+  }  
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
