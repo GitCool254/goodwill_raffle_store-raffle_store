@@ -289,16 +289,12 @@ export default function App() {
 
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
-        setRemainingTickets(prev => {
-          const base =
-            prev !== null
-              ? prev
-              : !isNaN(backendRemaining)
-                ? backendRemaining
-                : computedRemaining;
+        // ✅ Backend is authoritative after purchase
+        if (!isNaN(backendRemaining)) {
+          setRemainingTickets(backendRemaining);
+        }
 
-          return Math.max(base - qty, 0);
-        });
+        setTicketStateLoaded(true);
 
       
 
@@ -403,7 +399,7 @@ export default function App() {
 
     // Determine actual remaining tickets
     const finalRemainingTickets =
-      remainingTickets !== null ? remainingTickets : computedRemaining;
+      ticketStateLoaded ? remainingTickets : null;
 
     const ticketStateReady =
       ticketStateLoaded && finalRemainingTickets !== null;
