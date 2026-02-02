@@ -401,7 +401,7 @@ export default function App() {
 
     // Determine actual remaining tickets
     const finalRemainingTickets =
-      ticketStateLoaded ? remainingTickets : null;
+      remainingTickets !== null ? remainingTickets : computedRemaining;
 
     const ticketStateReady =
       finalRemainingTickets !== null && finalRemainingTickets >= 0;
