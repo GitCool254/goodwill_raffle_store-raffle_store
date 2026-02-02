@@ -76,6 +76,7 @@ export default function App() {
 
   const [ticketsSold, setTicketsSold] = useState(0);
   const [remainingTickets, setRemainingTickets] = useState(null);
+  const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   // ✅ Guaranteed fair finish at day 10
   const computedRemaining =
@@ -85,7 +86,9 @@ export default function App() {
 
   
   const finalRemainingTickets =
-    remainingTickets !== null ? remainingTickets : computedRemaining;
+    ticketStateLoaded && remainingTickets !== null
+      ? remainingTickets
+      : computedRemaining;
 
 
   console.log({
@@ -215,6 +218,7 @@ export default function App() {
         if (backendRemaining !== null && backendDate >= todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
+          setTicketStateLoaded(true);
           return;
         }
 
@@ -223,6 +227,7 @@ export default function App() {
 
         setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
+        setTicketStateLoaded(true);
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
@@ -287,16 +292,10 @@ export default function App() {
         // ----------------------------
         // 4️⃣ Update remainingTickets (decay-based)
         // ✅ Backend is authoritative after purchase
-        setRemainingTickets(prev => {
-          const base =
-            prev !== null
-              ? prev
-              : !isNaN(backendRemaining)
-                ? backendRemaining
-                : computedRemaining;
-
-          return Math.max(base - qty, 0);
-        });
+        // ✅ Backend is authoritative after purchase
+        if (!isNaN(backendRemaining)) {
+          setRemainingTickets(backendRemaining);
+        }
 
       
 
