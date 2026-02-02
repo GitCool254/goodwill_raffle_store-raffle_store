@@ -293,9 +293,18 @@ export default function App() {
         // 4️⃣ Update remainingTickets (decay-based)
         // ✅ Backend is authoritative after purchase
         // ✅ Backend is authoritative after purchase
-        if (!isNaN(backendRemaining)) {
-          setRemainingTickets(backendRemaining);
-        }
+        setRemainingTickets(prev => {
+          if (prev === null) return backendRemaining;
+
+          const deducted = Math.max(prev - qty, 0);
+
+          // Safety: backend should never increase remaining
+          if (!isNaN(backendRemaining)) {
+            return Math.min(deducted, backendRemaining);
+          }
+
+          return deducted;
+        });
 
       
 
