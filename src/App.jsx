@@ -85,7 +85,12 @@ export default function App() {
   const computedRemaining =
     daysPassed >= DEDICATED_DAYS
       ? 0
-      : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+      : ticketStateLoaded
+        ? Math.max(
+            INITIAL_TICKETS - ticketsDecremented - ticketsSold,
+            0
+          )
+        : null;
 
   
   const finalRemainingTickets =
