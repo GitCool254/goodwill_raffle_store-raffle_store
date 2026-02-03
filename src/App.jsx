@@ -222,33 +222,17 @@ export default function App() {
 
         // 🟡 Case 2: backend needs today's recalculation
         // ✅ If backend has remaining → trust it
-        if (data.remaining !== null) {
-          setRemainingTickets(Number(data.remaining));
-        } else {
-          // Cold start only
-          setRemainingTickets(computedRemaining);
-        }
+        setRemainingTickets(prev => {
+          if (prev !== null) return prev; // 🛑 NEVER overwrite existing state
+          if (data.remaining !== null) return Number(data.remaining);
+          return computedRemaining;
+        });
 
         setTicketsSold(data.total_sold || 0);
         setTicketStateLoaded(true);
 
         // 🔁 Sync to backend ONCE per day
         const lastSync = localStorage.getItem(SYNC_KEY);
-
-        if (
-          lastSync !== todayKey &&
-          (backendRemaining === null || recalculated < backendRemaining)
-        ) {
-          await fetch(`${backendUrl}/sync_remaining`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ remaining: recalculated }),
-            }
-          );
-
-          localStorage.setItem(SYNC_KEY, todayKey);
-        }
 
       } catch (err) {
         console.error("Failed to load ticket state:", err);
@@ -270,37 +254,49 @@ export default function App() {
       if (qty <= 0) return;
 
       try {
-        // 1️⃣ Record sale to backend
+        // STEP 1️⃣ — record sale on backend
         const res = await fetch(`${backendUrl}/record_sale`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ tickets: qty }),
         });
-        const data = await res.json();
-        if (!data.success) console.warn("Server rejected ticket update:", data);
 
-        // 2️⃣ Update UI immediately
-        setRemainingTickets(prev => Math.max(prev - qty, 0));
-        setTicketsSold(prev => prev + qty);
+        const result = await res.json();
+        if (!result.success) {
+          console.warn("Backend rejected sale", result);
+          return;
+        }
 
-        // 3️⃣ Optional: fetch authoritative backend state
+        // STEP 2️⃣ — re-fetch authoritative backend state (THIS IS WHAT YOU ASKED)
         const stateRes = await fetch(`${backendUrl}/ticket_state`);
         const stateData = await stateRes.json();
-        if (!isNaN(stateData.remaining)) setRemainingTickets(Number(stateData.remaining));
-        if (!isNaN(stateData.total_sold)) setTicketsSold(Number(stateData.total_sold));
 
-        // 4️⃣ Persist locally
-        localStorage.setItem("gw_last_remaining", remainingTickets);
+        if (!isNaN(stateData.remaining)) {
+          setRemainingTickets(Number(stateData.remaining));
+          localStorage.setItem(
+            "gw_last_remaining",
+            Number(stateData.remaining)
+          );
+        }
 
-        console.log("Tickets sold:", qty, "Remaining:", remainingTickets);
+        if (!isNaN(stateData.total_sold)) {
+          setTicketsSold(Number(stateData.total_sold));
+        }
+
+        console.log(
+          "✅ Tickets synced from backend:",
+          stateData.remaining
+        );
+
       } catch (err) {
-        console.error("Failed to record purchase:", err);
+        console.error("❌ Ticket purchase sync failed:", err);
       }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
-    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
-  }, [remainingTickets]);
+    return () =>
+      window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
+  }, []); // ⬅️ IMPORTANT: EMPTY dependency array
 
   useEffect(() => {
     localStorage.setItem("gw_entries", JSON.stringify(entries));
