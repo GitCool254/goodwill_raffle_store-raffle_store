@@ -88,10 +88,7 @@ export default function App() {
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
   
-  const finalRemainingTickets =
-    ticketStateLoaded
-      ? remainingTickets
-      : computedRemaining;
+  const finalRemainingTickets = remainingTickets ?? computedRemaining;
 
 
   console.log({
@@ -419,10 +416,8 @@ export default function App() {
     const [scale, setScale] = useState(1);
 
     // Determine actual remaining tickets
-    const finalRemainingTickets = remainingTickets;
 
-    const ticketStateReady =
-      finalRemainingTickets !== null && finalRemainingTickets >= 0;
+    const ticketStateReady = remainingTickets !== null && remainingTickets >= 0;
 
     // Animate when ticket count changes
     useEffect(() => {
@@ -430,7 +425,7 @@ export default function App() {
       setScale(1.3); // grow
       const timeout = setTimeout(() => setScale(1), 300); // shrink
       return () => clearTimeout(timeout);
-    }, [finalRemainingTickets, ticketStateReady]);
+    }, [remainingTickets, ticketStateReady]);
 
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
@@ -472,9 +467,7 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {ticketStateReady
-                  ? `${finalRemainingTickets} tickets remaining`
-                  : "Loading ticket availability…"}
+                {ticketStateReady ? `${remainingTickets} tickets remaining` : "Loading ticket availability…"}
               </span>
             </div>
           </div>
