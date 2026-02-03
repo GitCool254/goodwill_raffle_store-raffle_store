@@ -85,20 +85,13 @@ export default function App() {
   const computedRemaining =
     daysPassed >= DEDICATED_DAYS
       ? 0
-      : ticketStateLoaded
-        ? Math.max(
-            INITIAL_TICKETS - ticketsDecremented - ticketsSold,
-            0
-          )
-        : null;
+      : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
   
   const finalRemainingTickets =
-    remainingTickets !== null
+    ticketStateLoaded
       ? remainingTickets
-      : computedRemaining !== null
-        ? computedRemaining
-        : null;
+      : computedRemaining;
 
 
   console.log({
@@ -233,9 +226,14 @@ export default function App() {
         }
 
         // 🟡 Case 2: backend needs today's recalculation
-        const recalculated = computedRemaining;
+        // ✅ If backend has remaining → trust it
+        if (data.remaining !== null) {
+          setRemainingTickets(Number(data.remaining));
+        } else {
+          // Cold start only
+          setRemainingTickets(computedRemaining);
+        }
 
-        setRemainingTickets(recalculated);
         setTicketsSold(data.total_sold || 0);
         setTicketStateLoaded(true);
 
@@ -314,10 +312,9 @@ export default function App() {
         if (!isNaN(backendRemaining)) {
           setRemainingTickets(backendRemaining);
         } else {
-          // absolute fallback only (should rarely happen)
-          setRemainingTickets(prev =>
-            Math.max((prev ?? computedRemaining) - qty, 0)
-          );
+          // fallback — only if we truly have no backend
+          // but DO NOT reference computedRemaining after first load
+          setRemainingTickets(prev => Math.max((prev ?? 0) - qty, 0));
         }
 
       
