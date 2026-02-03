@@ -74,8 +74,11 @@ export default function App() {
     minDaily * daysPassed
   );
 
+  const [remainingTickets, setRemainingTickets] = useState(() => {
+    const saved = localStorage.getItem("gw_last_remaining");
+    return saved !== null ? Number(saved) : null;
+  });
   const [ticketsSold, setTicketsSold] = useState(0);
-  const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   // ✅ Guaranteed fair finish at day 10
@@ -87,10 +90,10 @@ export default function App() {
   
   const finalRemainingTickets =
     remainingTickets !== null
-      ? remainingTickets              // backend authoritative
+      ? remainingTickets
       : computedRemaining !== null
-        ? computedRemaining            // math decay fallback
-        : null;                        // loading
+        ? computedRemaining
+        : null;
 
 
   console.log({
@@ -258,6 +261,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (remainingTickets !== null) {
+      localStorage.setItem("gw_last_remaining", remainingTickets);
+    }
+  }, [remainingTickets]);
+
+  useEffect(() => {
     async function handleTicketsPurchased(e) {
       const detail = e.detail || {};
       const qty = Number(detail.quantity || 0);
@@ -296,16 +305,21 @@ export default function App() {
         // ✅ Backend is authoritative after purchase
         // ✅ Backend is authoritative after purchase
         setRemainingTickets(prev => {
-          if (prev === null) return backendRemaining;
+          const base =
+            prev !== null
+              ? prev
+              : !isNaN(backendRemaining)
+                ? backendRemaining
+                : computedRemaining;
 
-          const deducted = Math.max(prev - qty, 0);
+          const afterPurchase = Math.max(base - qty, 0);
 
-          // Safety: backend should never increase remaining
+          // 🔒 Never allow increase
           if (!isNaN(backendRemaining)) {
-            return Math.min(deducted, backendRemaining);
+            return Math.min(afterPurchase, backendRemaining);
           }
 
-          return deducted;
+          return afterPurchase;
         });
 
       
