@@ -87,10 +87,6 @@ export default function App() {
       ? 0
       : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
 
-  
-  const finalRemainingTickets = remainingTickets ?? computedRemaining;
-
-
   console.log({
     daysPassed,
     minDaily,
@@ -460,7 +456,6 @@ export default function App() {
               className="text-sm text-slate-100 tracking-wide"
             >
               <span
-                key={finalRemainingTickets} // trigger re-render on change
                 style={{
                   display: "inline-block",
                   transform: `scale(${scale})`,
@@ -715,7 +710,8 @@ export default function App() {
         {view === "home" && (
           <>
             <Hero
-              remainingTickets={finalRemainingTickets}
+              remainingTickets={remainingTickets}
+              computedRemaining={computedRemaining}
             />
             <Home />
           </>
@@ -724,7 +720,8 @@ export default function App() {
         {view === "detail" && selected && (
           <Detail
             product={selected}
-            remainingTickets={finalRemainingTickets}
+            remainingTickets={remainingTickets}
+            computedRemaining={computedRemaining}
             onBack={() => navigate("home")}
             openImage={openImage}
           />
