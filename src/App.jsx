@@ -76,7 +76,9 @@ export default function App() {
 
   const [remainingTickets, setRemainingTickets] = useState(() => {
     const saved = localStorage.getItem("gw_last_remaining");
-    return saved !== null ? Number(saved) : null;
+    if (saved !== null) return Number(saved);
+    // fallback: INITIAL_TICKETS minus any deterministic decrements
+    return Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
   });
   const [ticketsSold, setTicketsSold] = useState(0);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
@@ -264,12 +266,10 @@ export default function App() {
 
   useEffect(() => {
     async function handleTicketsPurchased(e) {
-      const detail = e.detail || {};
-      const qty = Number(detail.quantity || 0);
+      const qty = Number(e.detail?.quantity || 0);
       if (qty <= 0) return;
 
       try {
-        // ----------------------------
         // 1️⃣ Record sale to backend
         const res = await fetch(`${backendUrl}/record_sale`, {
           method: "POST",
@@ -277,54 +277,30 @@ export default function App() {
           body: JSON.stringify({ tickets: qty }),
         });
         const data = await res.json();
-        if (!data.success) {
-          console.warn("Server rejected ticket update:", data);
-        }
+        if (!data.success) console.warn("Server rejected ticket update:", data);
 
-        // ----------------------------
-        // 2️⃣ Fetch authoritative ticket state
+        // 2️⃣ Update UI immediately
+        setRemainingTickets(prev => Math.max(prev - qty, 0));
+        setTicketsSold(prev => prev + qty);
+
+        // 3️⃣ Optional: fetch authoritative backend state
         const stateRes = await fetch(`${backendUrl}/ticket_state`);
         const stateData = await stateRes.json();
-        const backendSold = Number(stateData.total_sold);
-        const backendRemaining = Number(stateData.remaining);
+        if (!isNaN(stateData.remaining)) setRemainingTickets(Number(stateData.remaining));
+        if (!isNaN(stateData.total_sold)) setTicketsSold(Number(stateData.total_sold));
 
-        // ----------------------------
-        // 3️⃣ Update ticketsSold (authoritative)
-        if (!isNaN(backendSold)) {
-          setTicketsSold(backendSold);
-        } else {
-          setTicketsSold(prev => prev + qty); // fallback
-        }
+        // 4️⃣ Persist locally
+        localStorage.setItem("gw_last_remaining", remainingTickets);
 
-        // ----------------------------
-        // 4️⃣ Update remainingTickets (decay-based)
-        // ✅ Backend is authoritative after purchase
-        // ✅ Backend is authoritative after purchase
-        // ----------------------------
-        // 4️⃣ Update remainingTickets (AUTHORITATIVE)
-        if (!isNaN(backendRemaining)) {
-          setRemainingTickets(backendRemaining);
-        } else {
-          // fallback — only if we truly have no backend
-          // but DO NOT reference computedRemaining after first load
-          setRemainingTickets(prev => Math.max((prev ?? 0) - qty, 0));
-        }
-
-      
-
-        console.log("Tickets synced after purchase:", {
-          qty,
-          backendSold,
-          backendRemaining,
-        });
+        console.log("Tickets sold:", qty, "Remaining:", remainingTickets);
       } catch (err) {
-        console.error("Failed to record purchase or fetch state:", err);
+        console.error("Failed to record purchase:", err);
       }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
     return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
-  }, []);
+  }, [remainingTickets]);
 
   useEffect(() => {
     localStorage.setItem("gw_entries", JSON.stringify(entries));
@@ -462,7 +438,9 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {ticketStateReady ? `${remainingTickets} tickets remaining` : "Loading ticket availability…"}
+                {remainingTickets !== null
+                  ? `${remainingTickets} tickets remaining`
+                  : "Loading ticket availability…"}
               </span>
             </div>
           </div>
@@ -711,7 +689,6 @@ export default function App() {
           <>
             <Hero
               remainingTickets={remainingTickets}
-              computedRemaining={computedRemaining}
             />
             <Home />
           </>
@@ -721,7 +698,6 @@ export default function App() {
           <Detail
             product={selected}
             remainingTickets={remainingTickets}
-            computedRemaining={computedRemaining}
             onBack={() => navigate("home")}
             openImage={openImage}
           />
