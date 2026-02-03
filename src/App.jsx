@@ -86,9 +86,11 @@ export default function App() {
 
   
   const finalRemainingTickets =
-    ticketStateLoaded && remainingTickets !== null
-      ? remainingTickets
-      : null;
+    remainingTickets !== null
+      ? remainingTickets              // backend authoritative
+      : computedRemaining !== null
+        ? computedRemaining            // math decay fallback
+        : null;                        // loading
 
 
   console.log({
@@ -711,8 +713,7 @@ export default function App() {
         {view === "home" && (
           <>
             <Hero
-              remainingTickets={remainingTickets}
-              computedRemaining={computedRemaining}
+              remainingTickets={finalRemainingTickets}
             />
             <Home />
           </>
