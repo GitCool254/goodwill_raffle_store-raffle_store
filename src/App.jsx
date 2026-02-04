@@ -223,7 +223,7 @@ export default function App() {
         if (data.remaining !== null) {
           setRemainingTickets(Number(data.remaining));
         } else {
-          setRemainingTickets(INITIAL_TICKETS);
+          setRemainingTickets([remainingTickets);
         }
 
         setTicketsSold(data.total_sold || 0);
