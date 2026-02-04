@@ -214,16 +214,24 @@ export default function App() {
         if (backendRemaining !== null && backendDate === todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
+          localStorage.removeItem(SYNC_KEY);
           setTicketStateLoaded(true);
           return;
         }
 
         // ✅ If backend has remaining → trust it
         // 🟡 Case 2: backend exists but today not yet synced
-        if (data.remaining !== null) {
-          setRemainingTickets(Number(data.remaining));
-        } else {
+        // ✅ STEP 3 — Initialize backend ONCE if missing
+        if (data.remaining === null) {
+          await fetch(`${backendUrl}/sync_remaining`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ remaining: INITIAL_TICKETS }),
+          });
+
           setRemainingTickets(INITIAL_TICKETS);
+        } else {
+          setRemainingTickets(Number(data.remaining));
         }
 
         setTicketsSold(data.total_sold || 0);
@@ -243,6 +251,7 @@ export default function App() {
   useEffect(() => {
     if (!ticketStateLoaded) return;
     if (remainingTickets === null) return;
+    if (daysPassed <= 0) return;
 
     const lastSync = localStorage.getItem(SYNC_KEY);
 
@@ -281,6 +290,11 @@ export default function App() {
     async function handleTicketsPurchased(e) {
       const qty = Number(e.detail?.quantity || 0);
       if (qty <= 0) return;
+
+      // 🔥 IMMEDIATE optimistic deduction
+      setRemainingTickets(prev =>
+        typeof prev === "number" ? Math.max(prev - qty, 0) : prev
+      );
 
       try {
         // STEP 1️⃣ — record sale on backend
