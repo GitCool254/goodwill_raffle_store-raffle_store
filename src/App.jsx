@@ -35,8 +35,8 @@ export default function App() {
 
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
-  const RAFFLE_START_DATE = "2026-01-30";
-  const INITIAL_TICKETS = 50;
+  const RAFFLE_START_DATE = "2026-02-02";
+  const INITIAL_TICKETS = 55;
   const DEDICATED_DAYS = 10;
 
   const todayKey = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
