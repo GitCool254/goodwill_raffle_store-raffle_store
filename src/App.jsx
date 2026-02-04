@@ -69,7 +69,7 @@ export default function App() {
 
   // Total decrement (stable per day)
   const ticketsDecremented = Math.floor(
-    seededRandom(daysPassed) *
+    seededRandom(Number(todayKey.replace(/-/g, ""))) *
       (maxDaily * daysPassed - minDaily * daysPassed + 1) +
     minDaily * daysPassed
   );
@@ -84,7 +84,7 @@ export default function App() {
     daysPassed >= DEDICATED_DAYS
       ? Infinity
       : Math.floor(
-          seededRandom(daysPassed) * (maxDaily - minDaily + 1) + minDaily
+          seededRandom(Number(todayKey.replace(/-/g, ""))) * (maxDaily - minDaily + 1) + minDaily
         );
 
   console.log({
@@ -211,7 +211,7 @@ export default function App() {
         const backendRemaining = data.remaining;
 
         // 🟢 Case 1: backend already has today's baseline
-        if (backendRemaining !== null && backendDate >= todayKey) {
+        if (backendRemaining !== null && backendDate === todayKey) {
           setRemainingTickets(backendRemaining);
           setTicketsSold(data.total_sold || 0);
           setTicketStateLoaded(true);
@@ -246,7 +246,7 @@ export default function App() {
 
     const lastSync = localStorage.getItem(SYNC_KEY);
 
-    // already decayed today
+    // already decayed today (local OR backend authority)
     if (lastSync === todayKey) return;
 
     // ✅ APPLY decay locally FIRST
@@ -306,7 +306,6 @@ export default function App() {
             "gw_last_remaining",
             Number(stateData.remaining)
           );
-          localStorage.setItem(SYNC_KEY, todayKey);
         }
 
         if (!isNaN(stateData.total_sold)) {
