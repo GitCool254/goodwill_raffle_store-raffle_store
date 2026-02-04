@@ -74,20 +74,18 @@ export default function App() {
     minDaily * daysPassed
   );
 
-  const [remainingTickets, setRemainingTickets] = useState(() => {
-    const saved = localStorage.getItem("gw_last_remaining");
-    if (saved !== null) return Number(saved);
-    // fallback: INITIAL_TICKETS minus any deterministic decrements
-    return Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
-  });
+  const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketsSold, setTicketsSold] = useState(0);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   // ✅ Guaranteed fair finish at day 10
-  const computedRemaining =
+  // ✅ Deterministic DAILY decay amount (not absolute remaining)
+  const dailyDecay =
     daysPassed >= DEDICATED_DAYS
-      ? 0
-      : Math.max(INITIAL_TICKETS - ticketsDecremented, 0);
+      ? Infinity
+      : Math.floor(
+          seededRandom(daysPassed) * (maxDaily - minDaily + 1) + minDaily
+        );
 
   console.log({
     daysPassed,
@@ -220,13 +218,13 @@ export default function App() {
           return;
         }
 
-        // 🟡 Case 2: backend needs today's recalculation
         // ✅ If backend has remaining → trust it
-        setRemainingTickets(prev => {
-          if (prev !== null) return prev; // 🛑 NEVER overwrite existing state
-          if (data.remaining !== null) return Number(data.remaining);
-          return computedRemaining;
-        });
+        // 🟡 Case 2: backend exists but today not yet synced
+        if (data.remaining !== null) {
+          setRemainingTickets(Number(data.remaining));
+        } else {
+          setRemainingTickets(INITIAL_TICKETS);
+        }
 
         setTicketsSold(data.total_sold || 0);
         setTicketStateLoaded(true);
@@ -241,6 +239,41 @@ export default function App() {
 
     loadTicketState();
   }, []);
+
+  useEffect(() => {
+    if (!ticketStateLoaded) return;
+    if (remainingTickets === null) return;
+
+    const lastSync = localStorage.getItem(SYNC_KEY);
+
+    // 🛑 Already synced today
+    if (lastSync === todayKey) return;
+
+    // 🧮 Apply decay from CURRENT remaining
+    const nextRemaining =
+      dailyDecay === Infinity
+        ? 0
+        : Math.max(remainingTickets - dailyDecay, 0);
+
+    // 🔁 Sync to backend (backend clamps upward changes)
+    fetch(`${backendUrl}/sync_remaining`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ remaining: nextRemaining }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!isNaN(data.remaining)) {
+          setRemainingTickets(Number(data.remaining));
+          localStorage.setItem("gw_last_remaining", data.remaining);
+          localStorage.setItem(SYNC_KEY, todayKey);
+        }
+      })
+      .catch(err =>
+        console.error("Daily decay sync failed:", err)
+      );
+
+  }, [ticketStateLoaded]);
 
   useEffect(() => {
     if (remainingTickets !== null) {
