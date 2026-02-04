@@ -35,7 +35,7 @@ export default function App() {
 
   // -------------------- TICKET COUNTDOWN --------------------
   // change only if needed
-  const RAFFLE_START_DATE = "2026-02-01";
+  const RAFFLE_START_DATE = "2026-01-29";
   const INITIAL_TICKETS = 55;
   const DEDICATED_DAYS = 10;
 
