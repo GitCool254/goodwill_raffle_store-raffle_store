@@ -246,33 +246,29 @@ export default function App() {
 
     const lastSync = localStorage.getItem(SYNC_KEY);
 
-    // 🛑 Already synced today
+    // already decayed today
     if (lastSync === todayKey) return;
 
-    // 🧮 Apply decay from CURRENT remaining
-    const nextRemaining =
+    // ✅ APPLY decay locally FIRST
+    const decayedRemaining =
       dailyDecay === Infinity
         ? 0
         : Math.max(remainingTickets - dailyDecay, 0);
 
-    // 🔁 Sync to backend (backend clamps upward changes)
+    // update UI immediately
+    setRemainingTickets(decayedRemaining);
+
+    // remember we applied decay today
+    localStorage.setItem(SYNC_KEY, todayKey);
+
+    // notify backend (backend will NOT increase)
     fetch(`${backendUrl}/sync_remaining`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ remaining: nextRemaining }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (!isNaN(data.remaining)) {
-          setRemainingTickets(Number(data.remaining));
-          localStorage.setItem("gw_last_remaining", data.remaining);
-          localStorage.setItem(SYNC_KEY, todayKey);
-        }
-      })
-      .catch(err =>
-        console.error("Daily decay sync failed:", err)
-      );
-
+      body: JSON.stringify({ remaining: decayedRemaining }),
+    }).catch(err =>
+      console.error("Daily decay sync failed:", err)
+    );
   }, [ticketStateLoaded]);
 
   useEffect(() => {
@@ -310,6 +306,7 @@ export default function App() {
             "gw_last_remaining",
             Number(stateData.remaining)
           );
+          localStorage.removeItem(SYNC_KEY);
         }
 
         if (!isNaN(stateData.total_sold)) {
