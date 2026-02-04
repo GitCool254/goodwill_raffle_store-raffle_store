@@ -280,7 +280,7 @@ export default function App() {
     }).catch(err =>
       console.error("Daily decay sync failed:", err)
     );
-  }, [ticketStateLoaded, todayKey]);
+  }, [remainingTickets, ticketStateLoaded, todayKey]);
 
   useEffect(() => {
     if (remainingTickets !== null) {
