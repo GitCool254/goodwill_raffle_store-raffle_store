@@ -306,7 +306,7 @@ export default function App() {
             "gw_last_remaining",
             Number(stateData.remaining)
           );
-          localStorage.removeItem(SYNC_KEY);
+          localStorage.setItem(SYNC_KEY, todayKey);
         }
 
         if (!isNaN(stateData.total_sold)) {
