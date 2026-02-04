@@ -222,16 +222,18 @@ export default function App() {
         // ✅ If backend has remaining → trust it
         // 🟡 Case 2: backend exists but today not yet synced
         // ✅ STEP 3 — Initialize backend ONCE if missing
-        if (data.remaining === null) {
-          await fetch(`${backendUrl}/sync_remaining`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ remaining: INITIAL_TICKETS }),
-          });
+        if (remainingTickets === null) {
+          if (data.remaining === null) {
+            await fetch(`${backendUrl}/sync_remaining`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ remaining: INITIAL_TICKETS }),
+            });
 
-          setRemainingTickets(INITIAL_TICKETS);
-        } else {
-          setRemainingTickets(Number(data.remaining));
+            setRemainingTickets(INITIAL_TICKETS);
+          } else {
+            setRemainingTickets(Number(data.remaining));
+          }
         }
 
         setTicketsSold(data.total_sold || 0);
@@ -278,7 +280,7 @@ export default function App() {
     }).catch(err =>
       console.error("Daily decay sync failed:", err)
     );
-  }, [ticketStateLoaded]);
+  }, [ticketStateLoaded, remainingTickets]);
 
   useEffect(() => {
     if (remainingTickets !== null) {
@@ -316,6 +318,7 @@ export default function App() {
 
         if (!isNaN(stateData.remaining)) {
           setRemainingTickets(Number(stateData.remaining));
+          localStorage.setItem(SYNC_KEY, todayKey);
           localStorage.setItem(
             "gw_last_remaining",
             Number(stateData.remaining)
