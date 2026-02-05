@@ -191,6 +191,8 @@ export default function App() {
 
   const navStackRef = React.useRef(["home"]);
 
+  const backendRemainingRef = React.useRef(null);
+
   console.log("App mounted — view =", view);
 
   // -------------------- HISTORY SYNC --------------------
@@ -213,6 +215,7 @@ export default function App() {
         // 🟢 Case 1: backend already has today's baseline
         if (backendRemaining !== null && backendDate === todayKey) {
           setRemainingTickets(backendRemaining);
+          backendRemainingRef.current = backendRemaining;
           setTicketsSold(data.total_sold || 0);
           localStorage.removeItem(SYNC_KEY);
           setTicketStateLoaded(true);
@@ -231,8 +234,17 @@ export default function App() {
             });
 
             setRemainingTickets(INITIAL_TICKETS);
+
+            // 🔴 STEP 2 — freeze initial baseline
+            backendRemainingRef.current = INITIAL_TICKETS;
+
           } else {
-            setRemainingTickets(Number(data.remaining));
+            const r = Number(data.remaining);
+
+            setRemainingTickets(r);
+
+            // 🔴 STEP 2 — freeze backend baseline
+            backendRemainingRef.current = r;
           }
         }
 
@@ -252,27 +264,27 @@ export default function App() {
 
   useEffect(() => {
     if (!ticketStateLoaded) return;
-    if (remainingTickets === null) return;
+    if (backendRemainingRef.current === null) return;
     if (daysPassed <= 0) return;
 
     const lastSync = localStorage.getItem(SYNC_KEY);
-
-    // already decayed today (local OR backend authority)
     if (lastSync === todayKey) return;
 
-    // ✅ APPLY decay locally FIRST
+    const baseRemaining = backendRemainingRef.current;
+
     const decayedRemaining =
       dailyDecay === Infinity
         ? 0
-        : Math.max(remainingTickets - dailyDecay, 0);
+        : Math.max(baseRemaining - dailyDecay, 0);
 
-    // update UI immediately
+    // Update UI
     setRemainingTickets(decayedRemaining);
 
-    // remember we applied decay today
+    // Update baseline for rest of the day
+    backendRemainingRef.current = decayedRemaining;
+
     localStorage.setItem(SYNC_KEY, todayKey);
 
-    // notify backend (backend will NOT increase)
     fetch(`${backendUrl}/sync_remaining`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -280,7 +292,7 @@ export default function App() {
     }).catch(err =>
       console.error("Daily decay sync failed:", err)
     );
-  }, [remainingTickets, ticketStateLoaded, todayKey]);
+  }, [ticketStateLoaded, todayKey]);
 
   useEffect(() => {
     if (remainingTickets !== null) {
@@ -318,6 +330,7 @@ export default function App() {
 
         if (!isNaN(stateData.remaining)) {
           setRemainingTickets(Number(stateData.remaining));
+          backendRemainingRef.current = Number(stateData.remaining);
           localStorage.setItem(SYNC_KEY, todayKey);
           localStorage.setItem(
             "gw_last_remaining",
