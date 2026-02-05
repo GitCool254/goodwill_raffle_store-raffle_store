@@ -148,8 +148,10 @@ export default function App() {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
-        if (data.initialized && !isNaN(data.remaining)) {
+        if (data.remaining !== null && !isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
+        } else {
+          setRemainingTickets(0); // fallback if backend fails
         }
 
         setTicketStateLoaded(true);
@@ -168,8 +170,10 @@ export default function App() {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
-        if (data.initialized && !isNaN(data.remaining)) {
+        if (data.remaining !== null && !isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
+        } else {
+          setRemainingTickets(0);
         }
       } catch (err) {
         console.error("Ticket sync failed:", err);
