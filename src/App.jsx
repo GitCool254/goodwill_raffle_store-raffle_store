@@ -28,72 +28,13 @@ import MyTickets from "./components/MyTickets";
 
 export default function App() {
   const DATA_VERSION = "v3"; // bump this when products change
-  const SYNC_KEY = "gw_last_sync_date";
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (!backendUrl) console.error("VITE_BACKEND_URL is not set!");
 
-  // -------------------- TICKET COUNTDOWN --------------------
-  // change only if needed
-  const RAFFLE_START_DATE = "2026-01-29";
-  const INITIAL_TICKETS = 55;
-  const DEDICATED_DAYS = 10;
-
-  const todayKey = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
-  // Days passed since raffle started
-  const daysPassed = Math.floor(
-    (Date.now() - new Date(RAFFLE_START_DATE).getTime()) /
-    (1000 * 60 * 60 * 24)
-  );
-
-  // Decay factor over dedicated days
-  const decayFactor = Math.min(daysPassed / DEDICATED_DAYS, 1);
-
-  // Per-day min & max
-  const minDaily = Math.min(
-    5 + decayFactor * 3,
-    INITIAL_TICKETS / Math.max(daysPassed, 1)
-  );
-
-  const maxDaily = Math.min(
-    10 + decayFactor * 3,
-    INITIAL_TICKETS / Math.max(daysPassed, 1)
-  );
-
-  // Deterministic daily random
-  function seededRandom(seed) {
-    const x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
-  }
-
-  // Total decrement (stable per day)
-  const ticketsDecremented = Math.floor(
-    seededRandom(Number(todayKey.replace(/-/g, ""))) *
-      (maxDaily * daysPassed - minDaily * daysPassed + 1) +
-    minDaily * daysPassed
-  );
 
   const [remainingTickets, setRemainingTickets] = useState(null);
-  const [ticketsSold, setTicketsSold] = useState(0);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
-
-  // ✅ Guaranteed fair finish at day 10
-  // ✅ Deterministic DAILY decay amount (not absolute remaining)
-  const dailyDecay =
-    daysPassed >= DEDICATED_DAYS
-      ? Infinity
-      : Math.floor(
-          seededRandom(Number(todayKey.replace(/-/g, ""))) * (maxDaily - minDaily + 1) + minDaily
-        );
-
-  console.log({
-    daysPassed,
-    minDaily,
-    maxDaily,
-    ticketsDecremented,
-    remainingTickets
-  });
 
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
@@ -191,8 +132,6 @@ export default function App() {
 
   const navStackRef = React.useRef(["home"]);
 
-  const backendRemainingRef = React.useRef(null);
-
   console.log("App mounted — view =", view);
 
   // -------------------- HISTORY SYNC --------------------
@@ -209,153 +148,38 @@ export default function App() {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
-        const backendDate = data.last_calc_date;
-        const backendRemaining = data.remaining;
-
-        // 🟢 Case 1: backend already has today's baseline
-        if (backendRemaining !== null && backendDate === todayKey) {
-          setRemainingTickets(backendRemaining);
-          backendRemainingRef.current = backendRemaining;
-          setTicketsSold(data.total_sold || 0);
-          localStorage.removeItem(SYNC_KEY);
-          setTicketStateLoaded(true);
-          return;
+        if (data.initialized && !isNaN(data.remaining)) {
+          setRemainingTickets(Number(data.remaining));
         }
 
-        // ✅ If backend has remaining → trust it
-        // 🟡 Case 2: backend exists but today not yet synced
-        // ✅ STEP 3 — Initialize backend ONCE if missing
-        if (remainingTickets === null) {
-          if (data.remaining === null) {
-            await fetch(`${backendUrl}/sync_remaining`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ remaining: INITIAL_TICKETS }),
-            });
-
-            setRemainingTickets(INITIAL_TICKETS);
-
-            // 🔴 STEP 2 — freeze initial baseline
-            backendRemainingRef.current = INITIAL_TICKETS;
-
-          } else {
-            const r = Number(data.remaining);
-
-            setRemainingTickets(r);
-
-            // 🔴 STEP 2 — freeze backend baseline
-            backendRemainingRef.current = r;
-          }
-        }
-
-        setTicketsSold(data.total_sold || 0);
         setTicketStateLoaded(true);
-
-        // 🔁 Sync to backend ONCE per day
-        const lastSync = localStorage.getItem(SYNC_KEY);
-
       } catch (err) {
         console.error("Failed to load ticket state:", err);
       }
     }
-
+        
     loadTicketState();
   }, []);
+  
 
   useEffect(() => {
-    if (!ticketStateLoaded) return;
-    if (backendRemainingRef.current === null) return;
-    if (daysPassed <= 0) return;
-
-    const lastSync = localStorage.getItem(SYNC_KEY);
-    if (lastSync === todayKey) return;
-
-    const baseRemaining = backendRemainingRef.current;
-
-    const decayedRemaining =
-      dailyDecay === Infinity
-        ? 0
-        : Math.max(baseRemaining - dailyDecay, 0);
-
-    // Update UI
-    setRemainingTickets(decayedRemaining);
-
-    // Update baseline for rest of the day
-    backendRemainingRef.current = decayedRemaining;
-
-    localStorage.setItem(SYNC_KEY, todayKey);
-
-    fetch(`${backendUrl}/sync_remaining`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ remaining: decayedRemaining }),
-    }).catch(err =>
-      console.error("Daily decay sync failed:", err)
-    );
-  }, [ticketStateLoaded, todayKey]);
-
-  useEffect(() => {
-    if (remainingTickets !== null) {
-      localStorage.setItem("gw_last_remaining", remainingTickets);
-    }
-  }, [remainingTickets]);
-
-  useEffect(() => {
-    async function handleTicketsPurchased(e) {
-      const qty = Number(e.detail?.quantity || 0);
-      if (qty <= 0) return;
-
-      // 🔥 IMMEDIATE optimistic deduction
-      setRemainingTickets(prev =>
-        typeof prev === "number" ? Math.max(prev - qty, 0) : prev
-      );
-
+    async function handleTicketsPurchased() {
       try {
-        // STEP 1️⃣ — record sale on backend
-        const res = await fetch(`${backendUrl}/record_sale`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tickets: qty }),
-        });
+        const res = await fetch(`${backendUrl}/ticket_state`);
+        const data = await res.json();
 
-        const result = await res.json();
-        if (!result.success) {
-          console.warn("Backend rejected sale", result);
-          return;
+        if (data.initialized && !isNaN(data.remaining)) {
+          setRemainingTickets(Number(data.remaining));
         }
-
-        // STEP 2️⃣ — re-fetch authoritative backend state (THIS IS WHAT YOU ASKED)
-        const stateRes = await fetch(`${backendUrl}/ticket_state`);
-        const stateData = await stateRes.json();
-
-        if (!isNaN(stateData.remaining)) {
-          setRemainingTickets(Number(stateData.remaining));
-          backendRemainingRef.current = Number(stateData.remaining);
-          localStorage.setItem(SYNC_KEY, todayKey);
-          localStorage.setItem(
-            "gw_last_remaining",
-            Number(stateData.remaining)
-          );
-        }
-
-        if (!isNaN(stateData.total_sold)) {
-          setTicketsSold(Number(stateData.total_sold));
-        }
-
-        console.log(
-          "✅ Tickets synced from backend:",
-          stateData.remaining
-        );
-
       } catch (err) {
-        console.error("❌ Ticket purchase sync failed:", err);
+        console.error("Ticket sync failed:", err);
       }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
     return () =>
       window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
-  }, []); // ⬅️ IMPORTANT: EMPTY dependency array
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("gw_entries", JSON.stringify(entries));
@@ -444,7 +268,8 @@ export default function App() {
 
     // Determine actual remaining tickets
 
-    const ticketStateReady = remainingTickets !== null && remainingTickets >= 0;
+    const ticketStateReady =
+      remainingTickets !== null && ticketStateLoaded;
 
     // Animate when ticket count changes
     useEffect(() => {
@@ -493,7 +318,7 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {remainingTickets !== null
+                {ticketStateLoaded
                   ? `${remainingTickets} tickets remaining`
                   : "Loading ticket availability…"}
               </span>
