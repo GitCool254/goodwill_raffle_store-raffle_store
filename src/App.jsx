@@ -661,14 +661,14 @@ export default function App() {
               >
                 <h2
                   className="font-semibold mb-4"
-                  style={{ fontSize: "0.85rem", color: "#475569" }} // slate-600
+                  style={{ fontSize: "1.25rem", color: "#475569" }} // slate-600
                 >
                   Raffle Event Details
                 </h2>
 
                 <div
                   className="space-y-2 text-slate-700"
-                  style={{ fontSize: "0.9rem" }}
+                  style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0" }}
                 >
                   <p>
                     • <strong>Location:</strong> [EVENT PLACE]
