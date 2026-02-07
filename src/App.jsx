@@ -35,6 +35,7 @@ export default function App() {
 
   const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
+  const [ticketsSold, setTicketsSold] = useState(0);
 
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
@@ -148,10 +149,12 @@ export default function App() {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
-        if (data.remaining !== null && !isNaN(data.remaining)) {
+        if (!isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
-        } else {
-          setRemainingTickets(0); // fallback if backend fails
+        }
+
+        if (!isNaN(data.total_sold)) {
+          setTicketsSold(Number(data.total_sold));
         }
 
         setTicketStateLoaded(true);
@@ -170,10 +173,12 @@ export default function App() {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
 
-        if (data.remaining !== null && !isNaN(data.remaining)) {
+        if (!isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
-        } else {
-          setRemainingTickets(0);
+        }
+
+        if (!isNaN(data.total_sold)) {
+          setTicketsSold(Number(data.total_sold));
         }
       } catch (err) {
         console.error("Ticket sync failed:", err);
@@ -327,6 +332,15 @@ export default function App() {
                   : "Loading ticket availability…"}
               </span>
             </div>
+
+            <div
+              className="text-xs text-slate-200"
+              style={{ marginTop: "4px", letterSpacing: "0.03em" }}
+            >
+              {ticketStateLoaded && (
+                <>✔️ {ticketsSold} tickets sold so far</>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -345,10 +359,10 @@ export default function App() {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        setIndex((prev) => (prev + 1) % winners.length);
-      }, 3500); // smooth headline pace
-
+      const interval = setInterval(
+        () => setIndex((i) => (i + 1) % winners.length),
+        4000
+      );
       return () => clearInterval(interval);
     }, []);
 
@@ -356,18 +370,17 @@ export default function App() {
 
     return (
       <section className="max-w-6xl mx-auto px-6 py-6">
-        <div className="overflow-hidden bg-white border rounded-xl shadow-sm">
-          <div
-            key={w.ticketNo}
-            className="whitespace-nowrap text-slate-700 text-sm font-medium px-4 py-3 animate-marquee"
-          >
-            🏆 Winner: <span className="font-semibold">{w.name}</span> — Ticket{" "}
-            <span className="font-mono">{w.ticketNo}</span> — {w.date}
-          </div>
+        <div className="bg-white rounded-xl border shadow-sm px-4 py-3">
+          <p className="text-sm text-slate-600">
+            🏆 <strong>{w.name}</strong> won a raffle on {w.date}
+          </p>
+          <p className="text-xs text-slate-400 mt-1">
+            Ticket No: {w.ticketNo}
+          </p>
         </div>
 
         <p className="text-xs text-slate-400 mt-2">
-          Winners rotate automatically. Names may be partially anonymized for privacy.
+          Winners rotate automatically. Names are partially anonymized.
         </p>
       </section>
     );
@@ -621,38 +634,33 @@ export default function App() {
               style={{ marginBottom: "2.5rem" }}
             >
               <div
-                className="bg-slate-50 rounded-xl p-5"
-                style={{
-                  border: "1.5px dotted #cbd5e1", // dotted outer border (slate-200)
-                }}
+                className="bg-white rounded-xl p-6"
+                style={{ border: "1.5px dotted #cbd5e1" }}
               >
-                <h2 className="text-lg font-semibold text-slate-800 mb-2">
-                  🎉 Raffle Event Information
+                <h2 className="text-base font-semibold text-slate-800 mb-4">
+                  🎉 Raffle Event Details
                 </h2>
 
-                <p
-                  className="text-slate-700 leading-relaxed"
-                  style={{
-                    fontStyle: "italic",
-                    fontSize: "0.9rem", // slightly reduced, readable
-                  }}
+                <div
+                  className="space-y-2 text-slate-700"
+                  style={{ fontSize: "0.9rem" }}
                 >
-                  This raffle draw will take place at
-                  <strong> [EVENT PLACE]</strong> on
-                  <strong> [EVENT DATE & TIME]</strong>.
-                  All tickets are generated digitally and remain valid until the draw
-                  is officially concluded.
-                </p>
+                  <p>
+                    📍 <strong>Location:</strong> [EVENT PLACE]
+                  </p>
+                  <p>
+                    🗓️ <strong>Date & Time:</strong> [EVENT DATE & TIME]
+                  </p>
+                  <p>
+                    🔒 <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
+                  </p>
+                </div>
 
                 <p
-                  className="text-slate-500 mt-2"
-                  style={{
-                    fontStyle: "italic",
-                    fontSize: "0.8rem", // slightly smaller secondary note
-                  }}
+                  className="text-slate-500 mt-4"
+                  style={{ fontSize: "0.8rem" }}
                 >
-                  Winners will be announced on this website and contacted via the email
-                  used during ticket purchase.
+                  Winners are announced publicly on this website and contacted via the email used during ticket purchase.
                 </p>
               </div>
             </section>
