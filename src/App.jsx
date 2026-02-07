@@ -333,70 +333,41 @@ export default function App() {
     );
   }  
 
-  // -------------------- AUTO-ROTATING WINNERS --------------------
+  // -------------------- AUTO-ROTATING WINNERS (HEADLINE STYLE) -----
   function AutoRotateWinners() {
     const winners = [
-      {
-        name: "Jane M.",
-        date: "12 Jan 2026",
-        ticketNo: "RF-48219",
-      },
-      {
-        name: "Samuel K.",
-        date: "05 Jan 2026",
-        ticketNo: "RF-37922",
-      },
-      {
-        name: "Brian O.",
-        date: "29 Dec 2025",
-        ticketNo: "RF-29410",
-      },
-      {
-        name: "Lucy A.",
-        date: "18 Dec 2025",
-        ticketNo: "RF-18177",
-      },
+      { name: "Jane M.", date: "12 Jan 2026", ticketNo: "RF-48219" },
+      { name: "Samuel K.", date: "05 Jan 2026", ticketNo: "RF-37922" },
+      { name: "Brian O.", date: "29 Dec 2025", ticketNo: "RF-29410" },
+      { name: "Lucy A.", date: "18 Dec 2025", ticketNo: "RF-18177" },
     ];
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
 
     useEffect(() => {
       const interval = setInterval(() => {
         setIndex((prev) => (prev + 1) % winners.length);
-      }, 4000); // rotate every 4 seconds
+      }, 3500); // smooth headline pace
 
       return () => clearInterval(interval);
     }, []);
 
-    const visibleWinners = [
-      winners[index],
-      winners[(index + 1) % winners.length],
-    ];
+    const w = winners[index];
 
     return (
-      <section className="max-w-6xl mx-auto px-6 py-10">
-        <h2 className="text-xl font-bold text-slate-800 mb-4">
-          🏆 Recent Winners
-        </h2>
-
-        <div className="grid gap-4 sm:grid-cols-2 transition-opacity duration-500">
-          {visibleWinners.map((w, i) => (
-            <div
-              key={`${w.ticketNo}-${i}`}
-              className="bg-white border rounded-xl p-4 shadow-sm"
-            >
-              <p className="font-semibold text-slate-700">{w.name}</p>
-              <p className="text-sm text-slate-500">Won on {w.date}</p>
-              <p className="text-xs text-slate-400 mt-1">
-                Ticket No: {w.ticketNo}
-              </p>
-            </div>
-          ))}
+      <section className="max-w-6xl mx-auto px-6 py-6">
+        <div className="overflow-hidden bg-white border rounded-xl shadow-sm">
+          <div
+            key={w.ticketNo}
+            className="whitespace-nowrap text-slate-700 text-sm font-medium px-4 py-3 animate-marquee"
+          >
+            🏆 Winner: <span className="font-semibold">{w.name}</span> — Ticket{" "}
+            <span className="font-mono">{w.ticketNo}</span> — {w.date}
+          </div>
         </div>
 
-        <p className="text-xs text-slate-400 mt-4">
-          Winners rotate automatically. Names may be partially anonymized
-          for privacy.
+        <p className="text-xs text-slate-400 mt-2">
+          Winners rotate automatically. Names may be partially anonymized for privacy.
         </p>
       </section>
     );
@@ -645,7 +616,7 @@ export default function App() {
             />
 
             {/* EVENT INFORMATION */}
-            <section className="max-w-5xl mx-auto px-6 py-6">
+            <section className="max-w-5xl mx-auto px-6 py-6 mt-8">
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                 <h2 className="text-lg font-semibold text-slate-800 mb-2">
                   🎉 Raffle Event Information
