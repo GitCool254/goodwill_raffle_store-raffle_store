@@ -35,7 +35,7 @@ export default function App() {
 
   const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
-  const [ticketsSold, setTicketsSold] = useState(0);
+  const [ticketsSold, setTicketsSold] = useState(null);
 
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
@@ -153,8 +153,8 @@ export default function App() {
           setRemainingTickets(Number(data.remaining));
         }
 
-        if (!isNaN(data.total_sold)) {
-          setTicketsSold(Number(data.total_sold));
+        if (!isNaN(data.tickets_sold)) {
+          setTicketsSold(Number(data.tickets_sold));
         }
 
         setTicketStateLoaded(true);
@@ -177,8 +177,8 @@ export default function App() {
           setRemainingTickets(Number(data.remaining));
         }
 
-        if (!isNaN(data.total_sold)) {
-          setTicketsSold(Number(data.total_sold));
+        if (!isNaN(data.tickets_sold)) {
+          setTicketsSold(Number(data.tickets_sold));
         }
       } catch (err) {
         console.error("Ticket sync failed:", err);
@@ -335,9 +335,9 @@ export default function App() {
 
             <div
               className="text-xs text-slate-200"
-              style={{ marginTop: "4px", letterSpacing: "0.03em" }}
+              style={{ marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
-              {typeof ticketsSold === "number" && (
+              {ticketsSold !== null && (
                 <>✔️ {ticketsSold} tickets sold so far</>
               )}
             </div>
