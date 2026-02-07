@@ -620,12 +620,23 @@ export default function App() {
               className="max-w-5xl mx-auto px-6 py-6"
               style={{ marginBottom: "2.5rem" }}
             >
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+              <div
+                className="bg-slate-50 rounded-xl p-5"
+                style={{
+                  border: "1.5px dotted #cbd5e1", // dotted outer border (slate-200)
+                }}
+              >
                 <h2 className="text-lg font-semibold text-slate-800 mb-2">
                   🎉 Raffle Event Information
                 </h2>
 
-                <p className="text-sm text-slate-700 leading-relaxed">
+                <p
+                  className="text-slate-700 leading-relaxed"
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "0.9rem", // slightly reduced, readable
+                  }}
+                >
                   This raffle draw will take place at
                   <strong> [EVENT PLACE]</strong> on
                   <strong> [EVENT DATE & TIME]</strong>.
@@ -633,7 +644,13 @@ export default function App() {
                   is officially concluded.
                 </p>
 
-                <p className="text-xs text-slate-500 mt-2">
+                <p
+                  className="text-slate-500 mt-2"
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "0.8rem", // slightly smaller secondary note
+                  }}
+                >
                   Winners will be announced on this website and contacted via the email
                   used during ticket purchase.
                 </p>
