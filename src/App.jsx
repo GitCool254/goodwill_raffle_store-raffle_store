@@ -335,7 +335,7 @@ export default function App() {
 
             <div
               className="text-xs text-slate-200"
-              style={{ marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
+              style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
               {ticketsSold !== null && (
                 <>✔️ {ticketsSold} tickets sold so far</>
