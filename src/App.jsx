@@ -616,7 +616,10 @@ export default function App() {
             />
 
             {/* EVENT INFORMATION */}
-            <section className="max-w-5xl mx-auto px-6 py-6 mt-8">
+            <section
+              className="max-w-5xl mx-auto px-6 py-6"
+              style={{ marginBottom: "2.5rem" }}
+            >
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                 <h2 className="text-lg font-semibold text-slate-800 mb-2">
                   🎉 Raffle Event Information
@@ -638,6 +641,7 @@ export default function App() {
             </section>
 
             <Home />
+            <br />
             <AutoRotateWinners />
           </>
         )}
