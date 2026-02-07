@@ -333,6 +333,75 @@ export default function App() {
     );
   }  
 
+  // -------------------- AUTO-ROTATING WINNERS --------------------
+  function AutoRotateWinners() {
+    const winners = [
+      {
+        name: "Jane M.",
+        date: "12 Jan 2026",
+        ticketNo: "RF-48219",
+      },
+      {
+        name: "Samuel K.",
+        date: "05 Jan 2026",
+        ticketNo: "RF-37922",
+      },
+      {
+        name: "Brian O.",
+        date: "29 Dec 2025",
+        ticketNo: "RF-29410",
+      },
+      {
+        name: "Lucy A.",
+        date: "18 Dec 2025",
+        ticketNo: "RF-18177",
+      },
+    ];
+
+    const [index, setIndex] = React.useState(0);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIndex((prev) => (prev + 1) % winners.length);
+      }, 4000); // rotate every 4 seconds
+
+      return () => clearInterval(interval);
+    }, []);
+
+    const visibleWinners = [
+      winners[index],
+      winners[(index + 1) % winners.length],
+    ];
+
+    return (
+      <section className="max-w-6xl mx-auto px-6 py-10">
+        <h2 className="text-xl font-bold text-slate-800 mb-4">
+          🏆 Recent Winners
+        </h2>
+
+        <div className="grid gap-4 sm:grid-cols-2 transition-opacity duration-500">
+          {visibleWinners.map((w, i) => (
+            <div
+              key={`${w.ticketNo}-${i}`}
+              className="bg-white border rounded-xl p-4 shadow-sm"
+            >
+              <p className="font-semibold text-slate-700">{w.name}</p>
+              <p className="text-sm text-slate-500">Won on {w.date}</p>
+              <p className="text-xs text-slate-400 mt-1">
+                Ticket No: {w.ticketNo}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-xs text-slate-400 mt-4">
+          Winners rotate automatically. Names may be partially anonymized
+          for privacy.
+        </p>
+      </section>
+    );
+  }
+
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
@@ -574,7 +643,31 @@ export default function App() {
             <Hero
               remainingTickets={remainingTickets}
             />
+
+            {/* EVENT INFORMATION */}
+            <section className="max-w-5xl mx-auto px-6 py-6">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                <h2 className="text-lg font-semibold text-slate-800 mb-2">
+                  🎉 Raffle Event Information
+                </h2>
+
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  This raffle draw will take place at
+                  <strong> [EVENT PLACE]</strong> on
+                  <strong> [EVENT DATE & TIME]</strong>.
+                  All tickets are generated digitally and remain valid until the draw
+                  is officially concluded.
+                </p>
+
+                <p className="text-xs text-slate-500 mt-2">
+                  Winners will be announced on this website and contacted via the email
+                  used during ticket purchase.
+                </p>
+              </div>
+            </section>
+
             <Home />
+            <AutoRotateWinners />
           </>
         )}
 
