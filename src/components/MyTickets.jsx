@@ -197,6 +197,15 @@ export default function MyTickets() {
           >
             Re-download by Order ID
           </button>
+          <p
+            className="mt-2"
+            style={{
+              fontSize: "0.75rem",
+              color: "#64748b", // slate-500
+            }}
+          >
+            Maximum of 3 re-downloads per order.
+          </p>
         </form>
 
         <hr className="my-6" />

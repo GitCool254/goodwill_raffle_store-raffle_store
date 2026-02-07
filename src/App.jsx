@@ -347,7 +347,7 @@ export default function App() {
     );
   }  
 
-  // -------------------- AUTO-ROTATING WINNERS (HEADLINE STYLE) -----
+  // -------------------- AUTO-ROTATING WINNERS (POLISHED) -----
   function AutoRotateWinners() {
     const winners = [
       { name: "Jane M.", date: "12 Jan 2026", ticketNo: "RF-48219" },
@@ -361,7 +361,7 @@ export default function App() {
     useEffect(() => {
       const interval = setInterval(
         () => setIndex((i) => (i + 1) % winners.length),
-        4000
+        4500
       );
       return () => clearInterval(interval);
     }, []);
@@ -369,21 +369,39 @@ export default function App() {
     const w = winners[index];
 
     return (
-      <section className="max-w-6xl mx-auto px-6 py-6">
+      <section className="max-w-6xl mx-auto px-6 py-8">
         <div
           className="bg-white rounded-xl p-6"
-          style={{ border: "1.5px dotted #cbd5e1" }}
+          style={{
+            border: "1.5px dotted #cbd5e1",
+            transition: "all 0.4s ease",
+          }}
         >
-          <p className="text-sm text-slate-600">
-            🏆 <strong>{w.name}</strong> won a raffle on {w.date}
+          <p
+            className="text-xs uppercase tracking-wide mb-2"
+            style={{ color: "#64748b" }} // slate-500
+          >
+            🎉 Recent Winner
           </p>
-          <p className="text-xs text-slate-400 mt-1">
+
+          <p className="text-base font-semibold text-slate-800">
+            {w.name}
+          </p>
+
+          <p className="text-sm text-slate-600 mt-1">
+            Won on {w.date}
+          </p>
+
+          <p className="text-xs text-slate-400 mt-2">
             Ticket No: {w.ticketNo}
           </p>
         </div>
 
-        <p className="text-xs text-slate-400 mt-2">
-          Winners rotate automatically. Names are partially anonymized.
+        <p
+          className="text-xs mt-3"
+          style={{ color: "#94a3b8", fontStyle: "italic" }} // slate-400
+        >
+          Winners rotate automatically. Names are partially anonymized for privacy.
         </p>
       </section>
     );
@@ -641,8 +659,11 @@ export default function App() {
                 className="bg-white rounded-xl p-6"
                 style={{ border: "1.5px dotted #cbd5e1" }}
               >
-                <h2 className="text-sm font-semibold text-slate-800 mb-4">
-                  🎉 Raffle Event Details
+                <h2
+                  className="font-semibold mb-4"
+                  style={{ fontSize: "0.85rem", color: "#475569" }} // slate-600
+                >
+                  Raffle Event Details
                 </h2>
 
                 <div
@@ -650,19 +671,20 @@ export default function App() {
                   style={{ fontSize: "0.9rem" }}
                 >
                   <p>
-                    📍 <strong>Location:</strong> [EVENT PLACE]
+                    • <strong>Location:</strong> [EVENT PLACE]
                   </p>
                   <p>
-                    🗓️ <strong>Date & Time:</strong> [EVENT DATE & TIME]
+                    • <strong>Date & Time:</strong> [EVENT DATE & TIME]
                   </p>
                   <p>
-                    🔒 <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
+                    • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
                   </p>
                 </div>
 
                 <p
                   className="text-slate-500 mt-4"
-                  style={{ fontSize: "0.8rem" }}
+                  style={{ fontSize: "0.8rem", fontStyle: "italic" }}
+                  
                 >
                   Winners are announced publicly on this website and contacted via the email used during ticket purchase.
                 </p>
