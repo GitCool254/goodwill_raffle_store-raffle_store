@@ -338,7 +338,7 @@ export default function App() {
               style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
               {ticketsSold !== null && (
-                <>✔️ {ticketsSold} tickets sold so far</>
+                <>✅ {ticketsSold} tickets sold so far</>
               )}
             </div>
           </div>
@@ -370,7 +370,10 @@ export default function App() {
 
     return (
       <section className="max-w-6xl mx-auto px-6 py-6">
-        <div className="bg-white rounded-xl border shadow-sm px-4 py-3">
+        <div
+          className="bg-white rounded-xl p-6"
+          style={{ border: "1.5px dotted #cbd5e1" }}
+        >
           <p className="text-sm text-slate-600">
             🏆 <strong>{w.name}</strong> won a raffle on {w.date}
           </p>
@@ -638,7 +641,7 @@ export default function App() {
                 className="bg-white rounded-xl p-6"
                 style={{ border: "1.5px dotted #cbd5e1" }}
               >
-                <h2 className="text-base font-semibold text-slate-800 mb-4">
+                <h2 className="text-sm font-semibold text-slate-800 mb-4">
                   🎉 Raffle Event Details
                 </h2>
 
