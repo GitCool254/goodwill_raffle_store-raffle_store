@@ -661,7 +661,7 @@ export default function App() {
               >
                 <h2
                   className="font-semibold mb-4"
-                  style={{ fontSize: "1.25rem", color: "#475569" }} // slate-600
+                  style={{ fontSize: "1.25rem", color: "#64748b" }} // slate-600
                 >
                   Raffle Event Details
                 </h2>
