@@ -272,7 +272,7 @@ export default function App() {
 
 
   // -------------------- HERO COMPONENT --------------------
-  function Hero({ remainingTickets }) {
+  function Hero({ remainingTickets, ticketsSold }) {
     const [scale, setScale] = useState(1);
 
     // Determine actual remaining tickets
@@ -626,6 +626,7 @@ export default function App() {
           <>
             <Hero
               remainingTickets={remainingTickets}
+              ticketsSold={ticketsSold}
             />
 
             {/* EVENT INFORMATION */}
