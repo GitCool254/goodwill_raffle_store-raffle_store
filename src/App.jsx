@@ -337,7 +337,7 @@ export default function App() {
               className="text-xs text-slate-200"
               style={{ marginTop: "4px", letterSpacing: "0.03em" }}
             >
-              {ticketStateLoaded && (
+              {typeof ticketsSold === "number" && (
                 <>✔️ {ticketsSold} tickets sold so far</>
               )}
             </div>
