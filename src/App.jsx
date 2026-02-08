@@ -457,7 +457,7 @@ export default function App() {
           <img
             src={w.winnerImg}
             alt="Winner"
-            className="w-16 h-16 mx-auto rounded-full object-cover border mb-3"
+            className="w-6 h-6 mx-auto rounded-full object-cover border mb-3"
           />
 
           {/* 3. Product Name */}
@@ -477,7 +477,7 @@ export default function App() {
           <img
             src={w.productImg}
             alt="Product"
-            className="w-20 h-20 mx-auto mt-3 rounded-lg object-cover border"
+            className="w-6 h-6 mx-auto mt-3 rounded-lg object-cover border"
           />
 
           {/* 5. Date */}
