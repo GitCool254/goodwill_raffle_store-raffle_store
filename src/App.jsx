@@ -347,61 +347,144 @@ export default function App() {
     );
   }  
 
-  // -------------------- AUTO-ROTATING WINNERS (POLISHED) -----
+  // -------------------- AUTO-ROTATING WINNERS (ENHANCED) -----
   function AutoRotateWinners() {
     const winners = [
-      { name: "Jane M.", date: "12 Jan 2026", ticketNo: "RF-48219" },
-      { name: "Samuel K.", date: "05 Jan 2026", ticketNo: "RF-37922" },
-      { name: "Brian O.", date: "29 Dec 2025", ticketNo: "RF-29410" },
-      { name: "Lucy A.", date: "18 Dec 2025", ticketNo: "RF-18177" },
+      {
+        name: "Jane M.",
+        date: "12 Jan 2026",
+        ticketNo: "RF-48219",
+        product: "Wonderfold Wagon",
+        description:
+          "A premium family wagon designed for comfort, safety, and smooth outdoor adventures.",
+        winnerImg: "/images/winners/jane.jpg",
+        productImg: "/images/products/wonderfold.jpg",
+        verified: true,
+      },
+      {
+        name: "Samuel K.",
+        date: "05 Jan 2026",
+        ticketNo: "RF-37922",
+        product: "Beachcroft Patio Set",
+        description:
+          "Elegant outdoor patio furniture set ideal for relaxing, entertaining, and modern homes.",
+        winnerImg: "/images/winners/samuel.jpg",
+        productImg: "/images/products/patio.jpg",
+        verified: true,
+      },
+      {
+        name: "Brian O.",
+        date: "29 Dec 2025",
+        ticketNo: "RF-29410",
+        product: "Coolster 125cc",
+        description:
+          "A powerful and reliable off-road bike built for thrill seekers and weekend riders.",
+        winnerImg: "/images/winners/brian.jpg",
+        productImg: "/images/products/coolster.jpg",
+        verified: true,
+      },
+      {
+        name: "Lucy A.",
+        date: "18 Dec 2025",
+        ticketNo: "RF-18177",
+        product: "Smart Home Bundle",
+        description:
+          "A complete smart home starter bundle including security, lighting, and automation tools.",
+        winnerImg: "/images/winners/lucy.jpg",
+        productImg: "/images/products/smarthome.jpg",
+        verified: true,
+      },
     ];
 
     const [index, setIndex] = useState(0);
+    const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
-      const interval = setInterval(
-        () => setIndex((i) => (i + 1) % winners.length),
-        4500
-      );
+      const interval = setInterval(() => {
+        setExpanded(false);
+        setIndex((i) => (i + 1) % winners.length);
+      }, 4500);
       return () => clearInterval(interval);
     }, []);
 
     const w = winners[index];
+    const shortText = w.description.slice(0, 75);
 
     return (
       <section className="max-w-6xl mx-auto px-6 py-8">
         <div
-          className="bg-white rounded-xl p-6"
+          key={index}
+          className="bg-white rounded-xl p-6 flex gap-4 items-start"
           style={{
             border: "1.5px dotted #cbd5e1",
-            transition: "all 0.4s ease",
+            transition: "opacity 0.5s ease",
+            opacity: 1,
           }}
         >
-          <p
-            className="text-xs uppercase tracking-wide mb-2"
-            style={{ color: "#64748b" }} // slate-500
-          >
-            🎉 Recent Winner
-          </p>
+          {/* Winner Thumbnail */}
+          <img
+            src={w.winnerImg}
+            alt="Winner"
+            className="w-12 h-12 rounded-full object-cover border"
+          />
 
-          <p className="text-base font-semibold text-slate-800">
-            {w.name}
-          </p>
+          {/* Content */}
+          <div className="flex-1">
+            <p
+              className="text-xs uppercase tracking-wide mb-1"
+              style={{ color: "#64748b" }}
+            >
+              Recent Winner
+            </p>
 
-          <p className="text-sm text-slate-600 mt-1">
-            Won on {w.date}
-          </p>
+            <div className="flex items-center gap-2">
+              <p className="text-base font-semibold text-slate-800">
+                {w.name}
+              </p>
 
-          <p className="text-xs text-slate-400 mt-2">
-            Ticket No: {w.ticketNo}
-          </p>
+              {w.verified && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                  ✔ Verified
+                </span>
+              )}
+            </div>
+
+            <p className="text-sm text-slate-600 mt-1">
+              Won <strong>{w.product}</strong>
+            </p>
+
+            {/* Product Thumbnail */}
+            <div className="flex items-center gap-2 mt-2">
+              <img
+                src={w.productImg}
+                alt="Product"
+                className="w-10 h-10 rounded-md object-cover border"
+              />
+
+              <p className="text-sm text-slate-500 leading-snug">
+                {expanded ? w.description : shortText}
+                {w.description.length > 75 && (
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="ml-1 text-slate-600 underline text-xs"
+                  >
+                    {expanded ? "See less" : "See more"}
+                  </button>
+                )}
+              </p>
+            </div>
+
+            <p className="text-xs text-slate-400 mt-2">
+              Draw date: {w.date} · Ticket No: {w.ticketNo}
+            </p>
+          </div>
         </div>
 
         <p
           className="text-xs mt-3"
-          style={{ color: "#94a3b8", fontStyle: "italic" }} // slate-400
+          style={{ color: "#94a3b8", fontStyle: "italic" }}
         >
-          Winners rotate automatically. Names are partially anonymized for privacy.
+          Recent raffle winners. Names are partially anonymized for privacy.
         </p>
       </section>
     );
