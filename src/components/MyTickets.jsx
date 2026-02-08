@@ -149,7 +149,10 @@ export default function MyTickets() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 text-left">
+    <div 
+      className="max-w-3xl mx-auto p-6 text-left"
+      style={{ backgroundColor: "#f8fafc" }}
+    >
       <h1
         className="font-bold mb-4"
         style={{ fontSize: "24px" }}

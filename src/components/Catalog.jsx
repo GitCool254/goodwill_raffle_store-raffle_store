@@ -320,7 +320,10 @@ export default function Catalog({ openProduct }) {
   });
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div 
+      className="max-w-6xl mx-auto p-6"
+      style={{ backgroundColor: "#f8fafc" }}
+    >
       <h1 className="text-2xl font-bold mb-4">Product Catalog</h1>
 
       {/* ----- SEARCH + CATEGORY FILTERS ----- */}

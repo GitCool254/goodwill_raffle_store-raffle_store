@@ -11,7 +11,10 @@ export default function Menu({ setView }) {
       <div className="w-full max-w-md bg-slate-800/60 backdrop-blur-2xl shadow-2xl rounded-2xl border border-slate-700 p-6 relative">
 
         {/* HEADER WITH CLOSE BUTTON */}
-        <div className="flex items-center justify-between mb-6">
+        <div 
+          className="flex items-center justify-between mb-6"
+          style={{ backgroundColor: "#f8fafc" }}
+        >
           <h1
             className="font-extrabold text-white tracking-tight"
             style={{ fontSize: "20px" }}

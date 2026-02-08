@@ -142,7 +142,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
     } finally {                                                              setIsGenerating(false);
     }                                                                    }
                                                                          return (
-    <div className="p-6 text-center">
+    <div 
+      className="p-6 text-center"
+      style={{ backgroundColor: "#f8fafc" }}
+    >
       <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
 
       {ticket && (
