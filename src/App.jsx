@@ -457,7 +457,16 @@ export default function App() {
           <img
             src={w.winnerImg}
             alt="Winner"
-            className="w-6 h-6 mx-auto rounded-full object-cover border mb-3"
+            style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",       // keep circular
+              objectFit: "cover",
+              display: "block",
+              margin: "0 auto",
+              border: "1px solid #cbd5e1",
+              marginBottom: "12px",
+            }}
           />
 
           {/* 3. Product Name */}
@@ -477,7 +486,15 @@ export default function App() {
           <img
             src={w.productImg}
             alt="Product"
-            className="w-6 h-6 mx-auto mt-3 rounded-lg object-cover border"
+            style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "8px",       // small rounded corners
+              objectFit: "cover",
+              display: "block",
+              margin: "12px auto 0 auto",
+              border: "1px solid #cbd5e1",
+            }}
           />
 
           {/* 5. Date */}
