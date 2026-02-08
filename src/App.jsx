@@ -432,6 +432,14 @@ export default function App() {
               : "translateX(-20px)",
           }}
         >
+
+          <p  
+            className="text-xs uppercase tracking-wide mb-2"  
+            style={{ color: "#64748b" }} // slate-500  
+          >  
+            Recent Winners  
+          </p>  
+        
           {/* 1. Winner Name */}
           <div className="flex items-center justify-center gap-2 mb-2">
             <p className="text-base font-semibold text-slate-800">
