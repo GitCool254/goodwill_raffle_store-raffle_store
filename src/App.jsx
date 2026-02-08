@@ -548,6 +548,8 @@ export default function App() {
           </p>
         </div>
 
+        <br />
+
         {/* PROGRESS DOTS */}
         <div className="flex justify-center gap-2 mt-3">
           {winners.map((_, i) => (
@@ -564,7 +566,11 @@ export default function App() {
               style={{
                 width: "8px",
                 height: "8px",
-                borderRadius: "50%",
+                minWidth: "8px",
+                minHeight: "8px",
+                padding: 0,
+                borderRadius: "9999px",
+                flexShrink: 0,
                 backgroundColor: i === index ? "#475569" : "#cbd5e1",
                 transition: "background-color 0.3s ease",
               }}
