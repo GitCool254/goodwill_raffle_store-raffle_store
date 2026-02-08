@@ -347,7 +347,7 @@ export default function App() {
     );
   }  
 
-  // -------------------- AUTO-ROTATING WINNERS (ENHANCED) -----
+  // -------------------- AUTO-ROTATING WINNERS (ENHANCED + SLIDE/FADE + PAUSE) -----
   function AutoRotateWinners() {
     const winners = [
       {
@@ -355,129 +355,132 @@ export default function App() {
         date: "12 Jan 2026",
         ticketNo: "RF-48219",
         product: "Wonderfold Wagon",
-        description:
-          "A premium family wagon designed for comfort, safety, and smooth outdoor adventures.",
         winnerImg: "/images/winners/jane.jpg",
         productImg: "/images/products/wonderfold.jpg",
         verified: true,
+        countryFlag: "🇺🇸",
       },
       {
         name: "Samuel K.",
         date: "05 Jan 2026",
         ticketNo: "RF-37922",
         product: "Beachcroft Patio Set",
-        description:
-          "Elegant outdoor patio furniture set ideal for relaxing, entertaining, and modern homes.",
         winnerImg: "/images/winners/samuel.jpg",
         productImg: "/images/products/patio.jpg",
         verified: true,
+        countryFlag: "🇰🇪",
       },
       {
         name: "Brian O.",
         date: "29 Dec 2025",
         ticketNo: "RF-29410",
         product: "Coolster 125cc",
-        description:
-          "A powerful and reliable off-road bike built for thrill seekers and weekend riders.",
         winnerImg: "/images/winners/brian.jpg",
         productImg: "/images/products/coolster.jpg",
         verified: true,
+        countryFlag: "🇱🇷",
       },
       {
         name: "Lucy A.",
         date: "18 Dec 2025",
         ticketNo: "RF-18177",
         product: "Smart Home Bundle",
-        description:
-          "A complete smart home starter bundle including security, lighting, and automation tools.",
         winnerImg: "/images/winners/lucy.jpg",
         productImg: "/images/products/smarthome.jpg",
         verified: true,
+        countryFlag: "🇬🇧",
       },
     ];
 
     const [index, setIndex] = useState(0);
     const [expanded, setExpanded] = useState(false);
+    const [animate, setAnimate] = useState(true);
+    const [paused, setPaused] = useState(false);
 
     useEffect(() => {
+      if (paused) return;
+
       const interval = setInterval(() => {
-        setExpanded(false);
-        setIndex((i) => (i + 1) % winners.length);
+        setAnimate(false); // slide + fade out
+
+        setTimeout(() => {
+          setExpanded(false);
+          setIndex((i) => (i + 1) % winners.length);
+          setAnimate(true); // slide + fade in
+        }, 250);
       }, 4500);
+
       return () => clearInterval(interval);
-    }, []);
+    }, [paused]);
 
     const w = winners[index];
-    const shortText = w.description.slice(0, 75);
+    const shortProduct = w.product.slice(0, 75);
 
     return (
-      <section className="max-w-6xl mx-auto px-6 py-8">
+      <section className="max-w-6xl mx-auto px-6 py-8 text-center">
         <div
           key={index}
-          className="bg-white rounded-xl p-6 flex gap-4 items-start"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          className="bg-white rounded-xl p-6"
           style={{
             border: "1.5px dotted #cbd5e1",
-            transition: "opacity 0.5s ease",
-            opacity: 1,
+            transition: "opacity 0.45s ease, transform 0.45s ease",
+            opacity: animate ? 1 : 0,
+            transform: animate
+              ? "translateX(0)"
+              : "translateX(-20px)",
           }}
         >
-          {/* Winner Thumbnail */}
+          {/* 1. Winner Name */}
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <p className="text-base font-semibold text-slate-800">
+              {w.name}
+            </p>
+
+            {w.verified && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                {w.countryFlag} ✔ Verified
+              </span>
+            )}
+          </div>
+
+          {/* 2. Winner Image */}
           <img
             src={w.winnerImg}
             alt="Winner"
-            className="w-12 h-12 rounded-full object-cover border"
+            className="w-16 h-16 mx-auto rounded-full object-cover border mb-3"
           />
 
-          {/* Content */}
-          <div className="flex-1">
-            <p
-              className="text-xs uppercase tracking-wide mb-1"
-              style={{ color: "#64748b" }}
-            >
-              Recent Winner
-            </p>
+          {/* 3. Product Name */}
+          <p className="text-sm text-slate-700 font-medium">
+            {expanded ? w.product : shortProduct}
+            {w.product.length > 75 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="ml-1 text-xs underline text-slate-500"
+              >
+                {expanded ? "See less" : "See more"}
+              </button>
+            )}
+          </p>
 
-            <div className="flex items-center gap-2">
-              <p className="text-base font-semibold text-slate-800">
-                {w.name}
-              </p>
+          {/* 4. Product Image */}
+          <img
+            src={w.productImg}
+            alt="Product"
+            className="w-20 h-20 mx-auto mt-3 rounded-lg object-cover border"
+          />
 
-              {w.verified && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
-                  ✔ Verified
-                </span>
-              )}
-            </div>
+          {/* 5. Date */}
+          <p className="text-xs text-slate-500 mt-3">
+            Draw date: {w.date}
+          </p>
 
-            <p className="text-sm text-slate-600 mt-1">
-              Won <strong>{w.product}</strong>
-            </p>
-
-            {/* Product Thumbnail */}
-            <div className="flex items-center gap-2 mt-2">
-              <img
-                src={w.productImg}
-                alt="Product"
-                className="w-10 h-10 rounded-md object-cover border"
-              />
-
-              <p className="text-sm text-slate-500 leading-snug">
-                {expanded ? w.description : shortText}
-                {w.description.length > 75 && (
-                  <button
-                    onClick={() => setExpanded(!expanded)}
-                    className="ml-1 text-slate-600 underline text-xs"
-                  >
-                    {expanded ? "See less" : "See more"}
-                  </button>
-                )}
-              </p>
-            </div>
-
-            <p className="text-xs text-slate-400 mt-2">
-              Draw date: {w.date} · Ticket No: {w.ticketNo}
-            </p>
-          </div>
+          {/* 6. Ticket No */}
+          <p className="text-xs text-slate-400 mt-1">
+            Ticket No: {w.ticketNo}
+          </p>
         </div>
 
         <p
