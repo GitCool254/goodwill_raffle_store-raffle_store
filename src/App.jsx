@@ -418,6 +418,7 @@ export default function App() {
 
     const handleTouchStart = (e) => {
       touchStartX.current = e.touches[0].clientX;
+      touchEndX.current = e.touches[0].clientX;
     };
 
     const handleTouchMove = (e) => {
@@ -426,6 +427,14 @@ export default function App() {
 
     const handleTouchEnd = () => {
       const delta = touchStartX.current - touchEndX.current;
+
+      // 👉 TAP (pause / resume)
+      if (Math.abs(delta) < 15) {
+        setPaused((p) => !p);
+        return;
+      }
+
+      // 👉 SWIPE (normal behavior)
       if (Math.abs(delta) < 50) return;
 
       setAnimate(false);
@@ -455,9 +464,10 @@ export default function App() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="bg-white rounded-xl p-6"
+          className="rounded-xl p-6"
           style={{
             border: "1.5px dotted #cbd5e1",
+            backgroundColor: "#f8fafc", // ✅ light grey, modern
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
             transform: animate ? "translateX(0)" : "translateX(-20px)",
