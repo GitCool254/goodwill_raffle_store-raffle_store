@@ -347,7 +347,7 @@ export default function App() {
     );
   }  
 
-  // -------------------- AUTO-ROTATING WINNERS (ENHANCED + SLIDE/FADE + PAUSE) -----
+  // -------------------- AUTO-ROTATING WINNERS (ENHANCED + SLIDE/FADE + PAUSE + SWIPE + DOTS) -----
   function AutoRotateWinners() {
     const winners = [
       {
@@ -397,21 +397,51 @@ export default function App() {
     const [animate, setAnimate] = useState(true);
     const [paused, setPaused] = useState(false);
 
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
+
     useEffect(() => {
       if (paused) return;
 
       const interval = setInterval(() => {
-        setAnimate(false); // slide + fade out
+        setAnimate(false);
 
         setTimeout(() => {
           setExpanded(false);
           setIndex((i) => (i + 1) % winners.length);
-          setAnimate(true); // slide + fade in
+          setAnimate(true);
         }, 250);
       }, 4500);
 
       return () => clearInterval(interval);
     }, [paused]);
+
+    const handleTouchStart = (e) => {
+      touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+      touchEndX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      const delta = touchStartX.current - touchEndX.current;
+      if (Math.abs(delta) < 50) return;
+
+      setAnimate(false);
+
+      setTimeout(() => {
+        setExpanded(false);
+
+        if (delta > 0) {
+          setIndex((i) => (i + 1) % winners.length);
+        } else {
+          setIndex((i) => (i - 1 + winners.length) % winners.length);
+        }
+
+        setAnimate(true);
+      }, 200);
+    };
 
     const w = winners[index];
     const shortProduct = w.product.slice(0, 75);
@@ -422,24 +452,24 @@ export default function App() {
           key={index}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           className="bg-white rounded-xl p-6"
           style={{
             border: "1.5px dotted #cbd5e1",
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
-            transform: animate
-              ? "translateX(0)"
-              : "translateX(-20px)",
+            transform: animate ? "translateX(0)" : "translateX(-20px)",
           }}
         >
+          <p
+            className="text-xs uppercase tracking-wide mb-2"
+            style={{ color: "#64748b" }}
+          >
+            Recent Winners
+          </p>
 
-          <p  
-            className="text-xs uppercase tracking-wide mb-2"  
-            style={{ color: "#64748b" }} // slate-500  
-          >  
-            Recent Winners  
-          </p>  
-        
           {/* 1. Winner Name */}
           <div className="flex items-center justify-center gap-2 mb-2">
             <p className="text-base font-semibold text-slate-800">
@@ -460,7 +490,7 @@ export default function App() {
             style={{
               width: "48px",
               height: "48px",
-              borderRadius: "50%",       // keep circular
+              borderRadius: "50%",
               objectFit: "cover",
               display: "block",
               margin: "0 auto",
@@ -489,7 +519,7 @@ export default function App() {
             style={{
               width: "48px",
               height: "48px",
-              borderRadius: "8px",       // small rounded corners
+              borderRadius: "8px",
               objectFit: "cover",
               display: "block",
               margin: "12px auto 0 auto",
@@ -506,6 +536,31 @@ export default function App() {
           <p className="text-xs text-slate-400 mt-1">
             Ticket No: {w.ticketNo}
           </p>
+        </div>
+
+        {/* PROGRESS DOTS */}
+        <div className="flex justify-center gap-2 mt-3">
+          {winners.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setAnimate(false);
+                setTimeout(() => {
+                  setExpanded(false);
+                  setIndex(i);
+                  setAnimate(true);
+                }, 150);
+              }}
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: i === index ? "#475569" : "#cbd5e1",
+                transition: "background-color 0.3s ease",
+              }}
+              aria-label={`Show winner ${i + 1}`}
+            />
+          ))}
         </div>
 
         <p
