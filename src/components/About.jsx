@@ -1,6 +1,9 @@
 export default function About() {
   return (
-    <div className="max-w-3xl mx-auto p-6 text-left">
+    <div 
+      className="max-w-3xl mx-auto p-6 text-left"
+      style={{ backgroundColor: "#f8fafc" }}
+    >
       {/* PAGE TITLE */}
       <h1
         className="font-bold mb-5"

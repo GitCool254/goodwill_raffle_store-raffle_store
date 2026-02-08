@@ -839,7 +839,7 @@ export default function App() {
             >
               <div
                 className="bg-white rounded-xl p-6"
-                style={{ border: "1.5px dotted #cbd5e1" }}
+                style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
               >
                 <h2
                   className="font-semibold mb-4"

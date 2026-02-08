@@ -23,7 +23,10 @@ function AddressLine({ line1, line2 }) {
 
 export default function Address() {
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div 
+      className="max-w-2xl mx-auto p-6"
+      style={{ backgroundColor: "#f8fafc" }}
+    >
 
       {/* TITLE */}
       <h1 className="text-lg font-bold mb-3 text-left">
