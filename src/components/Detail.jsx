@@ -98,7 +98,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
     try {
 
       const payload = { order_id: lastOrder.orderId };
-      const { signature, timestamp } = await signRequest(payload);
+      ({ signature, timestamp } = await signRequest(payload));
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
