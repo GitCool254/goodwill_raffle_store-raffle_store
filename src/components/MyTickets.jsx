@@ -126,7 +126,18 @@ export default function MyTickets() {
       );
 
       if (!res.ok) {
-        throw new Error("Download failed");
+        let errorMsg = "Re-download failed. Please contact support.";
+
+        if (res.status === 410) {
+          errorMsg =
+            "This ticket has expired and is no longer available for download.";
+        } else if (res.status === 403) {
+          errorMsg =
+            "You’ve reached the maximum number of re-downloads for this order.";
+        }
+
+        setOrderError(errorMsg);
+        return;
       }
 
       const blob = await res.blob();
