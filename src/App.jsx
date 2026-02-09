@@ -195,12 +195,12 @@ export default function App() {
 
         const data = await res.json();
 
-        if (!isNaN(data.remaining)) {
+        if (data.remaining !== null) {
           setRemainingTickets(Number(data.remaining));
         }
 
-        if (!isNaN(data.tickets_sold)) {
-          setTicketsSold(Number(data.tickets_sold));
+        if (data.total_sold !== null) {
+          setTicketsSold(Number(data.total_sold));
         }
 
         setTicketStateLoaded(true);
@@ -214,29 +214,15 @@ export default function App() {
   
 
   useEffect(() => {
-    async function handleTicketsPurchased() {
-      try {
-        const { signature, timestamp } = await signRequest(null);
+    function handleTicketsPurchased(e) {
+      if (!e?.detail?.authoritative) return;
 
-        const res = await fetch(`${backendUrl}/ticket_state`, {
-          method: "GET",
-          headers: {
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
-          },
-        });
+      if (e.detail.remaining !== null) {
+        setRemainingTickets(Number(e.detail.remaining));
+      }
 
-        const data = await res.json();
-
-        if (!isNaN(data.remaining)) {
-          setRemainingTickets(Number(data.remaining));
-        }
-
-        if (!isNaN(data.tickets_sold)) {
-          setTicketsSold(Number(data.tickets_sold));
-        }
-      } catch (err) {
-        console.error("Ticket sync failed:", err);
+      if (e.detail.total_sold !== null) {
+        setTicketsSold(Number(e.detail.total_sold));
       }
     }
 
