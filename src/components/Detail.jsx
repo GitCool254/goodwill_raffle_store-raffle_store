@@ -326,9 +326,21 @@ export default function Detail({ product, openImage, remainingTickets }) {
               setIsTicketGenerating(false);
               setDownloadReady(true);
 
-              // 🔁 Sync backend state (authoritative)
-              const ticketstateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
-              const ticketstateData = await ticketstateRes.json();
+              // 🔁 Sync backend state (authoritative) — SIGNED
+              const { signature, timestamp } = await signRequest("");
+
+              const ticketstateRes = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`,
+                {
+                  method: "GET",
+                  headers: {
+                    "X-Signature": signature,
+                    "X-Timestamp": timestamp,
+                  },
+                }
+              );
+
+const ticketstateData = await ticketstateRes.json();
 
               window.dispatchEvent(new CustomEvent("ticketsPurchased", {
                 detail: {

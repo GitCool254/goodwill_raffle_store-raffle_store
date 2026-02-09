@@ -32,6 +32,43 @@ export default function App() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (!backendUrl) console.error("VITE_BACKEND_URL is not set!");
 
+  // -------------------- HMAC SIGNING (GET REQUESTS) ----------------
+  async function signRequest(body) {
+    const encoder = new TextEncoder();
+    const secret = import.meta.env.VITE_API_SIGN_SECRET;
+
+    if (!secret) {
+      throw new Error("Missing API signing secret");
+    }
+
+    if (!window.crypto || !crypto.subtle) {
+      throw new Error("Crypto API not available in this browser");
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const payload = `${timestamp}.${JSON.stringify(body)}`;
+
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+
+    const signatureBuffer = await crypto.subtle.sign(
+      "HMAC",
+      key,
+      encoder.encode(payload)
+    );
+
+    const signature = Array.from(new Uint8Array(signatureBuffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    return { signature, timestamp };
+  }
+
 
   const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
@@ -146,7 +183,16 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const res = await fetch(`${backendUrl}/ticket_state`);
+        const { signature, timestamp } = await signRequest("");
+
+        const res = await fetch(`${backendUrl}/ticket_state`, {
+          method: "GET",
+          headers: {
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+        });
+
         const data = await res.json();
 
         if (!isNaN(data.remaining)) {
@@ -162,7 +208,7 @@ export default function App() {
         console.error("Failed to load ticket state:", err);
       }
     }
-        
+
     loadTicketState();
   }, []);
   
@@ -170,7 +216,16 @@ export default function App() {
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
-        const res = await fetch(`${backendUrl}/ticket_state`);
+        const { signature, timestamp } = await signRequest("");
+
+        const res = await fetch(`${backendUrl}/ticket_state`, {
+          method: "GET",
+          headers: {
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+        });
+
         const data = await res.json();
 
         if (!isNaN(data.remaining)) {
