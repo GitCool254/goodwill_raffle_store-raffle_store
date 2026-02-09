@@ -98,7 +98,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
     try {
 
       const payload = { order_id: lastOrder.orderId };
-      ({ signature, timestamp } = await signRequest(payload));
+      const { signature, timestamp } = await signRequest(payload);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
@@ -295,7 +295,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 product_title: product.title,
               };
 
-              ({ signature, timestamp } = await signRequest(payload));
+              const { signature, timestamp } = await signRequest(payload);
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
@@ -327,7 +327,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               setDownloadReady(true);
 
               // 🔁 Sync backend state (authoritative) — SIGNED
-              const { signature, timestamp } = await signRequest("");
+              const { signature: newSignature, timestamp: newTimestamp } = await signRequest("");
 
               const ticketstateRes = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/ticket_state`,
