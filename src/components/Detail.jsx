@@ -295,7 +295,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 product_title: product.title,
               };
 
-              const { signature, timestamp } = await signRequest(payload);
+              ({ signature, timestamp } = await signRequest(payload));
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
