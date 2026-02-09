@@ -183,7 +183,7 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const { signature, timestamp } = await signRequest("");
+        const { signature, timestamp } = await signRequest(null);
 
         const res = await fetch(`${backendUrl}/ticket_state`, {
           method: "GET",
@@ -216,7 +216,7 @@ export default function App() {
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
-        const { signature, timestamp } = await signRequest("");
+        const { signature, timestamp } = await signRequest(null);
 
         const res = await fetch(`${backendUrl}/ticket_state`, {
           method: "GET",
