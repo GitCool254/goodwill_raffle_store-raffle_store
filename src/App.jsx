@@ -199,8 +199,8 @@ export default function App() {
           setRemainingTickets(Number(data.remaining));
         }
 
-        if (data.total_sold !== null) {
-          setTicketsSold(Number(data.total_sold));
+        if (data.tickets_sold !== null) {
+          setTicketsSold(Number(data.tickets_sold));
         }
 
         setTicketStateLoaded(true);
@@ -221,8 +221,8 @@ export default function App() {
         setRemainingTickets(Number(e.detail.remaining));
       }
 
-      if (e.detail.total_sold !== null) {
-        setTicketsSold(Number(e.detail.total_sold));
+      if (e.detail.tickets_sold !== null) {
+        setTicketsSold(Number(e.detail.tickets_sold));
       }
     }
 
