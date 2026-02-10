@@ -215,36 +215,43 @@ export default function App() {
   
 
   useEffect(() => {
-    async function handleTicketsPurchased() {
-      try {
-        const payload = {};
-        const { signature, timestamp } = await signRequest(payload);
+    function handleTicketsPurchased(e) {
+      const detail = e.detail;
 
-        const res = await fetch(`${backendUrl}/ticket_state`, {
-          method: "GET",
-          headers: {
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
-          },
-        });
-       
-        const data = await res.json();
-
-        if (!isNaN(data.remaining)) {
-          setRemainingTickets(Number(data.remaining));
+      if (detail?.authoritative) {
+        if (detail.remaining !== undefined && !isNaN(detail.remaining)) {
+          setRemainingTickets(Number(detail.remaining));
         }
 
-        if (!isNaN(data.tickets_sold)) {
-          setTicketsSold(Number(data.tickets_sold));
+        if (detail.total_sold !== undefined && !isNaN(detail.total_sold)) {
+          setTicketsSold(Number(detail.total_sold));
         }
-      } catch (err) {
-        console.error("Ticket sync failed:", err);
+      } else {
+        // Fallback: fetch latest from backend
+        (async () => {
+          try {
+            const payload = {};
+            const { signature, timestamp } = await signRequest(payload);
+            const res = await fetch(`${backendUrl}/ticket_state`, {
+              method: "GET",
+              headers: {
+                "X-Signature": signature,
+                "X-Timestamp": timestamp,
+              },
+            });
+            const data = await res.json();
+
+            if (!isNaN(data.remaining)) setRemainingTickets(Number(data.remaining));
+            if (!isNaN(data.tickets_sold)) setTicketsSold(Number(data.tickets_sold));
+          } catch (err) {
+            console.error("Ticket sync failed:", err);
+          }
+        })();
       }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
-    return () =>
-      window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
+    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
 
   useEffect(() => {

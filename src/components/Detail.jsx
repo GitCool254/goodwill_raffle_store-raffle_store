@@ -350,7 +350,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               window.dispatchEvent(new CustomEvent("ticketsPurchased", {
                 detail: {
                   quantity: Number(quantity),
-                  total_sold: ticketstateData.total_sold,
+                  total_sold: ticketstateData.tickets_sold,
                   remaining: ticketstateData.remaining,
                   authoritative: true
                 }
