@@ -396,9 +396,9 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {remainingTickets !== null
-                  ? `${remainingTickets} tickets remaining`
-                  : "Loading ticket availability…"}
+                {!ticketStateLoaded
+                  ? "Loading ticket availability…"
+                  : `${remainingTickets ?? 0} tickets remaining`}
               </span>
             </div>
 
@@ -406,7 +406,7 @@ export default function App() {
               className="text-xs text-slate-200"
               style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
-              {ticketsSold !== null && (
+              {ticketStateLoaded && ticketsSold !== null && (
                 <>✅ <strong>{ticketsSold}</strong> tickets sold so far</>
               )}
             </div>
