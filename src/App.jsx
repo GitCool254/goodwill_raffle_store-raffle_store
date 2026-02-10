@@ -396,8 +396,8 @@ export default function App() {
                 }}
               >
                 {!ticketStateLoaded || remainingTickets === null
-                  ? "Loading ticket availability…"
                   : `${remainingTickets} tickets remaining`}
+                  ? "Loading ticket availability…"
               </span>
             </div>
 
