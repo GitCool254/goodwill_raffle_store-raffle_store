@@ -346,8 +346,7 @@ export default function App() {
 
     // Determine actual remaining tickets
 
-    const ticketStateReady =
-      remainingTickets !== null && ticketStateLoaded;
+    const ticketStateReady = ticketStateLoaded;
 
     // Animate when ticket count changes
     useEffect(() => {
