@@ -331,13 +331,19 @@ export default function Detail({ product, openImage, remainingTickets }) {
               const payload = {};
               const { signature, timestamp } = await signRequest(payload);
 
+              const ticketStatePayload = {};
+              const {
+                signature: ticketStateSignature,
+                timestamp: ticketStateTimestamp
+              } = await signRequest(ticketStatePayload);
+
               const ticketstateRes = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/ticket_state`,
                 {
                   method: "GET",
                   headers: {
-                    "X-Signature": signature,
-                    "X-Timestamp": timestamp,
+                    "X-Signature": ticketStateSignature,
+                    "X-Timestamp": ticketStateTimestamp,
                   },
                 }
               );
