@@ -65,9 +65,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
-  const amount = Number((price * safeQty).toFixed(2));
-                                                                         const appsScriptUrl =
-    "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";                      
+  const amount = Number((price * safeQty).toFixed(2));                                                                                          const appsScriptUrl =                                                    "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";
                                                                          function validateForm() {                                                const newErrors = {};                                                  if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
@@ -80,11 +78,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
     ) {
       newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
     }
-
-    if (qtyNum > remainingTickets) {
+                                                                           if (qtyNum > remainingTickets) {
      newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
     }
-    
+
     setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
   }
 
@@ -93,8 +90,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
       return;
     }
                                                                            if (hasDownloaded || isGenerating) return;
-    setIsGenerating(true);
-
+    setIsGenerating(true);                                             
     try {
 
       const payload = { order_id: lastOrder.orderId };
@@ -128,8 +124,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
       const disposition = res.headers.get("Content-Disposition");
       const match = disposition?.match(/filename="?(.+)"?/);
-      a.download = match ? match[1] : "raffle_ticket";
-
+      a.download = match ? match[1] : "raffle_ticket";                 
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -142,7 +137,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
     } finally {                                                              setIsGenerating(false);
     }                                                                    }
                                                                          return (
-    <div 
+    <div
       className="p-6 text-center"
       style={{ backgroundColor: "#f8fafc" }}
     >
@@ -182,11 +177,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
       </div>
 
       <br />
-
-
+                                                                       
       {!ticket && (
-        <>
-          {/* NAME */}
+        <>                                                                       {/* NAME */}
           <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
             <input
               value={name}
@@ -195,8 +188,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               onFocus={() => setFocusedField("name")}
               onBlur={() => setFocusedField(null)}                                   style={{
                 border: errors.name
-                  ? "1px solid #ef4444"
-                  : focusedField === "name"
+                  ? "1px solid #ef4444"                                                  : focusedField === "name"
                   ? "1px solid #38bdf8"                                                  : "1px solid #d1d5db",
                 boxShadow: errors.name
                   ? "0 0 0 2px rgba(239,68,68,0.3)"
@@ -271,20 +263,16 @@ export default function Detail({ product, openImage, remainingTickets }) {
             <p className="text-sm text-gray-600 italic mt-1">
               (This will be charged securely via PayPal)
             </p>
-          </div>
-
-          <hr className="my-4" />
-
+          </div>                                                       
+          <hr className="my-4" />                                      
           {/* PAYPAL */}                                                         <PayPalButton
             amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
             appsScriptUrl={appsScriptUrl}
-            validateForm={validateForm}
-            product={product.title}                                                quantity={quantity}
+            validateForm={validateForm}                                            product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
-              setIsTicketGenerating(true);
-
+              setIsTicketGenerating(true);                             
               // 🔹 Generate tickets silently
               const payload = {
                 name,
@@ -315,12 +303,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 return;
               }
 
-              const data = await res.json();
-              if (data.status !== "tickets_generated") {
+              const data = await res.json();                                         if (data.status !== "tickets_generated") {
                 alert("Ticket generation incomplete.");
                 setIsTicketGenerating(false);
-                return;
-              }
+                return;                                                              }
 
               // After tickets are generated successfully
               setIsTicketGenerating(false);
@@ -328,29 +314,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
               // 🔁 Sync backend state (authoritative) — SIGNED (GET)
 
-              const ticketStatePayload = {};
-              const {
-                signature: ticketStateSignature,
-                timestamp: ticketStateTimestamp
-              } = await signRequest(ticketStatePayload);
-
               const ticketstateRes = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`,
-                {
-                  method: "GET",
-                  headers: {
-                    "X-Signature": ticketStateSignature,
-                    "X-Timestamp": ticketStateTimestamp,
-                  },
-                }
-              );
-              
+                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`                   );
               const ticketstateData = await ticketstateRes.json();
 
               window.dispatchEvent(new CustomEvent("ticketsPurchased", {
                 detail: {
                   quantity: Number(quantity),
-                  total_sold: ticketstateData.tickets_sold,
+                  total_sold: ticketstateData.total_sold,
                   remaining: ticketstateData.remaining,
                   authoritative: true
                 }

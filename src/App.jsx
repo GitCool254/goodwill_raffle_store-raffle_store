@@ -183,80 +183,50 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const payload = {};
-        const { signature, timestamp } = await signRequest(payload);
-
-        const res = await fetch(`${backendUrl}/ticket_state`, {
-          method: "GET",
-          headers: {
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error(`ticket_state failed: ${res.status}`);
-        }
+        const res = await fetch(`${backendUrl}/ticket_state`);
 
         const data = await res.json();
 
-        if (typeof data.remaining === "number") {
-          setRemainingTickets(data.remaining);
+        if (!isNaN(data.remaining)) {
+          setRemainingTickets(Number(data.remaining));
         }
 
-        if (typeof data.tickets_sold === "number") {
-          setTicketsSold(data.tickets_sold);
+        if (!isNaN(data.tickets_sold)) {
+          setTicketsSold(Number(data.tickets_sold));
         }
+
+        setTicketStateLoaded(true);
       } catch (err) {
         console.error("Failed to load ticket state:", err);
-      } finally {
-        // ✅ ALWAYS release loading state
-        setTicketStateLoaded(true);
       }
     }
 
     loadTicketState();
   }, []);
-  
+
 
   useEffect(() => {
-    function handleTicketsPurchased(e) {
-      const detail = e.detail;
+    async function handleTicketsPurchased() {
+      try {
+        const res = await fetch(`${backendUrl}/ticket_state`);
 
-      if (detail?.authoritative) {
-        if (detail.remaining !== undefined && !isNaN(detail.remaining)) {
-          setRemainingTickets(Number(detail.remaining));
+        const data = await res.json();
+
+        if (!isNaN(data.remaining)) {
+          setRemainingTickets(Number(data.remaining));
         }
 
-        if (detail.total_sold !== undefined && !isNaN(detail.total_sold)) {
-          setTicketsSold(Number(detail.total_sold));
+        if (!isNaN(data.tickets_sold)) {
+          setTicketsSold(Number(data.tickets_sold));
         }
-      } else {
-        // Fallback: fetch latest from backend
-        (async () => {
-          try {
-            const payload = {};
-            const { signature, timestamp } = await signRequest(payload);
-            const res = await fetch(`${backendUrl}/ticket_state`, {
-              method: "GET",
-              headers: {
-                "X-Signature": signature,
-                "X-Timestamp": timestamp,
-              },
-            });
-            const data = await res.json();
-
-            if (!isNaN(data.remaining)) setRemainingTickets(Number(data.remaining));
-            if (!isNaN(data.tickets_sold)) setTicketsSold(Number(data.tickets_sold));
-          } catch (err) {
-            console.error("Ticket sync failed:", err);
-          }
-        })();
+      } catch (err) {
+        console.error("Ticket sync failed:", err);
       }
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
-    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
+    return () =>
+      window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
 
   useEffect(() => {
@@ -346,7 +316,8 @@ export default function App() {
 
     // Determine actual remaining tickets
 
-    const ticketStateReady = ticketStateLoaded;
+    const ticketStateReady =
+      remainingTickets !== null && ticketStateLoaded;
 
     // Animate when ticket count changes
     useEffect(() => {
@@ -395,9 +366,9 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {!ticketStateLoaded || remainingTickets === null
-                  : `${remainingTickets} tickets remaining`}
-                  ? "Loading ticket availability…"
+                {ticketStateLoaded
+                  ? `${remainingTickets} tickets remaining`
+                  : "Loading ticket availability…"}
               </span>
             </div>
 
@@ -405,7 +376,7 @@ export default function App() {
               className="text-xs text-slate-200"
               style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
-              {ticketStateLoaded && ticketsSold !== null && (
+              {ticketsSold !== null && (
                 <>✅ <strong>{ticketsSold}</strong> tickets sold so far</>
               )}
             </div>
@@ -413,7 +384,7 @@ export default function App() {
         </div>
       </section>
     );
-  }  
+  }
 
   // -------------------- AUTO-ROTATING WINNERS (ENHANCED + SLIDE/FADE + PAUSE + SWIPE + DOTS) -----
   function AutoRotateWinners() {
@@ -522,8 +493,7 @@ export default function App() {
 
     const w = winners[index];
     const shortProduct = w.product.slice(0, 75);
-
-    return (
+                                                                           return (
       <section className="max-w-6xl mx-auto px-6 py-8 text-center">
         <div
           key={index}
@@ -563,17 +533,14 @@ export default function App() {
 
           {/* 2. Winner Image */}
           <img
-            src={w.winnerImg}
-            alt="Winner"
+            src={w.winnerImg}                                                      alt="Winner"
             style={{
               width: "48px",
               height: "48px",
               borderRadius: "50%",
               objectFit: "cover",
-              display: "block",
-              margin: "0 auto",
-              border: "1px solid #cbd5e1",
-              marginBottom: "12px",
+              display: "block",                                                      margin: "0 auto",
+              border: "1px solid #cbd5e1",                                           marginBottom: "12px",
             }}
           />
 
@@ -586,24 +553,14 @@ export default function App() {
                 className="ml-1 text-xs underline text-slate-500"
               >
                 {expanded ? "See less" : "See more"}
-              </button>
-            )}
-          </p>
+              </button>                                                            )}                                                                   </p>
 
           {/* 4. Product Image */}
-          <img
-            src={w.productImg}
-            alt="Product"
+          <img                                                                     src={w.productImg}                                                     alt="Product"
             style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "8px",
-              objectFit: "cover",
-              display: "block",
-              margin: "12px auto 0 auto",
-              border: "1px solid #cbd5e1",
-            }}
-          />
+              width: "48px",                                                         height: "48px",
+              borderRadius: "8px",                                                   objectFit: "cover",
+              display: "block",                                                      margin: "12px auto 0 auto",                                            border: "1px solid #cbd5e1",                                         }}                                                                   />
 
           {/* 5. Date */}
           <p className="text-xs text-slate-500 mt-3">
@@ -613,26 +570,21 @@ export default function App() {
           {/* 6. Ticket No */}
           <p className="text-xs text-slate-400 mt-1">
             Ticket No: {w.ticketNo}
-          </p>
-        </div>
+          </p>                                                                 </div>
 
         <br />
 
-        {/* PROGRESS DOTS */}
-        <div className="flex justify-center gap-2 mt-3">
+        {/* PROGRESS DOTS */}                                                  <div className="flex justify-center gap-2 mt-3">
           {winners.map((_, i) => (
             <button
-              key={i}
-              onClick={() => {
+              key={i}                                                                onClick={() => {
                 setAnimate(false);
                 setTimeout(() => {
-                  setExpanded(false);
-                  setIndex(i);
+                  setExpanded(false);                                                    setIndex(i);
                   setAnimate(true);
                 }, 150);
               }}
-              style={{
-                width: "8px",
+              style={{                                                                 width: "8px",
                 height: "8px",
                 minWidth: "8px",
                 minHeight: "8px",
@@ -651,16 +603,14 @@ export default function App() {
           className="text-xs mt-3"
           style={{ color: "#94a3b8", fontStyle: "italic" }}
         >
-          Recent raffle winners. Names are partially anonymized for privacy.
-        </p>
+          Recent raffle winners. Names are partially anonymized for privacy.                                                                          </p>
       </section>
     );
   }
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
-    const [scale, setScale] = useState(1);
-    const lastDistanceRef = React.useRef(null);
+    const [scale, setScale] = useState(1);                                 const lastDistanceRef = React.useRef(null);
     const lastTapRef = React.useRef(0);
     const containerRef = React.useRef(null);
 
@@ -676,17 +626,13 @@ export default function App() {
         document.body.style.backgroundColor = originalBg;
       };
     }, []);
-
-    useEffect(() => {
+                                                                           useEffect(() => {
       if (containerRef.current) {
         containerRef.current.scrollTo({
           top: 0,
-          left: 0,
-          behavior: "auto",
-        });
-      }
-    }, [index]);
-
+          left: 0,                                                               behavior: "auto",
+        });                                                                  }
+    }, [index]);                                                       
     function next() {
       if (index < images.length - 1) setIndex(index + 1);
     }
@@ -694,53 +640,35 @@ export default function App() {
     function prev() {
       if (index > 0) setIndex(index - 1);
     }
-
-    function handleTouchStart(e) {
-      if (scale > 1) return;
-      setTouchStartX(e.touches[0].clientX);
+                                                                           function handleTouchStart(e) {                                           if (scale > 1) return;                                                 setTouchStartX(e.touches[0].clientX);
     }
 
     function handleTouchEnd(e) {
       if (touchStartX === null) return;
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (scale === 1) {
+      const diff = touchStartX - e.changedTouches[0].clientX;                if (scale === 1) {
         if (diff > 50) next();
         if (diff < -50) prev();
       }
-      setTouchStartX(null);
-    }
+      setTouchStartX(null);                                                }
 
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
         setScale((s) => (s > 1 ? 1 : 2));
-      }
-      lastTapRef.current = now;
-    }
+      }                                                                      lastTapRef.current = now;                                            }
 
-    function getDistance(touches) {
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    function handleTouchMove(e) {
-      if (e.touches.length === 2) {
-        const dist = getDistance(e.touches);
-        if (lastDistanceRef.current) {
-          const delta = dist - lastDistanceRef.current;
-          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
+    function getDistance(touches) {                                          const dx = touches[0].clientX - touches[1].clientX;                    const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);                                 }
+                                                                           function handleTouchMove(e) {                                            if (e.touches.length === 2) {
+        const dist = getDistance(e.touches);                                   if (lastDistanceRef.current) {
+          const delta = dist - lastDistanceRef.current;                          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
         lastDistanceRef.current = dist;
       }
     }
 
     function handleTouchEndZoom() {
-      lastDistanceRef.current = null;
-    }
-
-    return (
-      <div
+      lastDistanceRef.current = null;                                      }                                                                                                                                             return (                                                                 <div
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
@@ -750,20 +678,17 @@ export default function App() {
           touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
           WebkitOverflowScrolling: "touch",
         }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
+        onTouchStart={handleTouchStart}                                        onTouchMove={handleTouchMove}
         onTouchEnd={(e) => {
           handleTouchEnd(e);
           handleTouchEndZoom();
         }}
       >
-        <div
-          style={{
+        <div                                                                     style={{
             width: "100vw",
             height: "100vh",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "center",                                                  justifyContent: "center",
             overflow: "hidden",
           }}
         >
@@ -773,12 +698,7 @@ export default function App() {
               position: "relative",
               maxWidth: "90vw",
               maxHeight: "45vh",
-              width: "auto",
-              height: "auto",
-            }}
-          >
-            {/* BACK BUTTON */}
-            <button
+              width: "auto",                                                         height: "auto",                                                      }}                                                                   >                                                                        {/* BACK BUTTON */}                                                    <button
               onClick={onBack}
               style={{
                 position: "fixed",
@@ -803,13 +723,10 @@ export default function App() {
                 top: "50%",
                 left: "50%",
                 transform: `translate(-50%, -50%) scale(${scale})`,
-                maxWidth: "80vw",
-                maxHeight: "45vh",
+                maxWidth: "80vw",                                                      maxHeight: "45vh",
                 objectFit: "contain",
-                cursor: scale > 1 ? "zoom-out" : "zoom-in",
-                userSelect: "none",
-                transition: "transform 0.25s ease",
-                zIndex: 1,
+                cursor: scale > 1 ? "zoom-out" : "zoom-in",                            userSelect: "none",
+                transition: "transform 0.25s ease",                                    zIndex: 1,
               }}
             />
 
@@ -817,33 +734,26 @@ export default function App() {
             <div
               style={{
                 position: "fixed",
-                bottom: "48px",
-                right: "24px",
+                bottom: "48px",                                                        right: "24px",
                 zIndex: 9999,
                 color: "#fff",
-                background: "rgba(0,0,0,0.7)",
-                padding: "6px 12px",
-                borderRadius: "999px",
-                fontSize: "14px",
+                background: "rgba(0,0,0,0.7)",                                         padding: "6px 12px",
+                borderRadius: "999px",                                                 fontSize: "14px",
                 pointerEvents: "none",
               }}
             >
               {index + 1} / {images.length}
             </div>
           </div>
-        </div>
-      </div>
+        </div>                                                               </div>
     );
   }
 
-  function Home() {
-    console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
+  function Home() {                                                        console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
     return (
       <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p) => (
-            <div
-              key={p.id}
+          {products.map((p) => (                                                   <div                                                                     key={p.id}
               className="bg-white rounded-2xl shadow p-4 flex flex-col"
             >
               <img
@@ -851,16 +761,12 @@ export default function App() {
                 alt={p.title}
                 className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
                 onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
-              />
-              <h3 className="font-semibold">{p.title}</h3>
-              <p className="text-sm text-slate-600 mt-1">
-                {p.description?.slice(0, 50)}…
+              />                                                                     <h3 className="font-semibold">{p.title}</h3>
+              <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
               </p>
               <div className="mt-3 flex items-center justify-between">
-                <div className="text-slate-700 font-medium">
-                  $ {p.ticketPrice} / ticket
-                </div>
-                <button
+                <div className="text-slate-700 font-medium">                             $ {p.ticketPrice} / ticket
+                </div>                                                                 <button
                   className="bg-sky-600 text-white px-3 py-1 rounded-lg"
                   onClick={() => openProduct(p)}
                 >
@@ -874,8 +780,7 @@ export default function App() {
               )}
             </div>
           ))}
-        </div>
-      </main>
+        </div>                                                               </main>
     );
   }
 
@@ -891,8 +796,7 @@ export default function App() {
       {/* HEADER */}
       {view !== "image" && <Header setView={setView} />}
 
-      {/* MAIN CONTENT - grows to push footer down */}
-      <main className="flex-grow">
+      {/* MAIN CONTENT - grows to push footer down */}                       <main className="flex-grow">
         {view === "home" && (
           <>
             <Hero
@@ -912,8 +816,7 @@ export default function App() {
                 <h2
                   className="font-semibold mb-4"
                   style={{ fontSize: "1.25rem", color: "#64748b" }} // slate-600
-                >
-                  Raffle Event Details
+                >                                                                        Raffle Event Details
                 </h2>
 
                 <div
@@ -921,30 +824,24 @@ export default function App() {
                   style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0" }}
                 >
                   <p>
-                    • <strong>Location:</strong> [EVENT PLACE]
-                  </p>
+                    • <strong>Location:</strong> [EVENT PLACE]                           </p>
                   <p>
                     • <strong>Date & Time:</strong> [EVENT DATE & TIME]
                   </p>
                   <p>
-                    • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
-                  </p>
+                    • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.                                 </p>
                 </div>
-
-                <p
+                                                                                       <p
                   className="text-slate-500 mt-4"
                   style={{ fontSize: "0.8rem", fontStyle: "italic" }}
-                  
-                >
-                  Winners are announced publicly on this website and contacted via the email used during ticket purchase.
+
+                >                                                                        Winners are announced publicly on this website and contacted via the email used during ticket purchase.
                 </p>
               </div>
             </section>
-
-            <Home />
+                                                                                   <Home />
             <br />
-            <AutoRotateWinners />
-          </>
+            <AutoRotateWinners />                                                </>
         )}
 
         {view === "detail" && selected && (
@@ -961,12 +858,9 @@ export default function App() {
         )}
 
         {view === "address" && <Address />}
-        {view === "contact" && <Contact />}
-        {view === "about" && <About />}
-        {(view === "tickets" || view === "myTickets") && (
+        {view === "contact" && <Contact />}                                    {view === "about" && <About />}                                        {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
-        )}
-        {view === "menu" && <Menu setView={navigate} />}
+        )}                                                                     {view === "menu" && <Menu setView={navigate} />}
       </main>
 
       {view === "image" && activeImage && (
@@ -974,21 +868,14 @@ export default function App() {
           images={imageImages}
           index={imageIndex}
           setIndex={(i) => {
-            setImageIndex(i);
-            setActiveImage(imageImages[i]);
-          }}
-          onBack={() => setView(imageReturnView)}
+            setImageIndex(i);                                                      setActiveImage(imageImages[i]);                                      }}                                                                     onBack={() => setView(imageReturnView)}
         />
       )}
-
-      <br />
-
-      {/* FOOTER (sticky bottom + broken line) */}
+                                                                             <br />                                                                                                                                        {/* FOOTER (sticky bottom + broken line) */}
       {view !== "image" && (
         <footer
           className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
-          style={{ borderTopStyle: "dotted" }}
-        >
+          style={{ borderTopStyle: "dotted" }}                                 >
           © {new Date().getFullYear()} Goodwillstores
         </footer>
       )}
