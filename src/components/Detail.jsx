@@ -328,9 +328,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
               // 🔁 Sync backend state (authoritative) — SIGNED (GET)
 
-              const payload = {};
-              const { signature, timestamp } = await signRequest(payload);
-
               const ticketStatePayload = {};
               const {
                 signature: ticketStateSignature,
