@@ -328,9 +328,20 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
               // 🔁 Sync backend state (authoritative) — SIGNED (GET)
 
+              const payload = {};
+              const { signature, timestamp } = await signRequest(payload);
+
               const ticketstateRes = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
+                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`,
+                {
+                  method: "GET",
+                  headers: {
+                    "X-Signature": signature,
+                    "X-Timestamp": timestamp,
+                  },
+                }
               );
+              
               const ticketstateData = await ticketstateRes.json();
 
               window.dispatchEvent(new CustomEvent("ticketsPurchased", {

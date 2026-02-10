@@ -183,7 +183,16 @@ export default function App() {
   useEffect(() => {
     async function loadTicketState() {
       try {
-        const res = await fetch(`${backendUrl}/ticket_state`);
+        const payload = {};
+        const { signature, timestamp } = await signRequest(payload);
+
+        const res = await fetch(`${backendUrl}/ticket_state`, {
+          method: "GET",
+          headers: {
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+        });
 
         const data = await res.json();
 
@@ -208,7 +217,16 @@ export default function App() {
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
-        const res = await fetch(`${backendUrl}/ticket_state`);
+        const payload = {};
+        const { signature, timestamp } = await signRequest(payload);
+
+        const res = await fetch(`${backendUrl}/ticket_state`, {
+          method: "GET",
+          headers: {
+            "X-Signature": signature,
+            "X-Timestamp": timestamp,
+          },
+        });
        
         const data = await res.json();
 
