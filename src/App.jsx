@@ -194,19 +194,24 @@ export default function App() {
           },
         });
 
+        if (!res.ok) {
+          throw new Error(`ticket_state failed: ${res.status}`);
+        }
+
         const data = await res.json();
 
-        if (!isNaN(data.remaining)) {
-          setRemainingTickets(Number(data.remaining));
+        if (typeof data.remaining === "number") {
+          setRemainingTickets(data.remaining);
         }
 
-        if (!isNaN(data.tickets_sold)) {
-          setTicketsSold(Number(data.tickets_sold));
+        if (typeof data.tickets_sold === "number") {
+          setTicketsSold(data.tickets_sold);
         }
-
-        setTicketStateLoaded(true);
       } catch (err) {
         console.error("Failed to load ticket state:", err);
+      } finally {
+        // ✅ ALWAYS release loading state
+        setTicketStateLoaded(true);
       }
     }
 
