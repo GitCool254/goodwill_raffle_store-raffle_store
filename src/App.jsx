@@ -396,7 +396,7 @@ export default function App() {
                   transition: "transform 0.3s ease-out",
                 }}
               >
-                {ticketStateLoaded
+                {remainingTickets !== null
                   ? `${remainingTickets} tickets remaining`
                   : "Loading ticket availability…"}
               </span>
