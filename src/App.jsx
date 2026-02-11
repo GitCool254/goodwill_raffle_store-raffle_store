@@ -181,11 +181,22 @@ export default function App() {
   }, [products]);
 
   useEffect(() => {
-    async function loadTicketState() {
+    let isMounted = true;
+
+    async function fetchTicketState() {
       try {
-        const res = await fetch(`${backendUrl}/ticket_state`);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000); // 5 sec max wait
+
+        const res = await fetch(`${backendUrl}/ticket_state`, {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
 
         const data = await res.json();
+
+        if (!isMounted) return;
 
         if (!isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
@@ -197,11 +208,20 @@ export default function App() {
 
         setTicketStateLoaded(true);
       } catch (err) {
-        console.error("Failed to load ticket state:", err);
+        console.warn("Ticket state fetch timeout — retrying...");
+
+        // Retry once after short delay (handles cold start)
+        setTimeout(() => {
+          fetchTicketState();
+        }, 2500);
       }
     }
 
-    loadTicketState();
+    fetchTicketState();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
 
