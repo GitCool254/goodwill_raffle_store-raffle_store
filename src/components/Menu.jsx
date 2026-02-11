@@ -27,7 +27,7 @@ export default function Menu({ setView }) {
             className="text-slate-300 text-xl font-bold px-3 py-1 border border-slate-600 hover:bg-slate-700/40 hover:text-white transition-all rounded-md"
             aria-label="Close menu"
           >
-            <strong>×</strong>
+            <strong>✖️</strong>
           </button>
         </div>
 
