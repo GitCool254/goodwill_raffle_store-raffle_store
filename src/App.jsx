@@ -332,8 +332,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center p-6 px-4">
           <div className="flex-1">
             <div
-              style = {{ backgroundColo
-r: "#f8fafc" }}
+              style = {{ backgroundColor: "#f8fafc" }}
             >
               <h2 className="text-3xl font-bold">
                 Win big — join our raffles today

@@ -60,8 +60,7 @@ export default function Header({ setView }) {
 
             {/* Title */}
             <div
-              style = {{ backgroundColo
-r: "#f8fafc" }}
+              style = {{ backgroundColor: "#f8fafc" }}
             >
               <h1 className="text-xl font-extrabold">
                 Goodwillstores — Lucrative Raffles
