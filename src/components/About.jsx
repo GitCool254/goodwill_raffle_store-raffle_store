@@ -1,167 +1,174 @@
 export default function About() {
   return (
-    <div 
-      className="max-w-3xl mx-auto p-6 text-left"
-      style={{ backgroundColor: "#f8fafc" }}
+    <div
+      className="max-w-3xl mx-auto px-6 py-12 text-left"
+      style={{
+        backgroundColor: "#f8fafc",
+        fontFamily:
+          '"Inter", "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif',
+      }}
     >
       {/* PAGE TITLE */}
       <h1
-        className="font-bold mb-5"
-        style={{ fontSize: "24px" }}
+        className="font-bold mb-3 tracking-tight text-slate-900"
+        style={{
+          fontSize: "34px",
+          lineHeight: "1.2",
+          letterSpacing: "-0.6px",
+        }}
       >
-        ℹ️ About Us
+        ℹ️ About Goodwillstores
       </h1>
 
+      <p className="text-slate-600 mb-8 text-[15px]">
+        Established • Trusted • Community-Driven
+      </p>
+
       {/* INTRO */}
-      <p className="text-base text-slate-700 leading-relaxed mb-4">
-        <strong>
-          Goodwillstores — Where Value, Trust, and Opportunity Meet
-        </strong>
+      <p className="text-lg text-slate-900 leading-relaxed mb-4 font-semibold">
+        Where Value, Trust, and Opportunity Meet
       </p>
 
-      <p className="text-base text-slate-700 leading-relaxed mb-4">
-        At Goodwillstores, we believe great products deserve a second chance —
-        and our customers deserve exciting opportunities to win them.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-4">
+        For over <strong>5 years</strong>, Goodwillstores has proudly served
+        thousands of participants through transparent and affordable raffle
+        campaigns featuring carefully selected second-hand and surplus products.
       </p>
 
-      <p className="text-base text-slate-700 leading-relaxed mb-6">
-        For over <strong>5 years</strong>, we have proudly served thousands of
-        customers by offering carefully selected second-hand and surplus items
-        through affordable, transparent raffle campaigns. Every raffle is
-        designed to be fair, secure, and easy to understand.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-10">
+        We believe quality products deserve a second life — and customers
+        deserve a fair, secure, and clearly structured opportunity to win them.
       </p>
 
-      {/* SECTION: MISSION */}
+      {/* TRUST METRICS STRIP */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12 text-center">
+        <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-100">
+          <p className="text-xl font-bold text-slate-900">5+ Years</p>
+          <p className="text-xs text-slate-600 mt-1">Operating Experience</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-100">
+          <p className="text-xl font-bold text-slate-900">Thousands</p>
+          <p className="text-xs text-slate-600 mt-1">Satisfied Participants</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-100">
+          <p className="text-xl font-bold text-slate-900">Secure</p>
+          <p className="text-xs text-slate-600 mt-1">Transparent Platform</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-100">
+          <p className="text-xl font-bold text-slate-900">Fair</p>
+          <p className="text-xs text-slate-600 mt-1">Equal Opportunity Draws</p>
+        </div>
+      </div>
+
+      {/* MISSION */}
       <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
+        className="font-semibold mt-10 mb-3 tracking-tight text-slate-900"
+        style={{
+          fontSize: "22px",
+          lineHeight: "1.3",
+          letterSpacing: "-0.4px",
+        }}
       >
         🎯 Our Mission
       </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
+      <div className="w-16 h-[2px] bg-sky-600/80 mb-5" />
 
-      <p className="text-base text-slate-700 leading-relaxed mb-6">
-        Our mission is to make quality products accessible through fair,
-        transparent raffle experiences — empowering our customers with real
-        opportunities to win while maintaining trust, integrity, and value in
-        everything we do.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-10">
+        To make quality products accessible through fair and transparent raffle
+        experiences — empowering customers with real opportunities while
+        maintaining integrity, clarity, and customer-first service.
       </p>
 
-      {/* SECTION: VISION */}
+      {/* VISION */}
       <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
+        className="font-semibold mt-10 mb-3 tracking-tight text-slate-900"
+        style={{
+          fontSize: "22px",
+          lineHeight: "1.3",
+          letterSpacing: "-0.4px",
+        }}
       >
         🔭 Our Vision
       </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
+      <div className="w-16 h-[2px] bg-sky-600/80 mb-5" />
 
-      <p className="text-base text-slate-700 leading-relaxed mb-6">
-        We envision a trusted global marketplace where sustainability,
-        opportunity, and excitement come together — creating a community where
-        everyone has a fair chance and every product finds a meaningful second
-        life.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-10">
+        To build a trusted marketplace where sustainability, opportunity, and
+        community come together — ensuring every raffle is structured fairly
+        and every product finds meaningful value.
       </p>
 
-      {/* SECTION: CORE VALUES */}
+      {/* WHAT MAKES US DIFFERENT */}
       <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
-      >
-        💎 Our Core Values
-      </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
-
-      <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-6">
-        <li>
-          <strong>Transparency</strong> — Clear rules, visible outcomes, and
-          honest operations.
-        </li>
-        <li>
-          <strong>Fairness</strong> — Equal opportunity for every participant.
-        </li>
-        <li>
-          <strong>Trust</strong> — A secure platform backed by real customer
-          support.
-        </li>
-        <li>
-          <strong>Sustainability</strong> — Reducing waste by extending product
-          life.
-        </li>
-        <li>
-          <strong>Community</strong> — Growing together and giving back.
-        </li>
-      </ul>
-
-      {/* SECTION: WHAT MAKES US DIFFERENT */}
-      <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
+        className="font-semibold mt-10 mb-3 tracking-tight text-slate-900"
+        style={{
+          fontSize: "22px",
+          lineHeight: "1.3",
+          letterSpacing: "-0.4px",
+        }}
       >
         🎟️ What Makes Us Different
       </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
+      <div className="w-16 h-[2px] bg-sky-600/80 mb-5" />
 
-      <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-6">
+      <ul className="list-disc pl-6 text-[15px] text-slate-700 space-y-3 mb-10 leading-[1.7]">
         <li>
-          <strong>Transparent & Fair Draws</strong> — Clear ticket limits and
-          visible outcomes for every raffle.
+          <strong>Clearly Defined Ticket Limits</strong> — Every raffle has
+          transparent participation rules.
         </li>
         <li>
-          <strong>Real Products, Real Winners</strong> — Thousands of satisfied
-          winners across multiple categories.
+          <strong>Visible & Structured Draw Process</strong> — Designed for
+          fairness and clarity.
         </li>
         <li>
-          <strong>Affordable Participation</strong> — Low ticket prices give
-          everyone a fair chance to win.
+          <strong>Affordable Entry Points</strong> — Giving everyone a fair
+          chance to participate.
+        </li>
+        <li>
+          <strong>Real Products, Real Winners</strong> — Authentic outcomes and
+          satisfied participants.
         </li>
       </ul>
 
-      {/* SECTION: COMMITMENT */}
+      {/* COMMITMENT */}
       <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
+        className="font-semibold mt-10 mb-3 tracking-tight text-slate-900"
+        style={{
+          fontSize: "22px",
+          lineHeight: "1.3",
+          letterSpacing: "-0.4px",
+        }}
       >
         🌍 Our Commitment
       </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
+      <div className="w-16 h-[2px] bg-sky-600/80 mb-5" />
 
-      <p className="text-base text-slate-700 leading-relaxed mb-4">
-        We go beyond raffles. Goodwillstores is committed to sustainability and
-        community empowerment. By extending the life of quality products, we
-        reduce waste, promote responsible consumption, and support initiatives
-        that positively impact our communities.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-4">
+        Beyond raffles, we are committed to sustainability and responsible
+        product circulation. By extending the life of quality goods, we reduce
+        waste while creating accessible opportunities.
       </p>
 
-      <p className="text-base text-slate-700 leading-relaxed mb-6">
-        Every ticket purchased helps keep valuable products in circulation while
-        supporting a value-driven, responsible marketplace.
+      <p className="text-[15.5px] text-slate-700 leading-[1.75] mb-12">
+        Every ticket supports a value-driven marketplace built on fairness,
+        structure, and customer trust.
       </p>
 
-      {/* SECTION: TRUST */}
-      <h2
-        className="font-semibold mt-8 mb-2"
-        style={{ fontSize: "20px" }}
-      >
-        🤝 Built on Trust
-      </h2>
-      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
-
-      <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-6">
-        <li>Operating for over 5 years</li>
-        <li>Secure and transparent platform</li>
-        <li>Customer-first support</li>
-        <li>Growing community of repeat participants</li>
-      </ul>
-
-      {/* CLOSING */}
-      <p
-        className="text-slate-700 leading-relaxed mt-8 font-medium"
-        style={{ fontSize: "18px" }}
-      >
-        Goodwillstores isn’t just about winning — it’s about trust,
-        transparency, and giving everyone a fair chance.
-      </p>
+      {/* CLOSING TRUST STATEMENT */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <p
+          className="text-slate-900 font-semibold tracking-tight text-center"
+          style={{
+            fontSize: "19px",
+            lineHeight: "1.6",
+            letterSpacing: "-0.3px",
+          }}
+        >
+          Goodwillstores isn’t just about winning —
+          <br />
+          it’s about transparency, integrity, and giving everyone a fair chance.
+        </p>
+      </div>
     </div>
   );
 }
