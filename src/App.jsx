@@ -182,11 +182,12 @@ export default function App() {
 
   useEffect(() => {
     let isMounted = true;
+    let intervalId;
 
     async function fetchTicketState() {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000); // 5 sec max wait
+        const timeout = setTimeout(() => controller.abort(), 5000);
 
         const res = await fetch(`${backendUrl}/ticket_state`, {
           signal: controller.signal,
@@ -195,7 +196,6 @@ export default function App() {
         clearTimeout(timeout);
 
         const data = await res.json();
-
         if (!isMounted) return;
 
         if (!isNaN(data.remaining)) {
@@ -208,21 +208,26 @@ export default function App() {
 
         setTicketStateLoaded(true);
       } catch (err) {
-        console.warn("Ticket state fetch timeout — retrying...");
-
-        // Retry once after short delay (handles cold start)
+        console.warn("Ticket state fetch failed — retrying...");
         setTimeout(() => {
-          fetchTicketState();
+          if (isMounted) fetchTicketState();
         }, 2500);
       }
     }
 
+    // Initial load
     fetchTicketState();
+
+    // ✅ Auto-refresh every 30 seconds
+    intervalId = setInterval(() => {
+      fetchTicketState();
+    }, 30000); // 30,000ms = 30 sec
 
     return () => {
       isMounted = false;
+      clearInterval(intervalId); // cleanup
     };
-  }, []);
+  }, [backendUrl]);
 
 
   useEffect(() => {
