@@ -67,7 +67,7 @@ export default function Header({ setView }) {
             {/* Menu button BELOW subtitle — strictly right with spacing */}
             <div
               className="flex justify-end w-full"
-              style={{ marginTop: "12px", marginBottom: "12px" }}
+              style={{ marginTop: "12px", marginBottom: "12px", backgroundColor: "#f8fafc" }}
             >
               <button
                 className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
