@@ -59,9 +59,14 @@ export default function Header({ setView }) {
             </div>
 
             {/* Title */}
-            <h1 className="text-xl font-extrabold">
-              Goodwillstores — Lucrative Raffles
-            </h1>
+            <div
+              style = {{ backgroundColo
+r: "#f8fafc" }}
+            >
+              <h1 className="text-xl font-extrabold">
+                Goodwillstores — Lucrative Raffles
+              </h1>
+            </div>
 
             {/* Subtitle */}
             <span

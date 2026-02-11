@@ -329,16 +329,23 @@ export default function App() {
 
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gabackgroundColo
+r: "#f8fafc" }}p-6 px-4">
           <div className="flex-1">
-            <h2 className="text-3xl font-bold">
-              Win big — join our raffles today
-            </h2>
-            <p className="mt-3 text-slate-100 max-w-xl">
-              Buy low-cost tickets for a chance to win high-value tech items.
-              Each ticket helps us support community initiatives.
-            </p>
+            <div
+              style = {{ backgroundColo
+r: "#f8fafc" }}
+            >
+              <h2 className="text-3xl font-bold">
+                Win big — join our raffles today
+              </h2>
+              <p className="mt-3 text-slate-100 max-w-xl">
+                Buy low-cost tickets for a chance to win high-value tech items.
+                Each ticket helps us support community initiatives.
+              </p>
 
+            </div>
+          
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
