@@ -44,26 +44,15 @@ export default function Header({ setView }) {
             <div className="w-10" />
           </div>
 
-          {/* MENU + TITLE + SUBTITLE */}
+          {/* TITLE + SUBTITLE + MENU */}
           <div className="mt-2 w-full">
-
-            {/* Menu button ABOVE title — strictly right */}
-            <div className="flex justify-end w-full mb-1">
-              <button
-                className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
-                onClick={() => setView("menu")}
-                aria-label="Open menu"
-              >
-                ☰
-              </button>
-            </div>
 
             {/* Title */}
             <div
-              style = {{ backgroundColor: "#f8fafc" }}
+              style={{ backgroundColor: "#f8fafc" }}
             >
               <h1 className="text-xl font-extrabold">
-                Goodwillstores — Lucrative Raffles
+                Goodwillstores Lucrative Raffles
               </h1>
             </div>
 
@@ -74,6 +63,21 @@ export default function Header({ setView }) {
             >
               Buy tickets. Win prizes. Transparent draws.
             </span>
+
+            {/* Menu button BELOW subtitle — strictly right with spacing */}
+            <div
+              className="flex justify-end w-full"
+              style={{ marginTop: "12px", marginBottom: "12px" }}
+            >
+              <button
+                className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
+                onClick={() => setView("menu")}
+                aria-label="Open menu"
+              >
+                ☰
+              </button>
+            </div>
+
           </div>
 
         </div>
