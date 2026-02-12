@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState } from "react";
   - Snow (winter only)
   - Adaptive snow density
   - Smooth slide animation
-  - Premium animated zebra + color wave
+  - Premium animated zebra + color wave + pulsing gradient glow
 */
 
 export default function HolidaySystem({ onNavigate }) {
@@ -84,19 +84,28 @@ export default function HolidaySystem({ onNavigate }) {
           100% { background-position: 40px 40px; }
         }
 
+        @keyframes glowPulseGradient {
+          0%, 100% { 
+            filter: drop-shadow(0 0 6px rgba(239,68,68,0.35)) drop-shadow(0 0 12px rgba(168,85,247,0.25)); 
+          }
+          25% {
+            filter: drop-shadow(0 0 8px rgba(236,72,153,0.35)) drop-shadow(0 0 14px rgba(218,39,226,0.25));
+          }
+          50% {
+            filter: drop-shadow(0 0 12px rgba(217,70,239,0.4)) drop-shadow(0 0 18px rgba(168,85,247,0.3));
+          }
+          75% {
+            filter: drop-shadow(0 0 8px rgba(236,72,153,0.35)) drop-shadow(0 0 14px rgba(218,39,226,0.25));
+          }
+        }
+
         .premium-title {
           position: relative;
           display: inline-block;
           font-weight: 600;
           letter-spacing: 0.04em;
           color: transparent;
-          transition: filter 0.3s ease;
-        }
-
-        /* Subtle glow on hover */
-        .premium-title:hover {
-          filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.45))
-                  drop-shadow(0 0 12px rgba(168, 85, 247, 0.35));
+          animation: glowPulseGradient 2.5s ease-in-out infinite;
         }
 
         .premium-title::before {
@@ -120,7 +129,6 @@ export default function HolidaySystem({ onNavigate }) {
           animation: colorWave 4s linear infinite;
         }
 
-        /* Slightly bolder zebra stripes (same size) */
         .premium-title::after {
           content: attr(data-text);
           position: absolute;
@@ -129,8 +137,8 @@ export default function HolidaySystem({ onNavigate }) {
           background: repeating-linear-gradient(
             45deg,
             rgba(255,255,255,1) 0px,
-            rgba(255,255,255,1) 2px,
-            transparent 2px,
+            rgba(255,255,255,1) 3px,
+            transparent 3px,
             transparent 8px
           );
 
