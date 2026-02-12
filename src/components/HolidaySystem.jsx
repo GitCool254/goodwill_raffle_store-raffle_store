@@ -71,7 +71,7 @@ export default function HolidaySystem({ onNavigate }) {
 
   return (
     <>
-      {/* Modern Color Wave Animation Styles */}
+      {/* Modern Color Wave + Diagonal Zebra Pattern */}
       <style>{`
         @keyframes modernColorWave {
           0% { background-position: 0% 50%; }
@@ -79,17 +79,28 @@ export default function HolidaySystem({ onNavigate }) {
         }
 
         .modern-wave-title {
-          background: linear-gradient(
-            90deg,
-            #ef4444,
-            #ec4899,
-            #d946ef,
-            #a855f7,
-            #ef4444
-          );
-          background-size: 200% auto;
+          background:
+            repeating-linear-gradient(
+              45deg,
+              rgba(255,255,255,0.9) 0px,
+              rgba(255,255,255,0.9) 2px,
+              transparent 2px,
+              transparent 8px
+            ),
+            linear-gradient(
+              90deg,
+              #ef4444,
+              #ec4899,
+              #d946ef,
+              #a855f7,
+              #ef4444
+            );
+
+          background-size: 40px 40px, 200% auto;
+          background-blend-mode: overlay;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+
           animation: modernColorWave 4s linear infinite;
         }
       `}</style>
@@ -146,7 +157,6 @@ function HolidayBanner({ holiday, onNavigate }) {
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
 
-        {/* ✅ MODERN COLOR WAVE TITLE */}
         <div className="text-sm tracking-wide">
           <h3
             className="font-semibold modern-wave-title"
