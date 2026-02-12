@@ -16,6 +16,7 @@ import Contact from "./components/Contact";
 import About from "./components/About";
 import Menu from "./components/Menu";
 import MyTickets from "./components/MyTickets";
+import HolidaySystem from "./components/HolidaySystem";
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -825,6 +826,10 @@ export default function App() {
 
       {/* HEADER */}
       {view !== "image" && <Header setView={setView} />}
+
+      {view !== "image" && (
+        <HolidaySystem onNavigate={navigate} />
+      )}
 
       {/* MAIN CONTENT - grows to push footer down */}                       <main className="flex-grow">
         {view === "home" && (
