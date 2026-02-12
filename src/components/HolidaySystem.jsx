@@ -8,6 +8,7 @@ import React, { useEffect, useMemo, useState } from "react";
   - Snow (winter only)
   - Adaptive snow density
   - Smooth slide animation
+  - Premium animated zebra + color wave
 */
 
 export default function HolidaySystem({ onNavigate }) {
@@ -15,7 +16,8 @@ export default function HolidaySystem({ onNavigate }) {
 
   const HOLIDAY_SYSTEM_ENABLED = true;
 
-  const isMobile = window.innerWidth < 768;
+  const isMobile =
+    typeof window !== "undefined" ? window.innerWidth < 768 : false;
 
   const month = now.getMonth();
   const isWinter = month === 11 || month === 0 || month === 1;
@@ -63,7 +65,7 @@ export default function HolidaySystem({ onNavigate }) {
     (h) => now >= h.start && now <= h.end
   );
 
-  const [visible, setVisible] = useState(true);
+  const [visible] = useState(true);
 
   if (!HOLIDAY_SYSTEM_ENABLED || !visible || activeHolidays.length === 0) {
     return null;
@@ -71,20 +73,33 @@ export default function HolidaySystem({ onNavigate }) {
 
   return (
     <>
-      {/* Modern Color Wave + Guaranteed Zebra Pattern */}
       <style>{`
-        @keyframes modernColorWave {
+        /* ===============================
+           COLOR WAVE ANIMATION
+        =============================== */
+        @keyframes colorWave {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
         }
 
-        .modern-wave-title {
+        /* ===============================
+           DIAGONAL ZEBRA ANIMATION
+        =============================== */
+        @keyframes zebraMove {
+          0% { background-position: 0 0; }
+          100% { background-position: 40px 40px; }
+        }
+
+        .premium-title {
           position: relative;
           display: inline-block;
+          font-weight: 600;
+          letter-spacing: 0.04em;
           color: transparent;
         }
 
-        .modern-wave-title::before {
+        /* Animated Gradient Layer */
+        .premium-title::before {
           content: attr(data-text);
           position: absolute;
           inset: 0;
@@ -102,10 +117,11 @@ export default function HolidaySystem({ onNavigate }) {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
 
-          animation: modernColorWave 4s linear infinite;
+          animation: colorWave 4s linear infinite;
         }
 
-        .modern-wave-title::after {
+        /* Animated Zebra Layer */
+        .premium-title::after {
           content: attr(data-text);
           position: absolute;
           inset: 0;
@@ -118,9 +134,13 @@ export default function HolidaySystem({ onNavigate }) {
             transparent 8px
           );
 
+          background-size: 40px 40px;
+          animation: zebraMove 3s linear infinite;
+
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
 
+          mix-blend-mode: overlay;
           pointer-events: none;
         }
       `}</style>
@@ -176,12 +196,10 @@ function HolidayBanner({ holiday, onNavigate }) {
       } border-b border-slate-200`}
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-
         <div className="text-sm tracking-wide">
           <h3
-            className="font-semibold modern-wave-title"
+            className="premium-title"
             data-text={holiday.name}
-            style={{ letterSpacing: "0.04em" }}
           >
             {holiday.name}
           </h3>
