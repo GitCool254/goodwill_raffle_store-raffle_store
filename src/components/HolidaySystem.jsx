@@ -74,19 +74,12 @@ export default function HolidaySystem({ onNavigate }) {
       {/* Modern Color Wave + Diagonal Zebra Pattern */}
       <style>{`
         @keyframes modernColorWave {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 200% 50%; }
+          0% { background-position: 0% 50%, 0% 0%; }
+          100% { background-position: 200% 50%, 0% 0%; }
         }
 
         .modern-wave-title {
           background:
-            repeating-linear-gradient(
-              45deg,
-              rgba(255,255,255,0.9) 0px,
-              rgba(255,255,255,0.9) 2px,
-              transparent 2px,
-              transparent 8px
-            ),
             linear-gradient(
               90deg,
               #ef4444,
@@ -94,10 +87,18 @@ export default function HolidaySystem({ onNavigate }) {
               #d946ef,
               #a855f7,
               #ef4444
+            ),
+            repeating-linear-gradient(
+              45deg,
+              rgba(255,255,255,0.9) 0px,
+              rgba(255,255,255,0.9) 3px,
+              rgba(255,255,255,0) 3px,
+              rgba(255,255,255,0) 9px
             );
 
-          background-size: 40px 40px, 200% auto;
-          background-blend-mode: overlay;
+          background-size: 200% auto, 20px 20px;
+          background-repeat: repeat;
+
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
 
