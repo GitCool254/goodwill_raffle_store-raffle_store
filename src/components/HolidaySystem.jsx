@@ -13,25 +13,13 @@ import React, { useEffect, useMemo, useState } from "react";
 export default function HolidaySystem({ onNavigate }) {
   const now = new Date();
 
-  // -----------------------------
-  // GLOBAL MASTER SWITCH
-  // -----------------------------
-  const HOLIDAY_SYSTEM_ENABLED = true; // turn OFF to disable everything
+  const HOLIDAY_SYSTEM_ENABLED = true;
 
-  // -----------------------------
-  // DETECT MOBILE
-  // -----------------------------
   const isMobile = window.innerWidth < 768;
 
-  // -----------------------------
-  // WINTER DETECTION (Dec–Feb)
-  // -----------------------------
-  const month = now.getMonth(); // 0–11
+  const month = now.getMonth();
   const isWinter = month === 11 || month === 0 || month === 1;
 
-  // -----------------------------
-  // HOLIDAY DATE LOGIC
-  // -----------------------------
   const holidays = useMemo(() => {
     const year = now.getFullYear();
 
@@ -39,8 +27,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "blackfriday",
         name: "Black Friday Raffle Days",
-        start: new Date(year, 10, 20), // Nov 20
-        end: new Date(year, 10, 30),   // Nov 30
+        start: new Date(year, 10, 20),
+        end: new Date(year, 10, 30),
         dark: true,
         countdown: true,
       },
@@ -71,9 +59,6 @@ export default function HolidaySystem({ onNavigate }) {
     ];
   }, []);
 
-  // -----------------------------
-  // FILTER ACTIVE HOLIDAYS
-  // -----------------------------
   const activeHolidays = holidays.filter(
     (h) => now >= h.start && now <= h.end
   );
@@ -86,7 +71,6 @@ export default function HolidaySystem({ onNavigate }) {
 
   return (
     <>
-      {/* SNOW EFFECT */}
       {isWinter && <SnowLayer isMobile={isMobile} />}
 
       <div className="holiday-slide">
@@ -138,8 +122,20 @@ function HolidayBanner({ holiday, onNavigate }) {
       } border-b border-slate-200`}
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        
+        {/* ✅ UPGRADED TITLE ONLY */}
         <div className="text-sm tracking-wide">
-          <span className="font-semibold">{holiday.name}</span>
+          <h3
+            className="font-semibold"
+            style={{
+              letterSpacing: "0.04em",
+              animation: "luxFadeUp 0.7s ease forwards",
+              opacity: 0,
+            }}
+          >
+            {holiday.name}
+          </h3>
+
           {holiday.countdown && timeLeft && (
             <span className="ml-3 opacity-80">
               • Draw closes in {timeLeft}
@@ -163,12 +159,11 @@ function HolidayBanner({ holiday, onNavigate }) {
 }
 
 /* ----------------------------------
-   SNOW LAYER (Adaptive Density)
+   SNOW LAYER
 ---------------------------------- */
 
 function SnowLayer({ isMobile }) {
   const snowCount = isMobile ? 25 : 60;
-
   const snowflakes = Array.from({ length: snowCount });
 
   return (

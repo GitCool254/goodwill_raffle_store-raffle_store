@@ -182,3 +182,14 @@
     transform: translateY(110vh);
   }
 }
+
+@keyframes luxFadeUp {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
