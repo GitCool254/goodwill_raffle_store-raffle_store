@@ -74,17 +74,11 @@ export default function HolidaySystem({ onNavigate }) {
   return (
     <>
       <style>{`
-        /* ===============================
-           COLOR WAVE ANIMATION
-        =============================== */
         @keyframes colorWave {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
         }
 
-        /* ===============================
-           DIAGONAL ZEBRA ANIMATION
-        =============================== */
         @keyframes zebraMove {
           0% { background-position: 0 0; }
           100% { background-position: 40px 40px; }
@@ -96,9 +90,15 @@ export default function HolidaySystem({ onNavigate }) {
           font-weight: 600;
           letter-spacing: 0.04em;
           color: transparent;
+          transition: filter 0.3s ease;
         }
 
-        /* Animated Gradient Layer */
+        /* Subtle glow on hover */
+        .premium-title:hover {
+          filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.45))
+                  drop-shadow(0 0 12px rgba(168, 85, 247, 0.35));
+        }
+
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
@@ -120,7 +120,7 @@ export default function HolidaySystem({ onNavigate }) {
           animation: colorWave 4s linear infinite;
         }
 
-        /* Animated Zebra Layer */
+        /* Slightly bolder zebra stripes (same size) */
         .premium-title::after {
           content: attr(data-text);
           position: absolute;
@@ -128,8 +128,8 @@ export default function HolidaySystem({ onNavigate }) {
 
           background: repeating-linear-gradient(
             45deg,
-            rgba(255,255,255,0.95) 0px,
-            rgba(255,255,255,0.95) 2px,
+            rgba(255,255,255,1) 0px,
+            rgba(255,255,255,1) 2px,
             transparent 2px,
             transparent 8px
           );
