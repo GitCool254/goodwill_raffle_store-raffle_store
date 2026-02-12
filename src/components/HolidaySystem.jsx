@@ -71,6 +71,29 @@ export default function HolidaySystem({ onNavigate }) {
 
   return (
     <>
+      {/* Modern Color Wave Animation Styles */}
+      <style>{`
+        @keyframes modernColorWave {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+
+        .modern-wave-title {
+          background: linear-gradient(
+            90deg,
+            #ef4444,
+            #ec4899,
+            #d946ef,
+            #a855f7,
+            #ef4444
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: modernColorWave 4s linear infinite;
+        }
+      `}</style>
+
       {isWinter && <SnowLayer isMobile={isMobile} />}
 
       <div className="holiday-slide">
@@ -122,15 +145,13 @@ function HolidayBanner({ holiday, onNavigate }) {
       } border-b border-slate-200`}
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-        
-        {/* ✅ UPGRADED TITLE ONLY */}
+
+        {/* ✅ MODERN COLOR WAVE TITLE */}
         <div className="text-sm tracking-wide">
           <h3
-            className="font-semibold"
+            className="font-semibold modern-wave-title"
             style={{
               letterSpacing: "0.04em",
-              animation: "luxFadeUp 0.7s ease forwards",
-              opacity: 0,
             }}
           >
             {holiday.name}
