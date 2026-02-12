@@ -71,38 +71,57 @@ export default function HolidaySystem({ onNavigate }) {
 
   return (
     <>
-      {/* Modern Color Wave + Diagonal Zebra Pattern */}
+      {/* Modern Color Wave + Guaranteed Zebra Pattern */}
       <style>{`
         @keyframes modernColorWave {
-          0% { background-position: 0% 50%, 0% 0%; }
-          100% { background-position: 200% 50%, 0% 0%; }
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
         }
 
         .modern-wave-title {
-          background:
-            linear-gradient(
-              90deg,
-              #ef4444,
-              #ec4899,
-              #d946ef,
-              #a855f7,
-              #ef4444
-            ),
-            repeating-linear-gradient(
-              45deg,
-              rgba(255,255,255,0.9) 0px,
-              rgba(255,255,255,0.9) 3px,
-              rgba(255,255,255,0) 3px,
-              rgba(255,255,255,0) 9px
-            );
+          position: relative;
+          display: inline-block;
+          color: transparent;
+        }
 
-          background-size: 200% auto, 20px 20px;
-          background-repeat: repeat;
+        .modern-wave-title::before {
+          content: attr(data-text);
+          position: absolute;
+          inset: 0;
 
+          background: linear-gradient(
+            90deg,
+            #ef4444,
+            #ec4899,
+            #d946ef,
+            #a855f7,
+            #ef4444
+          );
+
+          background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
 
           animation: modernColorWave 4s linear infinite;
+        }
+
+        .modern-wave-title::after {
+          content: attr(data-text);
+          position: absolute;
+          inset: 0;
+
+          background: repeating-linear-gradient(
+            45deg,
+            rgba(255,255,255,0.95) 0px,
+            rgba(255,255,255,0.95) 2px,
+            transparent 2px,
+            transparent 8px
+          );
+
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+
+          pointer-events: none;
         }
       `}</style>
 
@@ -161,9 +180,8 @@ function HolidayBanner({ holiday, onNavigate }) {
         <div className="text-sm tracking-wide">
           <h3
             className="font-semibold modern-wave-title"
-            style={{
-              letterSpacing: "0.04em",
-            }}
+            data-text={holiday.name}
+            style={{ letterSpacing: "0.04em" }}
           >
             {holiday.name}
           </h3>
