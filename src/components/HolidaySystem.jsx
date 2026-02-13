@@ -123,15 +123,15 @@ export default function HolidaySystem({ onNavigate }) {
           animation: colorWave 4s linear infinite;
         }
 
-        /* BLACK FRIDAY — graphite + subtle gold ONLY */
+        /* BLACK FRIDAY — subtle gold ONLY */
         .blackfriday .premium-title::before {
           background: linear-gradient(
             90deg,
-            #1f2937,
-            #374151,
-            #4b5563,
+            #b8860b,
             #d4af37,
-            #374151
+            #f5d76e,
+            #d4af37,
+            #b8860b
           );
           background-size: 200% auto;
         }
