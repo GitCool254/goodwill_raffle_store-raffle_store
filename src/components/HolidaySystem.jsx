@@ -101,7 +101,7 @@ export default function HolidaySystem({ onNavigate }) {
           animation: glowPulseGradient 2.5s ease-in-out infinite;
         }
 
-        /* DEFAULT (Valentine + Christmas remain unchanged) */
+        /* VALENTINE (Default) */
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
@@ -119,24 +119,31 @@ export default function HolidaySystem({ onNavigate }) {
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-
           animation: colorWave 4s linear infinite;
         }
 
-        /* BLACK FRIDAY — subtle gold ONLY */
+        /* BLACK FRIDAY — premium black + graphite + subtle gold */
         .blackfriday .premium-title::before {
+          content: attr(data-text);
+          position: absolute;
+          inset: 0;
+
           background: linear-gradient(
             90deg,
-            #b8860b,
+            #000000,
+            #1f2937,
+            #111827,
             #d4af37,
-            #f5d76e,
-            #d4af37,
-            #b8860b
+            #000000
           );
+
           background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: colorWave 4s linear infinite;
         }
 
-        /* EASTER — soft modern spring palette */
+        /* EASTER */
         .easter .premium-title::before {
           background: linear-gradient(
             90deg,
@@ -223,10 +230,7 @@ function HolidayBanner({ holiday, onNavigate }) {
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-sm tracking-wide">
-          <h3
-            className="premium-title"
-            data-text={holiday.name}
-          >
+          <h3 className="premium-title" data-text={holiday.name}>
             {holiday.name}
           </h3>
 
