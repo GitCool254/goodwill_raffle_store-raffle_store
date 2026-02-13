@@ -14,7 +14,7 @@ import React, { useEffect, useMemo, useState } from "react";
 export default function HolidaySystem({ onNavigate }) {
   const now = new Date();
 
-  const HOLIDAY_SYSTEM_ENABLED = false;
+  const HOLIDAY_SYSTEM_ENABLED = true;
 
   const isMobile =
     typeof window !== "undefined" ? window.innerWidth < 768 : false;
@@ -29,8 +29,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "blackfriday",
         name: "Black Friday Raffle Days",
-        start: new Date(year, 10, 20),
-        end: new Date(year, 10, 30),
+        start: new Date(year, 1, 12),
+        end: new Date(year, 1, 30),
         dark: true,
         countdown: true,
       },
