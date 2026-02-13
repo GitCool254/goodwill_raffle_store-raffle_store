@@ -88,7 +88,7 @@ export default function HolidaySystem({ onNavigate }) {
             filter: drop-shadow(0 0 6px rgba(0,0,0,0.35));
           }
           50% {
-            filter: drop-shadow(0 0 14px rgba(0,0,0,0.45));
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.45));
           }
         }
 
@@ -96,8 +96,7 @@ export default function HolidaySystem({ onNavigate }) {
           position: relative;
           display: inline-block;
           font-weight: 600;
-          letter-spacing: 0.05em;
-          font-size: 1rem;
+          letter-spacing: 0.04em;
           color: transparent;
           animation: glowPulseGradient 2.5s ease-in-out infinite;
         }
@@ -216,28 +215,27 @@ function HolidayBanner({ holiday, onNavigate }) {
 
   return (
     <section
-      className={`w-full text-center py-6 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}
+      className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}
     >
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        {/* Left Content */}
-        <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        <div className="text-sm tracking-wide flex flex-col items-center md:items-start">
           
+          {/* First Row — Holiday Title */}
           <h3 className="premium-title" data-text={holiday.name}>
             {holiday.name}
           </h3>
 
+          {/* Second Row — Countdown */}
           {holiday.countdown && timeLeft && (
-            <div className="text-xs tracking-widest uppercase opacity-70">
+            <span className="mt-1 opacity-80 text-xs">
               Draw closes in {timeLeft}
-            </div>
+            </span>
           )}
         </div>
 
-        {/* Right CTA */}
         <button
           onClick={() => onNavigate("catalog")}
-          className="px-5 py-2.5 rounded-lg text-sm font-medium transition bg-black text-white hover:opacity-90"
+          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
         >
           Explore Raffles
         </button>
