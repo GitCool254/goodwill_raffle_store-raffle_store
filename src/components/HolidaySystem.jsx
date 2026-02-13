@@ -31,8 +31,7 @@ export default function HolidaySystem({ onNavigate }) {
         name: "Black Friday Raffle Days",
         start: new Date(year, 1, 12),
         end: new Date(year, 1, 30),
-        dark: true,
-        countdown: true,
+        countdown: true, // removed dark background
       },
       {
         id: "christmas",
@@ -220,9 +219,7 @@ function HolidayBanner({ holiday, onNavigate }) {
 
   return (
     <section
-      className={`w-full text-center py-4 ${
-        holiday.dark ? "bg-black text-white" : "bg-white text-slate-800"
-      } border-b border-slate-200 ${holiday.id}`}
+      className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-sm tracking-wide">
@@ -242,11 +239,7 @@ function HolidayBanner({ holiday, onNavigate }) {
 
         <button
           onClick={() => onNavigate("catalog")}
-          className={`mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition ${
-            holiday.dark
-              ? "bg-white text-black"
-              : "bg-black text-white"
-          }`}
+          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
         >
           Explore Raffles
         </button>
