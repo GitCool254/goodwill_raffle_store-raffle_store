@@ -14,7 +14,7 @@ import React, { useEffect, useMemo, useState } from "react";
 export default function HolidaySystem({ onNavigate }) {
   const now = new Date();
 
-  const HOLIDAY_SYSTEM_ENABLED = true;
+  const HOLIDAY_SYSTEM_ENABLED = false;
 
   const isMobile =
     typeof window !== "undefined" ? window.innerWidth < 768 : false;
@@ -85,17 +85,11 @@ export default function HolidaySystem({ onNavigate }) {
         }
 
         @keyframes glowPulseGradient {
-          0%, 100% { 
-            filter: drop-shadow(0 0 6px rgba(239,68,68,0.35)) drop-shadow(0 0 12px rgba(168,85,247,0.25)); 
-          }
-          25% {
-            filter: drop-shadow(0 0 8px rgba(236,72,153,0.35)) drop-shadow(0 0 14px rgba(218,39,226,0.25));
+          0%, 100% {
+            filter: drop-shadow(0 0 6px rgba(0,0,0,0.35));
           }
           50% {
-            filter: drop-shadow(0 0 12px rgba(217,70,239,0.4)) drop-shadow(0 0 18px rgba(168,85,247,0.3));
-          }
-          75% {
-            filter: drop-shadow(0 0 8px rgba(236,72,153,0.35)) drop-shadow(0 0 14px rgba(218,39,226,0.25));
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.45));
           }
         }
 
@@ -108,6 +102,7 @@ export default function HolidaySystem({ onNavigate }) {
           animation: glowPulseGradient 2.5s ease-in-out infinite;
         }
 
+        /* DEFAULT (Valentine + Christmas remain unchanged) */
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
@@ -129,6 +124,32 @@ export default function HolidaySystem({ onNavigate }) {
           animation: colorWave 4s linear infinite;
         }
 
+        /* BLACK FRIDAY — premium black + graphite + subtle gold */
+        .blackfriday .premium-title::before {
+          background: linear-gradient(
+            90deg,
+            #000000,
+            #1f2937,
+            #111827,
+            #d4af37,
+            #000000
+          );
+          background-size: 200% auto;
+        }
+
+        /* EASTER — soft modern spring palette */
+        .easter .premium-title::before {
+          background: linear-gradient(
+            90deg,
+            #84cc16,
+            #a7f3d0,
+            #facc15,
+            #c4b5fd,
+            #84cc16
+          );
+          background-size: 200% auto;
+        }
+
         .premium-title::after {
           content: attr(data-text);
           position: absolute;
@@ -136,8 +157,8 @@ export default function HolidaySystem({ onNavigate }) {
 
           background: repeating-linear-gradient(
             45deg,
-            rgba(255,255,255,1) 0px,
-            rgba(255,255,255,1) 3px,
+            rgba(255,255,255,0.9) 0px,
+            rgba(255,255,255,0.9) 3px,
             transparent 3px,
             transparent 8px
           );
@@ -201,7 +222,7 @@ function HolidayBanner({ holiday, onNavigate }) {
     <section
       className={`w-full text-center py-4 ${
         holiday.dark ? "bg-black text-white" : "bg-white text-slate-800"
-      } border-b border-slate-200`}
+      } border-b border-slate-200 ${holiday.id}`}
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-sm tracking-wide">

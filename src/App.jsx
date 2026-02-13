@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 
-import eruda from "eruda";
-eruda.init({
-  tool: ["console", "network", "resources"],
-  useShadowDom: true,
-});
+// eruda console
 
 import Header from "./components/Header";
 import Home from "./components/Home";
