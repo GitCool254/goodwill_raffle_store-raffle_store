@@ -227,11 +227,13 @@ function HolidayBanner({ holiday, onNavigate }) {
 
           {/* Second Row — Countdown */}
           {holiday.countdown && timeLeft && (
-            <span className="mt-1 opacity-80 text-xs">
-              Draw closes in {timeLeft}
+            <span className="mt-1 opacity-80 text-sm">
+              Draw closes in <strong>{timeLeft}</strong>
             </span>
           )}
         </div>
+
+        <br />
 
         <button
           onClick={() => onNavigate("catalog")}
