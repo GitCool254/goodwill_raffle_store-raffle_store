@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";           
 
 /*
   Holiday System
@@ -31,7 +31,7 @@ export default function HolidaySystem({ onNavigate }) {
         name: "Black Friday Raffle Days",
         start: new Date(year, 1, 12),
         end: new Date(year, 1, 30),
-        countdown: true, // removed dark background
+        countdown: true,
       },
       {
         id: "christmas",
@@ -101,7 +101,7 @@ export default function HolidaySystem({ onNavigate }) {
           animation: glowPulseGradient 2.5s ease-in-out infinite;
         }
 
-        /* DEFAULT (Valentine + Christmas remain unchanged) */
+        /* DEFAULT (Valentine + Christmas + Black Friday now identical) */
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
@@ -121,19 +121,6 @@ export default function HolidaySystem({ onNavigate }) {
           -webkit-text-fill-color: transparent;
 
           animation: colorWave 4s linear infinite;
-        }
-
-        /* BLACK FRIDAY — premium black + graphite + subtle gold */
-        .blackfriday .premium-title::before {
-          background: linear-gradient(
-            90deg,
-            #000000,
-            #1f2937,
-            #111827,
-            #d4af37,
-            #000000
-          );
-          background-size: 200% auto;
         }
 
         /* EASTER — soft modern spring palette */
