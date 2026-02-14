@@ -40,7 +40,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        🎯 Our Mission
+        ❖  Our Mission
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
@@ -72,7 +72,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        💎 Our Core Values
+        ❖  Our Core Values
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
@@ -102,7 +102,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        🎟️ What Makes Us Different
+        ❖  What Makes Us Different
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
@@ -126,7 +126,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        🌍 Our Commitment
+        ❖  Our Commitment
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
@@ -147,7 +147,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        🤝 Built on Trust
+        ❖  Built on Trust
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
