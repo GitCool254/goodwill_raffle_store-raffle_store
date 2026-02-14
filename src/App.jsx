@@ -546,7 +546,7 @@ export default function App() {
             RECENT WINNERS
           </p>
           <p
-            className="text-sm font-semibold mb-3"
+            className="text-sm font-semibold mb-2"
             style={{
               background: "#f1f5f9",
               padding: "4px 10px",
@@ -607,7 +607,7 @@ export default function App() {
               display: "block",                                                      margin: "12px auto 0 auto",                                            border: "1px solid #cbd5e1",                                         }}                                                                   />
 
           {/* 5. Date */}
-          <p className="text-xs text-slate-500 mt-3">
+          <p className="text-xs text-slate-500 mt-2">
             Draw date: {w.date}
           </p>
 
