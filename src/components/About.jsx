@@ -36,11 +36,16 @@ export default function About() {
       </p>
 
       <p className="text-base text-slate-700 leading-relaxed mb-6">
-      <strong>Pickup & Delivery:</strong> Winning products may be collected in
-      person or delivered at no additional cost within a 100-mile radius.
-      Delivery availability is determined by product type and location and will
-      be confirmed directly with each winner.
-    </p>
+        <strong>Collection & Delivery:</strong> Prize items may be collected in
+        person or delivered complimentary within a 100-mile radius. Delivery
+        arrangements are tailored to each winner and confirmed individually to
+        ensure a smooth, secure, and timely experience.
+      </p>
+
+      <p className="text-sm text-slate-500 leading-relaxed mb-6">
+        Delivery eligibility, scheduling, and logistics are subject to location
+        verification and confirmation at the time of winner notification.
+      </p>
 
       {/* SECTION: MISSION */}
       <h2
