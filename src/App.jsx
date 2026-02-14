@@ -543,7 +543,13 @@ export default function App() {
             className="text-xs uppercase tracking-widest mb-3 font-medium"
             style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
           >
-            RECENT VERIFIED WINNERS
+            RECENT WINNERS
+          </p>
+          <p
+            className="text-sm font-semibold mb-4"
+            style={{ color: "#0f172a" }}
+          >
+            1000+ Winners Since Launch
           </p>
 
           {/* 1. Winner Name */}
@@ -615,29 +621,30 @@ export default function App() {
 
         <br />
 
-        {/* PROGRESS DOTS */}                                                  <div className="flex justify-center gap-2 mt-3">
+        {/* PROGRESS DOTS */}
+        <div className="mt-4 text-center select-none">
           {winners.map((_, i) => (
-            <button
-              key={i}                                                                onClick={() => {
+            <span
+              key={i}
+              onClick={() => {
                 setAnimate(false);
                 setTimeout(() => {
-                  setExpanded(false);                                                    setIndex(i);
+                  setExpanded(false);
+                  setIndex(i);
                   setAnimate(true);
                 }, 150);
               }}
-              style={{                                                                 width: "8px",
-                height: "8px",
-                minWidth: "8px",
-                minHeight: "8px",
-                padding: 0,
-                borderRadius: "9999px",
-                flexShrink: 0,
-                backgroundColor: i === index ? "#0f172a" : "#e2e8f0",
-                transform: i === index ? "scale(1.2)" : "scale(1)",
-                transition: "all 0.3s ease",
+              style={{
+                cursor: "pointer",
+                fontSize: "18px",
+                margin: "0 6px",
+                color: i === index ? "#0f172a" : "#cbd5e1",
+                transition: "color 0.3s ease",
               }}
               aria-label={`Show winner ${i + 1}`}
-            />
+            >
+              {i === index ? "●" : "○"}
+            </span>
           ))}
         </div>
 
