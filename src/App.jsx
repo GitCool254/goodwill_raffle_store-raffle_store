@@ -532,7 +532,7 @@ export default function App() {
           className="rounded-2xl p-7 shadow-sm"
           style={{
             border: "1px solid #e2e8f0",
-            backgroundColor: "#ffffff",
+            backgroundColor: "#f8fafc",
             backdropFilter: "blur(6px)",
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
@@ -540,14 +540,21 @@ export default function App() {
           }}
         >
           <p
-            className="text-xs uppercase tracking-widest mb-3 font-medium"
+            className="text-xs uppercase tracking-widest mb-2 font-medium"
             style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
           >
             RECENT WINNERS
           </p>
           <p
-            className="text-sm font-semibold mb-4"
-            style={{ color: "#0f172a" }}
+            className="text-sm font-semibold mb-3"
+            style={{
+              background: "#f1f5f9",
+              padding: "4px 10px",
+              borderRadius: "999px",
+              display: "inline-block",
+              fontWeight: 500,
+              color: "#475569",
+            }}
           >
             1000+ Winners Since Launch
           </p>
