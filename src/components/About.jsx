@@ -35,6 +35,13 @@ export default function About() {
         designed to be fair, secure, and easy to understand.
       </p>
 
+      <p className="text-base text-slate-700 leading-relaxed mb-6">
+      <strong>Pickup & Delivery:</strong> Winning products may be collected in
+      person or delivered at no additional cost within a 100-mile radius.
+      Delivery availability is determined by product type and location and will
+      be confirmed directly with each winner.
+    </p>
+
       {/* SECTION: MISSION */}
       <h2
         className="font-semibold mt-8 mb-2 tracking-tight"
@@ -56,7 +63,7 @@ export default function About() {
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
       >
-        🔭 Our Vision
+        ❖  Our Vision
       </h2>
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
