@@ -529,20 +529,21 @@ export default function App() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="rounded-xl p-6"
+          className="rounded-2xl p-7 shadow-sm"
           style={{
-            border: "1.5px dotted #cbd5e1",
-            backgroundColor: "#f8fafc", // ✅ light grey, modern
+            border: "1px solid #e2e8f0",
+            backgroundColor: "#ffffff",
+            backdropFilter: "blur(6px)",
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
-            transform: animate ? "translateX(0)" : "translateX(-20px)",
+            transform: animate ? "translateY(0)" : "translateY(10px)",
           }}
         >
           <p
-            className="text-xs uppercase tracking-wide mb-2"
-            style={{ color: "#64748b" }}
+            className="text-xs uppercase tracking-widest mb-3 font-medium"
+            style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
           >
-            Recent Winners
+            RECENT VERIFIED WINNERS
           </p>
 
           {/* 1. Winner Name */}
@@ -572,7 +573,10 @@ export default function App() {
           />
 
           {/* 3. Product Name */}
-          <p className="text-sm text-slate-700 font-medium">
+          <p className="text-xs text-slate-400 uppercase tracking-wide">
+            Won
+          </p>
+          <p className="text-sm font-semibold text-slate-800 mt-1">
             {expanded ? w.product : shortProduct}
             {w.product.length > 75 && (
               <button
@@ -595,8 +599,18 @@ export default function App() {
           </p>
 
           {/* 6. Ticket No */}
-          <p className="text-xs text-slate-400 mt-1">
-            Ticket No: {w.ticketNo}
+          <p
+            className="text-xs mt-2"
+            style={{
+              background: "#f1f5f9",
+              padding: "4px 10px",
+              borderRadius: "999px",
+              display: "inline-block",
+              fontWeight: 500,
+              color: "#475569",
+            }}
+          >
+            Ticket {w.ticketNo}
           </p>                                                                 </div>
 
         <br />
@@ -618,8 +632,9 @@ export default function App() {
                 padding: 0,
                 borderRadius: "9999px",
                 flexShrink: 0,
-                backgroundColor: i === index ? "#475569" : "#cbd5e1",
-                transition: "background-color 0.3s ease",
+                backgroundColor: i === index ? "#0f172a" : "#e2e8f0",
+                transform: i === index ? "scale(1.2)" : "scale(1)",
+                transition: "all 0.3s ease",
               }}
               aria-label={`Show winner ${i + 1}`}
             />
