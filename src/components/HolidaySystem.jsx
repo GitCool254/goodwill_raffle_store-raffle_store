@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
   Holiday System
   - Auto date-based activation
   - Manual toggle support
-  - Black Friday countdown
+  - Black Friday now runs EVERY Friday (00:00 → 23:59 local time guaranteed)
   - Snow (winter only)
   - Adaptive snow density
   - Smooth slide animation
@@ -29,8 +29,7 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "blackfriday",
         name: "Black Friday Raffle Days",
-        start: new Date(year, 1, 12),
-        end: new Date(year, 1, 30),
+        weeklyFriday: true,
         countdown: true,
       },
       {
@@ -60,9 +59,21 @@ export default function HolidaySystem({ onNavigate }) {
     ];
   }, []);
 
-  const activeHolidays = holidays.filter(
-    (h) => now >= h.start && now <= h.end
-  );
+  const activeHolidays = holidays.filter((h) => {
+    if (h.weeklyFriday) {
+      const todayStart = new Date(now);
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayEnd = new Date(now);
+      todayEnd.setHours(23, 59, 59, 999);
+
+      const isFriday = now.getDay() === 5;
+
+      return isFriday && now >= todayStart && now <= todayEnd;
+    }
+
+    return now >= h.start && now <= h.end;
+  });
 
   const [visible] = useState(true);
 
@@ -120,9 +131,6 @@ export default function HolidaySystem({ onNavigate }) {
         }
 
         .blackfriday .premium-title::before {
-          content: attr(data-text);
-          position: absolute;
-          inset: 0;
           background: linear-gradient(
             90deg,
             #000000,
@@ -196,6 +204,25 @@ function HolidayBanner({ holiday, onNavigate }) {
 
     const interval = setInterval(() => {
       const now = new Date();
+
+      if (holiday.weeklyFriday) {
+        const endOfFriday = new Date(now);
+        endOfFriday.setHours(23, 59, 59, 999);
+
+        const diff = endOfFriday - now;
+
+        if (diff <= 0) {
+          setTimeLeft("");
+          return;
+        }
+
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+
+        setTimeLeft(`${h}h ${m}m`);
+        return;
+      }
+
       const diff = holiday.end - now;
 
       if (diff <= 0) {
@@ -219,13 +246,11 @@ function HolidayBanner({ holiday, onNavigate }) {
     >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-sm tracking-wide flex flex-col items-center md:items-start">
-          
-          {/* First Row — Holiday Title */}
+
           <h3 className="premium-title" data-text={holiday.name}>
             {holiday.name}
           </h3>
 
-          {/* Second Row — Countdown */}
           {holiday.countdown && timeLeft && (
             <span className="mt-1 opacity-80 text-sm">
               Draw closes in <strong>{timeLeft}</strong>
