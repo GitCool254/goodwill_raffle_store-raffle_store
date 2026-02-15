@@ -563,7 +563,7 @@ export default function App() {
               borderRadius: "999px",
               display: "inline-block",
               fontWeight: 500,
-              color: "#475569",
+              color: "#94a3b8",
             }}
           >
             1000+ Winners Since Launch
