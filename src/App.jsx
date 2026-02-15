@@ -542,7 +542,7 @@ export default function App() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            rowGap: "6px", // ← Adjust this value to control spacing
+            rowGap: "4px", // ← Adjust this value to control spacing
           }}
         >
           <p
