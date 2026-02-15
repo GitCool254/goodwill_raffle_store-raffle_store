@@ -606,9 +606,6 @@ export default function App() {
           />
 
           {/* 3. Product Name */}
-          <p className="text-xs text-slate-400 uppercase tracking-wide">
-            Won
-          </p>
           <p className="text-sm font-semibold text-slate-800">
             {expanded ? w.product : shortProduct}
             {w.product.length > 75 && (
