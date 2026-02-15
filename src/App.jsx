@@ -537,16 +537,22 @@ export default function App() {
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
             transform: animate ? "translateY(0)" : "translateY(10px)",
+
+            // 👇 Controlled vertical spacing
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            rowGap: "8px", // ← Adjust this value to control spacing
           }}
         >
           <p
-            className="text-xs uppercase tracking-widest mb-2 font-medium"
+            className="text-xs uppercase tracking-widest font-medium"
             style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
           >
             RECENT WINNERS
           </p>
           <p
-            className="text-sm font-semibold mb-2"
+            className="text-sm font-semibold"
             style={{
               background: "#f1f5f9",
               padding: "4px 10px",
@@ -560,7 +566,7 @@ export default function App() {
           </p>
 
           {/* 1. Winner Name */}
-          <div className="flex items-center justify-center gap-2 mb-2">
+          <div className="flex items-center justify-center gap-2">
             <p className="text-base font-semibold text-slate-800">
               {w.name}
             </p>
@@ -581,7 +587,7 @@ export default function App() {
               borderRadius: "50%",
               objectFit: "cover",
               display: "block",                                                      margin: "0 auto",
-              border: "1px solid #cbd5e1",                                           marginBottom: "12px",
+              border: "1px solid #cbd5e1",
             }}
           />
 
@@ -589,7 +595,7 @@ export default function App() {
           <p className="text-xs text-slate-400 uppercase tracking-wide">
             Won
           </p>
-          <p className="text-sm font-semibold text-slate-800 mt-1">
+          <p className="text-sm font-semibold text-slate-800">
             {expanded ? w.product : shortProduct}
             {w.product.length > 75 && (
               <button
@@ -607,13 +613,13 @@ export default function App() {
               display: "block",                                                      margin: "12px auto 0 auto",                                            border: "1px solid #cbd5e1",                                         }}                                                                   />
 
           {/* 5. Date */}
-          <p className="text-xs text-slate-500 mt-2">
+          <p className="text-xs text-slate-500">
             Draw date: {w.date}
           </p>
 
           {/* 6. Ticket No */}
           <p
-            className="text-xs mt-2"
+            className="text-xs"
             style={{
               background: "#f1f5f9",
               padding: "4px 10px",
