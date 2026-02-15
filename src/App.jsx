@@ -550,12 +550,6 @@ export default function App() {
           }}
         >
           <p
-            className="text-xs uppercase tracking-widest font-medium"
-            style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
-          >
-            RECENT WINNERS
-          </p>
-          <p
             className="text-sm font-semibold"
             style={{
               background: "#f1f5f9",
@@ -567,6 +561,13 @@ export default function App() {
             }}
           >
             1000+ Winners Since Launch
+          </p>
+
+          <p
+            className="text-xs uppercase tracking-widest font-medium"
+            style={{ color: "#94a3b8", letterSpacing: "0.15em" }}
+          >
+            RECENT WINNERS
           </p>
 
           {/* 1. Winner Name */}
