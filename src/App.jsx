@@ -425,6 +425,7 @@ export default function App() {
         productImg: "/Beachcroft Patio.jpg",
         verified: true,
         countryFlag: "🇺🇸",
+        location: "New York, USA",
       },
       {
         name: "Samuel K.",
@@ -435,6 +436,7 @@ export default function App() {
         productImg: "/Wonderfold.jpg",
         verified: true,
         countryFlag: "🇰🇪",
+        location: "Nwirobi, Kenya",
       },
       {
         name: "Brian O.",
@@ -445,6 +447,7 @@ export default function App() {
         productImg: "/images/products/coolster.jpg",
         verified: true,
         countryFlag: "🇱🇷",
+        location: "Toronto, Canada",
       },
       {
         name: "Lucy A.",
@@ -455,6 +458,7 @@ export default function App() {
         productImg: "/images/products/smarthome.jpg",
         verified: true,
         countryFlag: "🇬🇧",
+        location: "Missouri, USA",
       },
     ];
 
@@ -542,7 +546,7 @@ export default function App() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            rowGap: "4px", // ← Adjust this value to control spacing
+            rowGap: "2px", // ← Adjust this value to control spacing
           }}
         >
           <p
@@ -573,9 +577,19 @@ export default function App() {
 
             {w.verified && (
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
-                {w.countryFlag} ✔ Verified
+                ✔ Verified
               </span>
             )}
+          </div>
+
+          {/* 2. Location Row */}
+          <div className="flex items-center justify-center gap-1">
+            <p className="text-xs text-slate-500">
+              {w.location}
+            </p>
+            <span className="text-sm">
+              {w.countryFlag}
+            </span>
           </div>
 
           {/* 2. Winner Image */}
