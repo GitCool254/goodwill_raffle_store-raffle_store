@@ -4,40 +4,27 @@ import PayPalButton from "./PayPalButton";
   animation: "shake 0.35s ease-in-out",
 };
 
-async function signRequest(body) {
-  const encoder = new TextEncoder();
-  const secret = import.meta.env.VITE_API_SIGN_SECRET;
+// -------------------- HMAC SIGNING VIA BACKEND ----------------
+async function signPayload(body) {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_payload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
-  if (!secret) {
-    throw new Error("Missing API signing secret");
+    if (!res.ok) {
+      throw new Error(`Sign request failed: ${res.status}`);
+    }
+
+    const data = await res.json(); // { signature, timestamp }
+    return data;
+  } catch (err) {
+    console.error("Failed to sign payload:", err);
+    throw err;
   }
-
-  if (!window.crypto || !crypto.subtle) {
-    throw new Error("Crypto API not available in this browser");
-  }
-
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const payload = `${timestamp}.${JSON.stringify(body)}`;
-
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-
-  const signatureBuffer = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    encoder.encode(payload)
-  );
-
-  const signature = Array.from(new Uint8Array(signatureBuffer))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
-
-  return { signature, timestamp };
 }
 
 
@@ -94,7 +81,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
     try {
 
       const payload = { order_id: lastOrder.orderId };
-      const { signature, timestamp } = await signRequest(payload);
+      const { signature, timestamp } = await signPayload(payload);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
@@ -283,7 +270,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 product_title: product.title,
               };
 
-              const { signature, timestamp } = await signRequest(payload);
+              const { signature, timestamp } = await signPayload(payload);
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
