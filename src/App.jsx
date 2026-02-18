@@ -591,11 +591,6 @@ export default function App() {
               borderRadius: "8px",                                                   objectFit: "cover",
               display: "block",                                                      margin: "12px auto 0 auto",                                            border: "1px solid #cbd5e1",                                         }}                                                                   />
 
-          {/* 5. Date */}
-          <p className="text-xs text-slate-500">
-            Draw date: {w.date}
-          </p>
-
           {/* 6. Ticket No */}
           <p
             className="text-xs"
@@ -609,6 +604,14 @@ export default function App() {
             }}
           >
             Ticket {w.ticketNo}
+          </p>
+          
+          {/* 5. Date */}
+          <p 
+            className="text-xs text-slate-500"
+            style={{ color: "#94a3b8" }}
+          >
+            Draw date: {w.date}
           </p>                                                                 </div>
 
         <br />
