@@ -4,15 +4,21 @@ import PayPalButton from "./PayPalButton";
   animation: "shake 0.35s ease-in-out",
 };
 
-// -------------------- HMAC SIGNING VIA BACKEND ----------------
+// -------------------- HMAC SIGNING VIA BACKEND (WITH NONCE) ----------------
 async function signPayload(body) {
   try {
+    // 🔐 Generate strong random nonce (browser-safe)
+    const nonce = crypto.randomUUID();
+
+    // Attach nonce to payload BEFORE signing
+    const bodyWithNonce = { ...body, nonce };
+
     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_payload`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(bodyWithNonce),
     });
 
     if (!res.ok) {
@@ -20,7 +26,14 @@ async function signPayload(body) {
     }
 
     const data = await res.json(); // { signature, timestamp }
-    return data;
+
+    // Return everything needed for secure request
+    return {
+      signature: data.signature,
+      timestamp: data.timestamp,
+      nonce,
+      bodyWithNonce,
+    };
   } catch (err) {
     console.error("Failed to sign payload:", err);
     throw err;
@@ -81,7 +94,13 @@ export default function Detail({ product, openImage, remainingTickets }) {
     try {
 
       const payload = { order_id: lastOrder.orderId };
-      const { signature, timestamp } = await signPayload(payload);
+
+      const {
+        signature,
+        timestamp,
+        nonce,
+        bodyWithNonce
+      } = await signPayload(payload);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
@@ -91,8 +110,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
             "Content-Type": "application/json",
             "X-Signature": signature,
             "X-Timestamp": timestamp,
+            "X-Nonce": nonce,
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(bodyWithNonce),
         }
       );
                                                                              if (!res.ok) {
@@ -270,7 +290,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 product_title: product.title,
               };
 
-              const { signature, timestamp } = await signPayload(payload);
+              const {
+                signature,
+                timestamp,
+                nonce,
+                bodyWithNonce
+              } = await signPayload(payload);
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
@@ -280,8 +305,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
                     "Content-Type": "application/json",
                     "X-Signature": signature,
                     "X-Timestamp": timestamp,
+                    "X-Nonce": nonce,
                   },
-                  body: JSON.stringify(payload),
+                  body: JSON.stringify(bodyWithNonce),
                 }
               );
 

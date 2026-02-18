@@ -29,31 +29,6 @@ export default function App() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (!backendUrl) console.error("VITE_BACKEND_URL is not set!");
 
-  // -------------------- HMAC SIGNING VIA BACKEND ----------------
-  async function signPayload(body) {
-    try {
-      const res = await fetch(`${backendUrl}/sign_payload`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Sign request failed: ${res.status}`);
-      }
-
-      const data = await res.json();
-      // data = { signature, timestamp }
-      return data;
-    } catch (err) {
-      console.error("Failed to sign payload:", err);
-      throw err;
-    }
-  }
-
-
   const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
   const [ticketsSold, setTicketsSold] = useState(null);

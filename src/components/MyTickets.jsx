@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import LabelWithBullet from "./LabelWithBullet";
 
-// -------------------- HMAC SIGNING VIA BACKEND ----------------
+// -------------------- HMAC SIGNING VIA BACKEND (WITH NONCE) --------
 async function signPayload(body) {
   try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_payload`, {
+    // 🔐 Generate strong random nonce (browser-safe)
+    const nonce = crypto.randomUUID();
+
+    // Attach nonce to payload BEFORE signing
+    const bodyWithNonce = { ...body, nonce };
+
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_p
+ayload`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(bodyWithNonce),
     });
 
     if (!res.ok) {
@@ -17,7 +24,14 @@ async function signPayload(body) {
     }
 
     const data = await res.json(); // { signature, timestamp }
-    return data;
+
+    // Return everything needed for secure request
+    return {
+      signature: data.signature,
+      timestamp: data.timestamp,
+      nonce,
+      bodyWithNonce,
+    };
   } catch (err) {
     console.error("Failed to sign payload:", err);
     throw err;
@@ -60,7 +74,7 @@ export default function MyTickets() {
         email: email.trim().toLowerCase(),
       };
 
-      const { signature, timestamp } = await signPayload(payload);
+      const { signature, timestamp, nonce, bodyWithNonce } = await signPayload(payload);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/my_tickets`,
@@ -70,8 +84,9 @@ export default function MyTickets() {
             "Content-Type": "application/json",
             "X-Signature": signature,
             "X-Timestamp": timestamp,
+            "X-Nonce": nonce, // 🔒 replay protection
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(bodyWithNonce),
         }
       );
 
@@ -101,7 +116,7 @@ export default function MyTickets() {
         order_id: orderId.trim(),
       };
 
-      const { signature, timestamp } = await signPayload(payload);
+      const { signature, timestamp, nonce, bodyWithNonce } = await signPayload(payload);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
@@ -111,8 +126,9 @@ export default function MyTickets() {
             "Content-Type": "application/json",
             "X-Signature": signature,
             "X-Timestamp": timestamp,
+            "X-Nonce": nonce, // 🔒 replay protection
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(bodyWithNonce),
         }
       );
 
