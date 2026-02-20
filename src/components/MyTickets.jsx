@@ -1,43 +1,6 @@
 import React, { useState } from "react";
 import LabelWithBullet from "./LabelWithBullet";
 
-// -------------------- HMAC SIGNING VIA BACKEND (WITH NONCE) --------
-async function signPayload(body) {
-  try {
-    // 🔐 Generate strong random nonce (browser-safe)
-    const nonce = crypto.randomUUID();
-
-    // Attach nonce to payload BEFORE signing
-    const bodyWithNonce = { ...body, nonce };
-
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_p
-ayload`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bodyWithNonce),
-    });
-
-    if (!res.ok) {
-      throw new Error(`Sign request failed: ${res.status}`);
-    }
-
-    const data = await res.json(); // { signature, timestamp }
-
-    // Return everything needed for secure request
-    return {
-      signature: data.signature,
-      timestamp: data.timestamp,
-      nonce,
-      bodyWithNonce,
-    };
-  } catch (err) {
-    console.error("Failed to sign payload:", err);
-    throw err;
-  }
-}
-
 const FOCUS_BLUE = "#38bdf8"; // sky-400
 const ERROR_RED = "#ef4444";  // red-500
 
@@ -74,21 +37,19 @@ export default function MyTickets() {
         email: email.trim().toLowerCase(),
       };
 
-      const { signature, timestamp, nonce, bodyWithNonce } = await signPayload(payload);
+      const nonce = crypto.randomUUID();
+      const payloadWithNonce = { ...payload, nonce };
+      const timestamp = Math.floor(Date.now() / 1000); // seconds
 
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/my_tickets`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
-            "X-Nonce": nonce, // 🔒 replay protection
-          },
-          body: JSON.stringify(bodyWithNonce),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/my_tickets`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Nonce": nonce,
+           "X-Timestamp": timestamp.toString(),
+        },
+        body: JSON.stringify(payloadWithNonce),
+      });
 
       if (!res.ok) {
         throw new Error("Fetch failed");
@@ -116,7 +77,9 @@ export default function MyTickets() {
         order_id: orderId.trim(),
       };
 
-      const { signature, timestamp, nonce, bodyWithNonce } = await signPayload(payload);
+      const nonce = crypto.randomUUID();
+      const payloadWithNonce = { ...payload, nonce };
+      const timestamp = Math.floor(Date.now() / 1000); // seconds
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/redownload_ticket`,
@@ -124,11 +87,10 @@ export default function MyTickets() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
-            "X-Nonce": nonce, // 🔒 replay protection
+            "X-Nonce": nonce,
+             "X-Timestamp": timestamp.toString(),
           },
-          body: JSON.stringify(bodyWithNonce),
+          body: JSON.stringify(payloadWithNonce),
         }
       );
 

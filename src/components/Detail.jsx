@@ -4,43 +4,6 @@ import PayPalButton from "./PayPalButton";
   animation: "shake 0.35s ease-in-out",
 };
 
-// -------------------- HMAC SIGNING VIA BACKEND (WITH NONCE) ----------------
-async function signPayload(body) {
-  try {
-    // 🔐 Generate strong random nonce (browser-safe)
-    const nonce = crypto.randomUUID();
-
-    // Attach nonce to payload BEFORE signing
-    const bodyWithNonce = { ...body, nonce };
-
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sign_payload`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bodyWithNonce),
-    });
-
-    if (!res.ok) {
-      throw new Error(`Sign request failed: ${res.status}`);
-    }
-
-    const data = await res.json(); // { signature, timestamp }
-
-    // Return everything needed for secure request
-    return {
-      signature: data.signature,
-      timestamp: data.timestamp,
-      nonce,
-      bodyWithNonce,
-    };
-  } catch (err) {
-    console.error("Failed to sign payload:", err);
-    throw err;
-  }
-}
-
-
 export default function Detail({ product, openImage, remainingTickets }) {
   const ticket = product?._ticket || null;
   const [name, setName] = useState("");
@@ -95,12 +58,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
       const payload = { order_id: lastOrder.orderId };
 
-      const {
-        signature,
-        timestamp,
-        nonce,
-        bodyWithNonce
-      } = await signPayload(payload);
+      const nonce = crypto.randomUUID(); // secure client-side nonce
+      const payloadWithNonce = { ...payload, nonce };
+      const timestamp = Math.floor(Date.now() / 1000); // seconds
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
@@ -108,11 +68,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Signature": signature,
-            "X-Timestamp": timestamp,
             "X-Nonce": nonce,
+            "X-Timestamp": timestamp.toString(),
           },
-          body: JSON.stringify(bodyWithNonce),
+          body: JSON.stringify(payloadWithNonce),
         }
       );
                                                                              if (!res.ok) {
@@ -290,12 +249,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 product_title: product.title,
               };
 
-              const {
-                signature,
-                timestamp,
-                nonce,
-                bodyWithNonce
-              } = await signPayload(payload);
+              const nonce = crypto.randomUUID(); // generate secure nonce
+              const payloadWithNonce = { ...payload, nonce };
+              const timestamp = Math.floor(Date.now() / 1000); // seconds
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
@@ -303,11 +259,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
-                    "X-Signature": signature,
-                    "X-Timestamp": timestamp,
                     "X-Nonce": nonce,
+                    "X-Timestamp": timestamp.toString(),
                   },
-                  body: JSON.stringify(bodyWithNonce),
+                  body: JSON.stringify(payloadWithNonce),
                 }
               );
 
