@@ -75,9 +75,25 @@ export default function Detail({ product, openImage, remainingTickets }) {
         }
       );
                                                                              if (!res.ok) {
-        const errText = await res.text();
-        console.error("Backend error:", errText);
-        alert(errText);
+        let errorMessage = "Download failed.";
+
+        try {
+          const errJson = await res.json();
+
+          if (res.status === 410 && errJson.error === "TICKET_EXPIRED") {
+            errorMessage = "This ticket has expired and can no longer be downloaded.";
+          } else if (res.status === 403 && errJson.error === "MAX_REDOWNLOADS_REACHED") {
+            errorMessage = "Maximum download limit reached for this ticket.";
+          } else if (res.status === 403 && errJson.error === "Replay detected") {
+            errorMessage = "Security validation failed. Please refresh and try again.";
+          } else {
+            errorMessage = errJson.error || errorMessage;
+          }
+        } catch {
+          errorMessage = "Unexpected error occurred during download.";
+        }
+
+        alert(errorMessage);
         setIsGenerating(false);
         return;
       }
@@ -267,7 +283,24 @@ export default function Detail({ product, openImage, remainingTickets }) {
               );
 
               if (!res.ok) {
-                alert("Ticket generation failed. Please contact support.");            setIsTicketGenerating(false);
+                let errorMessage = "Ticket generation failed.";
+
+                try {
+                  const errJson = await res.json();
+
+                  if (res.status === 409) {
+                    errorMessage = "Tickets sold out before your purchase completed.";
+                  } else if (res.status === 403 && errJson.error === "Replay detected") {
+                    errorMessage = "Security validation failed. Please refresh and try again.";
+                  } else {
+                    errorMessage = errJson.error || errorMessage;
+                  }
+                } catch {
+                  errorMessage = "Unexpected generation error.";
+                }
+
+                alert(errorMessage);
+                setIsTicketGenerating(false);
                 return;
               }
 

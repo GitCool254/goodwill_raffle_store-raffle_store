@@ -97,12 +97,29 @@ export default function MyTickets() {
       if (!res.ok) {
         let errorMsg = "Re-download failed. Please contact support.";
 
-        if (res.status === 410) {
-          errorMsg =
-            "This ticket has expired and is no longer available for download.";
-        } else if (res.status === 403) {
-          errorMsg =
-            "You’ve reached the maximum number of re-downloads for this order.";
+        try {
+          const errJson = await res.json();
+
+          if (res.status === 410 && errJson.error === "TICKET_EXPIRED") {
+            errorMsg =
+              "This ticket has expired and is no longer available for download.";
+          } else if (
+            res.status === 403 &&
+            errJson.error === "MAX_REDOWNLOADS_REACHED"
+          ) {
+            errorMsg =
+              "You’ve reached the maximum number of re-downloads for this order.";
+          } else if (
+            res.status === 403 &&
+            errJson.error === "Replay detected"
+          ) {
+            errorMsg =
+              "Security validation failed. Please refresh and try again.";
+          } else {
+            errorMsg = errJson.error || errorMsg;
+          }
+        } catch {
+          errorMsg = "Unexpected error occurred during re-download.";
         }
 
         setOrderError(errorMsg);
