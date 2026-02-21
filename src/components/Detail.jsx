@@ -28,7 +28,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
-  const amount = Number((price * safeQty).toFixed(2));                                                                                          const appsScriptUrl =                                                    "https://script.google.com/macros/s/AKfycbx1JEi4-2VTFaB-QMLCYkCKi2eIo_uYTLfu5-fLUc7zV6QjxelNyfrJgUBJCydhhwqM/exec";
+  const amount = Number((price * safeQty).toFixed(2));                
                                                                          function validateForm() {                                                const newErrors = {};                                                  if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
@@ -249,7 +249,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           <hr className="my-4" />                                      
           {/* PAYPAL */}                                                         <PayPalButton
             amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
-            appsScriptUrl={appsScriptUrl}
             validateForm={validateForm}                                            product={product.title}                                                quantity={quantity}
             name={name}                                                            email={email}
             onPaymentSuccess={async (orderObj) => {
