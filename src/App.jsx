@@ -379,18 +379,20 @@ export default function App() {
             {/* RAFFLE ENDED MESSAGE */}
             {ticketStateLoaded && Number(remainingTickets) <= 0 && (
               <div
-                className="font-semibold mt-2"
+                className="mt-3"
                 style={{
-                  color: "#64748b",
-                  fontWeight: "500",
-                  letterSpacing: "0.02em",
+                  color: "#475569",
+                  fontWeight: 500,
+                  letterSpacing: "0.01em",
                   marginLeft: "0",
-                  fontSize: "1rem",
+                  fontSize: "0.98rem",
                   marginBottom: "20px",
                   textAlign: "left",
+                  lineHeight: "1.6",
                 }}
               >
-                This raffle has now concluded. Thank you for participating and supporting our community.
+                This raffle is now officially closed. We sincerely appreciate your participation and continued support. 
+                Stay tuned — our next raffle opportunity will be announced shortly.
               </div>
             )}
 
