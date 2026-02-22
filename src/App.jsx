@@ -381,18 +381,23 @@ export default function App() {
               <div
                 className="mt-3"
                 style={{
-                  color: "#475569",
-                  fontWeight: 500,
+                  color: "#1e293b",                 // elegant deep charcoal
+                  fontWeight: 600,
                   letterSpacing: "0.01em",
                   marginLeft: "0",
-                  fontSize: "0.98rem",
+                  fontSize: "1.08rem",              // slightly increased
                   marginBottom: "20px",
                   textAlign: "left",
                   lineHeight: "1.6",
+                  border: "1.5px dotted #d4af37",   // subtle gold border
+                  backgroundColor: "#fffdf7",       // soft warm ivory
+                  padding: "14px 16px",
+                  borderRadius: "10px",
                 }}
               >
-                This raffle is now officially closed. We sincerely appreciate your participation and continued support. 
-                Stay tuned — our next raffle opportunity will be announced shortly.
+                This raffle is now officially closed. We sincerely appreciate your participation 
+                and continued support. Stay tuned — our next raffle opportunity will be 
+                announced shortly.
               </div>
             )}
 
