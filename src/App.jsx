@@ -316,12 +316,7 @@ export default function App() {
       return () => clearTimeout(timeout);
     }, [remainingTickets, ticketStateReady]);
 
-    console.log("DEBUG Hero:", {
-      remainingTickets,
-      type: typeof remainingTickets,
-      ticketStateLoaded
-    });
-
+    
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center p-6 px-4">
@@ -372,20 +367,6 @@ export default function App() {
               </span>
             </div>
 
-            {/* RAFFLE ENDED MESSAGE */}
-            {ticketStateLoaded && Number(remainingTickets) <= 0 && (
-              <div
-                className="text-sm mt-2"
-                style={{
-                  color: "#f1f5f9",
-                  fontWeight: "500",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                This raffle has now concluded. Thank you for participating and supporting our community.
-              </div>
-            )}
-
             <div
               className="text-xs text-slate-200"
               style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
@@ -394,6 +375,22 @@ export default function App() {
                 <>✅ <strong>{ticketsSold}</strong> tickets sold so far</>
               )}
             </div>
+
+            {/* RAFFLE ENDED MESSAGE */}
+            {ticketStateLoaded && Number(remainingTickets) <= 0 && (
+              <div
+                className="mt-3 inline-flex items-center px-4 py-2 rounded-lg text-sm"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.12)",
+                  color: "#ffffff",
+                  fontWeight: "500",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                This raffle has now concluded. Thank you for participating and supporting our community.
+              </div>
+            )}
+
           </div>
         </div>
       </section>
