@@ -16,6 +16,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   // Description toggle (same idea as Catalog)
   const DESCRIPTION_LIMIT = 70;
+  const MAX_TICKETS_PER_ORDER = 10;
   const [expandedDesc, setExpandedDesc] = useState(false);
 
   const [focusedField, setFocusedField] = useState(null);
@@ -40,6 +41,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
       qtyNum < 1
     ) {
       newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
+    }
+
+    if (qtyNum > MAX_TICKETS_PER_ORDER) {
+      newErrors.quantity = `Maximum ${MAX_TICKETS_PER_ORDER} tickets allowed per order.`;
     }
                                                                            if (qtyNum > remainingTickets) {
      newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
@@ -216,7 +221,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               type="number"
               value={quantity}
               min="1"
-              max="50"
+              max="10"
               onChange={(e) => setQuantity(e.target.value)}
               onFocus={() => setFocusedField("quantity")}
               onBlur={() => setFocusedField(null)}                                   style={{
