@@ -316,6 +316,12 @@ export default function App() {
       return () => clearTimeout(timeout);
     }, [remainingTickets, ticketStateReady]);
 
+    console.log("DEBUG Hero:", {
+      remainingTickets,
+      type: typeof remainingTickets,
+      ticketStateLoaded
+    });
+
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center p-6 px-4">
@@ -365,6 +371,20 @@ export default function App() {
                   : "Loading ticket availability…"}
               </span>
             </div>
+
+            {/* RAFFLE ENDED MESSAGE */}
+            {ticketStateLoaded && Number(remainingTickets) <= 0 && (
+              <div
+                className="text-sm mt-2"
+                style={{
+                  color: "#f1f5f9",
+                  fontWeight: "500",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                This raffle has now concluded. Thank you for participating and supporting our community.
+              </div>
+            )}
 
             <div
               className="text-xs text-slate-200"
