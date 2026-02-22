@@ -880,40 +880,46 @@ export default function App() {
             />
 
             {/* EVENT INFORMATION */}
-            <section
-              className="max-w-5xl mx-auto px-6 py-6"
-              style={{ marginBottom: "2.5rem" }}
-            >
-              <div
-                className="bg-white rounded-xl p-6"
-                style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
+            {ticketStateLoaded && Number(remainingTickets) > 0 && (
+              <section
+                className="max-w-5xl mx-auto px-6 py-6"
+                style={{ marginBottom: "2.5rem" }}
               >
-                <h2
-                  className="font-semibold mb-4"
-                  style={{ fontSize: "1.25rem", color: "#64748b" }} // slate-600
-                >                                                                        Raffle Event Details
-                </h2>
-
                 <div
-                  className="space-y-2 text-slate-700"
-                  style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0" }}
+                  className="bg-white rounded-xl p-6"
+                  style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
                 >
-                  <p>
-                    • <strong>Location:</strong> [EVENT PLACE]                           </p>
-                  <p>
-                    • <strong>Date & Time:</strong> [EVENT DATE & TIME]
-                  </p>
-                  <p>
-                    • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.                                 </p>
-                </div>
-                                                                                       <p
-                  className="text-slate-500 mt-4"
-                  style={{ fontSize: "0.8rem", fontStyle: "italic" }}
+                  <h2
+                    className="font-semibold mb-4"
+                    style={{ fontSize: "1.25rem", color: "#64748b" }}
+                  >
+                    Raffle Event Details
+                  </h2>
 
-                >                                                                        Winners are announced publicly on this website and contacted via the email used during ticket purchase.
-                </p>
-              </div>
-            </section>
+                  <div
+                    className="space-y-2 text-slate-700"
+                    style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0" }}
+                  >
+                    <p>
+                      • <strong>Location:</strong> [EVENT PLACE]
+                    </p>
+                    <p>
+                      • <strong>Date & Time:</strong> [EVENT DATE & TIME]
+                    </p>
+                    <p>
+                      • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
+                    </p>
+                  </div>
+
+                  <p
+                    className="text-slate-500 mt-4"
+                    style={{ fontSize: "0.8rem", fontStyle: "italic" }}
+                  >
+                    Winners are announced publicly on this website and contacted via the email used during ticket purchase.
+                  </p>
+                </div>
+              </section>
+            )}
                                                                                    <Home />
             <br />
             <AutoRotateWinners />                                                </>
