@@ -379,11 +379,15 @@ export default function App() {
             {/* RAFFLE ENDED MESSAGE */}
             {ticketStateLoaded && Number(remainingTickets) <= 0 && (
               <div
-                className="text-sm mt-2"
+                className="font-semibold mt-2"
                 style={{
                   color: "#64748b",
                   fontWeight: "500",
                   letterSpacing: "0.02em",
+                  marginLeft: "0",
+                  fontSize: "1rem",
+                  marginBottom: "20px",
+                  textAlign: "left",
                 }}
               >
                 This raffle has now concluded. Thank you for participating and supporting our community.
