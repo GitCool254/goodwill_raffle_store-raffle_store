@@ -35,8 +35,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "christmas",
         name: "Christmas Raffle Specials",
-        start: new Date(year, 11, 10),
-        end: new Date(year, 11, 31),
+        start: new Date(year, 11, 18),
+        end: new Date(year, 11, 19),
       },
       {
         id: "newyear",
@@ -256,6 +256,11 @@ function HolidayBanner({ holiday, onNavigate }) {
               Draw closes in <strong>{timeLeft}</strong>
             </span>
           )}
+
+          {/* Holiday special offer */}
+          <div className="mt-1 text-xs md:text-sm font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
+            Buy 5, Get 2 Free
+          </div>
         </div>
 
         <br />
