@@ -35,8 +35,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "christmas",
         name: "Christmas Raffle Specials",
-        start: new Date(year, 11, 18),
-        end: new Date(year, 11, 19),
+        start: new Date(year, 1, 25),
+        end: new Date(year, 1, 26),
       },
       {
         id: "newyear",
