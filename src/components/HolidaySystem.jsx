@@ -259,10 +259,10 @@ function HolidayBanner({ holiday, onNavigate }) {
 
           {/* Holiday special offer */}
           <div 
-            className="mt-1 text-xs md:text-sm font-medium text-slate-700 bg-slate-100 px-3 py-1 rounded-full font-semibold"
+            className="mt-1 text-xs md:text-sm font-medium text-slate-700 bg-slate-100 px-3 py-1 rounded-full"
             style={{ color: "#64748b" }}
           >
-            Buy 5 tickets. Get 2 on us.
+            <strong>Buy 5 tickets. Get 2 on Us.</strong>
           </div>
         </div>
 
