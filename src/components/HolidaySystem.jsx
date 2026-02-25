@@ -258,8 +258,8 @@ function HolidayBanner({ holiday, onNavigate }) {
           )}
 
           {/* Holiday special offer */}
-          <div className="mt-1 text-xs md:text-sm font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
-            Buy 5, Get 2 Free
+          <div className="mt-1 text-xs md:text-sm font-medium text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+            Buy 5 tickets. Get 2 on us.
           </div>
         </div>
 
