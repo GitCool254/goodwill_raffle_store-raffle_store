@@ -59,6 +59,14 @@ export default function HolidaySystem({ onNavigate }) {
     ];
   }, []);
 
+  // Helper: check if a date is within the next 2 days (inclusive)
+  const isWithinNextTwoDays = (date) => {
+    const twoDaysFromNow = new Date(now);
+    twoDaysFromNow.setDate(now.getDate() + 2);
+    twoDaysFromNow.setHours(23, 59, 59, 999); // end of that day
+    return date > now && date <= twoDaysFromNow;
+  };
+
   const activeHolidays = holidays.filter((h) => {
     if (h.weeklyFriday) {
       const todayStart = new Date(now);
@@ -75,9 +83,27 @@ export default function HolidaySystem({ onNavigate }) {
     return now >= h.start && now <= h.end;
   });
 
+  const upcomingHolidays = holidays.filter((h) => {
+    if (h.weeklyFriday) {
+      // For Black Friday: find the next Friday date
+      const nextFriday = new Date(now);
+      nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
+      nextFriday.setHours(0, 0, 0, 0);
+      const nextFridayEnd = new Date(nextFriday);
+      nextFridayEnd.setHours(23, 59, 59, 999);
+      // If today is Friday, it's active → not upcoming
+      if (now.getDay() === 5) return false;
+      return isWithinNextTwoDays(nextFriday);
+    } else {
+      // For fixed‑date holidays: exclude if already active
+      if (now >= h.start && now <= h.end) return false;
+      return isWithinNextTwoDays(h.start);
+    }
+  });
+
   const [visible] = useState(true);
 
-  if (!HOLIDAY_SYSTEM_ENABLED || !visible || activeHolidays.length === 0) {
+  if (!HOLIDAY_SYSTEM_ENABLED || !visible || (activeHolidays.length === 0 && upcomingHolidays.length === 0)) {
     return null;
   }
 
@@ -181,11 +207,10 @@ export default function HolidaySystem({ onNavigate }) {
 
       <div className="holiday-slide">
         {activeHolidays.map((holiday) => (
-          <HolidayBanner
-            key={holiday.id}
-            holiday={holiday}
-            onNavigate={onNavigate}
-          />
+          <HolidayBanner key={holiday.id} holiday={holiday} onNavigate={onNavigate} />
+        ))}
+        {upcomingHolidays.map((holiday) => (
+          <UpcomingBanner key={`upcoming-${holiday.id}`} holiday={holiday} onNavigate={onNavigate} />
         ))}
       </div>
     </>
@@ -268,6 +293,33 @@ function HolidayBanner({ holiday, onNavigate }) {
 
         <br />
 
+        <button
+          onClick={() => onNavigate("catalog")}
+          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
+        >
+          Explore Raffles
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/* ----------------------------------
+   UPCOMING HOLIDAY BANNER (2 days ahead)
+---------------------------------- */
+function UpcomingBanner({ holiday, onNavigate }) {
+  return (
+    <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        <div className="text-sm tracking-wide flex flex-col items-center md:items-start">
+          <h3 className="text-base md:text-lg font-medium text-slate-700">
+            🎉 {holiday.name} starts in 2 days!
+          </h3>
+          <div className="mt-1 text-xs md:text-sm text-slate-500">
+            Get ready for special offers.
+          </div>
+        </div>
+        <br />
         <button
           onClick={() => onNavigate("catalog")}
           className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
