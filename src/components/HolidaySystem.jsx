@@ -211,7 +211,7 @@ export default function HolidaySystem({ onNavigate }) {
         .marquee-content {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollText 15s linear infinite;
+          animation: scrollText 12s linear infinite;
         }
         .marquee-content span {
           display: inline-block;
