@@ -211,7 +211,7 @@ export default function HolidaySystem({ onNavigate }) {
         .marquee-content {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollText 12s linear infinite;
+          animation: scrollText 6s linear infinite;
         }
         .marquee-content span {
           display: inline-block;
@@ -334,18 +334,12 @@ function UpcomingBanner({ holiday, onNavigate }) {
         <div className="w-full overflow-hidden md:mr-4">
           <div className="marquee-container">
             <div className="marquee-content">
-              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>🎉</span>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem', marginLeft: -8 }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers••
-                </h3>
-              </div>
-              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>🎉</span>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem', marginLeft: -8 }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers•• 
-                </h3>
-              </div>
+              <h3 className="premium-title inline-block text-base" data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
+                🎉 {holiday.name} starts in 2 days! Get ready for special offers••
+              </h3>
+              <h3 className="premium-title inline-block text-base" data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
+                🎉 {holiday.name} starts in 2 days! Get ready for special offers••
+              </h3>
             </div>
           </div>
         </div>
