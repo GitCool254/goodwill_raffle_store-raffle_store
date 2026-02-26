@@ -201,6 +201,26 @@ export default function HolidaySystem({ onNavigate }) {
           mix-blend-mode: overlay;
           pointer-events: none;
         }
+        
+        /* Marquee for upcoming banner */
+        .marquee-container {
+          overflow: hidden;
+          white-space: nowrap;
+          width: 100%;
+        }
+        .marquee-content {
+          display: inline-block;
+          white-space: nowrap;
+          animation: scrollText 20s linear infinite;
+        }
+        .marquee-content span {
+          display: inline-block;
+          margin-right: 2rem; /* gap between repeated messages */
+        }
+        @keyframes scrollText {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
       `}</style>
 
       {isWinter && <SnowLayer isMobile={isMobile} />}
@@ -311,18 +331,17 @@ function UpcomingBanner({ holiday, onNavigate }) {
   return (
     <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-        <div className="text-sm tracking-wide flex flex-col items-center md:items-start">
-          <h3 className="text-base md:text-lg font-medium text-slate-700">
-            🎉 {holiday.name} starts in 2 days!
-          </h3>
-          <div className="mt-1 text-xs md:text-sm text-slate-500">
-            Get ready for special offers.
+        <div className="w-full overflow-hidden md:mr-4">
+          <div className="marquee-container">
+            <div className="marquee-content">
+              <span>🎉 {holiday.name} starts in 2 days! Get ready for special offers.</span>
+              <span>🎉 {holiday.name} starts in 2 days! Get ready for special offers.</span>
+            </div>
           </div>
         </div>
-        <br />
         <button
           onClick={() => onNavigate("catalog")}
-          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
+          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white whitespace-nowrap"
         >
           Explore Raffles
         </button>
