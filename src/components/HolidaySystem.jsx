@@ -336,15 +336,15 @@ function UpcomingBanner({ holiday, onNavigate }) {
             <div className="marquee-content">
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                 <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers•
+                  {holiday.name} starts in 2 days! Get ready for special offers
                 </h3>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>••🛒</span>
+                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
               </div>
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                 <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers•
+                  {holiday.name} starts in 2 days! Get ready for special offers
                 </h3>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>••🛒</span>
+                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
               </div>
             </div>
           </div>
