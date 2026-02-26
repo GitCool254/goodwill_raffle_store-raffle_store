@@ -334,12 +334,18 @@ function UpcomingBanner({ holiday, onNavigate }) {
         <div className="w-full overflow-hidden md:mr-4">
           <div className="marquee-container">
             <div className="marquee-content">
-              <h3 className="premium-title inline-block text-base" data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                🎉 {holiday.name} starts in 2 days! Get ready for special offers••
-              </h3>
-              <h3 className="premium-title inline-block text-base" data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                🎉 {holiday.name} starts in 2 days! Get ready for special offers••
-              </h3>
+              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>🛒</span>
+                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
+                  {holiday.name} starts in 2 days! Get ready for special offers••
+                </h3>
+              </div>
+              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>🛒</span>
+                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
+                  {holiday.name} starts in 2 days! Get ready for special offers••
+                </h3>
+              </div>
             </div>
           </div>
         </div>
