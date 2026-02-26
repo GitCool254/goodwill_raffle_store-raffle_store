@@ -372,7 +372,7 @@ export default function App() {
               style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
             >
               {ticketsSold !== null && (
-                <>✅ <strong>{ticketsSold}</strong> tickets sold so far</>
+                <>✔ <strong>{ticketsSold}</strong> tickets sold so far</>
               )}
             </div>
 
