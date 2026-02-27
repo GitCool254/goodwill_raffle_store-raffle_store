@@ -328,6 +328,30 @@ function HolidayBanner({ holiday, onNavigate }) {
    UPCOMING HOLIDAY BANNER (2 days ahead)
 ---------------------------------- */
 function UpcomingBanner({ holiday, onNavigate }) {
+  // Compute days until the holiday start
+  const getDaysUntil = () => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // start of today
+
+    let startDate;
+    if (holiday.weeklyFriday) {
+      // Next Friday
+      startDate = new Date(now);
+      const daysToFriday = (5 - now.getDay() + 7) % 7;
+      startDate.setDate(now.getDate() + daysToFriday);
+    } else {
+      startDate = new Date(holiday.start);
+    }
+    startDate.setHours(0, 0, 0, 0); // normalize to start of day
+
+    const diffMs = startDate - now;
+    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  };
+
+  const daysUntil = getDaysUntil();
+  const dayText = daysUntil === 1 ? 'tomorrow' : '2 days';
+  const message = `${holiday.name} starts in ${dayText}! Get ready for special offers.`;
+
   return (
     <section className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}>
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
@@ -335,14 +359,14 @@ function UpcomingBanner({ holiday, onNavigate }) {
           <div className="marquee-container">
             <div className="marquee-content">
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers
+                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
+                  {message}
                 </h3>
                 <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
               </div>
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={`${holiday.name} starts in 2 days! Get ready for special offers.`}>
-                  {holiday.name} starts in 2 days! Get ready for special offers
+                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
+                  {message}
                 </h3>
                 <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
               </div>
