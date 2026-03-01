@@ -52,7 +52,7 @@ export default function Header({ setView }) {
               style={{ backgroundColor: "#f8fafc" }}
             >
               <h1 className="text-xl font-extrabold">
-                Goodwillstores Lucrative Raffles
+                Goodwillstores
               </h1>
             </div>
 
@@ -61,7 +61,7 @@ export default function Header({ setView }) {
               className="block mt-1 text-sm font-medium"
               style={{ color: "#1E3A8A" }}
             >
-              Buy tickets. Win prizes. Transparent draws.
+              Curated Pre-Owned Finds • Fair & Transparent Raffles
             </span>
 
             {/* Menu button BELOW subtitle — strictly right with spacing */}

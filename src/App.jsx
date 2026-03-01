@@ -325,11 +325,10 @@ export default function App() {
               style = {{ backgroundColor: "#f8fafc" }}
             >
               <h2 className="text-3xl font-bold">
-                Win big — join our raffles today
+                Smart Finds • Discover Value • Win Quality
               </h2>
               <p className="mt-3 text-slate-100 max-w-xl">
-                Buy low-cost tickets for a chance to win high-value tech items.
-                Each ticket helps us support community initiatives.
+                Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
               </p>
 
             </div>
@@ -339,7 +338,7 @@ export default function App() {
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
                 onClick={() => navigate("catalog")}
               >
-                Product Raffles
+                Explore Finds
               </button>
             </div>
 
