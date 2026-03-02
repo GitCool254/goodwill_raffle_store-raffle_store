@@ -28,7 +28,7 @@ export default function Header({ setView }) {
           {/* TOP ROW: Logo + Title + Menu button */}
           <div className="flex items-center justify-between">
             {/* Left group: logo and title */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center" style={{ gap: '1rem' }}>
               <button
                 onClick={() => setView("home")}
                 className="focus:outline-none active:opacity-80"
@@ -37,7 +37,7 @@ export default function Header({ setView }) {
                 <img
                   src="/logo.png"
                   alt="Goodwillstores logo"
-                  className="[50px] w-[50px] object-contain rounded cursor-pointer"
+                  className="h-[50px] w-[50px] object-contain rounded cursor-pointer"
                 />
               </button>
 
@@ -46,11 +46,14 @@ export default function Header({ setView }) {
                 style={{ backgroundColor: "#f8fafc" }}
                 className="inline-block"
               >
-                <h1 className="text-xl font-extrabold">
+                <h1 style={{ fontSize: '1rem', fontWeight: 800 }}>
                   Goodwillstores
                 </h1>
               </div>
             </div>
+
+            <br />
+            
 
             {/* Menu button on the right */}
             <button
