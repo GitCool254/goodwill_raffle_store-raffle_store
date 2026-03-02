@@ -38,6 +38,8 @@ export default function App() {
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
   const [ticketsSold, setTicketsSold] = useState(null);
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // -------------------- SAMPLE DATA --------------------
   const sampleProducts = [
     {
@@ -852,7 +854,7 @@ export default function App() {
     >
 
       {/* HEADER */}
-      {view !== "image" && <Header setView={setView} />}
+      {view !== "image" && <Header setView={setView} onMenuClick={() => setMenuOpen(true)} />}
 
       {view !== "image" && (
         <HolidaySystem onNavigate={navigate} />
@@ -928,8 +930,10 @@ export default function App() {
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}                                    {view === "about" && <About />}                                        {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
-        )}                                                                     {view === "menu" && <Menu setView={navigate} />}
       </main>
+
+      {/* Sliding menu panel */}
+      <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />  
 
       {view === "image" && activeImage && (
         <ImagePage
