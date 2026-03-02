@@ -25,9 +25,9 @@ export default function Header({ setView }) {
       <header className="w-full bg-white shadow-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto p-4">
 
-          {/* TOP ROW: Logo + Title + Menu button */}
+          {/* TOP ROW: Logo + Decorative Column + Title + Menu button */}
           <div className="flex items-center justify-between">
-            {/* Left group: logo and title */}
+            {/* Left group: logo, column, title */}
             <div className="flex items-center" style={{ gap: '1rem' }}>
               <button
                 onClick={() => setView("home")}
@@ -40,6 +40,13 @@ export default function Header({ setView }) {
                   className="h-[50px] w-[50px] object-contain rounded cursor-pointer"
                 />
               </button>
+
+              {/* Vertical decorative column */}
+              <div className="flex flex-col h-[50px] w-[6px] rounded-full overflow-hidden" style={{ gap: '1px', background: 'white' }}>
+                <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
+                <div className="flex-1" style={{ background: '#111', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
+                <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
+              </div>
 
               {/* Title with original background */}
               <div
@@ -61,7 +68,7 @@ export default function Header({ setView }) {
               ☰
             </button>
           </div>
-          
+
           {/* Subtitle – unchanged */}
           <div
             style = {{ backgroundColor: "#f8fafc", marginTop: "15px" }}
@@ -75,7 +82,6 @@ export default function Header({ setView }) {
             <p className="mt-4 text-slate-700 max-w-xl">
               Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
             </p>
-
           </div>
         </div>
       </header>
