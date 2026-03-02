@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Header({ setView }) {
+export default function Header({ setView, onMenuClick }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [closing, setClosing] = useState(false);
 
@@ -62,7 +62,7 @@ export default function Header({ setView }) {
             {/* Menu button on the right */}
             <button
               className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
-              onClick={() => setView("menu")}
+              onClick={() => onMenuClick && onMenuClick()}
               aria-label="Open menu"
             >
               ☰
