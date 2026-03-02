@@ -79,7 +79,7 @@ export default function Header({ setView }) {
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
-            <p className="mt-4 max-w-xl font-semibold" style={{ fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontWeight: 400, fontSize: '15px', lineHeight: '1.6', letterSpacing: '0.01em', color: '#334155' }}>
+            <p className="mt-4 max-w-xl" style={{ fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontWeight: 600, fontSize: '15px', lineHeight: '1.6', letterSpacing: '0.01em', color: '#334155' }}>
               Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
             </p>
           </div>
