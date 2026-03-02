@@ -324,7 +324,7 @@ export default function App() {
             <div
               style = {{ backgroundColor: "#f8fafc" }}
             >
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-lg md:text-xl font-semibold tracking-tight">
                 Smart Finds • Discover Value • Win Quality
               </h2>
               <p className="mt-3 text-slate-100 max-w-xl">
