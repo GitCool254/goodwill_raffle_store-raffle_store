@@ -930,6 +930,7 @@ export default function App() {
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}                                    {view === "about" && <About />}                                        {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
+        )}
       </main>
 
       {/* Sliding menu panel */}
