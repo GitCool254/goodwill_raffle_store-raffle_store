@@ -42,7 +42,7 @@ export default function Header({ setView }) {
               </button>
 
               {/* Vertical decorative column */}
-              <div className="flex flex-col h-[50px] w-[6px] rounded-full overflow-hidden" style={{ gap: '1px', background: 'white' }}>
+              <div className="flex flex-col h-[50px] w-[3px] rounded-full overflow-hidden" style={{ gap: '1px', background: 'white' }}>
                 <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
                 <div className="flex-1" style={{ background: '#111', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
                 <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
@@ -71,7 +71,7 @@ export default function Header({ setView }) {
 
           {/* Subtitle – unchanged */}
           <div
-            style = {{ backgroundColor: "#f8fafc", marginTop: "15px" }}
+            style = {{ backgroundColor: "#f8fafc", marginTop: "30px" }}
           >
             <h2
               className="font-semibold tracking-tight"
