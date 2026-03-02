@@ -72,9 +72,8 @@ export default function Header({ setView }) {
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
-            <p className="mt-3 text-slate-100 max-w-xl">
-              Curated raffles featuring quality pre-owned finds, fash
-ion, home, and electronics — giving you access to exceptional value, responsibly.
+            <p className="mt-4 text-slate-700 max-w-xl">
+              Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
             </p>
 
           </div>
