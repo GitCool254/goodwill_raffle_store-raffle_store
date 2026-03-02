@@ -61,13 +61,14 @@ export default function Header({ setView }) {
               ☰
             </button>
           </div>
-
+          
+          {/* Subtitle – unchanged */}
           <div
-            style = {{ backgroundColor: "#f8fafc" }}
+            style = {{ backgroundColor: "#f8fafc", marginTop: "15px" }}
           >
             <h2
               className="font-semibold tracking-tight"
-              style={{ fontSize: "14px", lineHeight: "1.3" }}
+              style={{ fontSize: "14px", lineHeight: "1.3", color: "#1E3A8A" }}
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
@@ -77,17 +78,6 @@ ion, home, and electronics — giving you access to exceptional value, responsib
             </p>
 
           </div>
-
-          {/* Subtitle – unchanged */}
-          <div className="mt-2 w-full">
-            <span
-              className="block mt-1 text-sm font-medium"
-              style={{ color: "#1E3A8A", marginTop: "20px" }}
-            >
-              Curated Pre-Owned Finds • Fair & Transparent Raffles
-            </span>
-          </div>
-
         </div>
       </header>
     </>

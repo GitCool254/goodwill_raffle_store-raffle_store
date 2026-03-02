@@ -320,22 +320,7 @@ export default function App() {
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center p-6 px-4">
-          <div className="flex-1">
-            <div
-              style = {{ backgroundColor: "#f8fafc" }}
-            >
-              <h2
-                className="font-semibold tracking-tight"
-                style={{ fontSize: "14px", lineHeight: "1.3" }}
-              >
-                Smart Finds • Discover Value • Win Quality
-              </h2>
-              <p className="mt-3 text-slate-100 max-w-xl">
-                Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
-              </p>
-
-            </div>
-          
+          <div className="flex-1">          
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
