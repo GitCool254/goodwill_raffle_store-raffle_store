@@ -37,7 +37,7 @@ export default function Header({ setView }) {
                 <img
                   src="/logo.png"
                   alt="Goodwillstores logo"
-                  className="h-12 w-12 object-contain rounded cursor-pointer"
+                  className="h-8 w-8 object-contain rounded cursor-pointer"
                 />
               </button>
 
