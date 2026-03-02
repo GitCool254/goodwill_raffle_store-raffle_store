@@ -25,59 +25,51 @@ export default function Header({ setView }) {
       <header className="w-full bg-white shadow-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto p-4">
 
-          {/* TOP ROW: centered logo */}
+          {/* TOP ROW: Logo + Title + Menu button */}
           <div className="flex items-center justify-between">
-            <div className="w-10" />
+            {/* Left group: logo and title */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setView("home")}
+                className="focus:outline-none active:opacity-80"
+                aria-label="Go to home"
+              >
+                <img
+                  src="/logo.png"
+                  alt="Goodwillstores logo"
+                  className="h-12 w-12 object-contain rounded cursor-pointer"
+                />
+              </button>
 
-            <button
-              onClick={() => setView("home")}
-              className="focus:outline-none active:opacity-80"
-              aria-label="Go to home"
-            >
-              <img
-                src="/logo.png"
-                alt="Goodwillstores logo"
-                className="h-[100px] w-[100px] object-contain rounded cursor-pointer"
-              />
-            </button>
-
-            <div className="w-10" />
-          </div>
-
-          {/* TITLE + SUBTITLE + MENU */}
-          <div className="mt-2 w-full">
-
-            {/* Title */}
-            <div
-              style={{ backgroundColor: "#f8fafc" }}
-            >
-              <h1 className="text-xl font-extrabold">
-                Goodwillstores
-              </h1>
+              {/* Title with original background */}
+              <div
+                style={{ backgroundColor: "#f8fafc" }}
+                className="inline-block"
+              >
+                <h1 className="text-xl font-extrabold">
+                  Goodwillstores
+                </h1>
+              </div>
             </div>
 
-            {/* Subtitle */}
+            {/* Menu button on the right */}
+            <button
+              className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
+              onClick={() => setView("menu")}
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
+          </div>
+
+          {/* Subtitle – unchanged */}
+          <div className="mt-2 w-full">
             <span
               className="block mt-1 text-sm font-medium"
               style={{ color: "#1E3A8A" }}
             >
               Curated Pre-Owned Finds • Fair & Transparent Raffles
             </span>
-
-            {/* Menu button BELOW subtitle — strictly right with spacing */}
-            <div
-              className="flex justify-end w-full"
-              style={{ marginTop: "12px", marginBottom: "12px", backgroundColor: "#f8fafc" }}
-            >
-              <button
-                className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
-                onClick={() => setView("menu")}
-                aria-label="Open menu"
-              >
-                ☰
-              </button>
-            </div>
-
           </div>
 
         </div>
