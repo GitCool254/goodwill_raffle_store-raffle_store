@@ -319,7 +319,7 @@ export default function App() {
     
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center p-6 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start p-6 px-4">
           <div className="flex-1">          
             <div className="mt-6 flex gap-3">
               <button
