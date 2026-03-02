@@ -71,7 +71,7 @@ export default function Header({ setView }) {
 
           {/* Subtitle – modernised paragraph */}
           <div
-            style = {{ backgroundColor: "#f8fafc", marginTop: "30px" }}
+            style = {{ backgroundColor: "#f8fafc", marginTop: "35px" }}
           >
             <h2
               className="font-semibold tracking-tight"
