@@ -13,9 +13,10 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
       {/* Sliding panel */}
       <div
-        className={`fixed top-0 left-0 h-screen w-80 bg-slate-900 shadow-2xl z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-80 bg-slate-900 shadow-2xl z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ height: '100vh' }}
       >
         <div className="h-full overflow-y-auto p-6">
           {/* Header with close button */}
