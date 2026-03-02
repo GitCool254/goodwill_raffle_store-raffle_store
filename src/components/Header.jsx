@@ -52,9 +52,6 @@ export default function Header({ setView }) {
               </div>
             </div>
 
-            <br />
-            
-
             {/* Menu button on the right */}
             <button
               className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
@@ -69,7 +66,7 @@ export default function Header({ setView }) {
           <div className="mt-2 w-full">
             <span
               className="block mt-1 text-sm font-medium"
-              style={{ color: "#1E3A8A" }}
+              style={{ color: "#1E3A8A", marginTop: "20px" }}
             >
               Curated Pre-Owned Finds • Fair & Transparent Raffles
             </span>

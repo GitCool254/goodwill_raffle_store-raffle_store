@@ -326,7 +326,7 @@ export default function App() {
             >
               <h2
                 className="font-semibold tracking-tight"
-                style={{ fontSize: "18px", lineHeight: "1.3" }}
+                style={{ fontSize: "14px", lineHeight: "1.3" }}
               >
                 Smart Finds • Discover Value • Win Quality
               </h2>
