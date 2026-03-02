@@ -69,7 +69,7 @@ export default function Header({ setView }) {
             </button>
           </div>
 
-          {/* Subtitle – unchanged */}
+          {/* Subtitle – modernised paragraph */}
           <div
             style = {{ backgroundColor: "#f8fafc", marginTop: "30px" }}
           >
@@ -79,7 +79,7 @@ export default function Header({ setView }) {
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
-            <p className="mt-4 text-slate-700 max-w-xl">
+            <p className="mt-4 max-w-xl" style={{ fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontWeight: 400, fontSize: '15px', lineHeight: '1.6', letterSpacing: '0.01em', color: '#334155' }}>
               Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
             </p>
           </div>
