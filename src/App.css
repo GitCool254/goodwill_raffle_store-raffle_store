@@ -194,3 +194,9 @@
   }
 }
 
+/* Ensure menu panel always occupies full viewport height */
+.fixed.inset-y-0.left-0.bg-white.shadow-xl.z-50 {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  min-height: 100vh !important;
+}

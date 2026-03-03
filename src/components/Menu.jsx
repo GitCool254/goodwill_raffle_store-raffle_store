@@ -11,12 +11,12 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – full viewport height */}
+      {/* Sliding panel – forced to full viewport height */}
       <div
-        className={`fixed top-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ height: '100vh' }}
+        style={{ height: '100vh' }}  /* redundant but ensures full height */
       >
         {/* Inner flex column to push footer down */}
         <div className="h-full flex flex-col">
