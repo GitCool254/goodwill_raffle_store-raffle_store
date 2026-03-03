@@ -32,14 +32,13 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – Amazon style, full viewport height */}
+      {/* Sliding panel – anchored to top, left, bottom for full height */}
       <div
-        className={`fixed top-0 left-0 w-[360px] bg-gray-50 shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 bottom-0 w-[360px] bg-gray-50 shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ height: '100vh' }}
       >
-        {/* Flex column container – ensures full height */}
+        {/* Flex column container – fills the stretched height */}
         <div className="h-full flex flex-col">
           {/* Header with close button */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
