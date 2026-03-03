@@ -10,10 +10,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
       setPanelHeight(`${window.innerHeight}px`);
     };
 
-    // Set initial height
     updateHeight();
-
-    // Update on resize
     window.addEventListener('resize', updateHeight);
     return () => window.removeEventListener('resize', updateHeight);
   }, [isOpen]);
@@ -28,9 +25,9 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – height set dynamically to window.innerHeight */}
+      {/* Sliding panel with custom class */}
       <div
-        className={`fixed top-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
+        className={`menu-panel fixed top-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ height: panelHeight }}
