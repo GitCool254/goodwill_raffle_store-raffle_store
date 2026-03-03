@@ -11,11 +11,12 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – Amazon style */}
+      {/* Sliding panel – Amazon style, full viewport height */}
       <div
         className={`fixed inset-y-0 left-0 w-[360px] bg-white shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ height: '100vh', maxHeight: '100vh' }}
       >
         {/* Flex column container */}
         <div className="h-full flex flex-col">
