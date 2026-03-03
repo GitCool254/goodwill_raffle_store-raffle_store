@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function MenuPanel({ isOpen, onClose, setView }) {
+  // Lock body scroll when menu opens
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -11,9 +23,9 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – Amazon style, full viewport height */}
+      {/* Sliding panel – Amazon style, light grey background, full viewport height */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ height: '100vh', maxHeight: '100vh' }}
@@ -21,7 +33,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         {/* Flex column container */}
         <div className="h-full flex flex-col">
           {/* Header with close button */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
             <h2 className="text-lg font-medium text-gray-900">Menu</h2>
             <button
               onClick={onClose}
@@ -33,7 +45,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
           </div>
 
           {/* Navigation items – flex-grow to push footer down */}
-          <div className="flex-1 overflow-y-auto py-2">
+          <div className="flex-1 overflow-y-auto py-2 bg-gray-50">
             <div className="px-3">
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors group"
@@ -103,7 +115,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
           </div>
 
           {/* Footer – minimal, no border */}
-          <div className="px-6 py-4 text-xs text-gray-400 text-center">
+          <div className="px-6 py-4 text-xs text-gray-500 text-center bg-gray-50 border-t border-gray-200">
             © {new Date().getFullYear()} Goodwillstores
           </div>
         </div>
