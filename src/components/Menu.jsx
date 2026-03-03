@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 export default function MenuPanel({ isOpen, onClose, setView }) {
+  const scrollRef = useRef(null);
+
   // Lock body scroll when menu opens
   useEffect(() => {
     if (isOpen) {
@@ -13,6 +15,13 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
     };
   }, [isOpen]);
 
+  // Scroll to top handler
+  const scrollToTop = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -23,11 +32,12 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel – Amazon style, light grey background, full viewport height */}
+      {/* Sliding panel – Amazon style, full viewport height */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 shadow-lg z-50 transform transition-transform duration-300 min-h-screen ${
+        className={`fixed top-0 left-0 w-[360px] bg-gray-50 shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ height: '100vh' }}
       >
         {/* Flex column container – ensures full height */}
         <div className="h-full flex flex-col">
@@ -44,7 +54,10 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
           </div>
 
           {/* Navigation items – flex-grow to push footer down */}
-          <div className="flex-1 overflow-y-auto py-2 bg-gray-50">
+          <div
+            ref={scrollRef}
+            className="flex-1 overflow-y-auto py-2 bg-gray-50"
+          >
             <div className="px-3">
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors group"
@@ -113,9 +126,17 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
             </div>
           </div>
 
-          {/* Footer – minimal, no border */}
-          <div className="px-6 py-4 text-xs text-gray-500 text-center bg-gray-50 border-t border-gray-200">
-            © {new Date().getFullYear()} Goodwillstores
+          {/* Footer with Back to Top link (Amazon style) */}
+          <div className="border-t border-gray-200 bg-gray-50">
+            <button
+              onClick={scrollToTop}
+              className="w-full px-6 py-3 text-xs text-gray-500 hover:text-gray-700 text-center focus:outline-none"
+            >
+              ↑ Back to top
+            </button>
+            <div className="px-6 py-3 text-xs text-gray-500 text-center border-t border-gray-200">
+              © {new Date().getFullYear()} Goodwillstores
+            </div>
           </div>
         </div>
       </div>
