@@ -11,13 +11,14 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding panel */}
+      {/* Sliding panel – full viewport height */}
       <div
-        className={`fixed inset-y-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ height: '100vh' }}
       >
-        {/* Panel content – full height flex column */}
+        {/* Inner flex column to push footer down */}
         <div className="h-full flex flex-col">
           
           {/* User profile section (Jumia style) */}
@@ -35,7 +36,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
             </div>
           </div>
 
-          {/* Close button inside panel (optional) */}
+          {/* Close button inside panel */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -45,7 +46,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
             </svg>
           </button>
 
-          {/* Scrollable navigation area */}
+          {/* Scrollable navigation area – flex-grow takes remaining space */}
           <div className="flex-1 overflow-y-auto py-4">
             <div className="px-4 space-y-1">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 py-2">Browse</p>
@@ -63,7 +64,7 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
             </div>
           </div>
 
-          {/* Footer */}
+          {/* Footer – always at bottom */}
           <div className="border-t border-gray-200 p-4 text-center text-xs text-gray-500">
             <div>© {new Date().getFullYear()} Goodwillstores</div>
             <div className="mt-1">All rights reserved.</div>
