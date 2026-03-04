@@ -73,7 +73,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           left: 0,
           bottom: 0,
           width: '360px',
-          backgroundColor: 'red', // TEMPORARY
+          backgroundColor: '#f9fafb', // light gray (bg-gray-50)
           border: '1px solid #d1d5db',
           boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
           zIndex: 100000,
@@ -84,11 +84,19 @@ export default function Menu({ isOpen, onClose, setView }) {
         }}
       >
         {/* Full height flex column */}
-        <div className="flex flex-col h-full min-h-screen">
+        <div className="flex flex-col h-full">
 
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
-            <h2 className="text-lg font-medium text-gray-900">Menu</h2>
+          {/* Header - sky blue background, clickable to home */}
+          <div
+            className="flex items-center justify-between px-6 py-4 border-b border-gray-200"
+            style={{ backgroundColor: '#e0f2fe' }} // sky blue (bg-sky-100)
+          >
+            <button
+              onClick={() => { setView("home"); onClose(); }}
+              className="text-lg font-medium text-gray-900 hover:underline focus:outline-none"
+            >
+              Browse Goodwillstores
+            </button>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
@@ -105,7 +113,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           >
             <div className="px-3">
 
-              {/* Home */}
+              {/* Home (already present, but can stay; the header also goes home) */}
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("home"); onClose(); }}
