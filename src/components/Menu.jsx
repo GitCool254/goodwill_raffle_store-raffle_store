@@ -31,9 +31,9 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding Panel - FULL HEIGHT GUARANTEED */}
+      {/* Sliding Panel - full height with border */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 shadow-xl z-50 transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -74,9 +74,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
 
-              <br />
-              <br />
-
               {/* Products */}
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
@@ -86,9 +83,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
                 <span className="flex-1 text-left">Shop Raffles</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
-
-              <br />
-              <br />
 
               {/* Tickets */}
               <button
@@ -102,9 +96,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
               <div className="border-t border-gray-200 my-3"></div>
 
-              <br />
-              <br />
-
               {/* Address */}
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
@@ -115,9 +106,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
 
-              <br />
-              <br />
-
               {/* Contact */}
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
@@ -127,9 +115,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
                 <span className="flex-1 text-left">Contact</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
-
-              <br />
-              <br />
 
               {/* About */}
               <button
@@ -143,11 +128,6 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
             </div>
           </div>
-
-          <br />
-          <br />
-          <br />
-          <br />
 
           {/* Footer */}
           <div className="border-t border-gray-200 bg-gray-50">
