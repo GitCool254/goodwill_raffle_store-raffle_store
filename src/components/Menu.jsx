@@ -8,7 +8,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   // Lock body scroll when menu opens
   useEffect(() => {
-    console.log("Menu useEffect - isOpen:", isOpen);
+    console.log("Menu useEffect (scroll lock) - isOpen:", isOpen);
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -17,6 +17,18 @@ export default function Menu({ isOpen, onClose, setView }) {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [isOpen]);
+
+  // Diagnostic effect – runs on every render but only logs when refs exist
+  useEffect(() => {
+    if (panelRef.current) {
+      const rect = panelRef.current.getBoundingClientRect();
+      console.log("Panel rect:", rect);
+      console.log("Panel computed style:", window.getComputedStyle(panelRef.current));
+    }
+    if (backdropRef.current) {
+      console.log("Backdrop present");
+    }
   }, [isOpen]);
 
   const scrollToTop = () => {
@@ -32,18 +44,6 @@ export default function Menu({ isOpen, onClose, setView }) {
   }
 
   console.log("Menu render - creating portal");
-
-  // After render, log panel details
-  useEffect(() => {
-    if (panelRef.current) {
-      const rect = panelRef.current.getBoundingClientRect();
-      console.log("Panel rect:", rect);
-      console.log("Panel computed style:", window.getComputedStyle(panelRef.current));
-    }
-    if (backdropRef.current) {
-      console.log("Backdrop present");
-    }
-  }, [isOpen]);
 
   return ReactDOM.createPortal(
     <>
