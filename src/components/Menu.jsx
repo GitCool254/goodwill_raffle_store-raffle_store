@@ -25,9 +25,9 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - fully opaque to hide page */}
       <div
-        className="fixed inset-0 bg-black/50 z-50"
+        className="fixed inset-0 bg-black z-50"
         onClick={onClose}
       />
 
