@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 
 export default function Menu({ isOpen, onClose, setView }) {
   const scrollRef = useRef(null);
+  const panelRef = useRef(null);
+  const backdropRef = useRef(null);
 
   // Lock body scroll when menu opens
   useEffect(() => {
@@ -31,20 +33,54 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   console.log("Menu render - creating portal");
 
+  // After render, log panel details
+  useEffect(() => {
+    if (panelRef.current) {
+      const rect = panelRef.current.getBoundingClientRect();
+      console.log("Panel rect:", rect);
+      console.log("Panel computed style:", window.getComputedStyle(panelRef.current));
+    }
+    if (backdropRef.current) {
+      console.log("Backdrop present");
+    }
+  }, [isOpen]);
+
   return ReactDOM.createPortal(
     <>
       {/* Backdrop - fully opaque */}
       <div
-        className="fixed inset-0 bg-black z-[99999]"
+        ref={backdropRef}
+        className="fixed inset-0 bg-black"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'black',
+          zIndex: 99999,
+        }}
         onClick={onClose}
       />
 
-      {/* Sliding Panel - with fallback inline transform */}
+      {/* Sliding Panel */}
       <div
-        className="fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300"
+        ref={panelRef}
+        className="fixed"
         style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          width: '360px',
+          backgroundColor: 'red', // TEMPORARY
+          border: '1px solid #d1d5db',
+          boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+          zIndex: 100000,
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          backgroundColor: 'red', // TEMPORARY: bright color to see if panel appears
+          transition: 'transform 300ms',
+          display: 'block',
+          overflow: 'hidden',
         }}
       >
         {/* Full height flex column */}
