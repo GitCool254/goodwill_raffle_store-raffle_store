@@ -25,15 +25,15 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   return (
     <>
-      {/* Backdrop - fully opaque, very high z-index */}
+      {/* Backdrop - fully opaque, extremely high z-index */}
       <div
-        className="fixed inset-0 bg-black z-[100]"
+        className="fixed inset-0 bg-black z-[9999]"
         onClick={onClose}
       />
 
-      {/* Sliding Panel - full height with border, even higher z-index */}
+      {/* Sliding Panel - full height with border, above backdrop */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[200] transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[10000] transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
