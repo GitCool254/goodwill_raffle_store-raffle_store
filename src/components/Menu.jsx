@@ -32,9 +32,12 @@ export default function Menu({ isOpen, onClose, setView }) {
         onClick={onClose}
       />
 
-      {/* Sliding Panel */}
+      {/* Sliding Panel - with fallback inline transform */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300 translate-x-0`}
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300`}
+        style={{
+          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+        }}
       >
         {/* Full height flex column */}
         <div className="flex flex-col h-full min-h-screen">
