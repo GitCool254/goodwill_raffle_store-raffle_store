@@ -6,6 +6,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   // Lock body scroll when menu opens
   useEffect(() => {
+    console.log("Menu useEffect - isOpen:", isOpen);
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -22,7 +23,13 @@ export default function Menu({ isOpen, onClose, setView }) {
     }
   };
 
-  if (!isOpen) return null;
+  console.log("Menu render - isOpen:", isOpen);
+  if (!isOpen) {
+    console.log("Menu render - returning null");
+    return null;
+  }
+
+  console.log("Menu render - creating portal");
 
   return ReactDOM.createPortal(
     <>
@@ -34,9 +41,10 @@ export default function Menu({ isOpen, onClose, setView }) {
 
       {/* Sliding Panel - with fallback inline transform */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300`}
+        className="fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300"
         style={{
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+          backgroundColor: 'red', // TEMPORARY: bright color to see if panel appears
         }}
       >
         {/* Full height flex column */}
