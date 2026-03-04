@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-export default function MenuPanel({ isOpen, onClose, setView }) {
+export default function Menu({ isOpen, onClose, setView }) {
   const scrollRef = useRef(null);
 
   // Lock body scroll when menu opens
@@ -25,16 +25,15 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
   return (
     <>
-      {/* Backdrop - fully opaque, high z-index */}
+      {/* Backdrop - fully opaque, very high z-index */}
       <div
-        className="fixed inset-0 z-50"
-        style={{ backgroundColor: 'black' }}
+        className="fixed inset-0 bg-black z-[100]"
         onClick={onClose}
       />
 
-      {/* Sliding Panel - full height with border, above backdrop */}
+      {/* Sliding Panel - full height with border, even higher z-index */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-60 transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[200] transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
