@@ -25,15 +25,16 @@ export default function MenuPanel({ isOpen, onClose, setView }) {
 
   return (
     <>
-      {/* Backdrop - fully opaque to hide page */}
+      {/* Backdrop - fully opaque, high z-index */}
       <div
-        className="fixed inset-0 bg-black z-50"
+        className="fixed inset-0 z-50"
+        style={{ backgroundColor: 'black' }}
         onClick={onClose}
       />
 
-      {/* Sliding Panel - full height with border */}
+      {/* Sliding Panel - full height with border, above backdrop */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-50 transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-60 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
