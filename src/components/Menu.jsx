@@ -86,20 +86,24 @@ export default function Menu({ isOpen, onClose, setView }) {
         {/* Full height flex column */}
         <div className="flex flex-col h-full">
 
-          {/* Header - sky blue background, clickable to home */}
+          {/* Header - Amazon style: dark blue, fixed height, no border */}
           <div
-            className="flex items-center justify-between px-6 py-4 border-b border-gray-200"
-            style={{ backgroundColor: '#e0f2fe' }} // sky blue (bg-sky-100)
+            className="flex items-center justify-between px-6"
+            style={{
+              backgroundColor: '#232f3e', // Amazon dark blue
+              height: '50px',
+            }}
           >
             <button
               onClick={() => { setView("home"); onClose(); }}
-              className="text-lg font-medium text-gray-900 hover:underline focus:outline-none"
+              className="text-white font-medium hover:underline focus:outline-none"
+              style={{ fontSize: '16px' }}
             >
               Browse Goodwillstores
             </button>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              className="text-white/70 hover:text-white text-2xl leading-none"
               aria-label="Close menu"
             >
               ✕
@@ -113,7 +117,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           >
             <div className="px-3">
 
-              {/* Home (already present, but can stay; the header also goes home) */}
+              {/* Home */}
               <button
                 className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("home"); onClose(); }}
