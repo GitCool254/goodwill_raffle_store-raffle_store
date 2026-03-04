@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 
 export default function Menu({ isOpen, onClose, setView }) {
   const scrollRef = useRef(null);
@@ -23,19 +24,17 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <>
-      {/* Backdrop - fully opaque, extremely high z-index */}
+      {/* Backdrop - fully opaque */}
       <div
         className="fixed inset-0 bg-black z-[99999]"
         onClick={onClose}
       />
 
-      {/* Sliding Panel - full height with border, above backdrop */}
+      {/* Sliding Panel */}
       <div
-        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 w-[360px] bg-gray-50 border border-gray-300 shadow-xl z-[100000] transform transition-transform duration-300 translate-x-0`}
       >
         {/* Full height flex column */}
         <div className="flex flex-col h-full min-h-screen">
@@ -144,6 +143,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }
