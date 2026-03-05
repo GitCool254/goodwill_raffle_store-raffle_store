@@ -91,7 +91,7 @@ export default function Menu({ isOpen, onClose, setView }) {
             <button
                 onClick={() => { setView("home"); onClose(); }}
               className="text-white font-medium hover:underline focus:outline-none text-left"
-              style={{ fontSize: '16px', lineHeight: '1.2' }}
+              style={{ fontSize: '16px', lineHeight: '1.2' fontWeight: 700 }}
             >
               <span className="block">Browse</span>
               <span className="block">Goodwillstores</span>
@@ -115,6 +115,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Home */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '10px' }}
                 onClick={() => { setView("home"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
