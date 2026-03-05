@@ -114,7 +114,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Home */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("home"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
@@ -129,7 +129,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Products */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("catalog"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🛒</span>
@@ -139,7 +139,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Tickets */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("tickets"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🎟️</span>
@@ -151,7 +151,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Address */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("address"); onClose(); }}
               >
                 <span className="mr-3 text-lg">📍</span>
@@ -161,7 +161,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Contact */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("contact"); onClose(); }}
               >
                 <span className="mr-3 text-lg">✉️</span>
@@ -171,7 +171,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* About */}
               <button
-                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("about"); onClose(); }}
               >
                 <span className="mr-3 text-lg">ℹ️</span>
