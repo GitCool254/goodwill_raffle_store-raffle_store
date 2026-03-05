@@ -76,7 +76,7 @@ export default function Menu({ isOpen, onClose, setView }) {
         {/* Full height flex column */}
         <div className="flex flex-col h-full">
 
-          {/* Header - Amazon style: dark blue, fixed height, no border */}
+          {/* Header - Amazon style: dark blue, fixed height */}
           <div
             className="flex items-center justify-between px-6"
             style={{
@@ -84,10 +84,22 @@ export default function Menu({ isOpen, onClose, setView }) {
               height: '100px',
             }}
           >
+            {/* Plain‑text button for Browse Goodwillstores */}
             <button
-                onClick={() => { setView("home"); onClose(); }}
-              className="text-white hover:underline focus:outline-none text-left"
-              style={{ fontSize: '16px', lineHeight: '1.2', fontWeight: 400 }}
+              onClick={() => { setView("home"); onClose(); }}
+              style={{
+                fontSize: '16px',
+                lineHeight: '1.2',
+                fontWeight: 500,
+                background: 'transparent',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                color: 'white',
+                textAlign: 'left',
+                fontFamily: 'inherit',
+              }}
+              className="hover:underline focus:outline-none"
             >
               <span className="block">Browse</span>
               <span className="block">Goodwillstores</span>
