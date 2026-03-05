@@ -86,8 +86,8 @@ export default function Menu({ isOpen, onClose, setView }) {
           >
             <button
                 onClick={() => { setView("home"); onClose(); }}
-              className="text-white font-medium hover:underline focus:outline-none text-left"
-              style={{ fontSize: '16px', lineHeight: '1.2', fontWeight: 500 }}
+              className="text-white hover:underline focus:outline-none text-left"
+              style={{ fontSize: '16px', lineHeight: '1.2', fontWeight: 400 }}
             >
               <span className="block">Browse</span>
               <span className="block">Goodwillstores</span>
