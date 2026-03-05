@@ -128,7 +128,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 onClick={() => { setView("home"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
                   </svg>
                 </span>
@@ -167,7 +167,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 onClick={() => { setView("address"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
                   </svg>
                 </span>
