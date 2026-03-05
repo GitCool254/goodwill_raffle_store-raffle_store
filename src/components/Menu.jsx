@@ -47,7 +47,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
   return ReactDOM.createPortal(
     <>
-      {/* Backdrop - fully opaque */}
+      {/* Backdrop - semi-transparent */}
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-black"
@@ -57,7 +57,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'black',
+          backgroundColor: 'rgba(0,0,0,0.5)', // dimmed, not fully opaque
           zIndex: 99999,
         }}
         onClick={onClose}
