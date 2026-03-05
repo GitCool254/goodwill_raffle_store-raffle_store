@@ -768,8 +768,9 @@ export default function App() {
                 zIndex: 10000,
               }}
               className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+              style={{ fontWeight: 700 }}
             >
-              ×
+              ✕
             </button>
 
             {/* IMAGE */}
