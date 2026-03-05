@@ -32,19 +32,13 @@ export default function Menu({ isOpen, onClose, setView }) {
   }, [isOpen]);
 
   console.log("Menu render - isOpen:", isOpen);
-  if (!isOpen) {
-    console.log("Menu render - returning null");
-    return null;
-  }
-
-  console.log("Menu render - creating portal");
 
   return ReactDOM.createPortal(
     <>
-      {/* Backdrop - semi-transparent */}
+      {/* Backdrop - only visible when open */}
       <div
         ref={backdropRef}
-        className="fixed inset-0 bg-black"
+        className="fixed inset-0 bg-black transition-opacity duration-300"
         style={{
           position: 'fixed',
           top: 0,
@@ -53,11 +47,13 @@ export default function Menu({ isOpen, onClose, setView }) {
           bottom: 0,
           backgroundColor: 'rgba(0,0,0,0.5)',
           zIndex: 99999,
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? 'auto' : 'none',
         }}
         onClick={onClose}
       />
 
-      {/* Sliding Panel */}
+      {/* Sliding Panel - always in DOM, transform toggles */}
       <div
         ref={panelRef}
         className="fixed"
