@@ -2,11 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 
 // eruda console
-import eruda from "eruda";
-eruda.init({
-  tool: ["console", "network", "resources"],
-  useShadowDom: true,
-});
 
 import Header from "./components/Header";
 import Home from "./components/Home";
@@ -135,8 +130,6 @@ export default function App() {
   const [imageReturnView, setImageReturnView] = useState("home");
 
   const navStackRef = React.useRef(["home"]);
-
-  console.log("App mounted — view =", view);
 
   // -------------------- HISTORY SYNC --------------------
   const VIEW_KEY = "gw_view";
@@ -811,7 +804,7 @@ export default function App() {
     );
   }
 
-  function Home() {                                                        console.log("Home render — products count:", Array.isArray(products) ? products.length : typeof products);
+  function Home() {
     return (
       <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
