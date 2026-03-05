@@ -48,14 +48,28 @@ export default function Header({ setView, onMenuClick }) {
                 <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
               </div>
 
-              {/* Title with original background */}
+              {/* Clickable title styled like plain text */}
               <div
                 style={{ backgroundColor: "#f8fafc" }}
                 className="inline-block"
               >
-                <h1 style={{ fontSize: '1rem', fontWeight: 800 }}>
+                <button
+                  onClick={() => setView("home")}
+                  style={{
+                    fontSize: '1rem',
+                    fontWeight: 800,
+                    background: 'transparent',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    color: 'inherit',
+                    fontFamily: 'inherit',
+                    textAlign: 'left'
+                  }}
+                  className="focus:outline-none"
+                >
                   Goodwillstores
-                </h1>
+                </button>
               </div>
             </div>
 

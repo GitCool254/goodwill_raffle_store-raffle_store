@@ -766,7 +766,7 @@ export default function App() {
                 top: "16px",
                 right: "16px",
                 zIndex: 10000,
-                fontWeight: 700,
+                fontWeight: 800,
               }}
               className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
             >
