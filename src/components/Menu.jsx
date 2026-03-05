@@ -72,7 +72,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
           zIndex: 100000,
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 300ms',
+          transition: 'transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1)',
           display: 'block',
           overflow: 'hidden',
         }}
@@ -85,13 +85,13 @@ export default function Menu({ isOpen, onClose, setView }) {
             className="flex items-center justify-between px-6"
             style={{
               backgroundColor: '#232f3e',
-              height: '80px',
+              height: '100px',
             }}
           >
             <button
                 onClick={() => { setView("home"); onClose(); }}
               className="text-white font-medium hover:underline focus:outline-none text-left"
-              style={{ fontSize: '16px', lineHeight: '1.2', fontWeight: 700 }}
+              style={{ fontSize: '16px', lineHeight: '1.2', fontWeight: 500 }}
             >
               <span className="block">Browse</span>
               <span className="block">Goodwillstores</span>
@@ -115,7 +115,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Home */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
-                style={{ marginBottom: '10px' }}
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("home"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
@@ -131,6 +131,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Products */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("catalog"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🛒</span>
@@ -141,6 +142,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Tickets */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("tickets"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🎟️</span>
@@ -153,6 +155,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Address */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("address"); onClose(); }}
               >
                 <span className="mr-3 text-lg">📍</span>
@@ -163,6 +166,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* Contact */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("contact"); onClose(); }}
               >
                 <span className="mr-3 text-lg">✉️</span>
@@ -173,6 +177,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               {/* About */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
                 onClick={() => { setView("about"); onClose(); }}
               >
                 <span className="mr-3 text-lg">ℹ️</span>
