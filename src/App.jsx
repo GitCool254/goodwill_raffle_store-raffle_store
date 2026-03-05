@@ -326,6 +326,7 @@ export default function App() {
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
+                style={{ marginTop: '20px' }}
                 onClick={() => navigate("catalog")}
               >
                 Explore Finds
