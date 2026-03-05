@@ -91,15 +91,16 @@ export default function Menu({ isOpen, onClose, setView }) {
             className="flex items-center justify-between px-6"
             style={{
               backgroundColor: '#232f3e', // Amazon dark blue
-              height: '50px',
+              height: '80px',
             }}
           >
             <button
-              onClick={() => { setView("home"); onClose(); }}
-              className="text-white font-medium hover:underline focus:outline-none"
-              style={{ fontSize: '16px' }}
+                onClick={() => { setView("home"); onClose(); }}
+              className="text-white font-medium hover:underline focus:outline-none text-left"
+              style={{ fontSize: '16px', lineHeight: '1.2' }}
             >
-              Browse Goodwillstores
+              <span className="block">Browse</span>
+              <span className="block">Goodwillstores</span>
             </button>
             <button
               onClick={onClose}
