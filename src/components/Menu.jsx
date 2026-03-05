@@ -31,12 +31,6 @@ export default function Menu({ isOpen, onClose, setView }) {
     }
   }, [isOpen]);
 
-  const scrollToTop = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   console.log("Menu render - isOpen:", isOpen);
   if (!isOpen) {
     console.log("Menu render - returning null");
@@ -57,7 +51,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', // dimmed, not fully opaque
+          backgroundColor: 'rgba(0,0,0,0.5)',
           zIndex: 99999,
         }}
         onClick={onClose}
@@ -73,7 +67,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           left: 0,
           bottom: 0,
           width: '360px',
-          backgroundColor: '#f9fafb', // light gray (bg-gray-50)
+          backgroundColor: '#f9fafb',
           border: '1px solid #d1d5db',
           boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
           zIndex: 100000,
@@ -90,7 +84,7 @@ export default function Menu({ isOpen, onClose, setView }) {
           <div
             className="flex items-center justify-between px-6"
             style={{
-              backgroundColor: '#232f3e', // Amazon dark blue
+              backgroundColor: '#232f3e',
               height: '80px',
             }}
           >
@@ -120,7 +114,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Home */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("home"); onClose(); }}
               >
                 <span className="mr-3 text-gray-500">
@@ -135,7 +129,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Products */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("catalog"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🛒</span>
@@ -145,7 +139,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Tickets */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("tickets"); onClose(); }}
               >
                 <span className="mr-3 text-lg">🎟️</span>
@@ -157,7 +151,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Address */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("address"); onClose(); }}
               >
                 <span className="mr-3 text-lg">📍</span>
@@ -167,7 +161,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* Contact */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("contact"); onClose(); }}
               >
                 <span className="mr-3 text-lg">✉️</span>
@@ -177,7 +171,7 @@ export default function Menu({ isOpen, onClose, setView }) {
 
               {/* About */}
               <button
-                className="w-full flex items-center px-3 py-3 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                className="w-full flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 onClick={() => { setView("about"); onClose(); }}
               >
                 <span className="mr-3 text-lg">ℹ️</span>
@@ -188,19 +182,10 @@ export default function Menu({ isOpen, onClose, setView }) {
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="border-t border-gray-200 bg-gray-50">
-            <button
-              onClick={scrollToTop}
-              className="w-full px-6 py-3 text-xs text-gray-500 hover:text-gray-700 text-center"
-            >
-              ↑ Back to top
-            </button>
-            <div className="px-6 py-3 text-xs text-gray-500 text-center border-t border-gray-200">
-              © {new Date().getFullYear()} Goodwillstores
-            </div>
+          {/* Footer – only copyright */}
+          <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500 text-center">
+            © {new Date().getFullYear()} Goodwillstores
           </div>
-
         </div>
       </div>
     </>,
