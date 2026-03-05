@@ -110,7 +110,7 @@ export default function Menu({ isOpen, onClose, setView }) {
               style={{ fontWeight: 700 }}
               aria-label="Close menu"
             >
-              ✕ 
+              ✕
             </button>
           </div>
 
@@ -127,7 +127,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("home"); onClose(); }}
               >
-                <span className="mr-3 text-gray-500">
+                <span className="mr-3 text-gray-500" style={{ marginRight: '0.8rem' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
                   </svg>
@@ -142,7 +142,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("catalog"); onClose(); }}
               >
-                <span className="mr-3 text-lg">🛒</span>
+                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>🛒</span>
                 <span className="flex-1 text-left">Shop Raffles</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
@@ -153,7 +153,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("tickets"); onClose(); }}
               >
-                <span className="mr-3 text-lg">🎟️</span>
+                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>🎟️</span>
                 <span className="flex-1 text-left">My Tickets</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
@@ -166,7 +166,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("address"); onClose(); }}
               >
-                <span className="mr-3 text-gray-500">
+                <span className="mr-3 text-gray-500" style={{ marginRight: '0.8rem' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/>
                   </svg>
@@ -181,7 +181,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("contact"); onClose(); }}
               >
-                <span className="mr-3 text-lg">✉️</span>
+                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>✉️</span>
                 <span className="flex-1 text-left">Contact</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
@@ -192,7 +192,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("about"); onClose(); }}
               >
-                <span className="mr-3 text-lg">ℹ️</span>
+                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>ℹ️</span>
                 <span className="flex-1 text-left">About Us</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
