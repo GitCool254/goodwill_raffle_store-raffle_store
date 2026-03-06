@@ -672,22 +672,7 @@ export default function App() {
     const containerRef = useRef(null);
     const imgRef = useRef(null);
 
-    // Reset loading state when image changes
-    useEffect(() => {
-      setIsLoading(true);
-    }, [index]);
-
-    // After the image element is rendered, check if it's already loaded (cached)
-    useEffect(() => {
-      if (imgRef.current && imgRef.current.complete) {
-        setNaturalSize({
-          width: imgRef.current.naturalWidth,
-          height: imgRef.current.naturalHeight,
-        });
-        setIsLoading(false);
-      }
-    }, [index]); // runs after index change, after render
-
+    // Lock body scroll on mount
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       const originalBg = document.body.style.backgroundColor;
@@ -701,6 +686,7 @@ export default function App() {
       };
     }, []);
 
+    // Reset scroll position on image change
     useEffect(() => {
       if (containerRef.current) {
         containerRef.current.scrollTo({
@@ -711,10 +697,30 @@ export default function App() {
       }
     }, [index]);
 
+    // When index changes, start loading
+    useEffect(() => {
+      setIsLoading(true);
+    }, [index]);
+
+    // After render, check if image is already complete (cached)
+    useEffect(() => {
+      if (imgRef.current && imgRef.current.complete) {
+        setNaturalSize({
+          width: imgRef.current.naturalWidth,
+          height: imgRef.current.naturalHeight,
+        });
+        setIsLoading(false);
+      }
+    }, [index]);
+
     function handleImageLoad(e) {
       const img = e.target;
       setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
       setIsLoading(false);
+    }
+
+    function handleImageError() {
+      setIsLoading(false); // hide spinner even if image fails
     }
 
     function next() {
@@ -734,8 +740,9 @@ export default function App() {
       if (touchStartX === null) return;
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (scale === 1) {
-        if (diff > 50) next();
-        if (diff < -50) prev();
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? next() : prev();
+        }
       }
       setTouchStartX(null);
     }
@@ -743,7 +750,7 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setScale((s) => (s > 1 ? 1 : 2));
+        setScale((s) => (s === 1 ? 2 : 1));
       }
       lastTapRef.current = now;
     }
@@ -790,11 +797,10 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            position: "relative",
-            overflowX: scale > 1 ? "auto" : "hidden",
-            overflowY: scale > 1 ? "auto" : "hidden",
-            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
-            WebkitOverflowScrolling: "touch",
+            overflow: scale > 1 ? 'auto' : 'hidden',
+            width: '100vw',
+            height: '100vh',
+            WebkitOverflowScrolling: 'touch',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -805,84 +811,70 @@ export default function App() {
         >
           <div
             style={{
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
+              minWidth: scale > 1 ? scaledWidth : '100vw',
+              minHeight: scale > 1 ? scaledHeight : '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
             }}
           >
-            {/* IMAGE WRAPPER */}
-            <div
+            <img
+              ref={imgRef}
+              key={index}
+              src={images[index]}
+              alt="Full view"
+              onClick={handleDoubleTap}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              draggable={false}
               style={{
-                position: "relative",
-                maxWidth: "90vw",
-                maxHeight: "45vh",
-                width: "auto",
-                height: "auto",
+                display: 'block',
+                maxWidth: scale === 1 ? '95vw' : 'none',
+                maxHeight: scale === 1 ? '95vh' : 'none',
+                width: scale > 1 ? `${scaledWidth}px` : 'auto',
+                height: scale > 1 ? `${scaledHeight}px` : 'auto',
+                objectFit: scale === 1 ? 'contain' : 'none',
+                cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
+                userSelect: 'none',
               }}
-            >
-              {/* BACK BUTTON */}
-              <button
-                onClick={onBack}
-                style={{
-                  position: "fixed",
-                  top: "16px",
-                  right: "16px",
-                  zIndex: 10000,
-                  fontWeight: 800,
-                }}
-                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
-              >
-                ✕
-              </button>
+            />
+            {isLoading && (
+              <div className="spinner-star" style={{ position: 'absolute' }}>★</div>
+            )}
+          </div>
 
-              {isLoading ? (
-                <div className="spinner-star">★</div>
-              ) : (
-                <img
-                  ref={imgRef}
-                  key={index}
-                  src={images[index]}
-                  alt="Full view"
-                  onClick={handleDoubleTap}
-                  onLoad={handleImageLoad}
-                  draggable={false}
-                  style={{
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: `translate(-50%, -50%) scale(${scale})`,
-                    maxWidth: "80vw",
-                    maxHeight: "45vh",
-                    objectFit: "contain",
-                    cursor: scale > 1 ? "zoom-out" : "zoom-in",
-                    userSelect: "none",
-                    transition: "transform 0.25s ease",
-                    zIndex: 1,
-                  }}
-                />
-              )}
+          {/* BACK BUTTON */}
+          <button
+            onClick={onBack}
+            style={{
+              position: 'fixed',
+              top: '16px',
+              right: '16px',
+              zIndex: 10000,
+              fontWeight: 800,
+            }}
+            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+          >
+            ✕
+          </button>
 
-              {/* IMAGE INDEX */}
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: "48px",
-                  right: "24px",
-                  zIndex: 9999,
-                  color: "#fff",
-                  background: "rgba(0,0,0,0.7)",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  fontSize: "14px",
-                  pointerEvents: "none",
-                }}
-              >
-                {index + 1} / {images.length}
-              </div>
-            </div>
+          {/* IMAGE INDEX */}
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '48px',
+              right: '24px',
+              zIndex: 9999,
+              color: '#fff',
+              background: 'rgba(0,0,0,0.7)',
+              padding: '6px 12px',
+              borderRadius: '999px',
+              fontSize: '14px',
+              pointerEvents: 'none',
+            }}
+          >
+            {index + 1} / {images.length}
           </div>
         </div>
       </>
