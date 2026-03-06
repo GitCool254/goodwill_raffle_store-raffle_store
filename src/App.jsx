@@ -665,8 +665,9 @@ export default function App() {
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
-    const lastDistanceRef = React.useRef(null);
-    const lastTapRef = React.useRef(0);
+    const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
+    const lastDistanceRef = useRef(null);
+    const lastTapRef = useRef(0);
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -682,16 +683,18 @@ export default function App() {
       };
     }, []);
 
+    // Reset scroll and scale when image changes
     useEffect(() => {
-      if (containerRef.current && scale === 1) {
-        // Reset scroll position when not zoomed
-        containerRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "auto",
-        });
+      setScale(1);
+      if (containerRef.current) {
+        containerRef.current.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       }
-    }, [index, scale]);
+    }, [index]);
+
+    function handleImageLoad(e) {
+      const img = e.target;
+      setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
+    }
 
     function next() {
       if (index < images.length - 1) setIndex(index + 1);
@@ -710,8 +713,9 @@ export default function App() {
       if (touchStartX === null) return;
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (scale === 1) {
-        if (diff > 50) next();
-        if (diff < -50) prev();
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? next() : prev();
+        }
       }
       setTouchStartX(null);
     }
@@ -719,7 +723,7 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setScale((s) => (s > 1 ? 1 : 2));
+        setScale(s => (s === 1 ? 2 : 1));
       }
       lastTapRef.current = now;
     }
@@ -735,7 +739,7 @@ export default function App() {
         const dist = getDistance(e.touches);
         if (lastDistanceRef.current) {
           const delta = dist - lastDistanceRef.current;
-          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
+          setScale(s => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
         lastDistanceRef.current = dist;
       }
@@ -745,12 +749,16 @@ export default function App() {
       lastDistanceRef.current = null;
     }
 
+    // Compute scaled dimensions for when zoomed
+    const scaledWidth = naturalSize.width * scale;
+    const scaledHeight = naturalSize.height * scale;
+
     return (
       <div
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
-          overflow: scale > 1 ? 'auto' : 'hidden',
+          overflow: 'auto',
           width: '100vw',
           height: '100vh',
           WebkitOverflowScrolling: 'touch',
@@ -777,36 +785,56 @@ export default function App() {
           ✕
         </button>
 
-        {/* IMAGE WRAPPER - used for centering when not zoomed */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minWidth: scale > 1 ? 'fit-content' : '100vw',
-            minHeight: scale > 1 ? 'fit-content' : '100vh',
-            width: '100%',
-            height: '100%',
-          }}
-        >
+        {/* CENTERING WRAPPER – only active when not zoomed */}
+        {scale === 1 ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100vw',
+              height: '100vh',
+            }}
+          >
+            <img
+              key={index}
+              src={images[index]}
+              alt="Full view"
+              onLoad={handleImageLoad}
+              onClick={handleDoubleTap}
+              draggable={false}
+              style={{
+                display: 'block',
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain',
+                cursor: 'zoom-in',
+                userSelect: 'none',
+              }}
+            />
+          </div>
+        ) : (
+          // ZOOMED – no centering, just the image at its natural scaled size
           <img
             key={index}
             src={images[index]}
             alt="Full view"
+            onLoad={handleImageLoad}
             onClick={handleDoubleTap}
             draggable={false}
             style={{
               display: 'block',
-              width: 'auto',
-              height: 'auto',
-              maxWidth: scale === 1 ? '80vw' : 'none',
-              maxHeight: scale === 1 ? '45vh' : 'none',
-              transform: scale === 1 ? 'translate(0, 0)' : 'none',
-              cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
+              width: scaledWidth ? `${scaledWidth}px` : 'auto',
+              height: scaledHeight ? `${scaledHeight}px` : 'auto',
+              maxWidth: 'none',
+              maxHeight: 'none',
+              cursor: 'zoom-out',
               userSelect: 'none',
             }}
           />
-        </div>
+        )}
 
         {/* IMAGE INDEX */}
         <div
