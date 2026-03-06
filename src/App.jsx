@@ -670,11 +670,23 @@ export default function App() {
     const lastDistanceRef = useRef(null);
     const lastTapRef = useRef(0);
     const containerRef = useRef(null);
+    const imgRef = useRef(null);
 
     // Reset loading state when image changes
     useEffect(() => {
       setIsLoading(true);
     }, [index]);
+
+    // After the image element is rendered, check if it's already loaded (cached)
+    useEffect(() => {
+      if (imgRef.current && imgRef.current.complete) {
+        setNaturalSize({
+          width: imgRef.current.naturalWidth,
+          height: imgRef.current.naturalHeight,
+        });
+        setIsLoading(false);
+      }
+    }, [index]); // runs after index change, after render
 
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -830,6 +842,7 @@ export default function App() {
                 <div className="spinner-star">★</div>
               ) : (
                 <img
+                  ref={imgRef}
                   key={index}
                   src={images[index]}
                   alt="Full view"
