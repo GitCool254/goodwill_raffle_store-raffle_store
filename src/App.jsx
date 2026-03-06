@@ -672,6 +672,11 @@ export default function App() {
     const containerRef = useRef(null);
     const imgRef = useRef(null);
 
+    // Reset loading state when image changes
+    useEffect(() => {
+      setIsLoading(true);
+    }, [index]);
+
     // Lock body scroll on mount
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -695,11 +700,6 @@ export default function App() {
           behavior: "auto",
         });
       }
-    }, [index]);
-
-    // When index changes, start loading
-    useEffect(() => {
-      setIsLoading(true);
     }, [index]);
 
     // After render, check if image is already complete (cached)
@@ -740,9 +740,8 @@ export default function App() {
       if (touchStartX === null) return;
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (scale === 1) {
-        if (Math.abs(diff) > 50) {
-          diff > 0 ? next() : prev();
-        }
+        if (diff > 50) next();
+        if (diff < -50) prev();
       }
       setTouchStartX(null);
     }
@@ -750,7 +749,7 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setScale((s) => (s === 1 ? 2 : 1));
+        setScale((s) => (s > 1 ? 1 : 2));
       }
       lastTapRef.current = now;
     }
@@ -791,16 +790,22 @@ export default function App() {
             animation: spin 1s linear infinite;
             font-size: 48px;
             color: #ffc107; /* gold */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
           }
         `}</style>
         <div
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            overflow: scale > 1 ? 'auto' : 'hidden',
-            width: '100vw',
-            height: '100vh',
-            WebkitOverflowScrolling: 'touch',
+            position: "relative",
+            overflowX: scale > 1 ? "auto" : "hidden",
+            overflowY: scale > 1 ? "auto" : "hidden",
+            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
+            WebkitOverflowScrolling: "touch",
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -811,70 +816,85 @@ export default function App() {
         >
           <div
             style={{
-              minWidth: scale > 1 ? scaledWidth : '100vw',
-              minHeight: scale > 1 ? scaledHeight : '100vh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
             }}
           >
-            <img
-              ref={imgRef}
-              key={index}
-              src={images[index]}
-              alt="Full view"
-              onClick={handleDoubleTap}
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              draggable={false}
+            {/* IMAGE WRAPPER */}
+            <div
               style={{
-                display: 'block',
-                maxWidth: scale === 1 ? '95vw' : 'none',
-                maxHeight: scale === 1 ? '95vh' : 'none',
-                width: scale > 1 ? `${scaledWidth}px` : 'auto',
-                height: scale > 1 ? `${scaledHeight}px` : 'auto',
-                objectFit: scale === 1 ? 'contain' : 'none',
-                cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
-                userSelect: 'none',
+                position: "relative",
+                maxWidth: "90vw",
+                maxHeight: "45vh",
+                width: "auto",
+                height: "auto",
               }}
-            />
-            {isLoading && (
-              <div className="spinner-star" style={{ position: 'absolute' }}>★</div>
-            )}
-          </div>
+            >
+              {/* BACK BUTTON */}
+              <button
+                onClick={onBack}
+                style={{
+                  position: "fixed",
+                  top: "16px",
+                  right: "16px",
+                  zIndex: 10000,
+                  fontWeight: 800,
+                }}
+                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+              >
+                ✕
+              </button>
 
-          {/* BACK BUTTON */}
-          <button
-            onClick={onBack}
-            style={{
-              position: 'fixed',
-              top: '16px',
-              right: '16px',
-              zIndex: 10000,
-              fontWeight: 800,
-            }}
-            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
-          >
-            ✕
-          </button>
+              {/* SPINNER */}
+              {isLoading && <div className="spinner-star">★</div>}
 
-          {/* IMAGE INDEX */}
-          <div
-            style={{
-              position: 'fixed',
-              bottom: '48px',
-              right: '24px',
-              zIndex: 9999,
-              color: '#fff',
-              background: 'rgba(0,0,0,0.7)',
-              padding: '6px 12px',
-              borderRadius: '999px',
-              fontSize: '14px',
-              pointerEvents: 'none',
-            }}
-          >
-            {index + 1} / {images.length}
+              {/* IMAGE */}
+              <img
+                ref={imgRef}
+                key={index}
+                src={images[index]}
+                alt="Full view"
+                onClick={handleDoubleTap}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                draggable={false}
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: `translate(-50%, -50%) scale(${scale})`,
+                  maxWidth: "80vw",
+                  maxHeight: "45vh",
+                  objectFit: "contain",
+                  cursor: scale > 1 ? "zoom-out" : "zoom-in",
+                  userSelect: "none",
+                  transition: "transform 0.25s ease",
+                  zIndex: 1,
+                }}
+              />
+
+              {/* IMAGE INDEX */}
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: "48px",
+                  right: "24px",
+                  zIndex: 9999,
+                  color: "#fff",
+                  background: "rgba(0,0,0,0.7)",
+                  padding: "6px 12px",
+                  borderRadius: "999px",
+                  fontSize: "14px",
+                  pointerEvents: "none",
+                }}
+              >
+                {index + 1} / {images.length}
+              </div>
+            </div>
           </div>
         </div>
       </>
