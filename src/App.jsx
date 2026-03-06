@@ -683,13 +683,16 @@ export default function App() {
       };
     }, []);
 
-    // Reset scroll and scale when image changes
     useEffect(() => {
-      setScale(1);
-      if (containerRef.current) {
-        containerRef.current.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      if (containerRef.current && scale === 1) {
+        // Reset scroll position when not zoomed
+        containerRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "auto",
+        });
       }
-    }, [index]);
+    }, [index, scale]);
 
     function handleImageLoad(e) {
       const img = e.target;
@@ -723,7 +726,7 @@ export default function App() {
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
-        setScale(s => (s === 1 ? 2 : 1));
+        setScale((s) => (s > 1 ? 1 : 2));
       }
       lastTapRef.current = now;
     }
@@ -739,7 +742,7 @@ export default function App() {
         const dist = getDistance(e.touches);
         if (lastDistanceRef.current) {
           const delta = dist - lastDistanceRef.current;
-          setScale(s => Math.min(3, Math.max(1, s + delta * 0.005)));
+          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
         lastDistanceRef.current = dist;
       }
@@ -749,7 +752,6 @@ export default function App() {
       lastDistanceRef.current = null;
     }
 
-    // Compute scaled dimensions for when zoomed
     const scaledWidth = naturalSize.width * scale;
     const scaledHeight = naturalSize.height * scale;
 
@@ -758,7 +760,7 @@ export default function App() {
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
-          overflow: 'auto',
+          overflow: scale > 1 ? 'auto' : 'hidden',
           width: '100vw',
           height: '100vh',
           WebkitOverflowScrolling: 'touch',
@@ -785,7 +787,7 @@ export default function App() {
           ✕
         </button>
 
-        {/* CENTERING WRAPPER – only active when not zoomed */}
+        {/* IMAGE – conditionally centered or full-size for panning */}
         {scale === 1 ? (
           <div
             style={{
@@ -816,7 +818,6 @@ export default function App() {
             />
           </div>
         ) : (
-          // ZOOMED – no centering, just the image at its natural scaled size
           <img
             key={index}
             src={images[index]}
