@@ -785,16 +785,26 @@ export default function App() {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
-          .spinner-star {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-            font-size: 48px;
-            color: #ffc107; /* gold */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+          .img-loader {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 2;
+          }
+          .spinner {
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+          }
+          .ring {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 4;
+          }
+          .star {
+            fill: #f68b1e;
           }
         `}</style>
         <div
@@ -850,7 +860,16 @@ export default function App() {
               </button>
 
               {/* SPINNER */}
-              {isLoading && <div className="spinner-star">★</div>}
+              {isLoading && (
+                <div className="img-loader">
+                  <svg className="spinner" viewBox="0 0 50 50">
+                    <circle className="ring" cx="25" cy="25" r="20"></circle>
+                    <path className="star"
+                      d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z">
+                    </path>
+                  </svg>
+                </div>
+              )}
 
               {/* IMAGE */}
               <img
