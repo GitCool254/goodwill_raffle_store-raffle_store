@@ -668,8 +668,6 @@ export default function App() {
     const lastDistanceRef = React.useRef(null);
     const lastTapRef = React.useRef(0);
     const containerRef = useRef(null);
-    const imgRef = useRef(null);
-    const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -685,33 +683,15 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-      if (containerRef.current) {
+      if (containerRef.current && scale === 1) {
+        // Reset scroll position when not zoomed
         containerRef.current.scrollTo({
           top: 0,
           left: 0,
           behavior: "auto",
         });
       }
-    }, [index]);
-
-    useEffect(() => {
-      // When scale changes, adjust container size if natural dimensions available
-      if (naturalSize.width && naturalSize.height && scale > 1) {
-        const scaledWidth = naturalSize.width * scale;
-        const scaledHeight = naturalSize.height * scale;
-        containerRef.current.style.width = scaledWidth + 'px';
-        containerRef.current.style.height = scaledHeight + 'px';
-      } else if (scale === 1) {
-        // Reset container to viewport size
-        containerRef.current.style.width = '100vw';
-        containerRef.current.style.height = '100vh';
-      }
-    }, [scale, naturalSize]);
-
-    function handleImageLoad(e) {
-      const img = e.target;
-      setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
-    }
+    }, [index, scale]);
 
     function next() {
       if (index < images.length - 1) setIndex(index + 1);
@@ -770,7 +750,7 @@ export default function App() {
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
-          overflow: 'auto',
+          overflow: scale > 1 ? 'auto' : 'hidden',
           width: '100vw',
           height: '100vh',
           WebkitOverflowScrolling: 'touch',
@@ -797,26 +777,36 @@ export default function App() {
           ✕
         </button>
 
-        {/* IMAGE */}
-        <img
-          ref={imgRef}
-          key={index}
-          src={images[index]}
-          alt="Full view"
-          onLoad={handleImageLoad}
-          onClick={handleDoubleTap}
-          draggable={false}
+        {/* IMAGE WRAPPER - used for centering when not zoomed */}
+        <div
           style={{
-            display: 'block',
-            width: 'auto',
-            height: 'auto',
-            maxWidth: scale === 1 ? '80vw' : 'none',
-            maxHeight: scale === 1 ? '45vh' : 'none',
-            margin: 0,
-            cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
-            userSelect: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: scale > 1 ? 'fit-content' : '100vw',
+            minHeight: scale > 1 ? 'fit-content' : '100vh',
+            width: '100%',
+            height: '100%',
           }}
-        />
+        >
+          <img
+            key={index}
+            src={images[index]}
+            alt="Full view"
+            onClick={handleDoubleTap}
+            draggable={false}
+            style={{
+              display: 'block',
+              width: 'auto',
+              height: 'auto',
+              maxWidth: scale === 1 ? '80vw' : 'none',
+              maxHeight: scale === 1 ? '45vh' : 'none',
+              transform: scale === 1 ? 'translate(0, 0)' : 'none',
+              cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
+              userSelect: 'none',
+            }}
+          />
+        </div>
 
         {/* IMAGE INDEX */}
         <div
