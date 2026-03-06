@@ -664,9 +664,17 @@ export default function App() {
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
-    const [scale, setScale] = useState(1);                                 const lastDistanceRef = React.useRef(null);
-    const lastTapRef = React.useRef(0);
-    const containerRef = React.useRef(null);
+    const [scale, setScale] = useState(1);
+    const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
+    const [isLoading, setIsLoading] = useState(true);
+    const lastDistanceRef = useRef(null);
+    const lastTapRef = useRef(0);
+    const containerRef = useRef(null);
+
+    // Reset loading state when image changes
+    useEffect(() => {
+      setIsLoading(true);
+    }, [index]);
 
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -680,13 +688,23 @@ export default function App() {
         document.body.style.backgroundColor = originalBg;
       };
     }, []);
-                                                                           useEffect(() => {
+
+    useEffect(() => {
       if (containerRef.current) {
         containerRef.current.scrollTo({
           top: 0,
-          left: 0,                                                               behavior: "auto",
-        });                                                                  }
+          left: 0,
+          behavior: "auto",
+        });
+      }
     }, [index]);
+
+    function handleImageLoad(e) {
+      const img = e.target;
+      setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
+      setIsLoading(false);
+    }
+
     function next() {
       if (index < images.length - 1) setIndex(index + 1);
     }
@@ -694,113 +712,167 @@ export default function App() {
     function prev() {
       if (index > 0) setIndex(index - 1);
     }
-                                                                           function handleTouchStart(e) {                                           if (scale > 1) return;                                                 setTouchStartX(e.touches[0].clientX);
+
+    function handleTouchStart(e) {
+      if (scale > 1) return;
+      setTouchStartX(e.touches[0].clientX);
     }
 
     function handleTouchEnd(e) {
       if (touchStartX === null) return;
-      const diff = touchStartX - e.changedTouches[0].clientX;                if (scale === 1) {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (scale === 1) {
         if (diff > 50) next();
         if (diff < -50) prev();
       }
-      setTouchStartX(null);                                                }
+      setTouchStartX(null);
+    }
 
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
         setScale((s) => (s > 1 ? 1 : 2));
-      }                                                                      lastTapRef.current = now;                                            }
+      }
+      lastTapRef.current = now;
+    }
 
-    function getDistance(touches) {                                          const dx = touches[0].clientX - touches[1].clientX;                    const dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);                                 }
-                                                                           function handleTouchMove(e) {                                            if (e.touches.length === 2) {
-        const dist = getDistance(e.touches);                                   if (lastDistanceRef.current) {
-          const delta = dist - lastDistanceRef.current;                          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
+    function getDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function handleTouchMove(e) {
+      if (e.touches.length === 2) {
+        const dist = getDistance(e.touches);
+        if (lastDistanceRef.current) {
+          const delta = dist - lastDistanceRef.current;
+          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
         lastDistanceRef.current = dist;
       }
     }
 
     function handleTouchEndZoom() {
-      lastDistanceRef.current = null;                                      }                                                                                                                                             return (                                                                 <div
-        ref={containerRef}
-        className="fixed inset-0 bg-black z-50"
-        style={{
-          position: "relative",
-          overflowX: scale > 1 ? "auto" : "hidden",
-          overflowY: scale > 1 ? "auto" : "hidden",
-          touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
-          WebkitOverflowScrolling: "touch",
-        }}
-        onTouchStart={handleTouchStart}                                        onTouchMove={handleTouchMove}
-        onTouchEnd={(e) => {
-          handleTouchEnd(e);
-          handleTouchEndZoom();
-        }}
-      >
-        <div                                                                     style={{
-            width: "100vw",
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",                                                  justifyContent: "center",
-            overflow: "hidden",
+      lastDistanceRef.current = null;
+    }
+
+    const scaledWidth = naturalSize.width * scale;
+    const scaledHeight = naturalSize.height * scale;
+
+    return (
+      <>
+        <style>{`
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .spinner-star {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            font-size: 48px;
+            color: #ffc107; /* gold */
+          }
+        `}</style>
+        <div
+          ref={containerRef}
+          className="fixed inset-0 bg-black z-50"
+          style={{
+            position: "relative",
+            overflowX: scale > 1 ? "auto" : "hidden",
+            overflowY: scale > 1 ? "auto" : "hidden",
+            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
+            WebkitOverflowScrolling: "touch",
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={(e) => {
+            handleTouchEnd(e);
+            handleTouchEndZoom();
           }}
         >
-          {/* IMAGE WRAPPER */}
           <div
             style={{
-              position: "relative",
-              maxWidth: "90vw",
-              maxHeight: "45vh",
-              width: "auto",                                                         height: "auto",                                                      }}                                                                   >                                                                        {/* BACK BUTTON */}                                                    <button
-              onClick={onBack}
-              style={{
-                position: "fixed",
-                top: "16px",
-                right: "16px",
-                zIndex: 10000,
-                fontWeight: 800,
-              }}
-              className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
-            >
-              ✕
-            </button>
-
-            {/* IMAGE */}
-            <img
-              key={index}
-              src={images[index]}
-              alt="Full view"
-              onClick={handleDoubleTap}
-              draggable={false}
-              style={{
-                position: "fixed",          // ✅ absolute for true centering
-                top: "50%",
-                left: "50%",
-                transform: `translate(-50%, -50%) scale(${scale})`,
-                maxWidth: "80vw",                                                      maxHeight: "45vh",
-                objectFit: "contain",
-                cursor: scale > 1 ? "zoom-out" : "zoom-in",                            userSelect: "none",
-                transition: "transform 0.25s ease",                                    zIndex: 1,
-              }}
-            />
-
-            {/* IMAGE INDEX */}
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+            }}
+          >
+            {/* IMAGE WRAPPER */}
             <div
               style={{
-                position: "fixed",
-                bottom: "48px",                                                        right: "24px",
-                zIndex: 9999,
-                color: "#fff",
-                background: "rgba(0,0,0,0.7)",                                         padding: "6px 12px",
-                borderRadius: "999px",                                                 fontSize: "14px",
-                pointerEvents: "none",
+                position: "relative",
+                maxWidth: "90vw",
+                maxHeight: "45vh",
+                width: "auto",
+                height: "auto",
               }}
             >
-              {index + 1} / {images.length}
+              {/* BACK BUTTON */}
+              <button
+                onClick={onBack}
+                style={{
+                  position: "fixed",
+                  top: "16px",
+                  right: "16px",
+                  zIndex: 10000,
+                  fontWeight: 800,
+                }}
+                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+              >
+                ✕
+              </button>
+
+              {isLoading ? (
+                <div className="spinner-star">★</div>
+              ) : (
+                <img
+                  key={index}
+                  src={images[index]}
+                  alt="Full view"
+                  onClick={handleDoubleTap}
+                  onLoad={handleImageLoad}
+                  draggable={false}
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: `translate(-50%, -50%) scale(${scale})`,
+                    maxWidth: "80vw",
+                    maxHeight: "45vh",
+                    objectFit: "contain",
+                    cursor: scale > 1 ? "zoom-out" : "zoom-in",
+                    userSelect: "none",
+                    transition: "transform 0.25s ease",
+                    zIndex: 1,
+                  }}
+                />
+              )}
+
+              {/* IMAGE INDEX */}
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: "48px",
+                  right: "24px",
+                  zIndex: 9999,
+                  color: "#fff",
+                  background: "rgba(0,0,0,0.7)",
+                  padding: "6px 12px",
+                  borderRadius: "999px",
+                  fontSize: "14px",
+                  pointerEvents: "none",
+                }}
+              >
+                {index + 1} / {images.length}
+              </div>
             </div>
           </div>
-        </div>                                                               </div>
+        </div>
+      </>
     );
   }
 
