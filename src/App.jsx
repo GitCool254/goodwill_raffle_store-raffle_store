@@ -720,7 +720,7 @@ export default function App() {
     }
 
     function handleImageError() {
-      setIsLoading(false); // hide spinner even if image fails
+      setIsLoading(false);
     }
 
     function next() {
@@ -785,14 +785,6 @@ export default function App() {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
-          .img-loader {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-          }
           .spinner {
             width: 36px;
             height: 36px;
@@ -824,6 +816,16 @@ export default function App() {
             handleTouchEndZoom();
           }}
         >
+          {/* SPINNER (fixed centered) */}
+          {isLoading && (
+            <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10001 }}>
+              <svg className="spinner" viewBox="0 0 50 50">
+                <circle className="ring" cx="25" cy="25" r="20"></circle>
+                <path className="star" d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z" />
+              </svg>
+            </div>
+          )}
+
           <div
             style={{
               width: "100vw",
@@ -858,18 +860,6 @@ export default function App() {
               >
                 ✕
               </button>
-
-              {/* SPINNER */}
-              {isLoading && (
-                <div className="img-loader">
-                  <svg className="spinner" viewBox="0 0 50 50">
-                    <circle className="ring" cx="25" cy="25" r="20"></circle>
-                    <path className="star"
-                      d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z">
-                    </path>
-                  </svg>
-                </div>
-              )}
 
               {/* IMAGE */}
               <img
