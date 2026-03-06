@@ -664,12 +664,9 @@ export default function App() {
 
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
-    const [scale, setScale] = useState(1);
-    const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
-    const lastDistanceRef = useRef(null);
-    const lastTapRef = useRef(0);
-    const containerRef = useRef(null);
-    const hasCenteredRef = useRef(false); // to avoid recentering on every scale change
+    const [scale, setScale] = useState(1);                                 const lastDistanceRef = React.useRef(null);
+    const lastTapRef = React.useRef(0);
+    const containerRef = React.useRef(null);
 
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -683,29 +680,13 @@ export default function App() {
         document.body.style.backgroundColor = originalBg;
       };
     }, []);
-
-    // Reset centering flag when image changes
-    useEffect(() => {
-      hasCenteredRef.current = false;
+                                                                           useEffect(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: 0,
+          left: 0,                                                               behavior: "auto",
+        });                                                                  }
     }, [index]);
-
-    // Center the scroll position when zoomed in and natural dimensions are known
-    useEffect(() => {
-      if (scale > 1 && naturalSize.width && naturalSize.height && containerRef.current && !hasCenteredRef.current) {
-        const scaledWidth = naturalSize.width * scale;
-        const scaledHeight = naturalSize.height * scale;
-        const container = containerRef.current;
-        container.scrollLeft = (scaledWidth - container.clientWidth) / 2;
-        container.scrollTop = (scaledHeight - container.clientHeight) / 2;
-        hasCenteredRef.current = true;
-      }
-    }, [scale, naturalSize]);
-
-    function handleImageLoad(e) {
-      const img = e.target;
-      setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
-    }
-
     function next() {
       if (index < images.length - 1) setIndex(index + 1);
     }
@@ -713,155 +694,113 @@ export default function App() {
     function prev() {
       if (index > 0) setIndex(index - 1);
     }
-
-    function handleTouchStart(e) {
-      if (scale > 1) return;
-      setTouchStartX(e.touches[0].clientX);
+                                                                           function handleTouchStart(e) {                                           if (scale > 1) return;                                                 setTouchStartX(e.touches[0].clientX);
     }
 
     function handleTouchEnd(e) {
       if (touchStartX === null) return;
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (scale === 1) {
-        if (Math.abs(diff) > 50) {
-          diff > 0 ? next() : prev();
-        }
+      const diff = touchStartX - e.changedTouches[0].clientX;                if (scale === 1) {
+        if (diff > 50) next();
+        if (diff < -50) prev();
       }
-      setTouchStartX(null);
-    }
+      setTouchStartX(null);                                                }
 
     function handleDoubleTap() {
       const now = Date.now();
       if (now - lastTapRef.current < 300) {
         setScale((s) => (s > 1 ? 1 : 2));
-      }
-      lastTapRef.current = now;
-    }
+      }                                                                      lastTapRef.current = now;                                            }
 
-    function getDistance(touches) {
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    function handleTouchMove(e) {
-      if (e.touches.length === 2) {
-        const dist = getDistance(e.touches);
-        if (lastDistanceRef.current) {
-          const delta = dist - lastDistanceRef.current;
-          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
+    function getDistance(touches) {                                          const dx = touches[0].clientX - touches[1].clientX;                    const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);                                 }
+                                                                           function handleTouchMove(e) {                                            if (e.touches.length === 2) {
+        const dist = getDistance(e.touches);                                   if (lastDistanceRef.current) {
+          const delta = dist - lastDistanceRef.current;                          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
         }
         lastDistanceRef.current = dist;
       }
     }
 
     function handleTouchEndZoom() {
-      lastDistanceRef.current = null;
-    }
-
-    const scaledWidth = naturalSize.width * scale;
-    const scaledHeight = naturalSize.height * scale;
-
-    return (
-      <div
+      lastDistanceRef.current = null;                                      }                                                                                                                                             return (                                                                 <div
         ref={containerRef}
         className="fixed inset-0 bg-black z-50"
         style={{
-          overflow: scale > 1 ? 'auto' : 'hidden',
-          width: '100vw',
-          height: '100vh',
-          WebkitOverflowScrolling: 'touch',
+          position: "relative",
+          overflowX: scale > 1 ? "auto" : "hidden",
+          overflowY: scale > 1 ? "auto" : "hidden",
+          touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
+          WebkitOverflowScrolling: "touch",
         }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
+        onTouchStart={handleTouchStart}                                        onTouchMove={handleTouchMove}
         onTouchEnd={(e) => {
           handleTouchEnd(e);
           handleTouchEndZoom();
         }}
       >
-        {/* BACK BUTTON */}
-        <button
-          onClick={onBack}
-          style={{
-            position: 'fixed',
-            top: '16px',
-            right: '16px',
-            zIndex: 10000,
-            fontWeight: 800,
+        <div                                                                     style={{
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",                                                  justifyContent: "center",
+            overflow: "hidden",
           }}
-          className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
         >
-          ✕
-        </button>
-
-        {/* IMAGE – conditionally centered or full-size for panning */}
-        {scale === 1 ? (
+          {/* IMAGE WRAPPER */}
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100vw',
-              height: '100vh',
-            }}
-          >
+              position: "relative",
+              maxWidth: "90vw",
+              maxHeight: "45vh",
+              width: "auto",                                                         height: "auto",                                                      }}                                                                   >                                                                        {/* BACK BUTTON */}                                                    <button
+              onClick={onBack}
+              style={{
+                position: "fixed",
+                top: "16px",
+                right: "16px",
+                zIndex: 10000,
+                fontWeight: 800,
+              }}
+              className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+            >
+              ✕
+            </button>
+
+            {/* IMAGE */}
             <img
               key={index}
               src={images[index]}
               alt="Full view"
-              onLoad={handleImageLoad}
               onClick={handleDoubleTap}
               draggable={false}
               style={{
-                display: 'block',
-                maxWidth: '95vw',
-                maxHeight: '95vh',
-                width: 'auto',
-                height: 'auto',
-                objectFit: 'contain',
-                cursor: 'zoom-in',
-                userSelect: 'none',
+                position: "fixed",          // ✅ absolute for true centering
+                top: "50%",
+                left: "50%",
+                transform: `translate(-50%, -50%) scale(${scale})`,
+                maxWidth: "80vw",                                                      maxHeight: "45vh",
+                objectFit: "contain",
+                cursor: scale > 1 ? "zoom-out" : "zoom-in",                            userSelect: "none",
+                transition: "transform 0.25s ease",                                    zIndex: 1,
               }}
             />
-          </div>
-        ) : (
-          <img
-            key={index}
-            src={images[index]}
-            alt="Full view"
-            onLoad={handleImageLoad}
-            onClick={handleDoubleTap}
-            draggable={false}
-            style={{
-              display: 'block',
-              width: scaledWidth ? `${scaledWidth}px` : 'auto',
-              height: scaledHeight ? `${scaledHeight}px` : 'auto',
-              maxWidth: 'none',
-              maxHeight: 'none',
-              cursor: 'zoom-out',
-              userSelect: 'none',
-            }}
-          />
-        )}
 
-        {/* IMAGE INDEX */}
-        <div
-          style={{
-            position: 'fixed',
-            bottom: '48px',
-            right: '24px',
-            zIndex: 9999,
-            color: '#fff',
-            background: 'rgba(0,0,0,0.7)',
-            padding: '6px 12px',
-            borderRadius: '999px',
-            fontSize: '14px',
-            pointerEvents: 'none',
-          }}
-        >
-          {index + 1} / {images.length}
-        </div>
-      </div>
+            {/* IMAGE INDEX */}
+            <div
+              style={{
+                position: "fixed",
+                bottom: "48px",                                                        right: "24px",
+                zIndex: 9999,
+                color: "#fff",
+                background: "rgba(0,0,0,0.7)",                                         padding: "6px 12px",
+                borderRadius: "999px",                                                 fontSize: "14px",
+                pointerEvents: "none",
+              }}
+            >
+              {index + 1} / {images.length}
+            </div>
+          </div>
+        </div>                                                               </div>
     );
   }
 
