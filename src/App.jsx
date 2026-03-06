@@ -669,6 +669,7 @@ export default function App() {
     const lastDistanceRef = useRef(null);
     const lastTapRef = useRef(0);
     const containerRef = useRef(null);
+    const hasCenteredRef = useRef(false); // to avoid recentering on every scale change
 
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
@@ -683,16 +684,22 @@ export default function App() {
       };
     }, []);
 
+    // Reset centering flag when image changes
     useEffect(() => {
-      if (containerRef.current && scale === 1) {
-        // Reset scroll position when not zoomed
-        containerRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "auto",
-        });
+      hasCenteredRef.current = false;
+    }, [index]);
+
+    // Center the scroll position when zoomed in and natural dimensions are known
+    useEffect(() => {
+      if (scale > 1 && naturalSize.width && naturalSize.height && containerRef.current && !hasCenteredRef.current) {
+        const scaledWidth = naturalSize.width * scale;
+        const scaledHeight = naturalSize.height * scale;
+        const container = containerRef.current;
+        container.scrollLeft = (scaledWidth - container.clientWidth) / 2;
+        container.scrollTop = (scaledHeight - container.clientHeight) / 2;
+        hasCenteredRef.current = true;
       }
-    }, [index, scale]);
+    }, [scale, naturalSize]);
 
     function handleImageLoad(e) {
       const img = e.target;
@@ -807,8 +814,8 @@ export default function App() {
               draggable={false}
               style={{
                 display: 'block',
-                maxWidth: '90vw',
-                maxHeight: '80vh',
+                maxWidth: '95vw',
+                maxHeight: '95vh',
                 width: 'auto',
                 height: 'auto',
                 objectFit: 'contain',
