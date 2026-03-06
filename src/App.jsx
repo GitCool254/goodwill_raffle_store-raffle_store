@@ -796,7 +796,7 @@ export default function App() {
             stroke-width: 4;
           }
           .star {
-            fill: #f68b1e;
+            fill: #3b82f6;
           }
         `}</style>
         <div
