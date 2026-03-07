@@ -804,7 +804,7 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            overflow: 'auto',
+            overflow: scale > 1 ? 'auto' : 'hidden',
             width: '100vw',
             height: '100vh',
             WebkitOverflowScrolling: 'touch',
@@ -863,8 +863,11 @@ export default function App() {
                 draggable={false}
                 style={{
                   display: 'block',
-                  width: '100%',
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  width: 'auto',
                   height: 'auto',
+                  objectFit: 'contain',
                   cursor: 'zoom-in',
                   userSelect: 'none',
                 }}
