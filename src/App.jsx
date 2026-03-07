@@ -691,6 +691,17 @@ export default function App() {
       };
     }, []);
 
+    // Reset scroll position on image change
+    useEffect(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "auto",
+        });
+      }
+    }, [index]);
+
     // After render, check if image is already complete (cached)
     useEffect(() => {
       if (imgRef.current && imgRef.current.complete) {
@@ -729,9 +740,8 @@ export default function App() {
       if (touchStartX === null) return;
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (scale === 1) {
-        if (Math.abs(diff) > 50) {
-          diff > 0 ? next() : prev();
-        }
+        if (diff > 50) next();
+        if (diff < -50) prev();
       }
       setTouchStartX(null);
     }
@@ -793,10 +803,11 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            overflow: scale > 1 ? 'auto' : 'hidden',
-            width: '100vw',
-            height: '100vh',
-            WebkitOverflowScrolling: 'touch',
+            position: "relative",
+            overflowX: scale > 1 ? "auto" : "hidden",
+            overflowY: scale > 1 ? "auto" : "hidden",
+            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
+            WebkitOverflowScrolling: "touch",
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -815,54 +826,42 @@ export default function App() {
             </div>
           )}
 
-          {/* BACK BUTTON (fixed) */}
-          <button
-            onClick={onBack}
+          <div
             style={{
-              position: 'fixed',
-              top: '16px',
-              right: '16px',
-              zIndex: 10000,
-              fontWeight: 800,
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
             }}
-            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
           >
-            ✕
-          </button>
-
-          {scale === 1 ? (
-            // CENTERED IMAGE (not zoomed)
-            <img
-              ref={imgRef}
-              key={index}
-              src={images[index]}
-              alt="Full view"
-              onClick={handleDoubleTap}
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              draggable={false}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                maxWidth: '100vw',
-                maxHeight: '100vh',
-                width: 'auto',
-                height: 'auto',
-                cursor: 'zoom-in',
-                userSelect: 'none',
-              }}
-            />
-          ) : (
-            // ZOOMED – normal block image inside scrollable container
+            {/* IMAGE WRAPPER */}
             <div
               style={{
-                minWidth: scaledWidth,
-                minHeight: scaledHeight,
-                display: 'inline-block',
+                position: "relative",
+                maxWidth: "90vw",
+                maxHeight: "45vh",
+                width: "auto",
+                height: "auto",
               }}
             >
+              {/* BACK BUTTON */}
+              <button
+                onClick={onBack}
+                style={{
+                  position: "fixed",
+                  top: "16px",
+                  right: "16px",
+                  zIndex: 10000,
+                  fontWeight: 800,
+                }}
+                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+              >
+                ✕
+              </button>
+
+              {/* IMAGE */}
               <img
                 ref={imgRef}
                 key={index}
@@ -873,32 +872,38 @@ export default function App() {
                 onError={handleImageError}
                 draggable={false}
                 style={{
-                  display: 'block',
-                  width: scaledWidth,
-                  height: scaledHeight,
-                  cursor: 'zoom-out',
-                  userSelect: 'none',
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: `translate(-50%, -50%) scale(${scale})`,
+                  maxWidth: "80vw",
+                  maxHeight: "45vh",
+                  objectFit: "contain",
+                  cursor: scale > 1 ? "zoom-out" : "zoom-in",
+                  userSelect: "none",
+                  transition: "transform 0.25s ease",
+                  zIndex: 1,
                 }}
               />
-            </div>
-          )}
 
-          {/* IMAGE INDEX (fixed) */}
-          <div
-            style={{
-              position: 'fixed',
-              bottom: '48px',
-              right: '24px',
-              zIndex: 9999,
-              color: '#fff',
-              background: 'rgba(0,0,0,0.7)',
-              padding: '6px 12px',
-              borderRadius: '999px',
-              fontSize: '14px',
-              pointerEvents: 'none',
-            }}
-          >
-            {index + 1} / {images.length}
+              {/* IMAGE INDEX */}
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: "48px",
+                  right: "24px",
+                  zIndex: 9999,
+                  color: "#fff",
+                  background: "rgba(0,0,0,0.7)",
+                  padding: "6px 12px",
+                  borderRadius: "999px",
+                  fontSize: "14px",
+                  pointerEvents: "none",
+                }}
+              >
+                {index + 1} / {images.length}
+              </div>
+            </div>
           </div>
         </div>
       </>
