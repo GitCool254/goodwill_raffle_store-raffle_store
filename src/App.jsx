@@ -841,48 +841,50 @@ export default function App() {
             ✕
           </button>
 
-          {/* NEXT/PREV BUTTONS */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={prev}
-                style={{
-                  position: 'fixed',
-                  left: '16px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 10001,
-                  fontSize: '64px',
-                  color: 'white',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-                aria-label="Previous image"
-              >
-                ‹
-              </button>
-              <button
-                onClick={next}
-                style={{
-                  position: 'fixed',
-                  right: '16px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 10001,
-                  fontSize: '64px',
-                  color: 'white',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-                aria-label="Next image"
-              >
-                ›
-              </button>
-            </>
+          {/* PREV BUTTON (if not first image) */}
+          {images.length > 1 && index > 0 && (
+            <button
+              onClick={prev}
+              style={{
+                position: 'fixed',
+                left: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 10001,
+                fontSize: '64px',
+                color: 'white',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              aria-label="Previous image"
+            >
+              ‹
+            </button>
+          )}
+
+          {/* NEXT BUTTON (if not last image) */}
+          {images.length > 1 && index < images.length - 1 && (
+            <button
+              onClick={next}
+              style={{
+                position: 'fixed',
+                right: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 10001,
+                fontSize: '64px',
+                color: 'white',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              aria-label="Next image"
+            >
+              ›
+            </button>
           )}
 
           <div
