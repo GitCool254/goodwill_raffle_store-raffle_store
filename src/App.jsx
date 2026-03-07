@@ -691,7 +691,7 @@ export default function App() {
       };
     }, []);
 
-    // Reset scroll position on image change
+    // Reset scroll position when image changes or when zoomed out
     useEffect(() => {
       if (containerRef.current) {
         containerRef.current.scrollTo({
@@ -700,7 +700,7 @@ export default function App() {
           behavior: "auto",
         });
       }
-    }, [index]);
+    }, [index, scale === 1]); // reset when zoomed out or image changes
 
     // After render, check if image is already complete (cached)
     useEffect(() => {
@@ -740,8 +740,9 @@ export default function App() {
       if (touchStartX === null) return;
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (scale === 1) {
-        if (diff > 50) next();
-        if (diff < -50) prev();
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? next() : prev();
+        }
       }
       setTouchStartX(null);
     }
@@ -803,11 +804,10 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            position: "relative",
-            overflowX: scale > 1 ? "auto" : "hidden",
-            overflowY: scale > 1 ? "auto" : "hidden",
-            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
-            WebkitOverflowScrolling: "touch",
+            overflow: scale > 1 ? 'auto' : 'hidden',
+            width: '100vw',
+            height: '100vh',
+            WebkitOverflowScrolling: 'touch',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -826,42 +826,32 @@ export default function App() {
             </div>
           )}
 
-          <div
+          {/* BACK BUTTON (fixed) */}
+          <button
+            onClick={onBack}
             style={{
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
+              position: 'fixed',
+              top: '16px',
+              right: '16px',
+              zIndex: 10000,
+              fontWeight: 800,
             }}
+            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
           >
-            {/* IMAGE WRAPPER */}
+            ✕
+          </button>
+
+          {/* IMAGE WRAPPER – only for centering when not zoomed */}
+          {scale === 1 ? (
             <div
               style={{
-                position: "relative",
-                maxWidth: "90vw",
-                maxHeight: "45vh",
-                width: "auto",
-                height: "auto",
+                width: '100vw',
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              {/* BACK BUTTON */}
-              <button
-                onClick={onBack}
-                style={{
-                  position: "fixed",
-                  top: "16px",
-                  right: "16px",
-                  zIndex: 10000,
-                  fontWeight: 800,
-                }}
-                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
-              >
-                ✕
-              </button>
-
-              {/* IMAGE */}
               <img
                 ref={imgRef}
                 key={index}
@@ -872,38 +862,62 @@ export default function App() {
                 onError={handleImageError}
                 draggable={false}
                 style={{
-                  position: "fixed",
-                  top: "50%",
-                  left: "50%",
-                  transform: `translate(-50%, -50%) scale(${scale})`,
-                  maxWidth: "80vw",
-                  maxHeight: "45vh",
-                  objectFit: "contain",
-                  cursor: scale > 1 ? "zoom-out" : "zoom-in",
-                  userSelect: "none",
-                  transition: "transform 0.25s ease",
-                  zIndex: 1,
+                  display: 'block',
+                  maxWidth: '95vw',
+                  maxHeight: '95vh',
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  cursor: 'zoom-in',
+                  userSelect: 'none',
                 }}
               />
-
-              {/* IMAGE INDEX */}
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: "48px",
-                  right: "24px",
-                  zIndex: 9999,
-                  color: "#fff",
-                  background: "rgba(0,0,0,0.7)",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  fontSize: "14px",
-                  pointerEvents: "none",
-                }}
-              >
-                {index + 1} / {images.length}
-              </div>
             </div>
+          ) : (
+            // ZOOMED – normal block image inside scrollable container
+            <div
+              style={{
+                minWidth: scaledWidth,
+                minHeight: scaledHeight,
+                display: 'inline-block',
+              }}
+            >
+              <img
+                ref={imgRef}
+                key={index}
+                src={images[index]}
+                alt="Full view"
+                onClick={handleDoubleTap}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                draggable={false}
+                style={{
+                  display: 'block',
+                  width: scaledWidth,
+                  height: scaledHeight,
+                  cursor: 'zoom-out',
+                  userSelect: 'none',
+                }}
+              />
+            </div>
+          )}
+
+          {/* IMAGE INDEX (fixed) */}
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '48px',
+              right: '24px',
+              zIndex: 9999,
+              color: '#fff',
+              background: 'rgba(0,0,0,0.7)',
+              padding: '6px 12px',
+              borderRadius: '999px',
+              fontSize: '14px',
+              pointerEvents: 'none',
+            }}
+          >
+            {index + 1} / {images.length}
           </div>
         </div>
       </>
