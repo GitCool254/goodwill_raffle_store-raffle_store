@@ -700,7 +700,7 @@ export default function App() {
           behavior: "auto",
         });
       }
-    }, [index, scale === 1]); // reset when zoomed out or image changes
+    }, [index, scale === 1]);
 
     // After render, check if image is already complete (cached)
     useEffect(() => {
@@ -804,7 +804,7 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            overflow: scale > 1 ? 'auto' : 'hidden',
+            overflow: 'auto',
             width: '100vw',
             height: '100vh',
             WebkitOverflowScrolling: 'touch',
@@ -863,11 +863,8 @@ export default function App() {
                 draggable={false}
                 style={{
                   display: 'block',
-                  maxWidth: '95vw',
-                  maxHeight: '95vh',
-                  width: 'auto',
+                  width: '100%',
                   height: 'auto',
-                  objectFit: 'contain',
                   cursor: 'zoom-in',
                   userSelect: 'none',
                 }}
