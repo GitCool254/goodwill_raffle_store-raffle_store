@@ -826,6 +826,65 @@ export default function App() {
             </div>
           )}
 
+          {/* BACK BUTTON */}
+          <button
+            onClick={onBack}
+            style={{
+              position: "fixed",
+              top: "16px",
+              right: "16px",
+              zIndex: 10000,
+              fontWeight: 800,
+            }}
+            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+          >
+            ✕
+          </button>
+
+          {/* NEXT/PREV BUTTONS */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prev}
+                style={{
+                  position: 'fixed',
+                  left: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 10001,
+                  fontSize: '64px',
+                  color: 'white',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                onClick={next}
+                style={{
+                  position: 'fixed',
+                  right: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 10001,
+                  fontSize: '64px',
+                  color: 'white',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+                aria-label="Next image"
+              >
+                ›
+              </button>
+            </>
+          )}
+
           <div
             style={{
               width: "100vw",
@@ -846,21 +905,6 @@ export default function App() {
                 height: "auto",
               }}
             >
-              {/* BACK BUTTON */}
-              <button
-                onClick={onBack}
-                style={{
-                  position: "fixed",
-                  top: "16px",
-                  right: "16px",
-                  zIndex: 10000,
-                  fontWeight: 800,
-                }}
-                className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
-              >
-                ✕
-              </button>
-
               {/* IMAGE */}
               <img
                 ref={imgRef}
