@@ -693,14 +693,14 @@ export default function App() {
 
     // Reset scroll position when image changes or when zoomed out
     useEffect(() => {
-      if (containerRef.current) {
+      if (containerRef.current && scale === 1) {
         containerRef.current.scrollTo({
           top: 0,
           left: 0,
           behavior: "auto",
         });
       }
-    }, [index, scale === 1]);
+    }, [index, scale]);
 
     // After render, check if image is already complete (cached)
     useEffect(() => {
@@ -841,66 +841,38 @@ export default function App() {
             ✕
           </button>
 
-          {/* IMAGE WRAPPER – only for centering when not zoomed */}
-          {scale === 1 ? (
-            <div
+          {/* IMAGE WRAPPER */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: scale > 1 ? scaledWidth : '100vw',
+              height: scale > 1 ? scaledHeight : '100vh',
+              margin: 0,
+            }}
+          >
+            <img
+              ref={imgRef}
+              key={index}
+              src={images[index]}
+              alt="Full view"
+              onClick={handleDoubleTap}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              draggable={false}
               style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: 'block',
+                width: scale > 1 ? scaledWidth : 'auto',
+                height: scale > 1 ? scaledHeight : 'auto',
+                maxWidth: scale === 1 ? '100%' : 'none',
+                maxHeight: scale === 1 ? '100%' : 'none',
+                objectFit: scale === 1 ? 'contain' : 'none',
+                cursor: scale > 1 ? 'zoom-out' : 'zoom-in',
+                userSelect: 'none',
               }}
-            >
-              <img
-                ref={imgRef}
-                key={index}
-                src={images[index]}
-                alt="Full view"
-                onClick={handleDoubleTap}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-                draggable={false}
-                style={{
-                  display: 'block',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  width: 'auto',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  cursor: 'zoom-in',
-                  userSelect: 'none',
-                }}
-              />
-            </div>
-          ) : (
-            // ZOOMED – normal block image inside scrollable container
-            <div
-              style={{
-                minWidth: scaledWidth,
-                minHeight: scaledHeight,
-                display: 'inline-block',
-              }}
-            >
-              <img
-                ref={imgRef}
-                key={index}
-                src={images[index]}
-                alt="Full view"
-                onClick={handleDoubleTap}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-                draggable={false}
-                style={{
-                  display: 'block',
-                  width: scaledWidth,
-                  height: scaledHeight,
-                  cursor: 'zoom-out',
-                  userSelect: 'none',
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
 
           {/* IMAGE INDEX (fixed) */}
           <div
