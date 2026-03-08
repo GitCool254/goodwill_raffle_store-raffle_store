@@ -896,27 +896,19 @@ export default function App() {
             </button>
           )}
 
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-            }}
-          >
-            {/* IMAGE WRAPPER */}
+          {/* IMAGE – conditional layout */}
+          {scale === 1 ? (
+            // CENTERED (not zoomed)
             <div
               style={{
-                position: "relative",
-                maxWidth: "90vw",
-                maxHeight: "45vh",
-                width: "auto",
-                height: "auto",
+                width: "100vw",
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
               }}
             >
-              {/* IMAGE */}
               <img
                 ref={imgRef}
                 key={index}
@@ -927,38 +919,62 @@ export default function App() {
                 onError={handleImageError}
                 draggable={false}
                 style={{
-                  position: "fixed",
-                  top: "50%",
-                  left: "50%",
-                  transform: `translate(-50%, -50%) scale(${scale})`,
-                  maxWidth: "80vw",
-                  maxHeight: "45vh",
-                  objectFit: "contain",
-                  cursor: scale > 1 ? "zoom-out" : "zoom-in",
-                  userSelect: "none",
-                  transition: "transform 0.25s ease",
-                  zIndex: 1,
+                  display: 'block',
+                  maxWidth: '95vw',
+                  maxHeight: '95vh',
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  cursor: 'zoom-in',
+                  userSelect: 'none',
                 }}
               />
-
-              {/* IMAGE INDEX */}
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: "48px",
-                  right: "24px",
-                  zIndex: 9999,
-                  color: "#fff",
-                  background: "rgba(0,0,0,0.7)",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  fontSize: "14px",
-                  pointerEvents: "none",
-                }}
-              >
-                {index + 1} / {images.length}
-              </div>
             </div>
+          ) : (
+            // ZOOMED – inside scrollable container
+            <div
+              style={{
+                minWidth: scaledWidth,
+                minHeight: scaledHeight,
+                display: 'inline-block',
+              }}
+            >
+              <img
+                ref={imgRef}
+                key={index}
+                src={images[index]}
+                alt="Full view"
+                onClick={handleDoubleTap}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                draggable={false}
+                style={{
+                  display: 'block',
+                  width: scaledWidth,
+                  height: scaledHeight,
+                  cursor: 'zoom-out',
+                  userSelect: 'none',
+                }}
+              />
+            </div>
+          )}
+
+          {/* IMAGE INDEX */}
+          <div
+            style={{
+              position: "fixed",
+              bottom: "48px",
+              right: "24px",
+              zIndex: 9999,
+              color: "#fff",
+              background: "rgba(0,0,0,0.7)",
+              padding: "6px 12px",
+              borderRadius: "999px",
+              fontSize: "14px",
+              pointerEvents: "none",
+            }}
+          >
+            {index + 1} / {images.length}
           </div>
         </div>
       </>
