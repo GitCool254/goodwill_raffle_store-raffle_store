@@ -803,11 +803,10 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            position: "relative",
-            overflowX: scale > 1 ? "auto" : "hidden",
-            overflowY: scale > 1 ? "auto" : "hidden",
-            touchAction: scale > 1 ? "pan-x pan-y" : "pan-x",
-            WebkitOverflowScrolling: "touch",
+            overflow: scale > 1 ? 'auto' : 'hidden',
+            width: '100vw',
+            height: '100vh',
+            WebkitOverflowScrolling: 'touch',
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
