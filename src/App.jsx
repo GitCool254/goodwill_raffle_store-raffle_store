@@ -713,6 +713,16 @@ export default function App() {
       }
     }, [index]);
 
+    // Center scroll position after zooming in
+    useEffect(() => {
+      if (scale > 1 && naturalSize.width && containerRef.current) {
+        const scaledWidth = naturalSize.width * scale;
+        const scaledHeight = naturalSize.height * scale;
+        containerRef.current.scrollLeft = (scaledWidth - containerRef.current.clientWidth) / 2;
+        containerRef.current.scrollTop = (scaledHeight - containerRef.current.clientHeight) / 2;
+      }
+    }, [scale, naturalSize]);
+
     function handleImageLoad(e) {
       const img = e.target;
       setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
