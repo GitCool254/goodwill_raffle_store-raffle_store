@@ -33,7 +33,10 @@ export default function Contact() {
           +61427612892<br /><br />
           <strong>Canada</strong><br />
           +1 416-872-6723<br /><br />
-          <span className="text-sm text-slate-600">
+          <span 
+            className="text-sm text-slate-600 font-semibold"
+            style={{ color: "#64748b" }}
+          >
             Monday – Friday, 8:00 AM – 6:00 PM
           </span>
         </p>
@@ -82,7 +85,10 @@ export default function Contact() {
         >
           Need help with:
         </h3>
-        <ul className="list-disc pl-5 space-y-1 text-sm">
+        <ul 
+          className="list-disc pl-5 space-y-1 text-sm font-semibold"
+          style={{ color: "#64748b", fontWeight: "600" }}
+        >
           <li>Raffle entries & ticket issues</li>
           <li>Payments & confirmations</li>
           <li>Product questions</li>
