@@ -28,12 +28,7 @@ export default function Contact() {
         </h2>
         <p>
           <strong>USA</strong><br />
-          <span
-            className="font-semibold"
-            style={{ color: "#64748b" }}
-          >
-            +1 417-539-9237<br /><br />
-          </span>
+          +1 417-539-9237<br /><br />
           <strong>Australia</strong><br />
           +61427612892<br /><br />
           <strong>Canada</strong><br />
@@ -54,7 +49,11 @@ export default function Contact() {
         </h2>
         <p>
           goodwillstores.support@gmail.com<br />
-          <span className="text-sm text-slate-600">
+          <span 
+            className="text-sm text-slate-600 font-semibold"
+            style={{ color: "#64748b" }}
+          >
+          
             Available 24/7 (responses during business hours)
           </span>
         </p>
