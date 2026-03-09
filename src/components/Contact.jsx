@@ -48,7 +48,7 @@ export default function Contact() {
           ✉️ Email Support
         </h2>
         <p>
-          support@goodwillstores.com<br />
+          goodwillstores.support@gmail.com<br />
           <span className="text-sm text-slate-600">
             Available 24/7 (responses during business hours)
           </span>

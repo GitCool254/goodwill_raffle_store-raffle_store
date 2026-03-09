@@ -3,8 +3,6 @@ import { useEffect, useRef, useId } from "react";
 export default function PayPalButton({
   amount,
   description,
-  appsScriptUrl,
-  secret,
   validateForm,
   onPaymentSuccess,
   product,
@@ -83,12 +81,6 @@ export default function PayPalButton({
               .slice(2, 9)
               .toUpperCase()}`
           };
-
-          // 🔹 Non-blocking Sheets logging
-          fetch(appsScriptUrl, {
-            method: "POST",
-            body: JSON.stringify({ secret, ...orderObj })
-          }).catch(() => {});
 
           // 🔹 Guaranteed ticket generation
           successRef.current({
