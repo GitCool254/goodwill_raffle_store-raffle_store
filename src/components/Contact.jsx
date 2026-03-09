@@ -28,7 +28,8 @@ export default function Contact() {
         </h2>
         <p>
           <strong>USA</strong><br />
-          <span 
+          <span
+            className="font-semibold"
             style={{ color: "#64748b" }}
           >
             +1 417-539-9237<br /><br />
@@ -52,7 +53,7 @@ export default function Contact() {
           ✉️ Email Support
         </h2>
         <p>
-          goodwillstores.support@gmail.com<br /><br />
+          goodwillstores.support@gmail.com<br />
           <span className="text-sm text-slate-600">
             Available 24/7 (responses during business hours)
           </span>
