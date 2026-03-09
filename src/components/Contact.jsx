@@ -87,7 +87,7 @@ export default function Contact() {
         </h3>
         <ul 
           className="list-disc pl-5 space-y-1 text-sm font-semibold"
-          style={{ color: "#64748b", fontWeight: "600" }}
+          style={{ color: "#64748b" }}
         >
           <li>Raffle entries & ticket issues</li>
           <li>Payments & confirmations</li>
