@@ -64,11 +64,13 @@ export default function Header({ setView, onMenuClick }) {
                     cursor: 'pointer',
                     color: 'inherit',
                     fontFamily: 'inherit',
-                    textAlign: 'left'
+                    textAlign: 'left',
+                    lineHeight: 1.2
                   }}
                   className="focus:outline-none"
                 >
                   Goodwillstores
+                  <span style={{ display: 'block' }}>Foundation</span>
                 </button>
               </div>
             </div>
