@@ -154,7 +154,36 @@ export default function About() {
         supporting a value-driven, responsible marketplace.
       </p>
 
-      {/* SECTION: TRUST */}
+      {/* SECTION: COMMUNITY & IMPACT */}
+      <h2
+        className="font-semibold mt-8 mb-2 tracking-tight"
+        style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
+      >
+        ❖  Community & Impact
+      </h2>
+      <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
+
+      <p className="text-base text-slate-700 leading-relaxed mb-4">
+        Through our raffle campaigns, we’ve partnered with local churches,
+        community associations, and charitable organizations to uplift the
+        vulnerable and support meaningful causes. A portion of every campaign
+        helps fund community projects — from feeding programs and school
+        supplies to small‑scale infrastructure for those in need.
+      </p>
+
+      <p className="text-base text-slate-700 leading-relaxed mb-4">
+        Whether it’s providing warm meals during the holidays, equipping a
+        community center, or supporting a family facing hardship, our
+        participants play a direct role in making these efforts possible.
+      </p>
+
+      <p className="text-base text-slate-700 leading-relaxed mb-6">
+        We believe that responsible commerce can be a force for good — and we’re
+        proud that every ticket purchased contributes to a stronger, more caring
+        community.
+      </p>
+
+      {/* SECTION: BUILT ON TRUST */}
       <h2
         className="font-semibold mt-8 mb-2 tracking-tight"
         style={{ fontSize: "20px", letterSpacing: "-0.2px" }}
