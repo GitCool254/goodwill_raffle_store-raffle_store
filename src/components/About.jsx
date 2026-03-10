@@ -164,23 +164,45 @@ export default function About() {
       <div className="w-16 h-[2px] bg-sky-600/70 mb-4" />
 
       <p className="text-base text-slate-700 leading-relaxed mb-4">
-        Through our raffle campaigns, we’ve partnered with local churches,
-        community associations, and charitable organizations to uplift the
-        vulnerable and support meaningful causes. A portion of every campaign
-        helps fund community projects — from feeding programs and school
-        supplies to small‑scale infrastructure for those in need.
+        Through our raffle campaigns, we actively support local churches,
+        community associations, and charitable organizations — but our impact
+        goes further. A portion of every campaign is dedicated to direct aid
+        programs:
       </p>
 
+      <ul className="list-disc pl-5 text-sm text-slate-700 space-y-2 mb-4">
+        <li>
+          <strong>Academic Sponsorships</strong> — We fund school fees,
+          supplies, and learning materials for students from under‑resourced
+          backgrounds, giving them a chance to build a better future.
+        </li>
+        <li>
+          <strong>Palliative Care for the Vulnerable</strong> — We support
+          home‑based care, medical assistance, and daily necessities for the
+          elderly and those with chronic illnesses, ensuring they receive the
+          dignity and comfort they deserve.
+        </li>
+        <li>
+          <strong>Donations & Emergency Relief</strong> — From food parcels and
+          clothing to urgent financial assistance during crises, we stand ready
+          to help families facing hardship.
+        </li>
+      </ul>
+
       <p className="text-base text-slate-700 leading-relaxed mb-4">
-        Whether it’s providing warm meals during the holidays, equipping a
-        community center, or supporting a family facing hardship, our
-        participants play a direct role in making these efforts possible.
+        Importantly, our <strong>participants are the heart of this mission</strong>.
+        When you purchase a ticket, you are not just entering a raffle — you are
+        becoming a partner in change. A portion of every entry directly fuels
+        these sponsorship and care programs, meaning that you, our valued
+        participant, are the one making academic dreams come true and bringing
+        comfort to the vulnerable.
       </p>
 
       <p className="text-base text-slate-700 leading-relaxed mb-6">
-        We believe that responsible commerce can be a force for good — and we’re
-        proud that every ticket purchased contributes to a stronger, more caring
-        community.
+        In recognition of your contribution, we occasionally offer special
+        appreciation draws and community shout‑outs. More importantly, you have
+        the satisfaction of knowing that your participation creates tangible,
+        positive impact in the lives of others.
       </p>
 
       {/* SECTION: BUILT ON TRUST */}
