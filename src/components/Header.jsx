@@ -104,6 +104,7 @@ export default function Header({ setView, onMenuClick }) {
                 lineHeight: '1.6',
                 letterSpacing: '0.01em',
                 color: '#334155',
+                border: "1.5px dotted #cbd5e1",
                 display: 'block' // ensure it's visible
               }}
             >
