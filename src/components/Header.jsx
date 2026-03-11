@@ -96,7 +96,7 @@ export default function Header({ setView, onMenuClick }) {
               Smart Finds • Discover Value • Win Quality
             </h2>
             <p className="mt-4 max-w-xl" style={{ fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontWeight: 600, fontSize: '16px', lineHeight: '1.6', letterSpacing: '0.01em', color: '#334155' }}>
-              Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
+              Every ticket supports academic sponsorships, palliative care for the vulnerable, and emergency relief. The more you participate, the greater the impact you help create.
             </p>
           </div>
         </div>
