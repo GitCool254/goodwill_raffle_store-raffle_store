@@ -21,6 +21,23 @@ export default function Header({ setView, onMenuClick }) {
 
   return (
     <>
+      <style>{`
+        .impact-paragraph {
+          position: relative;
+        }
+        .impact-paragraph::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url('/logo.png');
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          opacity: 0.1;
+          pointer-events: none;
+          z-index: 0;
+        }
+      `}</style>
       {/* HEADER */}
       <header className="w-full bg-white shadow-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto p-4">
@@ -96,7 +113,7 @@ export default function Header({ setView, onMenuClick }) {
               Smart Finds • Discover Value • Win Quality
             </h2>
             <p
-              className="mt-4 max-w-xl"
+              className="mt-4 max-w-xl impact-paragraph"
               style={{
                 fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 fontWeight: 600,
@@ -105,7 +122,8 @@ export default function Header({ setView, onMenuClick }) {
                 letterSpacing: '0.01em',
                 color: '#334155',
                 border: "1.5px dotted #cbd5e1",
-                display: 'block' // ensure it's visible
+                display: 'block',
+                position: 'relative'
               }}
             >
               Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.<br />
