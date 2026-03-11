@@ -87,7 +87,7 @@ export default function Header({ setView, onMenuClick }) {
 
           {/* Subtitle – modernised paragraph */}
           <div
-            style = {{ backgroundColor: "#f8fafc", marginTop: "35px" }}
+            style={{ backgroundColor: "#f8fafc", marginTop: "35px" }}
           >
             <h2
               className="font-semibold tracking-tight"
@@ -95,7 +95,18 @@ export default function Header({ setView, onMenuClick }) {
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
-            <p className="mt-4 max-w-xl" style={{ fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontWeight: 600, fontSize: '16px', lineHeight: '1.6', letterSpacing: '0.01em', color: '#334155' }}>
+            <p
+              className="mt-4 max-w-xl"
+              style={{
+                fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '1.6',
+                letterSpacing: '0.01em',
+                color: '#334155',
+                display: 'block' // ensure it's visible
+              }}
+            >
               Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.
               Every ticket supports academic sponsorships, palliative care for the vulnerable, and emergency relief. The more you participate, the greater the impact you help create.
             </p>
