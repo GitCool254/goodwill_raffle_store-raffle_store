@@ -13,6 +13,7 @@ import About from "./components/About";
 import Menu from "./components/Menu";
 import MyTickets from "./components/MyTickets";
 import HolidaySystem from "./components/HolidaySystem";
+import Donations from "./components/Donations"; // 👈 new import
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -1021,7 +1022,13 @@ export default function App() {
     >
 
       {/* HEADER */}
-      {view !== "image" && <Header setView={setView} onMenuClick={() => setMenuOpen(true)} />}
+      {view !== "image" && (
+        <Header
+          setView={setView}
+          onMenuClick={() => setMenuOpen(true)}
+          onDonateClick={() => navigate("donations")} // 👈 new prop
+        />
+      )}
 
       {view !== "image" && (
         <HolidaySystem onNavigate={navigate} />
@@ -1095,7 +1102,10 @@ export default function App() {
         )}
 
         {view === "address" && <Address />}
-        {view === "contact" && <Contact />}                                    {view === "about" && <About />}                                        {(view === "tickets" || view === "myTickets") && (
+        {view === "contact" && <Contact />}
+        {view === "about" && <About />}
+        {view === "donations" && <Donations />} {/* 👈 new view */}
+        {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
         )}
       </main>

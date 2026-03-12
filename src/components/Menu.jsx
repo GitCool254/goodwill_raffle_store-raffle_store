@@ -187,6 +187,17 @@ export default function Menu({ isOpen, onClose, setView }) {
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
 
+              {/* Donations & Impact */}
+              <button
+                className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
+                style={{ marginBottom: '15px' }}
+                onClick={() => { setView("donations"); onClose(); }}
+              >
+                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>❤️</span>
+                <span className="flex-1 text-left">Donations & Impact</span>
+                <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
+              </button>
+
             </div>
           </div>
 
