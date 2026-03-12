@@ -51,7 +51,7 @@ export default function Donations() {
 
       <div className="text-center">
         <a
-          href="https://www.paypal.com/donate?hosted_button_id=PH4HCPSBP5HQJ" // 🔁 Replace with your actual PayPal donation button ID
+          href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ" // 🔁 Replace with your actual PayPal donation button ID
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition inline-flex items-center gap-2 text-lg font-medium"
