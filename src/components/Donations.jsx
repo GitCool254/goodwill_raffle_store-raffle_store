@@ -50,13 +50,15 @@ export default function Donations() {
       </div>
 
       <div className="text-center">
-        <button
-          onClick={() => alert("Donation functionality coming soon!")}
+        <a
+          href="https://www.paypal.com/donate?hosted_button_id=YOUR_BUTTON_ID" // 🔁 Replace with your actual PayPal donation button ID
+          target="_blank"
+          rel="noopener noreferrer"
           className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition inline-flex items-center gap-2 text-lg font-medium"
         >
           <span>❤️</span>
           <span>Make a Donation</span>
-        </button>
+        </a>
         <p className="mt-4 text-sm text-slate-500">
           Your support helps us continue these programs. Thank you!
         </p>
