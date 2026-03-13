@@ -6,25 +6,51 @@ export default function Donations() {
       id: 1,
       title: "Academic Sponsorships",
       description: "We fund school fees, supplies, and learning materials for students from under-resourced backgrounds, giving them a chance to build a better future.",
-      image: "/donation-education.jpg" // placeholder – replace with actual image
+      image: "/Wonderfold.jpg",
+      images: [
+        "/Wonderfold.jpg",
+        "/Wonderfold1.jpg",
+        "/Wonderfold2.jpg",
+        "/Wonderfold3.jpg",
+        "/Wonderfold4.jpg",
+      ],
     },
     {
       id: 2,
       title: "Palliative Care Support",
       description: "We support home-based care, medical assistance, and daily necessities for the elderly and those with chronic illnesses, ensuring dignity and comfort.",
-      image: "/donation-palliative.jpg"
+      image: "/Beachcroft Patio.jpg",
+      images: [
+        "/Beachcroft Patio.jpg",
+        "/Beachcroft Patio1.jpg",
+        "/Beachcroft Patio2.jpg",
+      ],
     },
     {
       id: 3,
       title: "Emergency Relief",
       description: "From food parcels and clothing to urgent financial assistance during crises, we stand ready to help families facing hardship.",
-      image: "/donation-emergency.jpg"
+      image: "/Wonderfold.jpg",
+      images: [
+        "/Wonderfold.jpg",
+        "/Wonderfold1.jpg",
+        "/Wonderfold2.jpg",
+        "/Wonderfold3.jpg",
+        "/Wonderfold4.jpg",
+      ],
     },
     {
       id: 4,
       title: "Community Projects",
       description: "Partnering with local churches and associations to build small-scale infrastructure, feeding programs, and more.",
-      image: "/donation-community.jpg"
+      image: "/Coolster 125cc.png",
+      images: [
+        "/Coolster 125cc.png",
+        "/Coolster 125cc1.png",
+        "/Coolster 125cc2.png",
+        "/Coolster 125cc3.png",
+        "/Coolster 125cc4.png",
+      ],
     }
   ];
 
@@ -56,7 +82,6 @@ export default function Donations() {
           rel="noopener noreferrer"
           className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition inline-flex items-center gap-2 text-lg font-medium"
         >
-          <span>❤️</span>
           <span>Make a Donation</span>
         </a>
         <p className="mt-4 text-sm text-slate-500">
