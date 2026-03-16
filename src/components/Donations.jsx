@@ -85,7 +85,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff' }} // light sky blue
+                style={{ backgroundColor: '#e6f3ff', marginBottom: '10px' }} // light sky blue
               >
                 {/* Title */}
                 <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
@@ -94,7 +94,7 @@ export default function Donations() {
                 {/* Image carousel */}
                 <div
                   className="bg-gray-200 relative flex items-center justify-center"
-                  style={{ height: '150px' }}
+                  style={{ height: '200px' }}
                 >
                   <img
                     src={program.images[currentIndex]}
