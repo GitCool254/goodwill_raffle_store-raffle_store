@@ -85,7 +85,7 @@ export default function Donations() {
             return (
               <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
                 {/* Left side: carousel image (smaller container, no cropping) */}
-                <div className="md:w-1/3 h-40 bg-gray-200 relative flex items-center justify-center">
+                <div className="md:w-1/3 h-32 bg-gray-200 relative flex items-center justify-center">
                   <img
                     src={program.images[currentIndex]}
                     alt={`${program.title} - ${currentIndex + 1}`}
@@ -104,9 +104,9 @@ export default function Donations() {
                   <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                     {program.quote}
                   </p>
-                  {/* Navigation arrows – centered, close together, with background */}
+                  {/* Navigation arrows – centered, with more space between them */}
                   <div className="mt-4 flex justify-center">
-                    <div className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-full">
+                    <div className="flex items-center gap-4 bg-gray-200 px-3 py-1 rounded-full">
                       <button
                         onClick={goToPrevious}
                         className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
