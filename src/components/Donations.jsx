@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Donations() {
   const programs = [
@@ -14,6 +14,7 @@ export default function Donations() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
+      quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
     },
     {
       id: 2,
@@ -54,6 +55,23 @@ export default function Donations() {
     }
   ];
 
+  // State for the carousel index (only used for Academic Sponsorships)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const academicProgram = programs[0]; // Academic Sponsorships
+  const totalImages = academicProgram.images.length;
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? totalImages - 1 : prevIndex - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === totalImages - 1 ? 0 : prevIndex + 1));
+  };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-8 text-slate-800">Make a Difference</h1>
@@ -62,17 +80,72 @@ export default function Donations() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        {programs.map(program => (
-          <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
-            <div className="md:w-1/3 h-32 md:h-auto bg-gray-200">
-              <img src={program.image} alt={program.title} className="w-full h-full object-cover" />
-            </div>
-            <div className="p-4 md:w-2/3">
-              <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-              <p className="text-sm text-slate-600">{program.description}</p>
-            </div>
-          </div>
-        ))}
+        {programs.map((program) => {
+          // Special rendering for Academic Sponsorships (id === 1)
+          if (program.id === 1) {
+            return (
+              <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
+                {/* Left side: carousel */}
+                <div className="md:w-1/3 h-48 md:h-auto bg-gray-200 relative">
+                  <img
+                    src={program.images[currentIndex]}
+                    alt={`${program.title} - ${currentIndex + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Navigation arrows */}
+                  <button
+                    onClick={goToPrevious}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                  >
+                    ›
+                  </button>
+                  {/* Progress dots */}
+                  <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    {program.images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => goToSlide(idx)}
+                        className={`w-2 h-2 rounded-full ${
+                          idx === currentIndex ? 'bg-white' : 'bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                {/* Right side: content + quote */}
+                <div className="p-4 md:w-2/3 flex flex-col justify-between">
+                  <div>
+                    <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                    <p className="text-sm text-slate-600">{program.description}</p>
+                  </div>
+                  {/* Minimal, modern quote */}
+                  <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
+                    {program.quote}
+                  </p>
+                </div>
+              </div>
+            );
+          } else {
+            // Original rendering for other programs
+            return (
+              <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
+                <div className="md:w-1/3 h-32 md:h-auto bg-gray-200">
+                  <img src={program.image} alt={program.title} className="w-full h-full object-cover" />
+                </div>
+                <div className="p-4 md:w-2/3">
+                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                  <p className="text-sm text-slate-600">{program.description}</p>
+                </div>
+              </div>
+            );
+          }
+        })}
       </div>
 
       <div className="text-center">
