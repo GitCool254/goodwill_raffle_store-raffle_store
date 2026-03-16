@@ -55,9 +55,8 @@ export default function Donations() {
     }
   ];
 
-  // State for the carousel index (only used for Academic Sponsorships)
   const [currentIndex, setCurrentIndex] = useState(0);
-  const academicProgram = programs[0]; // Academic Sponsorships
+  const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
 
   const goToPrevious = () => {
@@ -81,31 +80,17 @@ export default function Donations() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
-          // Special rendering for Academic Sponsorships (id === 1)
           if (program.id === 1) {
             return (
               <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
-                {/* Left side: carousel */}
-                <div className="md:w-1/3 h-48 md:h-auto bg-gray-200 relative">
+                {/* Left side: carousel image (smaller container, no cropping) */}
+                <div className="md:w-1/3 h-40 bg-gray-200 relative flex items-center justify-center">
                   <img
                     src={program.images[currentIndex]}
                     alt={`${program.title} - ${currentIndex + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
-                  {/* Navigation arrows */}
-                  <button
-                    onClick={goToPrevious}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    onClick={goToNext}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                  >
-                    ›
-                  </button>
-                  {/* Progress dots */}
+                  {/* Progress dots (remain on image) */}
                   <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
                     {program.images.map((_, idx) => (
                       <button
@@ -118,8 +103,9 @@ export default function Donations() {
                     ))}
                   </div>
                 </div>
-                {/* Right side: content + quote */}
-                <div className="p-4 md:w-2/3 flex flex-col justify-between">
+
+                {/* Right side: content + quote + arrows below */}
+                <div className="p-4 md:w-2/3 flex flex-col">
                   <div>
                     <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                     <p className="text-sm text-slate-600">{program.description}</p>
@@ -128,6 +114,21 @@ export default function Donations() {
                   <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                     {program.quote}
                   </p>
+                  {/* Navigation arrows below quote */}
+                  <div className="mt-3 flex justify-between items-center">
+                    <button
+                      onClick={goToPrevious}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      onClick={goToNext}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                    >
+                      ›
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -150,7 +151,7 @@ export default function Donations() {
 
       <div className="text-center">
         <a
-          href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ" // 🔁 Replace with your actual PayPal donation button ID
+          href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition inline-flex items-center gap-2 text-lg font-medium"
