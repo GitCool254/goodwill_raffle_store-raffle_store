@@ -67,7 +67,6 @@ export default function Donations() {
     setCurrentIndex((prevIndex) => (prevIndex === totalImages - 1 ? 0 : prevIndex + 1));
   };
 
-  // goToSlide is no longer needed after removing dots, but we keep it for completeness.
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
@@ -84,14 +83,17 @@ export default function Donations() {
           if (program.id === 1) {
             return (
               <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
-                {/* Left side: carousel image (smaller container, no cropping) */}
-                <div className="md:w-1/3 h-32 bg-gray-200 relative flex items-center justify-center">
+                {/* Left side: carousel image (reduced height with inline style) */}
+                <div
+                  className="md:w-1/3 bg-gray-200 relative flex items-center justify-center"
+                  style={{ height: '100px' }} // smaller image container
+                >
                   <img
                     src={program.images[currentIndex]}
                     alt={`${program.title} - ${currentIndex + 1}`}
                     className="w-full h-full object-contain"
                   />
-                  {/* Progress dots removed as requested */}
+                  {/* Progress dots removed */}
                 </div>
 
                 {/* Right side: content + quote + arrows below */}
@@ -104,9 +106,12 @@ export default function Donations() {
                   <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                     {program.quote}
                   </p>
-                  {/* Navigation arrows – centered, with more space between them */}
+                  {/* Navigation arrows – centered, with increased gap via inline style */}
                   <div className="mt-4 flex justify-center">
-                    <div className="flex items-center gap-4 bg-gray-200 px-3 py-1 rounded-full">
+                    <div
+                      className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                      style={{ gap: '20px' }} // larger gap between buttons
+                    >
                       <button
                         onClick={goToPrevious}
                         className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
