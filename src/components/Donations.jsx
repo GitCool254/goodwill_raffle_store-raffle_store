@@ -85,7 +85,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff', marginBottom: '10px' }} // light sky blue
+                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }} // light sky blue + extra padding below arrows
               >
                 {/* Title */}
                 <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
