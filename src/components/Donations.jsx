@@ -86,11 +86,11 @@ export default function Donations() {
                 {/* Left side: carousel image (reduced height with inline style) */}
                 <div
                   className="md:w-1/3 bg-gray-200 relative flex items-center justify-center"
-                  style={{ height: '100px' }} // smaller image container
+                  style={{ height: '150px' }} // smaller image container
                 >
                   <img
-                    src={program.images[currentIndex]}
                     alt={`${program.title} - ${currentIndex + 1}`}
+                    src={program.images[currentIndex]}
                     className="w-full h-full object-contain"
                   />
                   {/* Progress dots removed */}
@@ -107,7 +107,10 @@ export default function Donations() {
                     {program.quote}
                   </p>
                   {/* Navigation arrows – centered, with increased gap via inline style */}
-                  <div className="mt-4 flex justify-center">
+                  <div 
+                    className="mt-4 flex justify-center"
+                    style={{ marginBottom: '20px' }}
+                  >
                     <div
                       className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
                       style={{ gap: '20px' }} // larger gap between buttons
@@ -116,13 +119,13 @@ export default function Donations() {
                         onClick={goToPrevious}
                         className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                       >
-                        ‹
+                        ❮
                       </button>
                       <button
                         onClick={goToNext}
                         className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                       >
-                        ›
+                        ❯
                       </button>
                     </div>
                   </div>
@@ -134,7 +137,7 @@ export default function Donations() {
             return (
               <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-32 md:h-auto bg-gray-200">
-                  <img src={program.image} alt={program.title} className="w-full h-full object-cover" />
+                  <img alt={program.title} src={program.image} className="w-full h-full object-cover" />
                 </div>
                 <div className="p-4 md:w-2/3">
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
