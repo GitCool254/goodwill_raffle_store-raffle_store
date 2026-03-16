@@ -67,6 +67,7 @@ export default function Donations() {
     setCurrentIndex((prevIndex) => (prevIndex === totalImages - 1 ? 0 : prevIndex + 1));
   };
 
+  // goToSlide is no longer needed after removing dots, but we keep it for completeness.
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
@@ -90,18 +91,7 @@ export default function Donations() {
                     alt={`${program.title} - ${currentIndex + 1}`}
                     className="w-full h-full object-contain"
                   />
-                  {/* Progress dots (remain on image) */}
-                  <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                    {program.images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => goToSlide(idx)}
-                        className={`w-2 h-2 rounded-full ${
-                          idx === currentIndex ? 'bg-white' : 'bg-white/50'
-                        }`}
-                      />
-                    ))}
-                  </div>
+                  {/* Progress dots removed as requested */}
                 </div>
 
                 {/* Right side: content + quote + arrows below */}
@@ -114,20 +104,22 @@ export default function Donations() {
                   <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                     {program.quote}
                   </p>
-                  {/* Navigation arrows below quote */}
-                  <div className="mt-3 flex justify-between items-center">
-                    <button
-                      onClick={goToPrevious}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      onClick={goToNext}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ›
-                    </button>
+                  {/* Navigation arrows – centered, close together, with background */}
+                  <div className="mt-4 flex justify-center">
+                    <div className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-full">
+                      <button
+                        onClick={goToPrevious}
+                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                      >
+                        ‹
+                      </button>
+                      <button
+                        onClick={goToNext}
+                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                      >
+                        ›
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
