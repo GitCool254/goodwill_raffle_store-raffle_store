@@ -82,66 +82,69 @@ export default function Donations() {
         {programs.map((program) => {
           if (program.id === 1) {
             return (
-              <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
-                {/* Left side: carousel image (reduced height with inline style) */}
+              <div
+                key={program.id}
+                className="rounded-xl shadow-md overflow-hidden p-4"
+                style={{ backgroundColor: '#e6f3ff' }} // light sky blue
+              >
+                {/* Title */}
+                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                {/* Description */}
+                <p className="text-sm text-slate-600 mb-3">{program.description}</p>
+                {/* Image carousel */}
                 <div
-                  className="md:w-1/3 bg-gray-200 relative flex items-center justify-center"
-                  style={{ height: '150px' }} // smaller image container
+                  className="bg-gray-200 relative flex items-center justify-center"
+                  style={{ height: '150px' }}
                 >
                   <img
-                    alt={`${program.title} - ${currentIndex + 1}`}
                     src={program.images[currentIndex]}
+                    alt={`${program.title} - ${currentIndex + 1}`}
                     className="w-full h-full object-contain"
                   />
-                  {/* Progress dots removed */}
                 </div>
-
-                {/* Right side: content + quote + arrows below */}
-                <div className="p-4 md:w-2/3 flex flex-col">
-                  <div>
-                    <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                    <p className="text-sm text-slate-600">{program.description}</p>
-                  </div>
-                  {/* Minimal, modern quote */}
-                  <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
-                    {program.quote}
-                  </p>
-                  {/* Navigation arrows – centered, with increased gap via inline style */}
-                  <div 
-                    className="mt-4 flex justify-center"
-                    style={{ marginBottom: '20px' }}
+                {/* Quote */}
+                <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
+                  {program.quote}
+                </p>
+                {/* Navigation arrows */}
+                <div className="mt-4 flex justify-center">
+                  <div
+                    className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                    style={{ gap: '20px' }}
                   >
-                    <div
-                      className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
-                      style={{ gap: '20px' }} // larger gap between buttons
+                    <button
+                      onClick={goToPrevious}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                     >
-                      <button
-                        onClick={goToPrevious}
-                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                      >
-                        ❮
-                      </button>
-                      <button
-                        onClick={goToNext}
-                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                      >
-                        ❯
-                      </button>
-                    </div>
+                      ❮
+                    </button>
+                    <button
+                      onClick={goToNext}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                    >
+                      ❯
+                    </button>
                   </div>
                 </div>
               </div>
             );
           } else {
-            // Original rendering for other programs
             return (
-              <div key={program.id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row">
-                <div className="md:w-1/3 h-32 md:h-auto bg-gray-200">
-                  <img alt={program.title} src={program.image} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-4 md:w-2/3">
-                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p className="text-sm text-slate-600">{program.description}</p>
+              <div
+                key={program.id}
+                className="bg-white rounded-xl shadow-md overflow-hidden p-4"
+              >
+                {/* Title */}
+                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                {/* Description */}
+                <p className="text-sm text-slate-600 mb-3">{program.description}</p>
+                {/* Single image (or first image) */}
+                <div className="bg-gray-200 h-32 flex items-center justify-center">
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             );
