@@ -55,25 +55,7 @@ export default function Donations() {
     }
   ];
 
-  // State for carousel indices of programs 2, 3, 4
-  const [carouselIndices, setCarouselIndices] = useState({ 2: 0, 3: 0, 4: 0 });
-
-  // Renamed: handlePrevImage / handleNextImage
-  const handlePrevImage = (id, imagesLength) => {
-    setCarouselIndices(prev => ({
-      ...prev,
-      [id]: prev[id] === 0 ? imagesLength - 1 : prev[id] - 1
-    }));
-  };
-
-  const handleNextImage = (id, imagesLength) => {
-    setCarouselIndices(prev => ({
-      ...prev,
-      [id]: prev[id] === imagesLength - 1 ? 0 : prev[id] + 1
-    }));
-  };
-
-  // Academic Sponsorships carousel (unchanged)
+  // State for Academic Sponsorships carousel (unchanged)
   const [currentIndex, setCurrentIndex] = useState(0);
   const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
@@ -88,6 +70,31 @@ export default function Donations() {
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
+  };
+
+  // State for carousels of programs 2,3,4
+  const [programIndices, setProgramIndices] = useState({
+    2: 0,
+    3: 0,
+    4: 0,
+  });
+
+  const handlePrevious = (programId) => {
+    setProgramIndices((prev) => {
+      const images = programs.find(p => p.id === programId).images;
+      const prevIndex = prev[programId];
+      const newIndex = prevIndex === 0 ? images.length - 1 : prevIndex - 1;
+      return { ...prev, [programId]: newIndex };
+    });
+  };
+
+  const handleNext = (programId) => {
+    setProgramIndices((prev) => {
+      const images = programs.find(p => p.id === programId).images;
+      const prevIndex = prev[programId];
+      const newIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+      return { ...prev, [programId]: newIndex };
+    });
   };
 
   return (
@@ -148,56 +155,52 @@ export default function Donations() {
               </div>
             );
           } else {
-            const currentIdx = carouselIndices[program.id] || 0;
-            const images = program.images;
+            const currentImageIndex = programIndices[program.id];
             return (
               <div
                 key={program.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden p-4"
+                className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row p-4"
               >
-                {/* Two-column layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left column: image carousel */}
-                  <div>
+                {/* Left column: image gallery */}
+                <div className="md:w-1/2">
+                  <div
+                    className="bg-gray-200 relative flex items-center justify-center"
+                    style={{ height: '200px' }}
+                  >
+                    <img
+                      src={program.images[currentImageIndex]}
+                      alt={`${program.title} - ${currentImageIndex + 1}`}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  </div>
+                  {/* Navigation arrows below image */}
+                  <div className="mt-3 flex justify-center">
                     <div
-                      className="bg-gray-200 relative flex items-center justify-center rounded-lg overflow-hidden"
-                      style={{ height: '200px' }}
+                      className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                      style={{ gap: '20px' }}
                     >
-                      <img
-                        src={images[currentIdx]}
-                        alt={`${program.title} - ${currentIdx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Navigation arrows (below image) */}
-                    <div className="mt-3 flex justify-center">
-                      <div
-                        className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
-                        style={{ gap: '20px' }}
+                      <button
+                        onClick={() => handlePrevious(program.id)}
+                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                       >
-                        <button
-                          onClick={() => handlePrevImage(program.id, images.length)}
-                          className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                        >
-                          ❮
-                        </button>
-                        <button
-                          onClick={() => handleNextImage(program.id, images.length)}
-                          className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                        >
-                          ❯
-                        </button>
-                      </div>
+                        ❮
+                      </button>
+                      <button
+                        onClick={() => handleNext(program.id)}
+                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                      >
+                        ❯
+                      </button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Right column: title and description */}
-                  <div className="flex flex-col justify-center">
-                    <h2 className="text-xl font-semibold mb-2 text-slate-800">{program.title}</h2>
-                    <p className="text-lg leading-relaxed text-slate-600">
-                      {program.description}
-                    </p>
-                  </div>
+                {/* Right column: title + description */}
+                <div className="md:w-1/2 md:pl-6 mt-4 md:mt-0">
+                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                  <p className="text-slate-600 text-lg leading-relaxed">
+                    {program.description}
+                  </p>
                 </div>
               </div>
             );
