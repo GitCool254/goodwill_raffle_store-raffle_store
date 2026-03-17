@@ -131,14 +131,20 @@ export default function Donations() {
                 style={{ backgroundColor: '#f5f0e6' }}
               >
                 {/* White container for title + description */}
-                <div className="bg-white rounded-lg p-4 mb-4">
+                <div 
+                  className="bg-white rounded-lg p-4 mb-4"
+                  style={{ backgroundColor: '#ffffff' }}
+                >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p className="text-lg text-slate-600 leading-normal">
                     {program.description}
                   </p>
                 </div>
                 {/* Image container with thin white borders */}
-                <div className="bg-white p-2 rounded-lg">
+                <div 
+                  className="bg-white p-2 rounded-lg"
+                  style={{ backgroundColor: '#ffffff' }}
+                >
                   <div className="flex items-center justify-center h-28">
                     <img
                       src={program.image}
