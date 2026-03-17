@@ -130,22 +130,22 @@ export default function Donations() {
                 className="rounded-xl shadow-md overflow-hidden p-4"
                 style={{ backgroundColor: '#b8e2f2' }}
               >
-                {/* White container for title + description */}
-                <div 
+                {/* White container for title + description with 20px left/right margins */}
+                <div
                   className="bg-white rounded-lg p-4 mb-4"
-                  style={{ backgroundColor: '#ffffff' }}
+                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px' }}
                 >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p className="text-lg text-slate-600 leading-normal">
                     {program.description}
                   </p>
                 </div>
-                {/* Image container with thin white borders */}
-                <div 
+                {/* Image container with thin white borders and smaller image */}
+                <div
                   className="bg-white p-2 rounded-lg"
                   style={{ backgroundColor: '#ffffff' }}
                 >
-                  <div className="flex items-center justify-center h-28">
+                  <div className="flex items-center justify-center" style={{ height: '80px' }}>
                     <img
                       src={program.image}
                       alt={program.title}
