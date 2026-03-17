@@ -55,7 +55,6 @@ export default function Donations() {
     }
   ];
 
-  // State for Academic Sponsorships carousel (unchanged)
   const [currentIndex, setCurrentIndex] = useState(0);
   const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
@@ -70,31 +69,6 @@ export default function Donations() {
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
-  };
-
-  // State for carousels of programs 2,3,4
-  const [programIndices, setProgramIndices] = useState({
-    2: 0,
-    3: 0,
-    4: 0,
-  });
-
-  const handlePrevious = (programId) => {
-    setProgramIndices((prev) => {
-      const images = programs.find(p => p.id === programId).images;
-      const prevIndex = prev[programId];
-      const newIndex = prevIndex === 0 ? images.length - 1 : prevIndex - 1;
-      return { ...prev, [programId]: newIndex };
-    });
-  };
-
-  const handleNext = (programId) => {
-    setProgramIndices((prev) => {
-      const images = programs.find(p => p.id === programId).images;
-      const prevIndex = prev[programId];
-      const newIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
-      return { ...prev, [programId]: newIndex };
-    });
   };
 
   return (
@@ -113,11 +87,8 @@ export default function Donations() {
                 className="rounded-xl shadow-md overflow-hidden p-4"
                 style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
               >
-                {/* Title */}
                 <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                {/* Description */}
                 <p className="text-sm text-slate-600 mb-3">{program.description}</p>
-                {/* Image carousel */}
                 <div
                   className="bg-gray-200 relative flex items-center justify-center"
                   style={{ height: '200px' }}
@@ -128,11 +99,9 @@ export default function Donations() {
                     className="w-full h-full object-contain"
                   />
                 </div>
-                {/* Quote */}
                 <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                   {program.quote}
                 </p>
-                {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
                   <div
                     className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
@@ -155,52 +124,23 @@ export default function Donations() {
               </div>
             );
           } else {
-            const currentImageIndex = programIndices[program.id];
             return (
               <div
                 key={program.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row p-4"
+                className="bg-white rounded-xl shadow-md overflow-hidden p-4"
               >
-                {/* Left column: image gallery */}
-                <div className="md:w-1/2">
-                  <div
-                    className="bg-gray-200 relative flex items-center justify-center"
-                    style={{ height: '200px' }}
-                  >
-                    <img
-                      src={program.images[currentImageIndex]}
-                      alt={`${program.title} - ${currentImageIndex + 1}`}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                  {/* Navigation arrows below image */}
-                  <div className="mt-3 flex justify-center">
-                    <div
-                      className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
-                      style={{ gap: '20px' }}
-                    >
-                      <button
-                        onClick={() => handlePrevious(program.id)}
-                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                      >
-                        ❮
-                      </button>
-                      <button
-                        onClick={() => handleNext(program.id)}
-                        className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                      >
-                        ❯
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right column: title + description */}
-                <div className="md:w-1/2 md:pl-6 mt-4 md:mt-0">
-                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p className="text-slate-600 text-lg leading-relaxed">
-                    {program.description}
-                  </p>
+                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                {/* Upgraded description: larger font + line-height 1.5 */}
+                <p className="text-lg text-slate-600 leading-normal mb-3">
+                  {program.description}
+                </p>
+                {/* Image with rounded corners */}
+                <div className="bg-gray-200 h-32 flex items-center justify-center rounded-lg overflow-hidden">
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             );
