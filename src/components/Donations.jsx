@@ -55,6 +55,24 @@ export default function Donations() {
     }
   ];
 
+  // State for carousel indices of programs 2, 3, 4
+  const [carouselIndices, setCarouselIndices] = useState({ 2: 0, 3: 0, 4: 0 });
+
+  const goToPrev = (id, imagesLength) => {
+    setCarouselIndices(prev => ({
+      ...prev,
+      [id]: prev[id] === 0 ? imagesLength - 1 : prev[id] - 1
+    }));
+  };
+
+  const goToNext = (id, imagesLength) => {
+    setCarouselIndices(prev => ({
+      ...prev,
+      [id]: prev[id] === imagesLength - 1 ? 0 : prev[id] + 1
+    }));
+  };
+
+  // State for Academic Sponsorships (kept separate)
   const [currentIndex, setCurrentIndex] = useState(0);
   const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
@@ -85,7 +103,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }} // light sky blue + extra padding below arrows
+                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
               >
                 {/* Title */}
                 <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
@@ -129,22 +147,56 @@ export default function Donations() {
               </div>
             );
           } else {
+            const currentIdx = carouselIndices[program.id] || 0;
+            const images = program.images;
             return (
               <div
                 key={program.id}
                 className="bg-white rounded-xl shadow-md overflow-hidden p-4"
               >
-                {/* Title */}
-                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                {/* Description */}
-                <p className="text-sm text-slate-600 mb-3">{program.description}</p>
-                {/* Single image (or first image) */}
-                <div className="bg-gray-200 h-32 flex items-center justify-center">
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="w-full h-full object-cover"
-                  />
+                {/* Two-column layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Left column: image carousel */}
+                  <div>
+                    <div
+                      className="bg-gray-200 relative flex items-center justify-center rounded-lg overflow-hidden"
+                      style={{ height: '200px' }}
+                    >
+                      <img
+                        src={images[currentIdx]}
+                        alt={`${program.title} - ${currentIdx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Navigation arrows (below image) */}
+                    <div className="mt-3 flex justify-center">
+                      <div
+                        className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                        style={{ gap: '20px' }}
+                      >
+                        <button
+                          onClick={() => goToPrev(program.id, images.length)}
+                          className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                        >
+                          ❮
+                        </button>
+                        <button
+                          onClick={() => goToNext(program.id, images.length)}
+                          className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                        >
+                          ❯
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right column: title and description */}
+                  <div className="flex flex-col justify-center">
+                    <h2 className="text-xl font-semibold mb-2 text-slate-800">{program.title}</h2>
+                    <p className="text-lg leading-relaxed text-slate-600">
+                      {program.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             );
