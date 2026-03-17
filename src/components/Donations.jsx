@@ -128,7 +128,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#f5f0e6' }}
+                style={{ backgroundColor: '#b8e2f2' }}
               >
                 {/* White container for title + description */}
                 <div 
