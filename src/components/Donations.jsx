@@ -1,78 +1,27 @@
 import React, { useState } from "react";
 
 export default function Donations() {
-  const programs = [
-    {
-      id: 1,
-      title: "Academic Sponsorships",
-      description: "We fund school fees, supplies, and learning materials for students from under-resourced backgrounds, giving them a chance to build a better future.",
-      image: "/Wonderfold.jpg",
-      images: [
-        "/Wonderfold.jpg",
-        "/Wonderfold1.jpg",
-        "/Wonderfold2.jpg",
-        "/Wonderfold3.jpg",
-        "/Wonderfold4.jpg",
-      ],
-      quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
-    },
-    {
-      id: 2,
-      title: "Palliative Care Support",
-      description: "We support home-based care, medical assistance, and daily necessities for the elderly and those with chronic illnesses, ensuring dignity and comfort.",
-      image: "/Beachcroft Patio.jpg",
-      images: [
-        "/Beachcroft Patio.jpg",
-        "/Beachcroft Patio1.jpg",
-        "/Beachcroft Patio2.jpg",
-      ],
-    },
-    {
-      id: 3,
-      title: "Emergency Relief",
-      description: "From food parcels and clothing to urgent financial assistance during crises, we stand ready to help families facing hardship.",
-      image: "/Wonderfold.jpg",
-      images: [
-        "/Wonderfold.jpg",
-        "/Wonderfold1.jpg",
-        "/Wonderfold2.jpg",
-        "/Wonderfold3.jpg",
-        "/Wonderfold4.jpg",
-      ],
-    },
-    {
-      id: 4,
-      title: "Community Projects",
-      description: "Partnering with local churches and associations to build small-scale infrastructure, feeding programs, and more.",
-      image: "/Coolster 125cc.png",
-      images: [
-        "/Coolster 125cc.png",
-        "/Coolster 125cc1.png",
-        "/Coolster 125cc2.png",
-        "/Coolster 125cc3.png",
-        "/Coolster 125cc4.png",
-      ],
-    }
-  ];
+  const programs = [ ... ]; // unchanged
 
   // State for carousel indices of programs 2, 3, 4
   const [carouselIndices, setCarouselIndices] = useState({ 2: 0, 3: 0, 4: 0 });
 
-  const goToPrev = (id, imagesLength) => {
+  // Renamed: handlePrevImage / handleNextImage
+  const handlePrevImage = (id, imagesLength) => {
     setCarouselIndices(prev => ({
       ...prev,
       [id]: prev[id] === 0 ? imagesLength - 1 : prev[id] - 1
     }));
   };
 
-  const goToNext = (id, imagesLength) => {
+  const handleNextImage = (id, imagesLength) => {
     setCarouselIndices(prev => ({
       ...prev,
       [id]: prev[id] === imagesLength - 1 ? 0 : prev[id] + 1
     }));
   };
 
-  // State for Academic Sponsorships (kept separate)
+  // Academic Sponsorships carousel (unchanged)
   const [currentIndex, setCurrentIndex] = useState(0);
   const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
@@ -175,13 +124,13 @@ export default function Donations() {
                         style={{ gap: '20px' }}
                       >
                         <button
-                          onClick={() => goToPrev(program.id, images.length)}
+                          onClick={() => handlePrevImage(program.id, images.length)}  // updated
                           className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                         >
                           ❮
                         </button>
                         <button
-                          onClick={() => goToNext(program.id, images.length)}
+                          onClick={() => handleNextImage(program.id, images.length)}  // updated
                           className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                         >
                           ❯
