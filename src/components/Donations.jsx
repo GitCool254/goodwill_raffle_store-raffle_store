@@ -127,20 +127,25 @@ export default function Donations() {
             return (
               <div
                 key={program.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden p-4"
+                className="rounded-xl shadow-md overflow-hidden p-4"
+                style={{ backgroundColor: '#f5f0e6' }} // beige/green background
               >
-                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                {/* Upgraded description: larger font + line-height 1.5 */}
-                <p className="text-lg text-slate-600 leading-normal mb-3">
-                  {program.description}
-                </p>
-                {/* Image with rounded corners */}
-                <div className="bg-gray-200 h-32 flex items-center justify-center rounded-lg overflow-hidden">
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="w-full h-full object-cover"
-                  />
+                {/* White inner container for title + description */}
+                <div className="bg-white rounded-lg p-4 mb-4">
+                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                  <p className="text-lg text-slate-600 leading-normal">
+                    {program.description}
+                  </p>
+                </div>
+                {/* Image container with white border (padding) */}
+                <div className="bg-white p-2 rounded-lg">
+                  <div className="bg-gray-200 h-36 rounded-md overflow-hidden">
+                    <img
+                      src={program.image}
+                      alt={program.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             );
