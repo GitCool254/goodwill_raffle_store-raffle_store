@@ -143,7 +143,7 @@ export default function Donations() {
                 {/* Image container with thin white borders and smaller image */}
                 <div
                   className="bg-white p-2 rounded-lg"
-                  style={{ backgroundColor: '#ffffff',marginLeft: '20p
+                  style={{ backgroundColor: '#ffffff', marginLeft: '20p
 x', marginRight: '20px' }}
                 >
                   <div className="flex items-center justify-center" style={{ height: '100px' }}>
