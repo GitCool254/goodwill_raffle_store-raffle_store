@@ -14,6 +14,7 @@ import Menu from "./components/Menu";
 import MyTickets from "./components/MyTickets";
 import HolidaySystem from "./components/HolidaySystem";
 import Donations from "./components/Donations"; // 👈 new import
+import TermsOfUse from "./components/TermsOfUse";
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -1103,8 +1104,9 @@ export default function App() {
 
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}
-        {view === "about" && <About />}
+        {view === "about" && <About navigate={navigate} />}
         {view === "donations" && <Donations />} {/* 👈 new view */}
+        {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
         {(view === "tickets" || view === "myTickets") && (
           <MyTickets openTicketProduct={openTicketProduct} />
         )}
