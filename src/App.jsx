@@ -1130,30 +1130,30 @@ export default function App() {
           style={{ backgroundColor: "#1E3A8A", color: "white" }}
         >
           {/* First row: links */}
-          <div className="mb-2">
+          <div className="mb-4">
             <button
               onClick={() => navigate("terms")}
-              className="hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
             >
               Terms of Use
             </button>
             <span className="mx-2 text-gray-400">|</span>
             <button
               onClick={() => navigate("privacy")}
-              className="hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
             >
               Privacy Policy
             </button>
             <span className="mx-2 text-gray-400">|</span>
             <a
               href="mailto:goodwillstores.support@gmail.com"
-              className="hover:text-gray-300 text-sm font-medium transition"
+              className="text-white hover:text-gray-300 text-sm font-medium transition"
             >
               Contact
             </a>
           </div>
           {/* Second row: copyright */}
-          <div className="text-sm">
+          <div className="text-white text-sm">
             © {new Date().getFullYear()} Goodwillstores. All rights reserved.
           </div>
         </footer>
