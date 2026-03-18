@@ -145,7 +145,7 @@ export default function Donations() {
                   className="bg-white p-2 rounded-lg"
                   style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px' }}
                 >
-                  <div className="flex items-center justify-center" style={{ height: '200px', width: '200px' }}>
+                  <div className="flex items-center justify-center" style={{ height: '200px' }}>
                     <img
                       src={program.image}
                       alt={program.title}
