@@ -87,8 +87,17 @@ export default function Donations() {
                 className="rounded-xl shadow-md overflow-hidden p-4"
                 style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
               >
-                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                <p className="text-sm text-slate-600 mb-3">{program.description}</p>
+                {/* White container for title + description with 20px left/right margins */}
+                <div
+                  className="bg-white rounded-lg p-4 mb-4"
+                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+                >
+                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
+                  <p className="text-lg text-slate-600 leading-normal">
+                    {program.description}
+                  </p>
+                </div>
+                {/* Image carousel */}
                 <div
                   className="bg-gray-200 relative flex items-center justify-center"
                   style={{ height: '200px' }}
@@ -99,9 +108,11 @@ export default function Donations() {
                     className="w-full h-full object-contain"
                   />
                 </div>
+                {/* Quote */}
                 <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                   {program.quote}
                 </p>
+                {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
                   <div
                     className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
