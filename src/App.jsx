@@ -1127,7 +1127,7 @@ export default function App() {
       {view !== "image" && (
         <footer
           className="w-full text-center py-6"
-          style={{ backgroundColor: "#232F3E" }}
+          style={{ backgroundColor: "#1E3A8A" }}
         >
           {/* First row: links */}
           <div className="mb-2">
