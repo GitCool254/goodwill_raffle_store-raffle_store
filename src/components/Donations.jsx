@@ -102,8 +102,17 @@ export default function Donations() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-8 text-slate-800">Make a Difference</h1>
-      <p className="text-center text-slate-600 mb-10 max-w-2xl mx-auto">
+      <p 
+        className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
+        style={{
+          fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          fontWeight: 600,
+          fontSize: '16px',
+          lineHeight: '1.6',
+          letterSpacing: '0.01em',
+          color: '#334155'
+        }}
+      >
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
