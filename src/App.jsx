@@ -1128,7 +1128,7 @@ export default function App() {
         <footer
           className="w-full text-center py-6"
           style={{
-            background: "linear-gradient(180deg, #1E3A8A 0%, #4B6FAC 100%)",
+            background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
             color: "white"
           }}
         >
