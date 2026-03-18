@@ -1134,6 +1134,7 @@ export default function App() {
             <button
               onClick={() => navigate("terms")}
               className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              style={{ color: "white" }}
             >
               Terms of Use
             </button>
@@ -1141,6 +1142,7 @@ export default function App() {
             <button
               onClick={() => navigate("privacy")}
               className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              style={{ color: "white" }}
             >
               Privacy Policy
             </button>
@@ -1148,6 +1150,7 @@ export default function App() {
             <a
               href="mailto:goodwillstores.support@gmail.com"
               className="text-white hover:text-gray-300 text-sm font-medium transition"
+              style={{ color: "white" }}
             >
               Contact
             </a>
