@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom"; // If using React Router; otherwise use <a> with href
 
-export default function TermsOfUse() {
+export default function TermsOfUse({ onBack }) {
   return (
     <div
       className="max-w-4xl mx-auto p-8 text-left"
@@ -13,14 +12,14 @@ export default function TermsOfUse() {
         color: "#1e293b",
       }}
     >
-      {/* Header with back link (optional) */}
+      {/* Header with back button (calls onBack) */}
       <div className="mb-6">
-        <Link
-          to="/about"
-          className="text-sky-600 hover:text-sky-800 text-sm font-medium inline-flex items-center gap-1"
+        <button
+          onClick={onBack}
+          className="text-sky-600 hover:text-sky-800 text-sm font-medium inline-flex items-center gap-1 bg-transparent border-none cursor-pointer"
         >
           ← Back to About
-        </Link>
+        </button>
       </div>
 
       <h1
@@ -159,8 +158,7 @@ export default function TermsOfUse() {
           5. Prize Fulfillment and Delivery
         </h2>
         <p className="text-base text-slate-700 leading-relaxed mb-2">
-          Prizes are tangible items (e.g., electronics, furniture, etc.).
-          Delivery options include:
+          Prizes are tangible items (e.g., electronics, furniture, etc.). Delivery options include:
         </p>
         <ul className="list-disc pl-5 text-base text-slate-700 leading-relaxed space-y-2">
           <li>
