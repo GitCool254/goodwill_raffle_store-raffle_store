@@ -97,16 +97,18 @@ export default function Donations() {
                     {program.description}
                   </p>
                 </div>
-                {/* Image carousel */}
+                {/* Image container with white background and padding (like other programs) */}
                 <div
-                  className="bg-gray-200 relative flex items-center justify-center"
-                  style={{ height: '200px' }}
+                  className="bg-white rounded-lg"
+                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
                 >
-                  <img
-                    src={program.images[currentIndex]}
-                    alt={`${program.title} - ${currentIndex + 1}`}
-                    className="w-full h-full object-contain"
-                  />
+                  <div className="flex items-center justify-center">
+                    <img
+                      src={program.images[currentIndex]}
+                      alt={`${program.title} - ${currentIndex + 1}`}
+                      className="max-w-full h-auto object-contain rounded-md"
+                    />
+                  </div>
                 </div>
                 {/* Quote */}
                 <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
