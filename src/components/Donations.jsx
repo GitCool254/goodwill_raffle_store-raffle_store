@@ -140,10 +140,10 @@ export default function Donations() {
                     {program.description}
                   </p>
                 </div>
-                {/* Image container with thin white borders and smaller image */}
+                {/* Image container with thin white borders and exactly 10px padding around image */}
                 <div
-                  className="bg-white p-2 rounded-lg"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px' }}
+                  className="bg-white rounded-lg"
+                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
                 >
                   <div className="flex items-center justify-center" style={{ height: '200px' }}>
                     <img
