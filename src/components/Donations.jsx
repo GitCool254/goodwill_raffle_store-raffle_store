@@ -141,7 +141,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#b8e2f2' }}
+                style={{ backgroundColor: '#b8e2f2', marginBottom: '10px' }} // Added bottom margin
               >
                 {/* White container for title + description with 20px left/right margins */}
                 <div
