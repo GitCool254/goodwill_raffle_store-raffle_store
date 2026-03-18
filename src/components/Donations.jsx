@@ -133,7 +133,7 @@ export default function Donations() {
                 {/* White container for title + description with 20px left/right margins */}
                 <div
                   className="bg-white rounded-lg p-4 mb-4"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '10px' }}
+                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
                 >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p className="text-lg text-slate-600 leading-normal">
