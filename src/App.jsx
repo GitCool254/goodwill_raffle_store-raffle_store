@@ -1127,11 +1127,35 @@ export default function App() {
       {view !== "image" && (
         <footer
           className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
-          style={{ borderTopStyle: "dotted" }}                                 >
-          © {new Date().getFullYear()} Goodwillstores
+          style={{ borderTopStyle: "dotted" }}
+        >
+          {/* First row: links */}
+          <div className="mb-2">
+            <button
+              onClick={() => navigate("terms")}
+              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+            >
+              Terms of Use
+            </button>
+            <span className="mx-2 text-slate-300">|</span>
+            <button
+              onClick={() => navigate("privacy")}
+              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+            >
+              Privacy Policy
+            </button>
+            <span className="mx-2 text-slate-300">|</span>
+            <a
+              href="mailto:goodwillstores.support@gmail.com"
+              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition"
+            >
+              Contact
+            </a>
+          </div>
+          {/* Second row: copyright */}
+          <div>© {new Date().getFullYear()} Goodwillstores. All rights reserved.</div>
         </footer>
       )}
-
     </div>
   );
 }

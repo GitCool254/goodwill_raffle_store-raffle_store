@@ -231,30 +231,6 @@ export default function About({ navigate }) {
         Goodwillstores isn’t just about winning — it’s about trust,
         transparency, and giving everyone a fair chance.
       </p>
-
-      {/* NEW: Links to Terms, Privacy, Contact */}
-      <div className="mt-8 pt-4 border-t border-slate-200 text-center">
-        <button
-          onClick={() => navigate("terms")}
-          className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-        >
-          Terms of Use
-        </button>
-        <span className="mx-2 text-slate-300">|</span>
-        <button
-          onClick={() => navigate("privacy")}
-          className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-        >
-          Privacy Policy
-        </button>
-        <span className="mx-2 text-slate-300">|</span>
-        <a
-          href="mailto:goodwillstores.support@gmail.com"
-          className="text-sky-600 hover:text-sky-800 text-sm font-medium transition"
-        >
-          Contact
-        </a>
-      </div>
     </div>
   );
 }
