@@ -140,16 +140,16 @@ export default function Donations() {
                     {program.description}
                   </p>
                 </div>
-                {/* Image container with thin white borders and exactly 10px padding around image */}
+                {/* Image container with 10px white padding and auto‑fitting image */}
                 <div
                   className="bg-white rounded-lg"
                   style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
                 >
-                  <div className="flex items-center justify-center" style={{ height: '200px' }}>
+                  <div className="flex items-center justify-center">
                     <img
                       src={program.image}
                       alt={program.title}
-                      className="max-h-full max-w-full object-contain rounded-md"
+                      className="max-w-full h-auto object-contain rounded-md"
                     />
                   </div>
                 </div>
