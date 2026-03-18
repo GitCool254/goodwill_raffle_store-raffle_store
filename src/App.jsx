@@ -1123,11 +1123,14 @@ export default function App() {
             setImageIndex(i);                                                      setActiveImage(imageImages[i]);                                      }}                                                                     onBack={() => setView(imageReturnView)}
         />
       )}
-                                                                             <br />                                                                                                                                        {/* FOOTER - Amazon style with white text */}
+                                                                             <br />                                                                                                                                        {/* FOOTER - Amazon style with white text and gradient fade */}
       {view !== "image" && (
         <footer
           className="w-full text-center py-6"
-          style={{ backgroundColor: "#1E3A8A", color: "white" }}
+          style={{
+            background: "linear-gradient(180deg, #1E3A8A 0%, #4B6FAC 100%)",
+            color: "white"
+          }}
         >
           {/* First row: links */}
           <div className="mb-4">
