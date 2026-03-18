@@ -26,6 +26,7 @@ export default function Donations() {
         "/Beachcroft Patio1.jpg",
         "/Beachcroft Patio2.jpg",
       ],
+      quote: "“Dignity and comfort in every moment.”",
     },
     {
       id: 3,
@@ -39,6 +40,7 @@ export default function Donations() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
+      quote: "“Hope arrives when help is needed most.”",
     },
     {
       id: 4,
@@ -52,9 +54,11 @@ export default function Donations() {
         "/Coolster 125cc3.png",
         "/Coolster 125cc4.png",
       ],
+      quote: "“Stronger communities, brighter futures.”",
     }
   ];
 
+  // State for Academic Sponsorships carousel (id 1)
   const [currentIndex, setCurrentIndex] = useState(0);
   const academicProgram = programs[0];
   const totalImages = academicProgram.images.length;
@@ -69,6 +73,31 @@ export default function Donations() {
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
+  };
+
+  // State for carousels of programs 2,3,4
+  const [programIndices, setProgramIndices] = useState({
+    2: 0,
+    3: 0,
+    4: 0,
+  });
+
+  const handlePrevious = (programId) => {
+    setProgramIndices((prev) => {
+      const images = programs.find(p => p.id === programId).images;
+      const prevIndex = prev[programId];
+      const newIndex = prevIndex === 0 ? images.length - 1 : prevIndex - 1;
+      return { ...prev, [programId]: newIndex };
+    });
+  };
+
+  const handleNext = (programId) => {
+    setProgramIndices((prev) => {
+      const images = programs.find(p => p.id === programId).images;
+      const prevIndex = prev[programId];
+      const newIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+      return { ...prev, [programId]: newIndex };
+    });
   };
 
   return (
@@ -97,7 +126,7 @@ export default function Donations() {
                     {program.description}
                   </p>
                 </div>
-                {/* Image container with white background and padding (like other programs) */}
+                {/* Image container with white background and padding */}
                 <div
                   className="bg-white rounded-lg"
                   style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
@@ -137,11 +166,12 @@ export default function Donations() {
               </div>
             );
           } else {
+            const currentImageIndex = programIndices[program.id];
             return (
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#b8e2f2', marginBottom: '10px' }} // Added bottom margin
+                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }} // Same background as id 1
               >
                 {/* White container for title + description with 20px left/right margins */}
                 <div
@@ -153,17 +183,41 @@ export default function Donations() {
                     {program.description}
                   </p>
                 </div>
-                {/* Image container with 10px white padding and auto‑fitting image */}
+                {/* Image container with white background and padding */}
                 <div
                   className="bg-white rounded-lg"
                   style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
                 >
                   <div className="flex items-center justify-center">
                     <img
-                      src={program.image}
-                      alt={program.title}
+                      src={program.images[currentImageIndex]}
+                      alt={`${program.title} - ${currentImageIndex + 1}`}
                       className="max-w-full h-auto object-contain rounded-md"
                     />
+                  </div>
+                </div>
+                {/* Quote */}
+                <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
+                  {program.quote}
+                </p>
+                {/* Navigation arrows */}
+                <div className="mt-4 flex justify-center">
+                  <div
+                    className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                    style={{ gap: '20px' }}
+                  >
+                    <button
+                      onClick={() => handlePrevious(program.id)}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                    >
+                      ❮
+                    </button>
+                    <button
+                      onClick={() => handleNext(program.id)}
+                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
+                    >
+                      ❯
+                    </button>
                   </div>
                 </div>
               </div>
