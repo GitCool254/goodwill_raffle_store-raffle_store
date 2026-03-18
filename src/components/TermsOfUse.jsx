@@ -313,10 +313,6 @@ export default function TermsOfUse({ onBack }) {
           Raffle Way, Suite 100, Dover, DE 19901, USA
         </p>
       </section>
-
-      <div className="border-t border-slate-200 pt-6 mt-8 text-center text-sm text-slate-500">
-        © {new Date().getFullYear()} Goodwillstores. All rights reserved.
-      </div>
     </div>
   );
 }

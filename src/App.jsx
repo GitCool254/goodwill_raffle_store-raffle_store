@@ -1126,34 +1126,36 @@ export default function App() {
                                                                              <br />                                                                                                                                        {/* FOOTER (sticky bottom + broken line) */}
       {view !== "image" && (
         <footer
-          className="w-full text-center py-6 border-t-2 border-slate-400 text-slate-500 text-sm"
-          style={{ borderTopStyle: "dotted" }}
+          className="w-full text-center py-6"
+          style={{ backgroundColor: "#232F3E" }}
         >
           {/* First row: links */}
           <div className="mb-2">
             <button
               onClick={() => navigate("terms")}
-              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
             >
               Terms of Use
             </button>
-            <span className="mx-2 text-slate-300">|</span>
+            <span className="mx-2 text-gray-400">|</span>
             <button
               onClick={() => navigate("privacy")}
-              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
             >
               Privacy Policy
             </button>
-            <span className="mx-2 text-slate-300">|</span>
+            <span className="mx-2 text-gray-400">|</span>
             <a
               href="mailto:goodwillstores.support@gmail.com"
-              className="text-sky-600 hover:text-sky-800 text-sm font-medium transition"
+              className="text-white hover:text-gray-300 text-sm font-medium transition"
             >
               Contact
             </a>
           </div>
           {/* Second row: copyright */}
-          <div>© {new Date().getFullYear()} Goodwillstores. All rights reserved.</div>
+          <div className="text-white text-sm">
+            © {new Date().getFullYear()} Goodwillstores. All rights reserved.
+          </div>
         </footer>
       )}
     </div>
