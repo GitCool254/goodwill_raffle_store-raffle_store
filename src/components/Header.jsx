@@ -98,7 +98,7 @@ export default function Header({ setView, onMenuClick }) {
 
             {/* Menu button on the right */}
             <button
-              className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
+              className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700 mr-4"
               onClick={() => onMenuClick && onMenuClick()}
               aria-label="Open menu"
             >
