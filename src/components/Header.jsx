@@ -106,16 +106,28 @@ export default function Header({ setView, onMenuClick }) {
             </button>
           </div>
 
-          {/* Subtitle – modernised paragraph (background removed to show gradient) */}
-          <div style={{ marginTop: "35px" }}> {/* removed backgroundColor */}
+          {/* Smart Finds row – sits on the gradient (almost white area) */}
+          <div style={{ marginTop: "35px" }}>
             <h2
               className="font-semibold tracking-tight"
               style={{ fontSize: "16px", lineHeight: "1.3", color: "#1E3A8A" }}
             >
               Smart Finds • Discover Value • Win Quality
             </h2>
+          </div>
+
+          {/* Paragraph container – white background, separated */}
+          <div
+            className="mt-4"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "8px",
+              padding: "16px",
+              border: "1.5px dotted #cbd5e1",
+            }}
+          >
             <p
-              className="mt-4 max-w-xl impact-paragraph"
+              className="impact-paragraph"
               style={{
                 fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 fontWeight: 600,
@@ -123,8 +135,7 @@ export default function Header({ setView, onMenuClick }) {
                 lineHeight: '1.6',
                 letterSpacing: '0.01em',
                 color: '#334155',
-                border: "1.5px dotted #cbd5e1",
-                display: 'block',
+                margin: 0,
                 position: 'relative'
               }}
             >
