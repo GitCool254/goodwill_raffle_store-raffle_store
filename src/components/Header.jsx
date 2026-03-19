@@ -42,7 +42,7 @@ export default function Header({ setView, onMenuClick }) {
       <header
         className="w-full shadow-md sticky top-0 z-40"
         style={{
-          background: "linear-gradient(180deg, #1E3A8A 0%, #FFFFFF 40%, #FFFFFF 100%)",
+          background: "linear-gradient(180deg, #1E3A8A 0%, #FFFFFF 60%, #FFFFFF 100%)",
         }}
       >
         <div className="max-w-6xl mx-auto p-4">
