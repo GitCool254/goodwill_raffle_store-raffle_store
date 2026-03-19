@@ -121,7 +121,7 @@ export default function Header({ setView, onMenuClick }) {
           <div
             className="mt-4"
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#f8fafc",
               borderRadius: "8px",
               paddingTop: "16px",
               paddingBottom: "16px",
@@ -142,8 +142,8 @@ export default function Header({ setView, onMenuClick }) {
                 letterSpacing: '0.01em',
                 color: '#334155',
                 margin: 0,
-                paddingLeft: "20px",
-                paddingRight: "20px",
+                paddingLeft: "15px",
+                paddingRight: "15px",
                 position: 'relative'
               }}
             >
