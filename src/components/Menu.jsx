@@ -94,11 +94,20 @@ export default function Menu({ isOpen, onClose, setView }) {
               <span className="block">Browse</span>
               <span className="block">Goodwillstores</span>
             </button>
+            {/* Close button: white, no background, 10px margin-right */}
             <button
               onClick={onClose}
-              className="text-white/70 hover:text-white text-2xl leading-none"
-              style={{ fontWeight: 700 }}
               aria-label="Close menu"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'white',
+                fontSize: '24px',
+                fontWeight: 700,
+                lineHeight: 1,
+                marginRight: '10px',
+                cursor: 'pointer',
+              }}
             >
               ✕
             </button>
