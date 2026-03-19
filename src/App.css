@@ -215,3 +215,9 @@ html, body {
   top: 0 !important;
   bottom: 0 !important;
 }
+
+/* Add side margins to main content only, keeping header/footer full width */
+main.flex-grow {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
