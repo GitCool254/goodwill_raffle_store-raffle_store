@@ -14,7 +14,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  text-align: left; /* restores default alignment; override in components if needed */
+  text-align: center; /* restores default alignment; override in components if needed */
 }
 
 .logo {
