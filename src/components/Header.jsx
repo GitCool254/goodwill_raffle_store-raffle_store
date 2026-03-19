@@ -127,8 +127,8 @@ export default function Header({ setView, onMenuClick }) {
               paddingBottom: "16px",
               paddingLeft: 0,
               paddingRight: 0,
-              marginLeft: "-1rem",
-              marginRight: "-1rem",
+              marginLeft: "1rem",
+              marginRight: "1rem",
               border: "1.5px dotted #cbd5e1",
             }}
           >
@@ -142,8 +142,8 @@ export default function Header({ setView, onMenuClick }) {
                 letterSpacing: '0.01em',
                 color: '#334155',
                 margin: 0,
-                paddingLeft: "16px",
-                paddingRight: "16px",
+                paddingLeft: "20px",
+                paddingRight: "20px",
                 position: 'relative'
               }}
             >
