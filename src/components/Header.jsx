@@ -38,10 +38,14 @@ export default function Header({ setView, onMenuClick }) {
           z-index: 0;
         }
       `}</style>
-      {/* HEADER */}
-      <header className="w-full bg-white shadow-md sticky top-0 z-40">
+      {/* HEADER with Amazon‑style gradient background */}
+      <header
+        className="w-full shadow-md sticky top-0 z-40"
+        style={{
+          background: "linear-gradient(180deg, #1E3A8A 0%, #F8FAFC 100%)",
+        }}
+      >
         <div className="max-w-6xl mx-auto p-4">
-
           {/* TOP ROW: Logo + Decorative Column + Title + Menu button */}
           <div className="flex items-center justify-between">
             {/* Left group: logo, column, title */}
@@ -65,9 +69,9 @@ export default function Header({ setView, onMenuClick }) {
                 <div className="flex-1" style={{ background: '#1E3A8A', boxShadow: 'inset 0 0 4px rgba(255,255,255,0.3)' }}></div>
               </div>
 
-              {/* Clickable title styled like plain text */}
+              {/* Clickable title – white for contrast on dark top */}
               <div
-                style={{ backgroundColor: "#f8fafc" }}
+                style={{ backgroundColor: "transparent" }}
                 className="inline-block"
               >
                 <button
@@ -79,7 +83,7 @@ export default function Header({ setView, onMenuClick }) {
                     border: 'none',
                     padding: 0,
                     cursor: 'pointer',
-                    color: 'inherit',
+                    color: 'white', // changed to white for readability on dark blue
                     fontFamily: 'inherit',
                     textAlign: 'left',
                     lineHeight: 1.2
@@ -102,10 +106,8 @@ export default function Header({ setView, onMenuClick }) {
             </button>
           </div>
 
-          {/* Subtitle – modernised paragraph */}
-          <div
-            style={{ backgroundColor: "#f8fafc", marginTop: "35px" }}
-          >
+          {/* Subtitle – modernised paragraph (background removed to show gradient) */}
+          <div style={{ marginTop: "35px" }}> {/* removed backgroundColor */}
             <h2
               className="font-semibold tracking-tight"
               style={{ fontSize: "16px", lineHeight: "1.3", color: "#1E3A8A" }}
