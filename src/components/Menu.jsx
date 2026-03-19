@@ -102,7 +102,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 background: 'transparent',
                 border: 'none',
                 color: 'white',
-                fontSize: '24px',
+                fontSize: '18px',
                 fontWeight: 700,
                 lineHeight: 1,
                 marginRight: '10px',
