@@ -121,9 +121,12 @@ export default function Header({ setView, onMenuClick }) {
           <div
             className="mt-4"
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#f8fafc",
               borderRadius: "8px",
-              padding: "16px",
+              paddingTop: "16px",
+              paddingBottom: "16px",
+              paddingLeft: "24px",
+              paddingRight: "24px",
               border: "1.5px dotted #cbd5e1",
             }}
           >
