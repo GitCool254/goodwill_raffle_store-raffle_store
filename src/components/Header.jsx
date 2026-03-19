@@ -96,11 +96,12 @@ export default function Header({ setView, onMenuClick }) {
               </div>
             </div>
 
-            {/* Menu button on the right */}
+            {/* Menu button on the right – now with inline marginRight */}
             <button
-              className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700 mr-8"
+              className="px-3 py-1 bg-sky-600 text-white rounded shadow hover:bg-sky-700"
               onClick={() => onMenuClick && onMenuClick()}
               aria-label="Open menu"
+              style={{ marginRight: '20px' }}
             >
               ☰
             </button>
