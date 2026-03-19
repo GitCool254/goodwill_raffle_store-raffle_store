@@ -96,12 +96,12 @@ export default function Header({ setView, onMenuClick }) {
               </div>
             </div>
 
-            {/* Menu button on the right – transparent background, white icon (forced) */}
+            {/* Menu button on the right – transparent background, white icon, larger */}
             <button
               className="px-3 py-1 text-white bg-transparent border-none cursor-pointer"
               onClick={() => onMenuClick && onMenuClick()}
               aria-label="Open menu"
-              style={{ marginRight: '20px', color: 'white' }}
+              style={{ marginRight: '20px', color: 'white', fontSize: '24px' }}
             >
               ☰
             </button>
