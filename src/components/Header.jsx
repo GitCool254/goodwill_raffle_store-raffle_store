@@ -142,8 +142,8 @@ export default function Header({ setView, onMenuClick }) {
                 letterSpacing: '0.01em',
                 color: '#334155',
                 margin: 0,
-                paddingLeft: "15px",
-                paddingRight: "15px",
+                paddingLeft: "10px",
+                paddingRight: "10px",
                 position: 'relative'
               }}
             >
