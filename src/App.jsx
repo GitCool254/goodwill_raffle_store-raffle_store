@@ -989,7 +989,6 @@ export default function App() {
               <div 
                 style={{
                   width: '100%',
-                  height: '352px',          // 11rem = 176px (same as h-44)
                   marginBottom: '12px',
                   overflow: 'hidden',
                   display: 'flex',
@@ -1002,8 +1001,7 @@ export default function App() {
                   alt={p.title}
                   style={{
                     width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
+                    height: 'auto',
                     borderRadius: '0.5rem',
                     cursor: 'zoom-in'
                   }}
