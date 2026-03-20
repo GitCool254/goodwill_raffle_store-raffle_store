@@ -131,14 +131,17 @@ export default function Donations() {
                   style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
                 >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p className="text-lg text-slate-600 leading-normal">
+                  <p 
+                    className="text-lg text-slate-600 leading-normal"
+                    style={{ fontWeight: "500" }}
+                  >
                     {program.description}
                   </p>
                 </div>
                 {/* Image container with white background and padding */}
                 <div
                   className="bg-white rounded-lg"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px', fontWeight: 500 }}
+                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
                 >
                   <div className="flex items-center justify-center">
                     <img
