@@ -1003,7 +1003,7 @@ export default function App() {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
+                    objectFit: 'fill',
                     borderRadius: '0.5rem',
                     cursor: 'zoom-in'
                   }}
