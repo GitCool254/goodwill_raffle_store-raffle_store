@@ -164,15 +164,14 @@ export default function Donations() {
                   {program.quote}
                 </p>
                 {/* Name and position */}
-                <div 
+                <div
                   className="mt-2 text-sm mb-0"
                   style={{ marginBottom: "10px" }}
                 >
-                  <span className="font-semibold">{program.quoteName}</span>{" "}
-                  
+                  <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
-                
+
                 {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
                   <div
@@ -232,13 +231,13 @@ export default function Donations() {
                 </p>
                 {/* Name and position */}
                 <div className="mt-2 text-sm mb-0">
-                  <span className="font-semibold">{program.quoteName}</span>{" "}
+                  <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
                 {/* Navigation arrows */}
 
                 <br />
-                
+
                 <div className="mt-4 flex justify-center">
                   <div
                     className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
