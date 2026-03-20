@@ -15,7 +15,7 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
-      quoteName: "-Juliana George, ",
+      quoteName: "-Juliana George,",
       quotePosition: "Texas College Academic Sponsorship Beneficiary",
     },
     {
@@ -29,7 +29,7 @@ export default function Donations() {
         "/Beachcroft Patio2.jpg",
       ],
       quote: "“Dignity and comfort in every moment.”",
-      quoteName: "-Elena Martinez, ",
+      quoteName: "-Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
     },
     {
@@ -168,12 +168,10 @@ export default function Donations() {
                   className="mt-2 text-sm mb-0"
                   style={{ marginBottom: "10px" }}
                 >
-                  <span><strong>{program.quoteName}</strong></span>{" "}
+                  <span className="font-semibold">{program.quoteName}</span>{" "}
                   
                   <span>{program.quotePosition}</span>
                 </div>
-
-                <br />
                 
                 {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
@@ -229,15 +227,18 @@ export default function Donations() {
                   </div>
                 </div>
                 {/* Quote */}
-                <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
+                <p className="mt-4 leading-tight text-lg italic font-heading pl-2">
                   {program.quote}
                 </p>
                 {/* Name and position */}
-                <div className="mt-2 text-slate-700 text-sm">
-                  <span className="font-bold">{program.quoteName}</span>{" "}
+                <div className="mt-2 text-sm mb-0">
+                  <span className="font-semibold">{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
                 {/* Navigation arrows */}
+
+                <br />
+                
                 <div className="mt-4 flex justify-center">
                   <div
                     className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
