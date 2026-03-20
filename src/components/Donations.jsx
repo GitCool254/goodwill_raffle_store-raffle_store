@@ -166,7 +166,7 @@ export default function Donations() {
                 {/* Name and position */}
                 <div 
                   className="mt-2 text-sm mb-0"
-                  style={{ marginBottom: "20px"
+                  style={{ marginBottom: "10px" }}
                 >
                   <span><strong>{program.quoteName}</strong></span>{" "}
                   
