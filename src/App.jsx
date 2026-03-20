@@ -986,7 +986,7 @@ export default function App() {
           {products.map((p) => (                                                   <div                                                                     key={p.id}
               className="bg-white rounded-2xl shadow p-4 flex flex-col"
             >
-              <div className="h-40 w-full mb-3">
+              <div className="h-35 w-full mb-3">
                 <img
                   src={p.image}
                   alt={p.title}
