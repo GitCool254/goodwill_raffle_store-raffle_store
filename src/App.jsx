@@ -989,7 +989,7 @@ export default function App() {
               <img
                 src={p.image}
                 alt={p.title}
-                className="h-44 w-full object-cover rounded-lg mb-3 cursor-zoom-in"
+                className="h-44 w-full object-contain rounded-lg mb-3 cursor-zoom-in"
                 onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
               />                                                                     <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
