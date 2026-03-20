@@ -986,11 +986,27 @@ export default function App() {
           {products.map((p) => (                                                   <div                                                                     key={p.id}
               className="bg-white rounded-2xl shadow p-4 flex flex-col"
             >
-              <div className="h-20 w-full mb-3">
+              <div 
+                style={{
+                  width: '100%',
+                  height: '176px',          // 11rem = 176px (same as h-44)
+                  marginBottom: '12px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 <img
                   src={p.image}
                   alt={p.title}
-                  className="w-full h-full object-contain rounded-lg cursor-zoom-in"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    borderRadius: '0.5rem',
+                    cursor: 'zoom-in'
+                  }}
                   onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
                 />
               </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
