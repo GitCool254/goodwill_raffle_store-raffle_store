@@ -126,7 +126,7 @@ export default function Donations() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
-          if (program.id === 1) {
+          if (program.id === 0) {
             return (
               <div
                 key={program.id}
@@ -213,7 +213,7 @@ export default function Donations() {
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p 
                     className="text-lg text-slate-600 leading-normal"
-                    style={{ fontWeight: "400", padding: "10px" }}
+                    style={{ fontWeight: "450", padding: "10px" }}
                   >
                     {program.description}
                   </p>
@@ -281,7 +281,17 @@ export default function Donations() {
         >
           <span>Make a Donation</span>
         </a>
-        <p className="mt-4 text-sm text-slate-500">
+        <p
+          className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
+          style={{
+            fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontWeight: 600,
+            fontSize: '16px',
+            lineHeight: '1.6',
+            letterSpacing: '0.01em',
+            color: '#334155'
+          }}
+        >
           Your support helps us continue these programs. Thank you!
         </p>
       </div>
