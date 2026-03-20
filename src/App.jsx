@@ -989,7 +989,7 @@ export default function App() {
               <div 
                 style={{
                   width: '100%',
-                  height: '200px',          // 11rem = 176px (same as h-44)
+                  height: '352px',          // 11rem = 176px (same as h-44)
                   marginBottom: '12px',
                   overflow: 'hidden',
                   display: 'flex',
