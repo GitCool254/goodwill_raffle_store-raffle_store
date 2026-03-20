@@ -66,25 +66,9 @@ export default function Donations() {
     }
   ];
 
-  // State for Academic Sponsorships carousel (id 1)
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const academicProgram = programs[0];
-  const totalImages = academicProgram.images.length;
-
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? totalImages - 1 : prevIndex - 1));
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === totalImages - 1 ? 0 : prevIndex + 1));
-  };
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
-  // State for carousels of programs 2,3,4
+  // State for carousels of all programs
   const [programIndices, setProgramIndices] = useState({
+    1: 0,
     2: 0,
     3: 0,
     4: 0,
@@ -126,149 +110,73 @@ export default function Donations() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
-          if (program.id === 0) {
-            return (
+          const currentImageIndex = programIndices[program.id];
+          return (
+            <div
+              key={program.id}
+              className="rounded-xl shadow-md overflow-hidden p-4"
+              style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
+            >
+              {/* White container for title + description with 20px left/right margins */}
               <div
-                key={program.id}
-                className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
+                className="bg-white rounded-lg p-4 mb-4"
+                style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
               >
-                {/* White container for title + description with 20px left/right margins */}
-                <div
-                  className="bg-white rounded-lg p-4 mb-4"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
-                >
-                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p
-                    className="text-lg text-slate-600 leading-normal"
-                    style={{ fontWeight: "400", padding: "10px" }}
-                  >
-                    {program.description}
-                  </p>
-                </div>
-                {/* Image container with white background and padding */}
-                <div
-                  className="bg-white rounded-lg"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
-                >
-                  <div className="flex items-center justify-center">
-                    <img
-                      src={program.images[currentIndex]}
-                      alt={`${program.title} - ${currentIndex + 1}`}
-                      className="max-w-full h-auto object-contain rounded-md"
-                    />
-                  </div>
-                </div>
-                {/* Quote with left margin */}
+                <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                 <p
-                  className="mt-4 leading-tight italic font-heading pl-2"
-                  style={{ fontSize: '1.125rem', padding: "10px" }}
+                  className="text-lg text-slate-600 leading-normal"
+                  style={{ fontWeight: "450", padding: "10px" }}
                 >
-                  {program.quote}
+                  {program.description}
                 </p>
-                {/* Name and position with left margin */}
-                <div
-                  className="mt-2 mb-0 pl-2"
-                  style={{ marginBottom: "10px", fontSize: '0.875rem', padding: "10px" }}
-                >
-                  <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
-                  <span>{program.quotePosition}</span>
-                </div>
-
-                {/* Navigation arrows */}
-                <div className="mt-4 flex justify-center">
-                  <div
-                    className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
-                    style={{ gap: '20px' }}
-                  >
-                    <button
-                      onClick={goToPrevious}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ❮
-                    </button>
-                    <button
-                      onClick={goToNext}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ❯
-                    </button>
-                  </div>
+              </div>
+              {/* Image container with white background and padding */}
+              <div
+                className="bg-white rounded-lg"
+                style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
+              >
+                <div className="flex items-center justify-center">
+                  <img
+                    src={program.images[currentImageIndex]}
+                    alt={`${program.title} - ${currentImageIndex + 1}`}
+                    className="max-w-full h-auto object-contain rounded-md"
+                  />
                 </div>
               </div>
-            );
-          } else {
-            const currentImageIndex = programIndices[program.id];
-            return (
-              <div
-                key={program.id}
-                className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
+              {/* Quote with left margin */}
+              <p
+                className="mt-4 leading-tight italic font-heading pl-2"
+                style={{ fontSize: '1.125rem', padding: "10px" }}
               >
-                {/* White container for title + description with 20px left/right margins */}
+                {program.quote}
+              </p>
+              {/* Name and position with left margin */}
+              <div className="mt-2 mb-0 pl-2" style={{ fontSize: '0.875rem', padding: "10px" }}>
+                <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
+                <span>{program.quotePosition}</span>
+              </div>
+              {/* Navigation arrows */}
+              <div className="mt-4 flex justify-center">
                 <div
-                  className="bg-white rounded-lg p-4 mb-4"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+                  className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
+                  style={{ gap: '20px' }}
                 >
-                  <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p 
-                    className="text-lg text-slate-600 leading-normal"
-                    style={{ fontWeight: "450", padding: "10px" }}
+                  <button
+                    onClick={() => handlePrevious(program.id)}
+                    className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                   >
-                    {program.description}
-                  </p>
-                </div>
-                {/* Image container with white background and padding */}
-                <div
-                  className="bg-white rounded-lg"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
-                >
-                  <div className="flex items-center justify-center">
-                    <img
-                      src={program.images[currentImageIndex]}
-                      alt={`${program.title} - ${currentImageIndex + 1}`}
-                      className="max-w-full h-auto object-contain rounded-md"
-                    />
-                  </div>
-                </div>
-                {/* Quote with left margin */}
-                <p
-                  className="mt-4 leading-tight italic font-heading pl-2"
-                  style={{ fontSize: '1.125rem', padding: "10px" }}
-                >
-                  {program.quote}
-                </p>
-                {/* Name and position with left margin */}
-                <div className="mt-2 mb-0 pl-2" style={{ fontSize: '0.875rem', padding: "10px" }}>
-                  <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
-                  <span>{program.quotePosition}</span>
-                </div>
-                {/* Navigation arrows */}
-
-                <br />
-
-                <div className="mt-4 flex justify-center">
-                  <div
-                    className="flex items-center bg-gray-200 px-3 py-1 rounded-full"
-                    style={{ gap: '20px' }}
+                    ❮
+                  </button>
+                  <button
+                    onClick={() => handleNext(program.id)}
+                    className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
                   >
-                    <button
-                      onClick={() => handlePrevious(program.id)}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ❮
-                    </button>
-                    <button
-                      onClick={() => handleNext(program.id)}
-                      className="bg-black/30 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/50 transition"
-                    >
-                      ❯
-                    </button>
-                  </div>
+                    ❯
+                  </button>
                 </div>
               </div>
-            );
-          }
+            </div>
+          );
         })}
       </div>
 
