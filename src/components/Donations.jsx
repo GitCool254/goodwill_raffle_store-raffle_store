@@ -6,9 +6,9 @@ export default function Donations() {
       id: 1,
       title: "Academic Sponsorships",
       description: "We fund school fees, supplies, and learning materials for students from under-resourced backgrounds, giving them a chance to build a better future.",
-      image: "/Wonderfold.jpg",
+      image: "/WonderfoldN1.jpg",
       images: [
-        "/Wonderfold.jpg",
+        "/WonderfoldN1.jpg",
         "/Wonderfold1.jpg",
         "/Wonderfold2.jpg",
         "/Wonderfold3.jpg",
@@ -32,9 +32,9 @@ export default function Donations() {
       id: 3,
       title: "Emergency Relief",
       description: "From food parcels and clothing to urgent financial assistance during crises, we stand ready to help families facing hardship.",
-      image: "/Wonderfold.jpg",
+      image: "/WonderfoldN1.jpg",
       images: [
-        "/Wonderfold.jpg",
+        "/WonderfoldN1.jpg",
         "/Wonderfold1.jpg",
         "/Wonderfold2.jpg",
         "/Wonderfold3.jpg",
@@ -149,7 +149,7 @@ export default function Donations() {
                   </div>
                 </div>
                 {/* Quote */}
-                <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
+                <p className="mt-4 leading-tight text-lg italic font-heading">
                   {program.quote}
                 </p>
                 {/* Navigation arrows */}
