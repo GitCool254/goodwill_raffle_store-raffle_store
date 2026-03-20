@@ -14,7 +14,7 @@ export default function Donations() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
-      quote: "“EDUCATION GAVE ME HOPE. NOW I CAN DREAM OF BECOMING A TEACHER.”",
+      quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
     },
     {
       id: 2,
@@ -138,7 +138,7 @@ export default function Donations() {
                 {/* Image container with white background and padding */}
                 <div
                   className="bg-white rounded-lg"
-                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
+                  style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px', fontWeight: 500 }}
                 >
                   <div className="flex items-center justify-center">
                     <img
