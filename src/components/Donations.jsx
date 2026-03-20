@@ -15,7 +15,7 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
-      quoteName: "-Juliana George,",
+      quoteName: "—Juliana George,",
       quotePosition: "Texas College Academic Sponsorship Beneficiary",
     },
     {
@@ -29,7 +29,7 @@ export default function Donations() {
         "/Beachcroft Patio2.jpg",
       ],
       quote: "“Dignity and comfort in every moment.”",
-      quoteName: "-Elena Martinez,",
+      quoteName: "—Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
     },
     {
@@ -45,7 +45,7 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Hope arrives when help is needed most.”",
-      quoteName: "-David Ochieng,",
+      quoteName: "—David Ochieng,",
       quotePosition: "Emergency Relief Recipient",
     },
     {
@@ -61,7 +61,7 @@ export default function Donations() {
         "/Coolster 125cc4.png",
       ],
       quote: "“Stronger communities, brighter futures.”",
-      quoteName: "-Sarah Njoroge,",
+      quoteName: "—Sarah Njoroge,",
       quotePosition: "Community Project Coordinator",
     }
   ];
@@ -141,7 +141,7 @@ export default function Donations() {
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p
                     className="text-lg text-slate-600 leading-normal"
-                    style={{ fontWeight: "600" }}
+                    style={{ fontWeight: "520" }}
                   >
                     {program.description}
                   </p>
@@ -161,14 +161,14 @@ export default function Donations() {
                 </div>
                 {/* Quote with left margin */}
                 <p
-                  className="mt-4 leading-tight italic font-heading pl-4"
+                  className="mt-4 leading-tight italic font-heading pl-2"
                   style={{ fontSize: '1.125rem' }}
                 >
                   {program.quote}
                 </p>
                 {/* Name and position with left margin */}
                 <div
-                  className="mt-2 mb-0 pl-4"
+                  className="mt-2 mb-0 pl-2"
                   style={{ marginBottom: "10px", fontSize: '0.875rem' }}
                 >
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
@@ -211,7 +211,10 @@ export default function Donations() {
                   style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
                 >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p className="text-lg text-slate-600 leading-normal">
+                  <p 
+                    className="text-lg text-slate-600 leading-normal"
+                    style={{ fontWeight: "520" }}
+                  >
                     {program.description}
                   </p>
                 </div>
@@ -230,13 +233,13 @@ export default function Donations() {
                 </div>
                 {/* Quote with left margin */}
                 <p
-                  className="mt-4 leading-tight italic font-heading pl-4"
+                  className="mt-4 leading-tight italic font-heading pl-2"
                   style={{ fontSize: '1.125rem' }}
                 >
                   {program.quote}
                 </p>
                 {/* Name and position with left margin */}
-                <div className="mt-2 mb-0 pl-4" style={{ fontSize: '0.875rem' }}>
+                <div className="mt-2 mb-0 pl-2" style={{ fontSize: '0.875rem' }}>
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
