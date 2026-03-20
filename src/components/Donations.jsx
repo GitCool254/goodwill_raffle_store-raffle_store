@@ -15,7 +15,7 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
-      quoteName: "Juliana George",
+      quoteName: "-Juliana George ",
       quotePosition: "Texas College Academic Sponsorship Beneficiary",
     },
     {
@@ -29,7 +29,7 @@ export default function Donations() {
         "/Beachcroft Patio2.jpg",
       ],
       quote: "“Dignity and comfort in every moment.”",
-      quoteName: "Elena Martinez",
+      quoteName: "-Elena Martinez ",
       quotePosition: "Palliative Care Recipient",
     },
     {
@@ -61,7 +61,7 @@ export default function Donations() {
         "/Coolster 125cc4.png",
       ],
       quote: "“Stronger communities, brighter futures.”",
-      quoteName: "Sarah Njoroge",
+      quoteName: "-Sarah Njoroge ",
       quotePosition: "Community Project Coordinator",
     }
   ];
@@ -164,8 +164,12 @@ export default function Donations() {
                   {program.quote}
                 </p>
                 {/* Name and position */}
-                <div className="mt-2 text-slate-700">
-                  <span className="font-bold">{program.quoteName}</span>{" "}
+                <div 
+                  className="mt-2 text-sm mb-0"
+                  style={{ marginBottom: "20px"
+                >
+                  <span><strong>{program.quoteName}</strong></span>{" "}
+                  
                   <span>{program.quotePosition}</span>
                 </div>
                 {/* Navigation arrows */}
