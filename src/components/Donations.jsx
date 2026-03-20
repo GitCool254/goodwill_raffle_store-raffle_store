@@ -160,13 +160,16 @@ export default function Donations() {
                   </div>
                 </div>
                 {/* Quote */}
-                <p className="mt-4 leading-tight text-lg italic font-heading">
+                <p
+                  className="mt-4 leading-tight italic font-heading"
+                  style={{ fontSize: '1.125rem' }} // text-lg
+                >
                   {program.quote}
                 </p>
                 {/* Name and position */}
                 <div
-                  className="mt-2 text-sm mb-0"
-                  style={{ marginBottom: "10px" }}
+                  className="mt-2 mb-0"
+                  style={{ marginBottom: "10px", fontSize: '0.875rem' }} // text-sm
                 >
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
@@ -226,11 +229,14 @@ export default function Donations() {
                   </div>
                 </div>
                 {/* Quote */}
-                <p className="mt-4 leading-tight text-lg italic font-heading pl-2">
+                <p
+                  className="mt-4 leading-tight italic font-heading pl-2"
+                  style={{ fontSize: '1.125rem' }} // text-lg
+                >
                   {program.quote}
                 </p>
                 {/* Name and position */}
-                <div className="mt-2 text-sm mb-0">
+                <div className="mt-2 mb-0" style={{ fontSize: '0.875rem' }}> // text-sm
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
