@@ -14,7 +14,7 @@ export default function Donations() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
-      quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
+      quote: "“EDUCATION GAVE ME HOPE. NOW I CAN DREAM OF BECOMING A TEACHER.”",
     },
     {
       id: 2,
