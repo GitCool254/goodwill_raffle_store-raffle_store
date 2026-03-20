@@ -141,7 +141,7 @@ export default function Donations() {
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
                   <p
                     className="text-lg text-slate-600 leading-normal"
-                    style={{ fontWeight: "500" }}
+                    style={{ fontWeight: "600" }}
                   >
                     {program.description}
                   </p>
@@ -159,17 +159,17 @@ export default function Donations() {
                     />
                   </div>
                 </div>
-                {/* Quote */}
+                {/* Quote with left margin */}
                 <p
-                  className="mt-4 leading-tight italic font-heading"
-                  style={{ fontSize: '1.125rem' }} // text-lg
+                  className="mt-4 leading-tight italic font-heading pl-4"
+                  style={{ fontSize: '1.125rem' }}
                 >
                   {program.quote}
                 </p>
-                {/* Name and position */}
+                {/* Name and position with left margin */}
                 <div
-                  className="mt-2 mb-0"
-                  style={{ marginBottom: "10px", fontSize: '0.875rem' }} // text-sm
+                  className="mt-2 mb-0 pl-4"
+                  style={{ marginBottom: "10px", fontSize: '0.875rem' }}
                 >
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
@@ -228,15 +228,15 @@ export default function Donations() {
                     />
                   </div>
                 </div>
-                {/* Quote */}
+                {/* Quote with left margin */}
                 <p
-                  className="mt-4 leading-tight italic font-heading pl-2"
-                  style={{ fontSize: '1.125rem' }} // text-lg
+                  className="mt-4 leading-tight italic font-heading pl-4"
+                  style={{ fontSize: '1.125rem' }}
                 >
                   {program.quote}
                 </p>
-                {/* Name and position */}
-                <div className="mt-2 mb-0" style={{ fontSize: '0.875rem' }}> // text-sm
+                {/* Name and position with left margin */}
+                <div className="mt-2 mb-0 pl-4" style={{ fontSize: '0.875rem' }}>
                   <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
                   <span>{program.quotePosition}</span>
                 </div>
