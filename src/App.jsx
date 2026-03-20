@@ -45,9 +45,9 @@ export default function App() {
       title: "Wonderfold wagon",
       description: "Barely used wagon, excellent condition(only selling because my kids have outgrown it)\nPick up or delivery\nThe W4Luxe stroller Wagon Model\nHolds up to 4passengers\nExtra storage all sides\nDeep carriage with mesh sides\nRemovable canopy with Adjustable canopy Fabric and Rods\nEasy to fold",
       price: 6,
-      image: "/Wonderfold.jpg",
+      image: "/WonderfoldN.jpg",
       images: [
-        "/Wonderfold.jpg",
+        "/WonderfoldN.jpg",
         "/Wonderfold1.jpg",
         "/Wonderfold2.jpg",
         "/Wonderfold3.jpg",
