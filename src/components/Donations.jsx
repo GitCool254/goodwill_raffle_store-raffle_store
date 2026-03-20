@@ -15,6 +15,8 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
+      quoteName: "Juliana George",
+      quotePosition: "Texas College Academic Sponsorship Beneficiary",
     },
     {
       id: 2,
@@ -27,6 +29,8 @@ export default function Donations() {
         "/Beachcroft Patio2.jpg",
       ],
       quote: "“Dignity and comfort in every moment.”",
+      quoteName: "Elena Martinez",
+      quotePosition: "Palliative Care Recipient",
     },
     {
       id: 3,
@@ -41,6 +45,8 @@ export default function Donations() {
         "/Wonderfold4.jpg",
       ],
       quote: "“Hope arrives when help is needed most.”",
+      quoteName: "David Ochieng",
+      quotePosition: "Emergency Relief Recipient",
     },
     {
       id: 4,
@@ -55,6 +61,8 @@ export default function Donations() {
         "/Coolster 125cc4.png",
       ],
       quote: "“Stronger communities, brighter futures.”",
+      quoteName: "Sarah Njoroge",
+      quotePosition: "Community Project Coordinator",
     }
   ];
 
@@ -102,7 +110,7 @@ export default function Donations() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
-      <p 
+      <p
         className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
         style={{
           fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -131,7 +139,7 @@ export default function Donations() {
                   style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
                 >
                   <h2 className="font-semibold text-lg mb-2 text-slate-800">{program.title}</h2>
-                  <p 
+                  <p
                     className="text-lg text-slate-600 leading-normal"
                     style={{ fontWeight: "500" }}
                   >
@@ -155,6 +163,11 @@ export default function Donations() {
                 <p className="mt-4 leading-tight text-lg italic font-heading">
                   {program.quote}
                 </p>
+                {/* Name and position */}
+                <div className="mt-2 text-slate-700">
+                  <span className="font-bold">{program.quoteName}</span>{" "}
+                  <span>{program.quotePosition}</span>
+                </div>
                 {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
                   <div
@@ -183,7 +196,7 @@ export default function Donations() {
               <div
                 key={program.id}
                 className="rounded-xl shadow-md overflow-hidden p-4"
-                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }} // Same background as id 1
+                style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
               >
                 {/* White container for title + description with 20px left/right margins */}
                 <div
@@ -212,6 +225,11 @@ export default function Donations() {
                 <p className="mt-4 text-sm text-emerald-700 italic border-l-2 border-emerald-500 pl-2">
                   {program.quote}
                 </p>
+                {/* Name and position */}
+                <div className="mt-2 text-slate-700 text-sm">
+                  <span className="font-bold">{program.quoteName}</span>{" "}
+                  <span>{program.quotePosition}</span>
+                </div>
                 {/* Navigation arrows */}
                 <div className="mt-4 flex justify-center">
                   <div
