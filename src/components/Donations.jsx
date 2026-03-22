@@ -154,8 +154,8 @@ export default function Donations() {
                       bottom: '20px',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      width: '100px',
-                      height: '100px',
+                      width: '120px',
+                      height: '120px',
                       backgroundColor: 'white',
                       borderRadius: '50%',
                       display: 'flex',
@@ -169,8 +169,8 @@ export default function Donations() {
                       src={program.overlayImage || program.image}
                       alt="overlay"
                       style={{
-                        width: '90%',
-                        height: '90%',
+                        width: '97%',
+                        height: '97%',
                         borderRadius: '50%',
                         objectFit: 'cover',
                       }}
