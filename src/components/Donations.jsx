@@ -132,7 +132,7 @@ export default function Donations() {
               </div>
               {/* Image container with white background and padding */}
               <div
-                className="bg-white rounded-lg"
+                className="bg-white rounded-lg relative"
                 style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
               >
                 <div className="flex items-center justify-center">
@@ -140,6 +140,35 @@ export default function Donations() {
                     src={program.images[currentImageIndex]}
                     alt={`${program.title} - ${currentImageIndex + 1}`}
                     className="max-w-full h-auto object-contain rounded-md"
+                  />
+                </div>
+                {/* Circular overlay image with white border */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '60px',
+                    height: '60px',
+                    backgroundColor: 'white',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                    zIndex: 5,
+                  }}
+                >
+                  <img
+                    src={program.image}
+                    alt="overlay"
+                    style={{
+                      width: '90%',
+                      height: '90%',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </div>
