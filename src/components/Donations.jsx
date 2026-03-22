@@ -17,6 +17,7 @@ export default function Donations() {
       quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
       quoteName: "—Juliana George,",
       quotePosition: "Texas College Academic Sponsorship Beneficiary",
+      overlayImage: "/Coolster 125cc.png", // can be any image URL
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ export default function Donations() {
       quote: "“Dignity and comfort in every moment.”",
       quoteName: "—Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
+      overlayImage: "/Coolster 125cc4.png", // example custom overlay
     },
     {
       id: 3,
@@ -47,6 +49,7 @@ export default function Donations() {
       quote: "“Hope arrives when help is needed most.”",
       quoteName: "—David Ochieng,",
       quotePosition: "Emergency Relief Recipient",
+      overlayImage: "/Wonderfold3.jpg", // example custom overlay
     },
     {
       id: 4,
@@ -63,6 +66,7 @@ export default function Donations() {
       quote: "“Stronger communities, brighter futures.”",
       quoteName: "—Sarah Njoroge,",
       quotePosition: "Community Project Coordinator",
+      overlayImage: "/Wonderfold3.jpg", // example custom overlay
     }
   ];
 
@@ -150,8 +154,8 @@ export default function Donations() {
                       bottom: '20px',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      width: '60px',
-                      height: '60px',
+                      width: '100px',
+                      height: '100px',
                       backgroundColor: 'white',
                       borderRadius: '50%',
                       display: 'flex',
@@ -162,7 +166,7 @@ export default function Donations() {
                     }}
                   >
                     <img
-                      src={program.image}
+                      src={program.overlayImage || program.image}
                       alt="overlay"
                       style={{
                         width: '90%',
