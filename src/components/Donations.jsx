@@ -14,10 +14,10 @@ export default function Donations() {
         "/Wonderfold3.jpg",
         "/Wonderfold4.jpg",
       ],
-      quote: "“Education gave me hope. Now I can dream of becoming a teacher.”",
+      quote: "“Education opened a door I thought was forever closed. Today, I’m building a future for my family and showing others in my community that with support, anything is possible.”",
       quoteName: "—Juliana George,",
       quotePosition: "Texas College Academic Sponsorship Beneficiary",
-      overlayImage: "/Coolster 125cc.png", // can be any image URL
+      overlayImage: "/Coolster 125cc.png",
     },
     {
       id: 2,
@@ -29,30 +29,13 @@ export default function Donations() {
         "/Beachcroft Patio1.jpg",
         "/Beachcroft Patio2.jpg",
       ],
-      quote: "“Dignity and comfort in every moment.”",
+      quote: "“Because of this program, my mother received the care she deserved in the place she loved most – her home. It gave us comfort and hope during the hardest days.”",
       quoteName: "—Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
-      overlayImage: "/Coolster 125cc4.png", // example custom overlay
+      overlayImage: "/Coolster 125cc4.png",
     },
     {
       id: 3,
-      title: "Emergency Relief",
-      description: "From food parcels and clothing to urgent financial assistance during crises, we stand ready to help families facing hardship.",
-      image: "/WonderfoldN1.jpg",
-      images: [
-        "/WonderfoldN1.jpg",
-        "/Wonderfold1.jpg",
-        "/Wonderfold2.jpg",
-        "/Wonderfold3.jpg",
-        "/Wonderfold4.jpg",
-      ],
-      quote: "“Hope arrives when help is needed most.”",
-      quoteName: "—David Ochieng,",
-      quotePosition: "Emergency Relief Recipient",
-      overlayImage: "/Wonderfold3.jpg", // example custom overlay
-    },
-    {
-      id: 4,
       title: "Community Projects",
       description: "Partnering with local churches and associations to build small-scale infrastructure, feeding programs, and more.",
       image: "/Coolster 125cc.png",
@@ -63,10 +46,10 @@ export default function Donations() {
         "/Coolster 125cc3.png",
         "/Coolster 125cc4.png",
       ],
-      quote: "“Stronger communities, brighter futures.”",
+      quote: "“Our community came together with Goodwillstores to build a shared garden and a safe space for our children. Now we grow food, hope, and lasting friendships.”",
       quoteName: "—Sarah Njoroge,",
       quotePosition: "Community Project Coordinator",
-      overlayImage: "/Wonderfold3.jpg", // example custom overlay
+      overlayImage: "/Wonderfold3.jpg",
     }
   ];
 
@@ -75,7 +58,6 @@ export default function Donations() {
     1: 0,
     2: 0,
     3: 0,
-    4: 0,
   });
 
   const handlePrevious = (programId) => {
