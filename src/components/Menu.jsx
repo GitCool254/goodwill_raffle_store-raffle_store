@@ -196,13 +196,32 @@ export default function Menu({ isOpen, onClose, setView }) {
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
 
-              {/* Donations & Impact */}
+              {/* Donations & Impact – replaced emoji with handshake heart SVG */}
               <button
                 className="w-full flex items-center px-3 py-2 mb-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition group"
                 style={{ marginBottom: '15px' }}
                 onClick={() => { setView("donations"); onClose(); }}
               >
-                <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>❤️</span>
+                <span className="mr-3" style={{ marginRight: '0.8rem', width: '1.25rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg
+                    version="1.0"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 50.000000 50.000000"
+                    preserveAspectRatio="xMidYMid meet"
+                    fill="currentColor"
+                  >
+                    <g transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
+                      <path d="M78 425 c-34 -19 -58 -63 -58 -106 0 -31 34 -99 49 -99 4 0 18 11 31 25 13 14 30 25 38 25 7 0 52 -39 99 -86 63 -62 88 -82 94 -72 6 9 -4 25 -28 50 -48 50 -34 63 16 14 34 -33 39 -35 51 -21 11 14 8 21 -25 55 -46 47 -35 53 15 10 39 -32 55 -37 63 -16 3 8 -20 38 -54 72 l-59 58 -40 -39 c-36 -35 -43 -38 -67 -29 -41 14 -42 49 -2 90 l33 34 -21 21 c-27 28 -98 35 -135 14z"/>
+                      <path d="M315 429 c-33 -19 -125 -112 -125 -126 0 -32 33 -24 76 18 l44 43 69 -68 68 -67 18 37 c23 48 14 99 -23 137 -32 32 -94 45 -127 26z"/>
+                      <path d="M111 226 c-23 -24 -21 -46 3 -46 7 0 22 10 34 23 17 18 19 26 10 35 -17 17 -21 15 -47 -12z"/>
+                      <path d="M155 180 c-17 -18 -15 -50 3 -50 16 0 54 48 47 59 -10 17 -30 13 -50 -9z"/>
+                      <path d="M201 136 c-23 -24 -21 -46 3 -46 7 0 22 10 34 23 17 18 19 26 10 35 -17 17 -21 15 -47 -12z"/>
+                      <path d="M245 90 c-17 -18 -15 -50 3 -50 16 0 54 48 47 59 -10 17 -30 13 -50 -9z"/>
+                    </g>
+                  </svg>
+                </span>
                 <span className="flex-1 text-left">Donations & Impact</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
