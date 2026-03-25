@@ -41,7 +41,6 @@ export default function Donations() {
       description: "Partnering with local churches and associations to build small-scale infrastructure, feeding programs, and more.",
       image: "/Community Outreach 2.jpg",
       images: [
-        "/",
         "/Community Outreach 1.jpg",
         "/Community Outreach 4.jpg",
         "/Children Orphanage 1.jpg",
