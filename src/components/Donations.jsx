@@ -14,7 +14,7 @@ export default function Donations() {
         "/charlotte-may-5965993.jpg",
         "/IMG_185002_26326_1774540235493.jpg",
         "/mary-taylor-5896589.jpg",
-        "/Grad-1515161616123.jpg",
+        "/Lighting up the world.jpg",
       ],
       quote: "“Education opened a door I thought was forever closed. Today, I’m building a future for my family and showing others in my community that with support, anything is possible.”",
       quoteName: "—Juliana George,",
