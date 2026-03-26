@@ -16,7 +16,7 @@ export default function Donations() {
         "/mary-taylor-5896589.jpg",
         "/Lighting up the world.jpg",
       ],
-      quote: "“Education opened a door I thought was forever closed. Today, I’m building a future for my family and showing others in my community that with support, anything is possible.”",
+      quote: "“Before this sponsorship, I had given up on ever returning to school. Now I’m in my second year of college, pursuing a degree in education—a dream I once thought was impossible. The support didn’t just pay my fees; it restored my confidence and gave me a clear path forward. I want every young person in my community to know that with the right opportunity, their future is within reach.”",
       quoteName: "—Juliana George,",
       quotePosition: "Academic Sponsorship Beneficiary",
       overlayImage: "/IMG_185101_26326_1774540300928.jpg",
@@ -164,18 +164,22 @@ export default function Donations() {
                   </div>
                 )}
               </div>
-              {/* Quote with left margin */}
-              <p
-                className="mt-4 leading-tight italic font-heading pl-2"
-                style={{ fontSize: '1.125rem', padding: "10px" }}
-              >
-                {program.quote}
-              </p>
-              {/* Name and position with left margin */}
-              <div className="mt-2 mb-0 pl-2" style={{ fontSize: '0.875rem', padding: "10px" }}>
-                <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
-                <span>{program.quotePosition}</span>
-              </div>
+              {/* Quote – only on the first image */}
+              {currentImageIndex === 0 && (
+                <>
+                  <p
+                    className="mt-4 leading-tight italic font-heading pl-2"
+                    style={{ fontSize: '1.125rem', padding: "10px" }}
+                  >
+                    {program.quote}
+                  </p>
+                  {/* Name and position with left margin */}
+                  <div className="mt-2 mb-0 pl-2" style={{ fontSize: '0.875rem', padding: "10px" }}>
+                    <span style={{ fontWeight: 'bold' }}>{program.quoteName}</span>{" "}
+                    <span>{program.quotePosition}</span>
+                  </div>
+                </>
+              )}
               {/* Navigation arrows */}
               <div className="mt-4 flex justify-center">
                 <div
