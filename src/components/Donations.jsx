@@ -180,7 +180,7 @@ export default function Donations() {
                   </div>
                 </>
               )}
-              {/* Navigation arrows - exactly like Compassion Kenya */}
+              {/* Navigation arrows - both using chevron circle icons */}
               <div className="mt-4 flex justify-center" style={{ gap: '12px' }}>
                 <button
                   onClick={() => handlePrevious(program.id)}
@@ -247,7 +247,7 @@ export default function Donations() {
                     xmlns="http://www.w3.org/2000/svg"
                     style={{ fill: '#4a5568' }}
                   >
-                    <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm56-224l-96 96-33.9-34 62-62-62-62 33.9-34 96 96z" />
+                    <path d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM369.9 273L234.4 408.5c-9.4 9.4-24.6 9.4-33.9 0l-17-17c-9.4-9.4-9.4-24.6 0-33.9L285.1 256 183.5 154.4c-9.4-9.4-9.4-24.6 0-33.9l17-17c9.4-9.4 24.6-9.4 33.9 0L369.9 239c9.4 9.4 9.4 24.6 0 34z" />
                   </svg>
                 </button>
               </div>
