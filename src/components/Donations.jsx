@@ -210,9 +210,72 @@ export default function Donations() {
           href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition inline-flex items-center gap-2 text-lg font-medium"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            height: '48px',
+            fontSize: '16px',
+            fontWeight: 500,
+            color: '#FFFFFF',
+            backgroundColor: '#8AA954',
+            border: '0px solid #000000',
+            borderRadius: '6px',
+            paddingLeft: '24px',
+            paddingRight: '24px',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 0 0 0 transparent',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#7a9849';
+            e.currentTarget.style.transform = 'scale(1.02)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#8AA954';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
         >
-          <span>Make a Donation</span>
+          <span
+            style={{
+              position: 'relative',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '16px',
+              height: '16px',
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                width: '242px',
+                height: '242px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                opacity: 0,
+                transform: 'scale(0)',
+                transition: 'transform 0.6s ease-out, opacity 0.3s ease-out',
+              }}
+              className="pulse-ripple"
+            />
+            <svg
+              fill="none"
+              height="16"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ color: '#FFFFFF', position: 'relative', zIndex: 1 }}
+            >
+              <path
+                d="m11.5629 20.2764c.2603.1588.6136.1588.874 0 18.1291-11.05776 4.2437-21.68512-.437-13.20902-4.68039-8.47609-18.56579 2.15126-.437 13.20902z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <span>Donate</span>
         </a>
         <p
           className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
