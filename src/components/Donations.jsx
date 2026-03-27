@@ -184,7 +184,7 @@ export default function Donations() {
         {/* Stats Grid - Using flexbox with margins for reliable spacing */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0', marginLeft: '-12px', marginRight: '-12px' }}>
           {/* Church Partners */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
             <div 
               className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               style={{
@@ -200,7 +200,7 @@ export default function Donations() {
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
+                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
               >
                 {counts.churchPartners.toLocaleString()}
               </div>
@@ -209,7 +209,7 @@ export default function Donations() {
           </div>
 
           {/* Children and Youth */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
             <div 
               className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               style={{
@@ -225,7 +225,7 @@ export default function Donations() {
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
+                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
               >
                 {counts.childrenYouth.toLocaleString()}
               </div>
@@ -234,7 +234,7 @@ export default function Donations() {
           </div>
 
           {/* Counties */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
             <div 
               className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               style={{
@@ -250,7 +250,7 @@ export default function Donations() {
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
+                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
               >
                 {counts.counties.toLocaleString()}
               </div>
