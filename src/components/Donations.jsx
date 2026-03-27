@@ -169,7 +169,10 @@ export default function Donations() {
       {/* Our Reach Section - Independent cards with thicker rainbow borders */}
       <div ref={sectionRef} className="mb-16">
         {/* Section Title */}
-        <div className="text-center mb-12">
+        <div 
+          className="text-center mb-12"
+          style={{ marginBottom: "20px" }}
+        >
           <h2 
             className="text-3xl md:text-4xl font-bold text-slate-800 mb-2"
             style={{ letterSpacing: '-0.02em' }}
@@ -192,6 +195,7 @@ export default function Donations() {
                 paddingBottom: '48px',
                 paddingLeft: '24px',
                 paddingRight: '24px',
+                marginBottom: "10px",
               }}
             >
               <div 
@@ -216,6 +220,7 @@ export default function Donations() {
                 paddingBottom: '48px',
                 paddingLeft: '24px',
                 paddingRight: '24px',
+                marginBottom: "10px",
               }}
             >
               <div 
@@ -240,6 +245,7 @@ export default function Donations() {
                 paddingBottom: '48px',
                 paddingLeft: '24px',
                 paddingRight: '24px',
+                marginBottom: "10px",
               }}
             >
               <div 
