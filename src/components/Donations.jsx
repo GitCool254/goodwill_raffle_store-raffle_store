@@ -166,100 +166,57 @@ export default function Donations() {
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
-      {/* Compassion Kenya "Our Reach" Section - Fully Styled */}
-      <div 
-        ref={sectionRef}
-        className="relative mb-16 rounded-2xl overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, #0B2B4F 0%, #1A4A6F 100%)",
-        }}
-      >
-        {/* Background Overlay */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.2\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
-            backgroundRepeat: "repeat",
-          }}
-        ></div>
+      {/* Our Reach Section - Clean, transparent style with increased spacing */}
+      <div ref={sectionRef} className="mb-16">
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <h2 
+            className="text-3xl md:text-4xl font-bold text-slate-800 mb-2"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            Our Reach
+          </h2>
+        </div>
 
-        <div className="relative z-10 py-12 px-6 md:py-16">
-          {/* Section Title */}
-          <div className="text-center mb-10">
-            <h2 
-              className="text-3xl md:text-4xl font-bold text-white mb-2"
+        {/* Stats Grid - Increased spacing between rows */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          {/* Church Partners */}
+          <div 
+            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+          >
+            <div 
+              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
               style={{ letterSpacing: '-0.02em' }}
             >
-              Our Reach
-            </h2>
+              {counts.churchPartners.toLocaleString()}
+            </div>
+            <div className="text-slate-700 text-lg font-medium">Church Partners</div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {/* Church Partners */}
+          {/* Children and Youth */}
+          <div 
+            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+          >
             <div 
-              className="text-center p-6 rounded-xl transition-all duration-300 hover:transform hover:scale-105"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderBottom: '3px solid #FFD966',
-              }}
+              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+              style={{ letterSpacing: '-0.02em' }}
             >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-white mb-2"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.churchPartners.toLocaleString()}
-              </div>
-              <div className="text-white/90 text-lg font-medium">Church Partners</div>
+              {counts.childrenYouth.toLocaleString()}
             </div>
-
-            {/* Children and Youth */}
-            <div 
-              className="text-center p-6 rounded-xl transition-all duration-300 hover:transform hover:scale-105"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderBottom: '3px solid #FFD966',
-              }}
-            >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-white mb-2"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.childrenYouth.toLocaleString()}
-              </div>
-              <div className="text-white/90 text-lg font-medium">Children and Youth</div>
-            </div>
-
-            {/* Counties */}
-            <div 
-              className="text-center p-6 rounded-xl transition-all duration-300 hover:transform hover:scale-105"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderBottom: '3px solid #FFD966',
-              }}
-            >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-white mb-2"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.counties.toLocaleString()}
-              </div>
-              <div className="text-white/90 text-lg font-medium">Counties</div>
-            </div>
+            <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
           </div>
 
-          {/* Learn More Button */}
-          <div className="text-center mt-10">
-            <a
-              href="/about"
-              className="inline-block px-8 py-3 bg-white text-blue-900 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 hover:transform hover:scale-105 shadow-lg"
-              style={{ letterSpacing: '0.02em' }}
+          {/* Counties */}
+          <div 
+            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+          >
+            <div 
+              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+              style={{ letterSpacing: '-0.02em' }}
             >
-              Learn More
-            </a>
+              {counts.counties.toLocaleString()}
+            </div>
+            <div className="text-slate-700 text-lg font-medium">Counties</div>
           </div>
         </div>
       </div>
