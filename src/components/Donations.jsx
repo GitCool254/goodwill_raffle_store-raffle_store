@@ -362,6 +362,7 @@ export default function Donations() {
                     border: 'none',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    overflow: 'hidden',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'scale(1.05)';
@@ -402,6 +403,7 @@ export default function Donations() {
                     border: 'none',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    overflow: 'hidden',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'scale(1.05)';
@@ -434,7 +436,7 @@ export default function Donations() {
         })}
       </div>
 
-      {/* Donation Button - Strictly limited to button area */}
+      {/* Donation Button - Fixed clickable area */}
       <div style={{ textAlign: 'center' }}>
         <a
           href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
@@ -458,6 +460,8 @@ export default function Donations() {
             cursor: 'pointer',
             transition: 'all 0.2s ease',
             boxShadow: '0 0 0 0 transparent',
+            overflow: 'hidden',
+            position: 'relative',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#7a9849';
@@ -476,18 +480,20 @@ export default function Donations() {
               justifyContent: 'center',
               width: '16px',
               height: '16px',
+              zIndex: 2,
             }}
           >
             <span
               style={{
                 position: 'absolute',
-                width: '242px',
-                height: '242px',
+                width: '100%',
+                height: '100%',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
                 opacity: 0,
                 transform: 'scale(0)',
                 transition: 'transform 0.6s ease-out, opacity 0.3s ease-out',
+                pointerEvents: 'none',
               }}
               className="pulse-ripple"
             />
@@ -506,7 +512,7 @@ export default function Donations() {
               />
             </svg>
           </span>
-          <span>Donate</span>
+          <span style={{ zIndex: 2 }}>Donate</span>
         </a>
       </div>
       <p
