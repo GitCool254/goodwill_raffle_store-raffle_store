@@ -268,6 +268,7 @@ export default function Donations() {
               width="16"
               xmlns="http://www.w3.org/2000/svg"
               style={{ color: '#FFFFFF', position: 'relative', zIndex: 1 }}
+              className="pulse-heart"
             >
               <path
                 d="m11.5629 20.2764c.2603.1588.6136.1588.874 0 18.1291-11.05776 4.2437-21.68512-.437-13.20902-4.68039-8.47609-18.56579 2.15126-.437 13.20902z"

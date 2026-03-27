@@ -241,3 +241,26 @@ main.flex-grow {
 .pulse-ripple {
   animation: pulseHeart 1.5s infinite ease-out;
 }
+
+/* Heart icon pulse animation - makes the heart beat */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  40% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse-heart {
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
