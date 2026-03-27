@@ -180,16 +180,17 @@ export default function Donations() {
                   </div>
                 </>
               )}
-              {/* Navigation arrows - adapted from Compassion Kenya */}
-              <div className="mt-4 flex justify-center gap-4">
+              {/* Navigation arrows - exactly like Compassion Kenya */}
+              <div className="mt-4 flex justify-center gap-3">
                 <button
                   onClick={() => handlePrevious(program.id)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-300 transition-colors"
+                  className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
                   aria-label="Previous slide"
+                  style={{ backgroundColor: 'white' }}
                 >
                   <svg
                     aria-hidden="true"
-                    className="w-6 h-6 text-gray-600"
+                    className="w-6 h-6 text-gray-700"
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -201,12 +202,13 @@ export default function Donations() {
                 </button>
                 <button
                   onClick={() => handleNext(program.id)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-300 transition-colors"
+                  className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
                   aria-label="Next slide"
+                  style={{ backgroundColor: 'white' }}
                 >
                   <svg
                     aria-hidden="true"
-                    className="w-6 h-6 text-gray-600"
+                    className="w-6 h-6 text-gray-700"
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
                   >
