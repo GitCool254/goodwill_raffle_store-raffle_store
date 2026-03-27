@@ -196,11 +196,16 @@ export default function Donations() {
                 paddingLeft: '24px',
                 paddingRight: '24px',
                 marginBottom: "10px",
+                backgroundColor: '#ffffff',
+                marginLeft: '20px',
+                marginRight: '20px',
+                marginTop: '10px',
+                marginBottom: '20px'
               }}
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+                style={{ letterSpacing: '-0.02em' }}
               >
                 {counts.churchPartners.toLocaleString()}
               </div>
@@ -221,11 +226,16 @@ export default function Donations() {
                 paddingLeft: '24px',
                 paddingRight: '24px',
                 marginBottom: "10px",
+                backgroundColor: '#ffffff',
+                marginLeft: '20px',
+                marginRight: '20px',
+                marginTop: '10px',
+                marginBottom: '20px'
               }}
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+                style={{ letterSpacing: '-0.02em' }}
               >
                 {counts.childrenYouth.toLocaleString()}
               </div>
@@ -246,11 +256,16 @@ export default function Donations() {
                 paddingLeft: '24px',
                 paddingRight: '24px',
                 marginBottom: "10px",
+                backgroundColor: '#ffffff',
+                marginLeft: '20px',
+                marginRight: '20px',
+                marginTop: '10px',
+                marginBottom: '20px'
               }}
             >
               <div 
                 className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em', backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+                style={{ letterSpacing: '-0.02em' }}
               >
                 {counts.counties.toLocaleString()}
               </div>
