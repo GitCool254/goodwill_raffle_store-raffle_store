@@ -166,7 +166,7 @@ export default function Donations() {
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
-      {/* Our Reach Section - Clean, transparent style with increased spacing */}
+      {/* Our Reach Section - Independent cards with rainbow borders */}
       <div ref={sectionRef} className="mb-16">
         {/* Section Title */}
         <div className="text-center mb-12">
@@ -178,11 +178,16 @@ export default function Donations() {
           </h2>
         </div>
 
-        {/* Stats Grid - Increased spacing between rows */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        {/* Stats Grid - Independent cards with spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Church Partners */}
           <div 
-            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            style={{
+              border: '1px solid',
+              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+              borderImageSlice: 1,
+            }}
           >
             <div 
               className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
@@ -195,7 +200,12 @@ export default function Donations() {
 
           {/* Children and Youth */}
           <div 
-            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            style={{
+              border: '1px solid',
+              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+              borderImageSlice: 1,
+            }}
           >
             <div 
               className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
@@ -208,7 +218,12 @@ export default function Donations() {
 
           {/* Counties */}
           <div 
-            className="text-center p-8 rounded-xl bg-white shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            style={{
+              border: '1px solid',
+              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+              borderImageSlice: 1,
+            }}
           >
             <div 
               className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
