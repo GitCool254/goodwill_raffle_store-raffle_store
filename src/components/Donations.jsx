@@ -181,41 +181,73 @@ export default function Donations() {
                 </>
               )}
               {/* Navigation arrows - exactly like Compassion Kenya */}
-              <div className="mt-4 flex justify-center gap-3">
+              <div className="mt-4 flex justify-center" style={{ gap: '12px' }}>
                 <button
                   onClick={() => handlePrevious(program.id)}
-                  className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
                   aria-label="Previous slide"
-                  style={{ backgroundColor: 'white' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '40px',
+                    height: '40px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '50%',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                  }}
                 >
                   <svg
                     aria-hidden="true"
-                    className="w-6 h-6 text-gray-700"
+                    width="20"
+                    height="20"
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
+                    style={{ fill: '#4a5568' }}
                   >
-                    <path
-                      d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z"
-                      fill="currentColor"
-                    />
+                    <path d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z" />
                   </svg>
                 </button>
                 <button
                   onClick={() => handleNext(program.id)}
-                  className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow"
                   aria-label="Next slide"
-                  style={{ backgroundColor: 'white' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '40px',
+                    height: '40px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '50%',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                  }}
                 >
                   <svg
                     aria-hidden="true"
-                    className="w-6 h-6 text-gray-700"
+                    width="20"
+                    height="20"
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
+                    style={{ fill: '#4a5568' }}
                   >
-                    <path
-                      d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm56-224l-96 96-33.9-34 62-62-62-62 33.9-34 96 96z"
-                      fill="currentColor"
-                    />
+                    <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm56-224l-96 96-33.9-34 62-62-62-62 33.9-34 96 96z" />
                   </svg>
                 </button>
               </div>
