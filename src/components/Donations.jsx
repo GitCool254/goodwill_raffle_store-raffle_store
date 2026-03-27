@@ -180,7 +180,7 @@ export default function Donations() {
                   </div>
                 </>
               )}
-              {/* Navigation arrows - both using chevron circle icons */}
+              {/* Navigation arrows - both with white arrows inside black circles */}
               <div className="mt-4 flex justify-center" style={{ gap: '12px' }}>
                 <button
                   onClick={() => handlePrevious(program.id)}
@@ -191,29 +191,35 @@ export default function Donations() {
                     justifyContent: 'center',
                     width: '40px',
                     height: '40px',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#000000',
                     borderRadius: '50%',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'box-shadow 0.2s ease',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <svg
-                    aria-hidden="true"
                     width="20"
                     height="20"
-                    viewBox="0 0 512 512"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={{ fill: '#4a5568' }}
                   >
-                    <path d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z" />
+                    <path
+                      d="M15 18L9 12L15 6"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </button>
                 <button
@@ -225,29 +231,35 @@ export default function Donations() {
                     justifyContent: 'center',
                     width: '40px',
                     height: '40px',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#000000',
                     borderRadius: '50%',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'box-shadow 0.2s ease',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <svg
-                    aria-hidden="true"
                     width="20"
                     height="20"
-                    viewBox="0 0 512 512"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={{ fill: '#4a5568' }}
                   >
-                    <path d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM369.9 273L234.4 408.5c-9.4 9.4-24.6 9.4-33.9 0l-17-17c-9.4-9.4-9.4-24.6 0-33.9L285.1 256 183.5 154.4c-9.4-9.4-9.4-24.6 0-33.9l17-17c9.4-9.4 24.6-9.4 33.9 0L369.9 239c9.4 9.4 9.4 24.6 0 34z" />
+                    <path
+                      d="M9 18L15 12L9 6"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </button>
               </div>
