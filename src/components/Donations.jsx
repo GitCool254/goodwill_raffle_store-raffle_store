@@ -178,72 +178,78 @@ export default function Donations() {
           </h2>
         </div>
 
-        {/* Stats Grid - Increased spacing between cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-28">
+        {/* Stats Grid - Using flexbox with margins for reliable spacing */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0', marginLeft: '-12px', marginRight: '-12px' }}>
           {/* Church Partners */}
-          <div 
-            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-            style={{
-              border: '3px solid transparent',
-              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
-              borderImageSlice: 1,
-              paddingTop: '48px',
-              paddingBottom: '48px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-            }}
-          >
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
             <div 
-              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-              style={{ letterSpacing: '-0.02em' }}
+              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+              style={{
+                border: '3px solid transparent',
+                borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+                borderImageSlice: 1,
+                paddingTop: '48px',
+                paddingBottom: '48px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+              }}
             >
-              {counts.churchPartners.toLocaleString()}
+              <div 
+                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                style={{ letterSpacing: '-0.02em' }}
+              >
+                {counts.churchPartners.toLocaleString()}
+              </div>
+              <div className="text-slate-700 text-lg font-medium">Church Partners</div>
             </div>
-            <div className="text-slate-700 text-lg font-medium">Church Partners</div>
           </div>
 
           {/* Children and Youth */}
-          <div 
-            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-            style={{
-              border: '3px solid transparent',
-              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
-              borderImageSlice: 1,
-              paddingTop: '48px',
-              paddingBottom: '48px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-            }}
-          >
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
             <div 
-              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-              style={{ letterSpacing: '-0.02em' }}
+              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+              style={{
+                border: '3px solid transparent',
+                borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+                borderImageSlice: 1,
+                paddingTop: '48px',
+                paddingBottom: '48px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+              }}
             >
-              {counts.childrenYouth.toLocaleString()}
+              <div 
+                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                style={{ letterSpacing: '-0.02em' }}
+              >
+                {counts.childrenYouth.toLocaleString()}
+              </div>
+              <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
             </div>
-            <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
           </div>
 
           {/* Counties */}
-          <div 
-            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-            style={{
-              border: '3px solid transparent',
-              borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
-              borderImageSlice: 1,
-              paddingTop: '48px',
-              paddingBottom: '48px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-            }}
-          >
+          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px' }}>
             <div 
-              className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-              style={{ letterSpacing: '-0.02em' }}
+              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+              style={{
+                border: '3px solid transparent',
+                borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+                borderImageSlice: 1,
+                paddingTop: '48px',
+                paddingBottom: '48px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+              }}
             >
-              {counts.counties.toLocaleString()}
+              <div 
+                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                style={{ letterSpacing: '-0.02em' }}
+              >
+                {counts.counties.toLocaleString()}
+              </div>
+              <div className="text-slate-700 text-lg font-medium">Counties</div>
             </div>
-            <div className="text-slate-700 text-lg font-medium">Counties</div>
           </div>
         </div>
       </div>
