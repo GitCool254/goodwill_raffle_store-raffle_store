@@ -102,8 +102,8 @@ export default function Donations() {
       (entries) => {
         if (entries[0].isIntersecting && !hasAnimated) {
           setHasAnimated(true);
-          const duration = 2000; // 2 seconds
-          const stepTime = 20; // update every 20ms
+          const duration = 2000;
+          const stepTime = 20;
           const steps = duration / stepTime;
 
           const increments = {
@@ -434,8 +434,8 @@ export default function Donations() {
         })}
       </div>
 
-      {/* Donation Button - Fixed clickable area */}
-      <div className="text-center">
+      {/* Donation Button - Strictly limited to button area */}
+      <div style={{ textAlign: 'center' }}>
         <a
           href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
           target="_blank"
@@ -508,20 +508,20 @@ export default function Donations() {
           </span>
           <span>Donate</span>
         </a>
-        <p
-          className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
-          style={{
-            fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-            fontWeight: 600,
-            fontSize: '16px',
-            lineHeight: '1.6',
-            letterSpacing: '0.01em',
-            color: '#334155'
-          }}
-        >
-          Your support helps us continue these programs. Thank you!
-        </p>
       </div>
+      <p
+        className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
+        style={{
+          fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          fontWeight: 600,
+          fontSize: '16px',
+          lineHeight: '1.6',
+          letterSpacing: '0.01em',
+          color: '#334155'
+        }}
+      >
+        Your support helps us continue these programs. Thank you!
+      </p>
     </div>
   );
 }
