@@ -436,7 +436,7 @@ export default function Donations() {
         })}
       </div>
 
-      {/* Donation Button - Fixed clickable area */}
+      {/* Donation Button - with visible pulse ripple */}
       <div style={{ textAlign: 'center' }}>
         <a
           href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
@@ -460,8 +460,8 @@ export default function Donations() {
             cursor: 'pointer',
             transition: 'all 0.2s ease',
             boxShadow: '0 0 0 0 transparent',
-            overflow: 'hidden',
             position: 'relative',
+            overflow: 'visible',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#7a9849';
@@ -486,14 +486,16 @@ export default function Donations() {
             <span
               style={{
                 position: 'absolute',
-                width: '100%',
-                height: '100%',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '32px',
+                height: '32px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                backgroundColor: 'rgba(255, 255, 255, 0.4)',
                 opacity: 0,
-                transform: 'scale(0)',
-                transition: 'transform 0.6s ease-out, opacity 0.3s ease-out',
                 pointerEvents: 'none',
+                animation: 'pulseRipple 1.5s infinite ease-out',
               }}
               className="pulse-ripple"
             />
@@ -528,6 +530,24 @@ export default function Donations() {
       >
         Your support helps us continue these programs. Thank you!
       </p>
+
+      {/* Add CSS animation for pulse ripple */}
+      <style>{`
+        @keyframes pulseRipple {
+          0% {
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0.6;
+          }
+          70% {
+            transform: translate(-50%, -50%) scale(2.5);
+            opacity: 0.2;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }
