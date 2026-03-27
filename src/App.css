@@ -221,3 +221,23 @@ main.flex-grow {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
+/* Pulse animation for donation button heart */
+@keyframes pulseHeart {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.pulse-ripple {
+  animation: pulseHeart 1.5s infinite ease-out;
+}
