@@ -166,7 +166,7 @@ export default function Donations() {
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
-      {/* Our Reach Section - Independent cards with rainbow borders */}
+      {/* Our Reach Section - Independent cards with thicker rainbow borders */}
       <div ref={sectionRef} className="mb-16">
         {/* Section Title */}
         <div className="text-center mb-12">
@@ -178,15 +178,19 @@ export default function Donations() {
           </h2>
         </div>
 
-        {/* Stats Grid - Independent cards with spacing */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Stats Grid - Increased spacing between cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Church Partners */}
           <div 
-            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             style={{
-              border: '1px solid',
+              border: '3px solid transparent',
               borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
               borderImageSlice: 1,
+              paddingTop: '48px',
+              paddingBottom: '48px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
             }}
           >
             <div 
@@ -200,11 +204,15 @@ export default function Donations() {
 
           {/* Children and Youth */}
           <div 
-            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             style={{
-              border: '1px solid',
+              border: '3px solid transparent',
               borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
               borderImageSlice: 1,
+              paddingTop: '48px',
+              paddingBottom: '48px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
             }}
           >
             <div 
@@ -218,11 +226,15 @@ export default function Donations() {
 
           {/* Counties */}
           <div 
-            className="text-center py-10 px-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             style={{
-              border: '1px solid',
+              border: '3px solid transparent',
               borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
               borderImageSlice: 1,
+              paddingTop: '48px',
+              paddingBottom: '48px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
             }}
           >
             <div 
