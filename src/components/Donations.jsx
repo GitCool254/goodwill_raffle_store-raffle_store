@@ -98,6 +98,30 @@ export default function Donations() {
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
+      {/* Compassion Kenya "Our Reach" Stats Section */}
+      <div className="mb-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">Our Reach</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Church Partners */}
+          <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+            <div className="text-4xl font-bold text-emerald-600 mb-2">473</div>
+            <div className="text-lg font-semibold text-slate-700">Church Partners</div>
+          </div>
+          {/* Children and Youth */}
+          <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+            <div className="text-4xl font-bold text-emerald-600 mb-2">134,813</div>
+            <div className="text-lg font-semibold text-slate-700">Children and Youth</div>
+          </div>
+          {/* Counties */}
+          <div className="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+            <div className="text-4xl font-bold text-emerald-600 mb-2">31</div>
+            <div className="text-lg font-semibold text-slate-700">Counties</div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
           const currentImageIndex = programIndices[program.id];
