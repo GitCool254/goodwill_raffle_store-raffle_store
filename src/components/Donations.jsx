@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function Donations() {
   const programs = [
@@ -82,6 +82,74 @@ export default function Donations() {
     });
   };
 
+  // Counter animation state
+  const [counts, setCounts] = useState({
+    churchPartners: 0,
+    childrenYouth: 0,
+    counties: 0,
+  });
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const sectionRef = useRef(null);
+
+  const targetValues = {
+    churchPartners: 473,
+    childrenYouth: 134813,
+    counties: 31,
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          const duration = 2000; // 2 seconds
+          const stepTime = 20; // update every 20ms
+          const steps = duration / stepTime;
+
+          const increments = {
+            churchPartners: targetValues.churchPartners / steps,
+            childrenYouth: targetValues.childrenYouth / steps,
+            counties: targetValues.counties / steps,
+          };
+
+          let currentStep = 0;
+          const interval = setInterval(() => {
+            currentStep++;
+            setCounts({
+              churchPartners: Math.min(
+                Math.floor(increments.churchPartners * currentStep),
+                targetValues.churchPartners
+              ),
+              childrenYouth: Math.min(
+                Math.floor(increments.childrenYouth * currentStep),
+                targetValues.childrenYouth
+              ),
+              counties: Math.min(
+                Math.floor(increments.counties * currentStep),
+                targetValues.counties
+              ),
+            });
+            if (currentStep >= steps) {
+              setCounts(targetValues);
+              clearInterval(interval);
+            }
+          }, stepTime);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, [hasAnimated]);
+
   return (
     <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
       <p
@@ -100,6 +168,7 @@ export default function Donations() {
 
       {/* Compassion Kenya "Our Reach" Section - Fully Styled */}
       <div 
+        ref={sectionRef}
         className="relative mb-16 rounded-2xl overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #0B2B4F 0%, #1A4A6F 100%)",
@@ -140,7 +209,7 @@ export default function Donations() {
                 className="text-4xl md:text-5xl font-bold text-white mb-2"
                 style={{ letterSpacing: '-0.02em' }}
               >
-                473
+                {counts.churchPartners.toLocaleString()}
               </div>
               <div className="text-white/90 text-lg font-medium">Church Partners</div>
             </div>
@@ -158,7 +227,7 @@ export default function Donations() {
                 className="text-4xl md:text-5xl font-bold text-white mb-2"
                 style={{ letterSpacing: '-0.02em' }}
               >
-                134,813
+                {counts.childrenYouth.toLocaleString()}
               </div>
               <div className="text-white/90 text-lg font-medium">Children and Youth</div>
             </div>
@@ -176,7 +245,7 @@ export default function Donations() {
                 className="text-4xl md:text-5xl font-bold text-white mb-2"
                 style={{ letterSpacing: '-0.02em' }}
               >
-                31
+                {counts.counties.toLocaleString()}
               </div>
               <div className="text-white/90 text-lg font-medium">Counties</div>
             </div>
@@ -365,6 +434,7 @@ export default function Donations() {
         })}
       </div>
 
+      {/* Donation Button - Fixed clickable area */}
       <div className="text-center">
         <a
           href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
