@@ -166,110 +166,75 @@ export default function Donations() {
         Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
       </p>
 
-      {/* Our Reach Section - Independent cards with thicker rainbow borders */}
+      {/* Our Reach Section - Styled like program cards */}
       <div ref={sectionRef} className="mb-16">
-        {/* Section Title */}
-        <div 
-          className="text-center mb-12"
-          style={{ marginBottom: "20px" }}
+        <div
+          className="rounded-xl shadow-md overflow-hidden p-4"
+          style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
         >
-          <h2 
-            className="text-3xl md:text-4xl font-bold text-slate-800 mb-2"
-            style={{ letterSpacing: '-0.02em' }}
+          {/* Section Title */}
+          <div
+            className="bg-white rounded-lg p-4 mb-4"
+            style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
           >
-            Our Reach
-          </h2>
-        </div>
-
-        {/* Stats Grid - Using flexbox with margins for reliable spacing */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0', marginLeft: '-12px', marginRight: '-12px' }}>
-          {/* Church Partners */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
-            <div 
-              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-              style={{
-                border: '3px solid transparent',
-                borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
-                borderImageSlice: 1,
-                paddingTop: '48px',
-                paddingBottom: '48px',
-                paddingLeft: '24px',
-                paddingRight: '24px',
-                marginBottom: "10px",
-                backgroundColor: '#ffffff',
-                marginLeft: '20px',
-                marginRight: '20px',
-                marginTop: '10px',
-                marginBottom: '20px'
-              }}
+            <h2
+              className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 text-center"
+              style={{ letterSpacing: '-0.02em' }}
             >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.churchPartners.toLocaleString()}
-              </div>
-              <div className="text-slate-700 text-lg font-medium">Church Partners</div>
-            </div>
+              Our Reach
+            </h2>
           </div>
 
-          {/* Children and Youth */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
-            <div 
-              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-              style={{
+          {/* Stats Grid - Three cards inside white container */}
+          <div
+            className="bg-white rounded-lg"
+            style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
+          >
+            <div className="flex flex-wrap justify-center" style={{ gap: '24px' }}>
+              {/* Church Partners */}
+              <div className="flex-1 min-w-[250px] text-center p-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
-                paddingTop: '48px',
-                paddingBottom: '48px',
-                paddingLeft: '24px',
-                paddingRight: '24px',
-                marginBottom: "10px",
-                backgroundColor: '#ffffff',
-                marginLeft: '20px',
-                marginRight: '20px',
-                marginTop: '10px',
-                marginBottom: '20px'
-              }}
-            >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.childrenYouth.toLocaleString()}
+              }}>
+                <div 
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {counts.churchPartners.toLocaleString()}
+                </div>
+                <div className="text-slate-700 text-lg font-medium">Church Partners</div>
               </div>
-              <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
-            </div>
-          </div>
 
-          {/* Counties */}
-          <div style={{ flex: '1 1 300px', minWidth: '250px', padding: '0 12px', backgroundColor: '#e6f3ff' }}>
-            <div 
-              className="text-center rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-              style={{
+              {/* Children and Youth */}
+              <div className="flex-1 min-w-[250px] text-center p-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
-                paddingTop: '48px',
-                paddingBottom: '48px',
-                paddingLeft: '24px',
-                paddingRight: '24px',
-                marginBottom: "10px",
-                backgroundColor: '#ffffff',
-                marginLeft: '20px',
-                marginRight: '20px',
-                marginTop: '10px',
-                marginBottom: '20px'
-              }}
-            >
-              <div 
-                className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                style={{ letterSpacing: '-0.02em' }}
-              >
-                {counts.counties.toLocaleString()}
+              }}>
+                <div 
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {counts.childrenYouth.toLocaleString()}
+                </div>
+                <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
               </div>
-              <div className="text-slate-700 text-lg font-medium">Counties</div>
+
+              {/* Counties */}
+              <div className="flex-1 min-w-[250px] text-center p-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{
+                border: '3px solid transparent',
+                borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
+                borderImageSlice: 1,
+              }}>
+                <div 
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  {counts.counties.toLocaleString()}
+                </div>
+                <div className="text-slate-700 text-lg font-medium">Counties</div>
+              </div>
             </div>
           </div>
         </div>
