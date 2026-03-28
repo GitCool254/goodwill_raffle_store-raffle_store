@@ -93,7 +93,7 @@ export default function Donations() {
 
   const targetValues = {
     churchPartners: 517,
-    childrenYouth: 9262,
+    childrenYouth: 12762,
     countries: 3,
   };
 
@@ -199,7 +199,7 @@ export default function Donations() {
                 </div>
                 <div
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "600", fontSize: "1.15rem" }}
+                  style={{ fontWeight: "550", fontSize: "1.15rem" }}
                 >
                   Church Partners
                 </div>
@@ -221,7 +221,7 @@ export default function Donations() {
                 </div>
                 <div
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "600", fontSize: "1.15rem" }}
+                  style={{ fontWeight: "550", fontSize: "1.15rem" }}
                 >
                   Children and Youth
                 </div>
@@ -243,7 +243,7 @@ export default function Donations() {
                 </div>
                 <div
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "600", fontSize: "1.15rem" }}
+                  style={{ fontWeight: "550", fontSize: "1.15rem" }}
                 >
                   Countries
                 </div>
