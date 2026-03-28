@@ -152,20 +152,6 @@ export default function Donations() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
-      <p
-        className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
-        style={{
-          fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-          fontWeight: 600,
-          fontSize: '16px',
-          lineHeight: '1.6',
-          letterSpacing: '0.01em',
-          color: '#334155'
-        }}
-      >
-        Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
-      </p>
-
       {/* Our Reach Section - Styled like program cards */}
       <div ref={sectionRef} className="mb-16">
         <div
@@ -196,10 +182,10 @@ export default function Donations() {
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
-                paddingTop: '10px',
-                paddingBottom: '10px',
+                paddingTop: '15px',
+                paddingBottom: '15px',
               }}>
-                <div 
+                <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
                   style={{ letterSpacing: '-0.02em' }}
                 >
@@ -213,8 +199,10 @@ export default function Donations() {
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
+                paddingTop: '15px',
+                paddingBottom: '15px',
               }}>
-                <div 
+                <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
                   style={{ letterSpacing: '-0.02em' }}
                 >
@@ -228,8 +216,10 @@ export default function Donations() {
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
+                paddingTop: '15px',
+                paddingBottom: '15px',
               }}>
-                <div 
+                <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
                   style={{ letterSpacing: '-0.02em' }}
                 >
@@ -241,6 +231,21 @@ export default function Donations() {
           </div>
         </div>
       </div>
+
+      {/* Subtitle - Moved below Our Reach section */}
+      <p
+        className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
+        style={{
+          fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          fontWeight: 600,
+          fontSize: '16px',
+          lineHeight: '1.6',
+          letterSpacing: '0.01em',
+          color: '#334155'
+        }}
+      >
+        Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
