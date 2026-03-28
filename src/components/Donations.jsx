@@ -226,12 +226,12 @@ export default function Donations() {
                 paddingBottom: '15px',
               }}>
                 <div
-                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
+                  className="text-lg text-slate-600 leading-normal mb-3"
                   style={{ letterSpacing: '-0.02em' }}
                 >
                   {counts.counties.toLocaleString()}
                 </div>
-                <div className="text-slate-700 text-lg font-medium">Counties</div>
+                <div className="text-lg text-slate-600 leading-normal">Counties</div>
               </div>
             </div>
           </div>
@@ -333,7 +333,7 @@ export default function Donations() {
                     height: '40px',
                     backgroundColor: '#000000',
                     borderRadius: '50%',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    border: '1px solid rgba(255, 255, 255, 0.7)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     overflow: 'hidden',
