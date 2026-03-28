@@ -158,7 +158,7 @@ export default function Donations() {
           className="rounded-xl shadow-md overflow-hidden p-4"
           style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
         >
-          {/* Section Title */}
+          {/* White container for title + description with 20px left/right margins */}
           <div
             className="bg-white rounded-lg p-4 mb-4"
             style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
@@ -169,6 +169,12 @@ export default function Donations() {
             >
               Our Reach
             </h2>
+            <p
+              className="text-lg text-slate-600 leading-normal text-center"
+              style={{ fontWeight: "470", padding: "10px", fontSize: "1.1rem" }}
+            >
+              Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
+            </p>
           </div>
 
           {/* Stats Grid - Three cards inside white container */}
@@ -231,21 +237,6 @@ export default function Donations() {
           </div>
         </div>
       </div>
-
-      {/* Subtitle - Moved below Our Reach section */}
-      <p
-        className="text-center text-slate-600 mb-10 max-w-2xl mx-auto"
-        style={{
-          fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-          fontWeight: 600,
-          fontSize: '16px',
-          lineHeight: '1.6',
-          letterSpacing: '0.01em',
-          color: '#334155'
-        }}
-      >
-        Your donations and participation in our raffles directly support these impactful programs. Every contribution counts.
-      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {programs.map((program) => {
