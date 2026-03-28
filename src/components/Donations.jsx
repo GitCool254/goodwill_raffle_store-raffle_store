@@ -32,7 +32,7 @@ export default function Donations() {
         "/Palliative Outreach 11.jpg",
         "/Community Project Theme.jpg",
       ],
-      quote: quote: "“When the Foundation first came to our home, I was exhausted and had lost hope. They didn't just bring medication—they brought prayer, encouragement, and a gentle presence that lifted my spirit. They taught my daughter how to care for me, checked on us every week, and even helped arrange a wheelchair so I could sit outside again. Now I feel seen, supported, and at peace. This program gave us back our dignity.”",
+      quote: "“When the Foundation first came to our home, I was exhausted and had lost hope. They didn't just bring medication—they brought prayer, encouragement, and a gentle presence that lifted my spirit. They taught my daughter how to care for me, checked on us every week, and even helped arrange a wheelchair so I could sit outside again. Now I feel seen, supported, and at peace. This program gave us back our dignity.”",
       quoteName: "—Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
       overlayImage: "/Palliative Outreach 12.jpg",
