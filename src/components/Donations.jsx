@@ -86,7 +86,7 @@ export default function Donations() {
   const [counts, setCounts] = useState({
     churchPartners: 0,
     childrenYouth: 0,
-    counties: 0,
+    countries: 0,
   });
   const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef(null);
@@ -109,7 +109,7 @@ export default function Donations() {
           const increments = {
             churchPartners: targetValues.churchPartners / steps,
             childrenYouth: targetValues.childrenYouth / steps,
-            countries: targetValues.counties / steps,
+            countries: targetValues.countries / steps,
           };
 
           let currentStep = 0;
@@ -124,9 +124,9 @@ export default function Donations() {
                 Math.floor(increments.childrenYouth * currentStep),
                 targetValues.childrenYouth
               ),
-              counties: Math.min(
-                Math.floor(increments.counties * currentStep),
-                targetValues.counties
+              countries: Math.min(
+                Math.floor(increments.countries * currentStep),
+                targetValues.countries
               ),
             });
             if (currentStep >= steps) {
@@ -197,7 +197,7 @@ export default function Donations() {
                 >
                   {counts.churchPartners.toLocaleString()}
                 </div>
-                <div 
+                <div
                   className="text-lg text-slate-600 leading-normal"
                   style={{ fontWeight: "600", fontSize: "1.15rem" }}
                 >
@@ -219,7 +219,7 @@ export default function Donations() {
                 >
                   {counts.childrenYouth.toLocaleString()}
                 </div>
-                <div 
+                <div
                   className="text-lg text-slate-600 leading-normal"
                   style={{ fontWeight: "600", fontSize: "1.15rem" }}
                 >
@@ -227,7 +227,7 @@ export default function Donations() {
                 </div>
               </div>
 
-              {/* Counties */}
+              {/* Countries */}
               <div className="flex-1 min-w-[250px] text-center p-6 rounded-xl bg-white transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
@@ -239,13 +239,13 @@ export default function Donations() {
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
                   style={{ letterSpacing: '-0.02em', fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}
                 >
-                  {counts.counties.toLocaleString()}
+                  {counts.countries.toLocaleString()}
                 </div>
-                <div 
+                <div
                   className="text-lg text-slate-600 leading-normal"
                   style={{ fontWeight: "600", fontSize: "1.15rem" }}
                 >
-                  Counties
+                  Countries
                 </div>
               </div>
             </div>
