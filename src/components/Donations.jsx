@@ -197,7 +197,12 @@ export default function Donations() {
                 >
                   {counts.churchPartners.toLocaleString()}
                 </div>
-                <div className="text-lg text-slate-600 leading-normal">Church Partners</div>
+                <div 
+                  className="text-lg text-slate-600 leading-normal"
+                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                >
+                  Church Partners
+                </div>
               </div>
 
               {/* Children and Youth */}
@@ -214,7 +219,12 @@ export default function Donations() {
                 >
                   {counts.childrenYouth.toLocaleString()}
                 </div>
-                <div className="text-lg text-slate-600 leading-normal">Children and Youth</div>
+                <div 
+                  className="text-lg text-slate-600 leading-normal"
+                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                >
+                  Children and Youth
+                </div>
               </div>
 
               {/* Counties */}
@@ -231,7 +241,12 @@ export default function Donations() {
                 >
                   {counts.counties.toLocaleString()}
                 </div>
-                <div className="text-lg text-slate-600 leading-normal">Counties</div>
+                <div 
+                  className="text-lg text-slate-600 leading-normal"
+                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                >
+                  Counties
+                </div>
               </div>
             </div>
           </div>
