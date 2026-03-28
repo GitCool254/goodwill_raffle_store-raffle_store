@@ -92,9 +92,9 @@ export default function Donations() {
   const sectionRef = useRef(null);
 
   const targetValues = {
-    churchPartners: 473,
-    childrenYouth: 134813,
-    counties: 31,
+    churchPartners: 517,
+    childrenYouth: 9262,
+    countries: 3,
   };
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function Donations() {
           const increments = {
             churchPartners: targetValues.churchPartners / steps,
             childrenYouth: targetValues.childrenYouth / steps,
-            counties: targetValues.counties / steps,
+            countries: targetValues.counties / steps,
           };
 
           let currentStep = 0;
