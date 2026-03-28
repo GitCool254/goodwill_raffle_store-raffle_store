@@ -196,6 +196,8 @@ export default function Donations() {
                 border: '3px solid transparent',
                 borderImage: 'linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD) 1',
                 borderImageSlice: 1,
+                paddingTop: '10px',
+                paddingBottom: '10px",
               }}>
                 <div 
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
