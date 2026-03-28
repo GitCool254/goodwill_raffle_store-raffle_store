@@ -193,13 +193,13 @@ export default function Donations() {
               }}>
                 <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
-                  style={{ letterSpacing: '-0.02em', fontSize: '1.5rem', fontWeight: 'bold', color: '#059669' }}
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.churchPartners.toLocaleString()}
                 </div>
                 <div 
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                  style={{ fontWeight: "500", fontSize: "1.15rem" }}
                 >
                   Church Partners
                 </div>
@@ -215,13 +215,13 @@ export default function Donations() {
               }}>
                 <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
-                  style={{ letterSpacing: '-0.02em', fontSize: '1.5rem', fontWeight: 'bold', color: '#059669' }}
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.childrenYouth.toLocaleString()}
                 </div>
                 <div 
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                  style={{ fontWeight: "500", fontSize: "1.15rem" }}
                 >
                   Children and Youth
                 </div>
@@ -237,13 +237,13 @@ export default function Donations() {
               }}>
                 <div
                   className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
-                  style={{ letterSpacing: '-0.02em', fontSize: '1.5rem', fontWeight: 'bold', color: '#059669' }}
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.3rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.counties.toLocaleString()}
                 </div>
                 <div 
                   className="text-lg text-slate-600 leading-normal"
-                  style={{ fontWeight: "500", fontSize: "1.3rem" }}
+                  style={{ fontWeight: "500", fontSize: "1.15rem" }}
                 >
                   Counties
                 </div>
