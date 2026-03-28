@@ -192,12 +192,12 @@ export default function Donations() {
                 paddingBottom: '15px',
               }}>
                 <div
-                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                  style={{ letterSpacing: '-0.02em' }}
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.875rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.churchPartners.toLocaleString()}
                 </div>
-                <div className="text-slate-700 text-lg font-medium">Church Partners</div>
+                <div className="text-lg text-slate-600 leading-normal">Church Partners</div>
               </div>
 
               {/* Children and Youth */}
@@ -209,12 +209,12 @@ export default function Donations() {
                 paddingBottom: '15px',
               }}>
                 <div
-                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3"
-                  style={{ letterSpacing: '-0.02em' }}
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.875rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.childrenYouth.toLocaleString()}
                 </div>
-                <div className="text-slate-700 text-lg font-medium">Children and Youth</div>
+                <div className="text-lg text-slate-600 leading-normal">Children and Youth</div>
               </div>
 
               {/* Counties */}
@@ -226,8 +226,8 @@ export default function Donations() {
                 paddingBottom: '15px',
               }}>
                 <div
-                  className="text-lg text-slate-600 leading-normal mb-3"
-                  style={{ letterSpacing: '-0.02em' }}
+                  className="text-4xl md:text-5xl font-bold text-emerald-600 mb-3 text-lg text-slate-600 leading-normal"
+                  style={{ letterSpacing: '-0.02em', fontSize: '1.875rem', fontWeight: 'bold', color: '#059669' }}
                 >
                   {counts.counties.toLocaleString()}
                 </div>
@@ -333,7 +333,7 @@ export default function Donations() {
                     height: '40px',
                     backgroundColor: '#000000',
                     borderRadius: '50%',
-                    border: '1px solid rgba(255, 255, 255, 0.7)',
+                    border: '1px solid rgba(255, 255, 255, 0.8)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     overflow: 'hidden',
@@ -374,7 +374,7 @@ export default function Donations() {
                     height: '40px',
                     backgroundColor: '#000000',
                     borderRadius: '50%',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    border: '1px solid rgba(255, 255, 255, 0.8)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     overflow: 'hidden',
