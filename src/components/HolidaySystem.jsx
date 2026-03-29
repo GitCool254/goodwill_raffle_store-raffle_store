@@ -149,7 +149,8 @@ export default function HolidaySystem({ onNavigate }) {
             #ec4899,
             #d946ef,
             #a855f7,
-            #ef4444
+            #ef4444,
+            #000000,
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
@@ -175,6 +176,7 @@ export default function HolidaySystem({ onNavigate }) {
         .easter .premium-title::before {
           background: linear-gradient(
             90deg,
+            #000000,
             #84cc16,
             #a7f3d0,
             #facc15,
