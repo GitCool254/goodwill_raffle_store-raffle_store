@@ -384,7 +384,7 @@ export default function Catalog({ openProduct }) {
             <div
               style={{
                 backgroundColor: '#ffffff',
-                borderRadius: '8px',
+                borderRadius: '2px',
                 padding: '10px',
                 marginLeft: '10px',
                 marginRight: '10px',

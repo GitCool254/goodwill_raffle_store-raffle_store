@@ -82,6 +82,28 @@ export default function Donations() {
     });
   };
 
+  // Touch swipe support
+  const touchStartXRef = useRef({});
+
+  const handleTouchStart = (e, programId) => {
+    touchStartXRef.current[programId] = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e, programId) => {
+    const startX = touchStartXRef.current[programId];
+    if (startX === undefined) return;
+    const endX = e.changedTouches[0].clientX;
+    const delta = startX - endX;
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) {
+        handleNext(programId);
+      } else {
+        handlePrevious(programId);
+      }
+    }
+    delete touchStartXRef.current[programId];
+  };
+
   // Counter animation state
   const [counts, setCounts] = useState({
     churchPartners: 0,
@@ -275,12 +297,16 @@ export default function Donations() {
                   {program.description}
                 </p>
               </div>
-              {/* Image container with white background and padding */}
+              {/* Image container with white background and padding – added swipe handlers */}
               <div
                 className="bg-white rounded-lg relative"
                 style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
               >
-                <div className="flex items-center justify-center">
+                <div
+                  className="flex items-center justify-center"
+                  onTouchStart={(e) => handleTouchStart(e, program.id)}
+                  onTouchEnd={(e) => handleTouchEnd(e, program.id)}
+                >
                   <img
                     src={program.images[currentImageIndex]}
                     alt={`${program.title} - ${currentImageIndex + 1}`}
