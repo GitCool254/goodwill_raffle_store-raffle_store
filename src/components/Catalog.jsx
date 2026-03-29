@@ -322,7 +322,7 @@ export default function Catalog({ openProduct }) {
   return (
     <div
       className="max-w-6xl mx-auto p-6"
-      style={{ backgroundColor: "#f8fafc" }}
+      style={{ backgroundColor: "#f1f5f9" }}
     >
       <h1 className="text-2xl font-bold mb-4">Product Catalog</h1>
 
@@ -356,11 +356,11 @@ export default function Catalog({ openProduct }) {
       </div>
 
       {/* ----- PRODUCT GRID - Exactly two cards per row, edge to edge ----- */}
-      <div 
+      <div
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '24px',
+          gap: '12px',
           width: '100%'
         }}
       >
@@ -368,10 +368,10 @@ export default function Catalog({ openProduct }) {
           <div
             key={item.id}
             className="cursor-pointer hover:shadow-lg transition"
-            style={{ 
+            style={{
               width: '100%',
               backgroundColor: '#e6f3ff',
-              borderRadius: '12px',
+              borderRadius: '0',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
               overflow: 'hidden',
               padding: '16px',
