@@ -337,8 +337,8 @@ export default function Catalog({ openProduct }) {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* Category Buttons */}
-        <div className="flex gap-2 overflow-scroll no-scrollbar">
+        {/* Category Buttons - now full width */}
+        <div className="flex gap-2 overflow-scroll no-scrollbar w-full">
           {categories.map((cat) => (
             <button
               key={cat}
