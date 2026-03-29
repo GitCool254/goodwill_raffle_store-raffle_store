@@ -385,9 +385,9 @@ export default function Catalog({ openProduct }) {
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '8px',
-                padding: '16px',
-                marginLeft: '20px',
-                marginRight: '20px',
+                padding: '10px',
+                marginLeft: '10px',
+                marginRight: '10px',
                 marginTop: '10px',
                 marginBottom: '20px'
               }}
@@ -403,8 +403,8 @@ export default function Catalog({ openProduct }) {
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: '8px',
-                marginLeft: '10px',
-                marginRight: '10px',
+                marginLeft: '5px',
+                marginRight: '5px',
                 marginTop: '10px',
                 marginBottom: '10px',
                 padding: '10px'
