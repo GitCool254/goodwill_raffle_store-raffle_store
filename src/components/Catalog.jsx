@@ -355,19 +355,21 @@ export default function Catalog({ openProduct }) {
         </div>
       </div>
 
-      {/* ----- PRODUCT GRID - Two cards per row with uniform size ----- */}
+      {/* ----- PRODUCT GRID - Exactly two cards per row, edge to edge ----- */}
       <div 
-        className="flex flex-wrap justify-center"
-        style={{ gap: '24px', margin: '0 auto' }}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '24px',
+          width: '100%'
+        }}
       >
         {filtered.map((item) => (
           <div
             key={item.id}
             className="cursor-pointer hover:shadow-lg transition"
             style={{ 
-              width: 'calc(50% - 12px)',
-              maxWidth: '320px',
-              minWidth: '280px',
+              width: '100%',
               backgroundColor: '#e6f3ff',
               borderRadius: '12px',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
