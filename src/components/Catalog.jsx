@@ -326,46 +326,32 @@ export default function Catalog({ openProduct }) {
     >
       <h1 className="text-2xl font-bold mb-4">Product Catalog</h1>
 
-      {/* ----- SEARCH + CATEGORY FILTERS ----- */}
-      <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
-        {/* Search Input */}
+      {/* ----- SEARCH INPUT (full width) ----- */}
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Search products..."
-          className="p-2 border rounded w-full md:w-1/2"
+          className="p-2 border rounded w-full"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+      </div>
 
-        {/* Category Buttons - Full width from edge to edge */}
-        <div
-          className="flex gap-2 overflow-scroll no-scrollbar"
-          style={{
-            width: '100vw',
-            position: 'relative',
-            left: '50%',
-            right: '50%',
-            marginLeft: '-50vw',
-            marginRight: '-50vw',
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
-            boxSizing: 'border-box'
-          }}
-        >
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1 rounded border ${
-                selectedCategory === cat
-                  ? "bg-sky-600 text-white"
-                  : "bg-white text-slate-700"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+      {/* ----- CATEGORY BUTTONS (full width, horizontally scrollable) ----- */}
+      <div className="flex gap-2 overflow-scroll no-scrollbar w-full mb-6">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-3 py-1 rounded border whitespace-nowrap ${
+              selectedCategory === cat
+                ? "bg-sky-600 text-white"
+                : "bg-white text-slate-700"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
 
       {/* ----- PRODUCT GRID - Exactly two cards per row, edge to edge ----- */}
