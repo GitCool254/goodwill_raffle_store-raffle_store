@@ -144,13 +144,11 @@ export default function HolidaySystem({ onNavigate }) {
           inset: 0;
           background: linear-gradient(
             90deg,
-            #000000,
             #ef4444,
             #ec4899,
             #d946ef,
             #a855f7,
-            #ef4444,
-            #000000
+            #ef4444
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
