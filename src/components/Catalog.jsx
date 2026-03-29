@@ -324,7 +324,12 @@ export default function Catalog({ openProduct }) {
       className="max-w-6xl mx-auto p-6"
       style={{ backgroundColor: "#f1f5f9" }}
     >
-      <h1 className="text-2xl font-bold mb-4">Product Catalog</h1>
+      <h1 
+        className="text-xl font-bold mb-4"
+        style={{ fontSize: "1.2rem" }}
+      >
+        Product Catalog
+      </h1>
 
       {/* ----- SEARCH INPUT (full width) ----- */}
       <div className="mb-4">
@@ -383,7 +388,7 @@ export default function Catalog({ openProduct }) {
             <div
               style={{
                 backgroundColor: '#ffffff',
-                borderRadius: '2px',
+                borderRadius: '0px',
                 padding: '10px',
                 marginLeft: '10px',
                 marginRight: '10px',
@@ -401,7 +406,7 @@ export default function Catalog({ openProduct }) {
             <div
               style={{
                 backgroundColor: '#ffffff',
-                borderRadius: '8px',
+                borderRadius: '0px',
                 marginLeft: '5px',
                 marginRight: '5px',
                 marginTop: '10px',
