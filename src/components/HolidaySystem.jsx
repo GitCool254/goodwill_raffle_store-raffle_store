@@ -150,7 +150,7 @@ export default function HolidaySystem({ onNavigate }) {
             #d946ef,
             #a855f7,
             #ef4444,
-            #000000,
+            #000000
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
