@@ -355,36 +355,64 @@ export default function Catalog({ openProduct }) {
         </div>
       </div>
 
-      {/* ----- PRODUCT GRID - Styled like Donations.jsx program cards ----- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* ----- PRODUCT GRID - Two cards per row with uniform size ----- */}
+      <div 
+        className="flex flex-wrap justify-center"
+        style={{ gap: '24px', margin: '0 auto' }}
+      >
         {filtered.map((item) => (
           <div
             key={item.id}
-            className="rounded-xl shadow-md overflow-hidden p-4 cursor-pointer hover:shadow-lg transition"
-            style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
+            className="cursor-pointer hover:shadow-lg transition"
+            style={{ 
+              width: 'calc(50% - 12px)',
+              maxWidth: '320px',
+              minWidth: '280px',
+              backgroundColor: '#e6f3ff',
+              borderRadius: '12px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              overflow: 'hidden',
+              padding: '16px',
+              paddingBottom: '20px',
+              marginBottom: '10px'
+            }}
             onClick={() => openProduct(item)}
           >
             {/* White container for title + category + price with 20px left/right margins */}
             <div
-              className="bg-white rounded-lg p-4 mb-4"
-              style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '8px',
+                padding: '16px',
+                marginLeft: '20px',
+                marginRight: '20px',
+                marginTop: '10px',
+                marginBottom: '20px'
+              }}
             >
-              <div className="font-semibold text-lg mb-2 text-slate-800">{item.title}</div>
-              <div className="text-sm text-slate-600">{item.category}</div>
-              <div className="text-sm font-medium text-slate-700 mt-2">
-                $ {item.ticketPrice} <span className="text-xs">/ticket</span>
+              <div style={{ fontWeight: '600', fontSize: '1.125rem', marginBottom: '8px', color: '#1e293b' }}>{item.title}</div>
+              <div style={{ fontSize: '0.875rem', color: '#475569' }}>{item.category}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: '500', color: '#334155', marginTop: '8px' }}>
+                $ {item.ticketPrice} <span style={{ fontSize: '0.75rem' }}>/ticket</span>
               </div>
             </div>
             {/* White container for image with 10px margins and padding */}
             <div
-              className="bg-white rounded-lg"
-              style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '8px',
+                marginLeft: '10px',
+                marginRight: '10px',
+                marginTop: '10px',
+                marginBottom: '10px',
+                padding: '10px'
+              }}
             >
-              <div className="flex items-center justify-center">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="max-w-full h-auto object-contain rounded-md"
+                  style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }}
                   onError={(e) =>
                     (e.target.src = "https://via.placeholder.com/200x150")
                   }
