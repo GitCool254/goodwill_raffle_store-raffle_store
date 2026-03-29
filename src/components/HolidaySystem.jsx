@@ -181,6 +181,9 @@ export default function HolidaySystem({ onNavigate }) {
             #84cc16
           );
           background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: colorWave 4s linear infinite;
         }
 
         .premium-title::after {
