@@ -326,7 +326,7 @@ export default function Catalog({ openProduct }) {
     >
       <h1 
         className="text-xl font-bold mb-4"
-        style={{ fontSize: "1.2rem" }}
+        style={{ fontSize: "1.25rem" }}
       >
         Product Catalog
       </h1>

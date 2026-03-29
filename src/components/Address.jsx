@@ -29,7 +29,10 @@ export default function Address() {
     >
 
       {/* TITLE */}
-      <h1 className="text-lg font-bold mb-3 text-left">
+      <h1 
+        className="text-lg font-bold mb-3 text-left"
+        style={{ fontSize: "1.25rem" }}
+      >
         Visit Our Stores
       </h1>
 

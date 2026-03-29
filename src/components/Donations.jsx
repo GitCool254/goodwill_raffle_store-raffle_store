@@ -186,8 +186,8 @@ export default function Donations() {
             style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px',paddingLeft: '10px', paddingRight: '10px' }}
           >
             <h2
-              className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 text-center"
-              style={{ letterSpacing: '-0.02em' }}
+              className="text-xl md:text-4xl font-bold text-slate-800 mb-2 text-center"
+              style={{ letterSpacing: '-0.02em', fontSize: "1.25rem" }}
             >
               Our Reach
             </h2>
