@@ -85,7 +85,7 @@ export default function Catalog({ openProduct }) {
         "/Yamaha vx110 jetski3.png",
         "/Yamaha vx110 jetski4.png",
         "/Yamaha vx110 jetski5.png",
-      ],  
+      ],
     },
     {
       id: "p6",
@@ -320,7 +320,7 @@ export default function Catalog({ openProduct }) {
   });
 
   return (
-    <div 
+    <div
       className="max-w-6xl mx-auto p-6"
       style={{ backgroundColor: "#f8fafc" }}
     >
@@ -355,29 +355,41 @@ export default function Catalog({ openProduct }) {
         </div>
       </div>
 
-      {/* ----- PRODUCT GRID ----- */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* ----- PRODUCT GRID - Styled like Donations.jsx program cards ----- */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filtered.map((item) => (
           <div
             key={item.id}
-            className="bg-white shadow rounded-lg p-3 flex flex-col cursor-pointer hover:shadow-lg transition"
+            className="rounded-xl shadow-md overflow-hidden p-4 cursor-pointer hover:shadow-lg transition"
+            style={{ backgroundColor: '#e6f3ff', paddingBottom: '20px', marginBottom: '10px' }}
             onClick={() => openProduct(item)}
           >
-            <div className="w-full aspect-square flex items-center justify-center bg-white rounded mb-2 overflow-hidden p-2">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="max-h-full max-w-full object-contain"
-                onError={(e) =>
-                  (e.target.src = "https://via.placeholder.com/200x150")
-                }
-              />
+            {/* White container for title + category + price with 20px left/right margins */}
+            <div
+              className="bg-white rounded-lg p-4 mb-4"
+              style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
+            >
+              <div className="font-semibold text-lg mb-2 text-slate-800">{item.title}</div>
+              <div className="text-sm text-slate-600">{item.category}</div>
+              <div className="text-sm font-medium text-slate-700 mt-2">
+                $ {item.ticketPrice} <span className="text-xs">/ticket</span>
+              </div>
             </div>
-            <div className="text-sm font-semibold">{item.title}</div>
-            <div className="text-xs text-slate-500">{item.category}</div>
-            
-            <div className="text-sm mt-2 font-medium">
-              $ {item.ticketPrice} <span className="text-xs">/ticket</span>
+            {/* White container for image with 10px margins and padding */}
+            <div
+              className="bg-white rounded-lg"
+              style={{ backgroundColor: '#ffffff', marginLeft: '10px', marginRight: '10px', marginTop: '10px', marginBottom: '10px', padding: '10px' }}
+            >
+              <div className="flex items-center justify-center">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="max-w-full h-auto object-contain rounded-md"
+                  onError={(e) =>
+                    (e.target.src = "https://via.placeholder.com/200x150")
+                  }
+                />
+              </div>
             </div>
           </div>
         ))}
