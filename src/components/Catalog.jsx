@@ -337,17 +337,17 @@ export default function Catalog({ openProduct }) {
         />
       </div>
 
-      {/* ----- CATEGORY BUTTONS (full width, horizontally scrollable) ----- */}
-      <div className="flex gap-2 overflow-scroll no-scrollbar w-full mb-6">
+      {/* ----- CATEGORY BUTTONS - responsive: scroll on small, grid on large ----- */}
+      <div className="flex gap-2 overflow-scroll no-scrollbar w-full mb-6 md:grid md:grid-cols-6 md:gap-2 md:overflow-visible">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-3 py-1 rounded border whitespace-nowrap ${
+            className={`px-3 py-1 rounded border text-center ${
               selectedCategory === cat
                 ? "bg-sky-600 text-white"
                 : "bg-white text-slate-700"
-            }`}
+            } whitespace-nowrap md:whitespace-normal md:w-full`}
           >
             {cat}
           </button>
