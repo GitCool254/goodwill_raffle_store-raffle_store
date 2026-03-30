@@ -1053,11 +1053,10 @@ export default function App() {
       )}
 
       {view !== "image" && (
-        <HolidaySystem onNavigate={navigate} />
-      )}
-
-      {view !== "image" && (
-        <RecentWinners />
+        <>
+          <HolidaySystem onNavigate={navigate} />
+          <RecentWinners />
+        </>
       )}
 
 
