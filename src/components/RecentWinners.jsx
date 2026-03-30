@@ -28,7 +28,7 @@ export default function RecentWinners() {
   // Build a single text line from all winners
   const winnerItems = winners.map(
     (w) =>
-      `${w.name} (${w.state}, ${w.country}) ${w.flag} won: ${
+      `${w.name} (${w.state}, ${w.country}) won: ${
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticketNo}`
   );
