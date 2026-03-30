@@ -16,6 +16,7 @@ import HolidaySystem from "./components/HolidaySystem";
 import Donations from "./components/Donations"; // 👈 new import
 import TermsOfUse from "./components/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy";
+import RecentWinners from "./components/RecentWinners";
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -1054,6 +1055,11 @@ export default function App() {
       {view !== "image" && (
         <HolidaySystem onNavigate={navigate} />
       )}
+
+      {view !== "image" && (
+        <RecentWinners />
+      )}
+
 
       {/* MAIN CONTENT - grows to push footer down */}                       <main className="flex-grow">
         {view === "home" && (
