@@ -133,6 +133,10 @@ export default function About({ navigate }) {
           <strong>Affordable Participation</strong> — Low ticket prices give
           everyone a fair chance to win.
         </li>
+        <li>
+          <strong>Cash‑Out Option</strong> — Winners can choose the prize item or
+          receive its fair market value in cash. Enjoy flexibility and peace of mind.
+        </li>
       </ul>
 
       {/* SECTION: COMMITMENT */}

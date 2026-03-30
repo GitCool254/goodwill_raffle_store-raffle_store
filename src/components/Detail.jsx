@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PayPalButton from "./PayPalButton";
-                                                                       const shakeStyle = {
+
+const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
 
@@ -10,62 +11,66 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [errors, setErrors] = useState({});
-  const [downloadReady, setDownloadReady] = useState(false);             const [lastOrder, setLastOrder] = useState(null);
-  const [hasDownloaded, setHasDownloaded] = useState(false);             const [isGenerating, setIsGenerating] = useState(false);
+  const [downloadReady, setDownloadReady] = useState(false);
+  const [lastOrder, setLastOrder] = useState(null);
+  const [hasDownloaded, setHasDownloaded] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [isTicketGenerating, setIsTicketGenerating] = useState(false);
 
-  // Description toggle (same idea as Catalog)
+  // Description toggle
   const DESCRIPTION_LIMIT = 70;
   const MAX_TICKETS_PER_ORDER = 10;
   const [expandedDesc, setExpandedDesc] = useState(false);
-
   const [focusedField, setFocusedField] = useState(null);
+
   function toggleDescription(e) {
     e.stopPropagation();
     setExpandedDesc((prev) => !prev);
   }
 
-  useEffect(() => {                                                        setHasDownloaded(false);                                             }, [lastOrder]);
+  useEffect(() => {
+    setHasDownloaded(false);
+  }, [lastOrder]);
 
   const price =
-    parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;                                                                       const safeQty = Number(quantity) || 0;
-  const amount = Number((price * safeQty).toFixed(2));                
-                                                                         function validateForm() {                                                const newErrors = {};                                                  if (!name.trim()) newErrors.name = "Please enter your full name.";     if (!email.trim()) newErrors.email = "Enter your email.";
+    parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;
+  const safeQty = Number(quantity) || 0;
+  const amount = Number((price * safeQty).toFixed(2));
+
+  function validateForm() {
+    const newErrors = {};
+    if (!name.trim()) newErrors.name = "Please enter your full name.";
+    if (!email.trim()) newErrors.email = "Enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(email))
       newErrors.email = "Enter a valid email.";
     const qtyNum = Number(quantity);
 
-    if (
-      !quantity ||
-      !Number.isInteger(qtyNum) ||
-      qtyNum < 1
-    ) {
-      newErrors.quantity = "Quantity must be at least 1 and and a whole number.";
+    if (!quantity || !Number.isInteger(qtyNum) || qtyNum < 1) {
+      newErrors.quantity = "Quantity must be at least 1 and a whole number.";
     }
-
     if (qtyNum > MAX_TICKETS_PER_ORDER) {
       newErrors.quantity = `Maximum ${MAX_TICKETS_PER_ORDER} tickets allowed per order.`;
     }
-                                                                           if (qtyNum > remainingTickets) {
-     newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
+    if (qtyNum > remainingTickets) {
+      newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
     }
 
-    setErrors(newErrors);                                                  return Object.keys(newErrors).length === 0;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   }
 
-  async function handleTicketDownload() {                                  if (!lastOrder) {
+  async function handleTicketDownload() {
+    if (!lastOrder) {
       alert("No completed payment found.");
       return;
     }
-                                                                           if (hasDownloaded || isGenerating) return;
-    setIsGenerating(true);                                             
+    if (hasDownloaded || isGenerating) return;
+    setIsGenerating(true);
     try {
-
       const payload = { order_id: lastOrder.orderId };
-
-      const nonce = crypto.randomUUID(); // secure client-side nonce
+      const nonce = crypto.randomUUID();
       const payloadWithNonce = { ...payload, nonce };
-      const timestamp = Math.floor(Date.now() / 1000); // seconds
+      const timestamp = Math.floor(Date.now() / 1000);
 
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/download_ticket`,
@@ -79,51 +84,54 @@ export default function Detail({ product, openImage, remainingTickets }) {
           body: JSON.stringify(payloadWithNonce),
         }
       );
-                                                                             if (!res.ok) {
-        let errorMessage = "Download failed.";
 
+      if (!res.ok) {
+        let errorMessage = "Download failed.";
         try {
           const errJson = await res.json();
-
           if (res.status === 410 && errJson.error === "TICKET_EXPIRED") {
-            errorMessage = "This ticket has expired and can no longer be downloaded.";
-          } else if (res.status === 403 && errJson.error === "MAX_REDOWNLOADS_REACHED") {
+            errorMessage =
+              "This ticket has expired and can no longer be downloaded.";
+          } else if (
+            res.status === 403 &&
+            errJson.error === "MAX_REDOWNLOADS_REACHED"
+          ) {
             errorMessage = "Maximum download limit reached for this ticket.";
           } else if (res.status === 403 && errJson.error === "Replay detected") {
-            errorMessage = "Security validation failed. Please refresh and try again.";
+            errorMessage =
+              "Security validation failed. Please refresh and try again.";
           } else {
             errorMessage = errJson.error || errorMessage;
           }
         } catch {
           errorMessage = "Unexpected error occurred during download.";
         }
-
         alert(errorMessage);
         setIsGenerating(false);
         return;
       }
-                                                                             const blob = await res.blob();
 
+      const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
-
       const disposition = res.headers.get("Content-Disposition");
       const match = disposition?.match(/filename="?(.+)"?/);
-      a.download = match ? match[1] : "raffle_ticket";                 
+      a.download = match ? match[1] : "raffle_ticket";
       document.body.appendChild(a);
       a.click();
       a.remove();
-
       window.URL.revokeObjectURL(url);
-                                                                             setHasDownloaded(true); // 🔒 lock permanently
+      setHasDownloaded(true);
     } catch (err) {
       console.error("Download error:", err);
       alert("Could not download ticket. Try again.");
-    } finally {                                                              setIsGenerating(false);
-    }                                                                    }
-                                                                         return (
+    } finally {
+      setIsGenerating(false);
+    }
+  }
+
+  return (
     <div
       className="p-6 text-center"
       style={{ backgroundColor: "#f8fafc" }}
@@ -131,7 +139,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
       <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
 
       {ticket && (
-        <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">                                        🎟️ Viewing your ticket                                                </div>
+        <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
+          🎟️ Viewing your ticket
+        </div>
       )}
 
       <img
@@ -140,43 +150,65 @@ export default function Detail({ product, openImage, remainingTickets }) {
         onClick={() =>
           openImage(
             product.images && product.images.length
-              ? product.images                                                       : [product.image],
+              ? product.images
+              : [product.image],
             0,
             "detail"
           )
         }
       />
-                                                                             <p className="text-lg mb-2">Price per ticket: {product.ticketPrice}</p>
 
-      {ticket && (                                                             <p className="text-sm text-slate-700 mb-4">                              Ticket No: <strong>{ticket.ticketNo}</strong>
-        </p>                                                                 )}
-                                                                             {/* DESCRIPTION SECTION */}                                            <div className="mb-10">
+      <p className="text-lg mb-2">Price per ticket: ${product.ticketPrice}</p>
+
+      {/* Market price display – new */}
+      {product.marketPrice && (
+        <p className="text-sm text-slate-500 mb-2">
+          Market value: ${product.marketPrice}
+        </p>
+      )}
+
+      {ticket && (
+        <p className="text-sm text-slate-700 mb-4">
+          Ticket No: <strong>{ticket.ticketNo}</strong>
+        </p>
+      )}
+
+      {/* DESCRIPTION SECTION */}
+      <div className="mb-10">
         <div className="text-sm text-slate-600 leading-relaxed mb-1 whitespace-pre-line text-left max-w-md mx-auto">
           {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
             ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
             : product.description}
         </div>
-
         {product.description.length > DESCRIPTION_LIMIT && (
           <button
-            className="text-sm text-sky-600 hover:underline"                       onClick={toggleDescription}                                          >                                                                        {expandedDesc ? "See less" : "See more"}                             </button>
+            className="text-sm text-sky-600 hover:underline"
+            onClick={toggleDescription}
+          >
+            {expandedDesc ? "See less" : "See more"}
+          </button>
         )}
       </div>
 
       <br />
-                                                                       
-      {!ticket && (
-        <>                                                                       {/* NAME */}
-          <div className="mb-3 max-w-md mx-auto text-left">                        <label>Full Name</label>
+
+      {!ticket ? (
+        <>
+          {/* NAME */}
+          <div className="mb-3 max-w-md mx-auto text-left">
+            <label>Full Name</label>
             <input
               value={name}
               placeholder="Enter your full name"
               onChange={(e) => setName(e.target.value)}
               onFocus={() => setFocusedField("name")}
-              onBlur={() => setFocusedField(null)}                                   style={{
+              onBlur={() => setFocusedField(null)}
+              style={{
                 border: errors.name
-                  ? "1px solid #ef4444"                                                  : focusedField === "name"
-                  ? "1px solid #38bdf8"                                                  : "1px solid #d1d5db",
+                  ? "1px solid #ef4444"
+                  : focusedField === "name"
+                  ? "1px solid #38bdf8"
+                  : "1px solid #d1d5db",
                 boxShadow: errors.name
                   ? "0 0 0 2px rgba(239,68,68,0.3)"
                   : focusedField === "name"
@@ -186,7 +218,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 transition: "all 0.15s ease",
                 ...(errors.name ? shakeStyle : {}),
               }}
-              className="p-2 w-full rounded"                                       />                                                                     {errors.name && <p className="text-red-500">{errors.name}</p>}       </div>                                                                                                                                        {/* EMAIL */}
+              className="p-2 w-full rounded"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
+
+          {/* EMAIL */}
           <div className="mb-3 max-w-md mx-auto text-left">
             <label>Email</label>
             <input
@@ -215,8 +252,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
-                                                                                 {/* QUANTITY */}
-          <div className="mb-5 max-w-md mx-auto text-left">                        <label className="block mb-1">Quantity</label>
+
+          {/* QUANTITY */}
+          <div className="mb-5 max-w-md mx-auto text-left">
+            <label className="block mb-1">Quantity</label>
             <input
               type="number"
               value={quantity}
@@ -224,42 +263,54 @@ export default function Detail({ product, openImage, remainingTickets }) {
               max="10"
               onChange={(e) => setQuantity(e.target.value)}
               onFocus={() => setFocusedField("quantity")}
-              onBlur={() => setFocusedField(null)}                                   style={{
+              onBlur={() => setFocusedField(null)}
+              style={{
                 border: errors.quantity
                   ? "1px solid #ef4444"
-                  : focusedField === "quantity"                                          ? "1px solid #38bdf8"
-                  : "1px solid #d1d5db",                                               boxShadow: errors.quantity
+                  : focusedField === "quantity"
+                  ? "1px solid #38bdf8"
+                  : "1px solid #d1d5db",
+                boxShadow: errors.quantity
                   ? "0 0 0 2px rgba(239,68,68,0.3)"
                   : focusedField === "quantity"
                   ? "0 0 0 2px rgba(56,189,248,0.4)"
                   : "none",
                 outline: "none",
                 transition: "all 0.15s ease",
-                ...(errors.quantity ? shakeStyle : {}),                              }}
+                ...(errors.quantity ? shakeStyle : {}),
+              }}
               className="p-2 w-28 rounded mb-4"
             />
             {errors.quantity && (
-              <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>                                                                              )}
+              <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>
+            )}
           </div>
 
           <br />
 
-          <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">                                                      <div className="text-xl font-semibold text-blue-700">
+          <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
+            <div className="text-xl font-semibold text-blue-700">
               💵 Total: <b>${amount}</b> USD
             </div>
             <p className="text-sm text-gray-600 italic mt-1">
               (This will be charged securely via PayPal)
             </p>
-          </div>                                                       
-          <hr className="my-4" />                                      
-          {/* PAYPAL */}                                                         <PayPalButton
-            amount={amount}                                                        description={`${product.title} — ${quantity} ticket(s)`}
-            validateForm={validateForm}                                            product={product.title}                                                quantity={quantity}
-            name={name}                                                            email={email}
+          </div>
+          <hr className="my-4" />
+
+          {/* PAYPAL */}
+          <PayPalButton
+            amount={amount}
+            description={`${product.title} — ${quantity} ticket(s)`}
+            validateForm={validateForm}
+            product={product.title}
+            quantity={quantity}
+            name={name}
+            email={email}
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
-              setIsTicketGenerating(true);                             
-              // 🔹 Generate tickets silently
+              setIsTicketGenerating(true);
+              // Generate tickets silently
               const payload = {
                 name,
                 email: email.trim().toLowerCase(),
@@ -268,10 +319,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 order_id: orderObj.orderId,
                 product_title: product.title,
               };
-
-              const nonce = crypto.randomUUID(); // generate secure nonce
+              const nonce = crypto.randomUUID();
               const payloadWithNonce = { ...payload, nonce };
-              const timestamp = Math.floor(Date.now() / 1000); // seconds
+              const timestamp = Math.floor(Date.now() / 1000);
 
               const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
@@ -288,51 +338,55 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
               if (!res.ok) {
                 let errorMessage = "Ticket generation failed.";
-
                 try {
                   const errJson = await res.json();
-
                   if (res.status === 409) {
-                    errorMessage = "Tickets sold out before your purchase completed.";
-                  } else if (res.status === 403 && errJson.error === "Replay detected") {
-                    errorMessage = "Security validation failed. Please refresh and try again.";
+                    errorMessage =
+                      "Tickets sold out before your purchase completed.";
+                  } else if (
+                    res.status === 403 &&
+                    errJson.error === "Replay detected"
+                  ) {
+                    errorMessage =
+                      "Security validation failed. Please refresh and try again.";
                   } else {
                     errorMessage = errJson.error || errorMessage;
                   }
                 } catch {
                   errorMessage = "Unexpected generation error.";
                 }
-
                 alert(errorMessage);
                 setIsTicketGenerating(false);
                 return;
               }
 
-              const data = await res.json();                                         if (data.status !== "tickets_generated") {
+              const data = await res.json();
+              if (data.status !== "tickets_generated") {
                 alert("Ticket generation incomplete.");
                 setIsTicketGenerating(false);
-                return;                                                              }
+                return;
+              }
 
-              // After tickets are generated successfully
               setIsTicketGenerating(false);
               setDownloadReady(true);
 
-              // 🔁 Sync backend state (authoritative) — SIGNED (GET)
-
+              // Sync backend state
               const ticketstateRes = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`                   );
+                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
+              );
               const ticketstateData = await ticketstateRes.json();
-
-              window.dispatchEvent(new CustomEvent("ticketsPurchased", {
-                detail: {
-                  quantity: Number(quantity),
-                  total_sold: ticketstateData.total_sold,
-                  remaining: ticketstateData.remaining,
-                  authoritative: true
-                }
-              }));
-
-            }}                                                                   />
+              window.dispatchEvent(
+                new CustomEvent("ticketsPurchased", {
+                  detail: {
+                    quantity: Number(quantity),
+                    total_sold: ticketstateData.total_sold,
+                    remaining: ticketstateData.remaining,
+                    authoritative: true,
+                  },
+                })
+              );
+            }}
+          />
 
           <br />
 
@@ -353,11 +407,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
           {lastOrder && isTicketGenerating && !downloadReady && (
             <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
               <div className="flex items-center gap-2 mb-1">
-                <span className="subtle-spinner" style={{ marginRight:
-"10px" }} />
-                <span className="font-medium">
-                  Generating your ticket…
-                </span>
+                <span className="subtle-spinner" style={{ marginRight: "10px" }} />
+                <span className="font-medium">Generating your ticket…</span>
               </div>
               <div className="text-xs text-slate-400">
                 This will only take a moment
@@ -368,9 +419,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
           {downloadReady && (
             <button
               onClick={handleTicketDownload}
-              disabled={hasDownloaded || isGenerating}                               className={`mt-4 px-4 py-2 rounded text-white ${                         hasDownloaded
+              disabled={hasDownloaded || isGenerating}
+              className={`mt-4 px-4 py-2 rounded text-white ${
+                hasDownloaded
                   ? "bg-gray-400"
-                  : isGenerating                                                         ? "bg-yellow-500"
+                  : isGenerating
+                  ? "bg-yellow-500"
                   : "bg-green-600"
               }`}
             >
@@ -378,13 +432,18 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 ? "Ticket Already Downloaded"
                 : isGenerating
                 ? "Generating Ticket..."
-                : "Download Ticket"}                                               </button>                                                            )}                                                                   </>
-      )}
-      {ticket && (
-        <button                                                                  onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}                                                                          className="mt-6 text-sky-600 font-semibold"
+                : "Download Ticket"}
+            </button>
+          )}
+        </>
+      ) : (
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
+          className="mt-6 text-sky-600 font-semibold"
         >
           ← Back to My Tickets
         </button>
       )}
-    </div>                                                               );
+    </div>
+  );
 }
