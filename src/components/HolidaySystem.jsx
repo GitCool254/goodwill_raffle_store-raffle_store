@@ -53,7 +53,7 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "easter",
         name: "Easter Celebration Draw",
-        start: new Date(year, 3, 1),
+        start: new Date(year, 3, 3),
         end: new Date(year, 3, 10),
       },
     ];
