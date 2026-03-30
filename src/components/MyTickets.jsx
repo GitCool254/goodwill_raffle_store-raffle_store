@@ -311,7 +311,12 @@ export default function MyTickets() {
 
       {/* TICKET NUMBER LOOKUP SECTION */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold mb-3">Check Your Ticket Status</h2>
+        <h2 
+          className="text-lg font-semibold mb-3"
+          style={{ fontSize: "1.2rem", marginTop: "20px" }}
+        >
+          Check Your Ticket Status
+        </h2>
         <form onSubmit={handleTicketNumberLookup} className="mb-4">
           <input
             type="text"
