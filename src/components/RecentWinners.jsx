@@ -30,7 +30,7 @@ export default function RecentWinners() {
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
         w.cash_out ? `$${w.prize} cash` : w.prize
-      } – Ticket ${w.ticketNo}`
+      } – Ticket ${w.ticket_no}`
   );
   const fullText = winnerItems.join("  •  ");
   // Duplicate the text to ensure smooth infinite scrolling
