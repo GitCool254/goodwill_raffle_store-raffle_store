@@ -174,6 +174,7 @@ export default function HolidaySystem({ onNavigate }) {
         .easter .premium-title::before {
           background: linear-gradient(
             90deg,
+            #000000,
             #84cc16,
             #a7f3d0,
             #facc15,
