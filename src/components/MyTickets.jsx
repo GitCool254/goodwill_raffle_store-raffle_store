@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LabelWithBullet from "./LabelWithBullet";
 
 const FOCUS_BLUE = "#38bdf8"; // sky-400
@@ -16,7 +16,31 @@ export default function MyTickets() {
   const [orderId, setOrderId] = useState("");
   const [orderError, setOrderError] = useState("");
 
+  // New state for ticket number lookup
+  const [ticketNumber, setTicketNumber] = useState("");
+  const [ticketNumberError, setTicketNumberError] = useState("");
+  const [ticketNumberFocused, setTicketNumberFocused] = useState(false);
+  const [recentWinners, setRecentWinners] = useState([]);
+  const [matchedWinner, setMatchedWinner] = useState(null);
+  const [ticketCheckPerformed, setTicketCheckPerformed] = useState(false);
+
   const [focusedField, setFocusedField] = useState(null);
+
+  // Fetch recent winners on component mount
+  useEffect(() => {
+    const fetchRecentWinners = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
+        const data = await res.json();
+        if (data.show && data.winners) {
+          setRecentWinners(data.winners);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recent winners:", err);
+      }
+    };
+    fetchRecentWinners();
+  }, []);
 
   function isValidEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -144,9 +168,31 @@ export default function MyTickets() {
     }
   }
 
+  // Ticket number lookup handler
+  const handleTicketNumberLookup = (e) => {
+    e.preventDefault();
+    setTicketNumberError("");
+    setMatchedWinner(null);
+    setTicketCheckPerformed(true);
+
+    if (!ticketNumber.trim()) {
+      setTicketNumberError("Please enter a ticket number.");
+      return;
+    }
+
+    const foundWinner = recentWinners.find(
+      (winner) => winner.ticket_no === ticketNumber.trim().toUpperCase()
+    );
+
+    if (foundWinner) {
+      setMatchedWinner(foundWinner);
+    } else {
+      setMatchedWinner(null);
+    }
+  };
+
   // Cash-out option handler (placeholder)
   async function handleCashOut(orderId, productMarketPrice) {
-    // In a real implementation, call an API endpoint to claim cash
     alert(`You have chosen to cash out $${productMarketPrice} for order ${orderId}. This feature will be implemented with backend integration.`);
   }
 
@@ -262,6 +308,105 @@ export default function MyTickets() {
           View My Tickets
         </button>
       </form>
+
+      {/* TICKET NUMBER LOOKUP SECTION */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-3">Check Your Ticket Status</h2>
+        <form onSubmit={handleTicketNumberLookup} className="mb-4">
+          <input
+            type="text"
+            value={ticketNumber}
+            placeholder="Enter Ticket Number (e.g., RF-48219)"
+            onChange={(e) => setTicketNumber(e.target.value)}
+            onFocus={() => setTicketNumberFocused(true)}
+            onBlur={() => setTicketNumberFocused(false)}
+            style={{
+              border: ticketNumberError
+                ? `1px solid ${ERROR_RED}`
+                : ticketNumberFocused
+                ? `1px solid ${FOCUS_BLUE}`
+                : "1px solid #d1d5db",
+              boxShadow: ticketNumberError
+                ? "0 0 0 2px rgba(239,68,68,0.3)"
+                : ticketNumberFocused
+                ? "0 0 0 2px rgba(56,189,248,0.4)"
+                : "none",
+              outline: "none",
+              transition: "all 0.15s ease",
+              ...(ticketNumberError ? shakeStyle : {}),
+            }}
+            className="w-full rounded-lg px-4 py-3 mb-2"
+          />
+
+          {ticketNumberError && (
+            <div className="text-red-600 text-sm mb-2">
+              {ticketNumberError}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="bg-sky-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-700 transition"
+          >
+            Check Ticket Number
+          </button>
+        </form>
+
+        {/* Ticket Check Result */}
+        {ticketCheckPerformed && (
+          <div className="mt-4 p-4 rounded-lg border">
+            {matchedWinner ? (
+              <>
+                <div className="bg-green-50 border border-green-300 rounded-lg p-3 mb-4">
+                  <p className="text-sm font-semibold text-green-800 mb-2">
+                    🎉 Congratulations! Your ticket number matches a recent winner! 🎉
+                  </p>
+                  <p className="text-sm text-green-700">
+                    You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
+                  </p>
+                </div>
+                <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+                  <p className="text-sm font-semibold text-yellow-800 mb-2">
+                    Claim Your Prize
+                  </p>
+                  <p className="text-sm text-yellow-700 mb-3">
+                    You have the option to claim either the prize item or the cash out for the product's market value.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleClaimItem(matchedWinner.ticket_no)}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    >
+                      Claim Item
+                    </button>
+                    <button
+                      onClick={() => handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
+                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                    >
+                      Cash Out {matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="bg-red-50 border border-red-300 rounded-lg p-3">
+                <p className="text-sm font-semibold text-red-800 mb-2">
+                  ❌ Ticket Number Not Found
+                </p>
+                <p className="text-sm text-red-700">
+                  The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <p
+          className="mt-2 text-xs text-slate-500"
+        >
+          Enter your ticket number to check if it matches any recent winners. If your ticket is a winner, you can choose to claim the prize item or cash out.
+        </p>
+      </div>
 
       {/* RESULTS */}
       {tickets && (
