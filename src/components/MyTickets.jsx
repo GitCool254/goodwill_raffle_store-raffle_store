@@ -312,7 +312,7 @@ export default function MyTickets() {
       {/* TICKET NUMBER LOOKUP SECTION */}
       <div className="mb-8">
         <h2 
-          className="text-lg font-semibold mb-3"
+          className="text-lg font-semibold mb-8"
           style={{ fontSize: "1.2rem", marginTop: "20px" }}
         >
           Check Your Ticket Status
