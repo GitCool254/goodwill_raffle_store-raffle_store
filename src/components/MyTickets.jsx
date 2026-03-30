@@ -310,7 +310,10 @@ export default function MyTickets() {
       </form>
 
       {/* TICKET NUMBER LOOKUP SECTION */}
-      <div className="mb-16">
+      <div 
+        className="mb-8"
+        style={{ marginTop: "30px" }}
+      >
         <h2 
           className="text-lg font-semibold mb-3"
           style={{ fontSize: "1.2rem" }}
