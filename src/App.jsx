@@ -56,6 +56,7 @@ export default function App() {
       ticketPrice: 6,
       totalTickets: 100,
       category: "Eletronics",
+      marketPrice: 300, // Fair market value ($) – winner can take cash instead of the item
     },
 
     {
@@ -72,6 +73,7 @@ export default function App() {
       ticketPrice: 6,
       totalTickets: 200,
       category: "Households",
+      marketPrice: 400,
     },
 
     {
@@ -90,6 +92,7 @@ export default function App() {
       ticketPrice: 8,
       totalTickets: 150,
       category: "Eletronics",
+      marketPrice: 800,
     },
   ];
 
@@ -986,7 +989,7 @@ export default function App() {
           {products.map((p) => (                                                   <div                                                                     key={p.id}
               className="bg-white rounded-2xl shadow p-4 flex flex-col"
             >
-              <div 
+              <div
                 style={{
                   width: '100%',
                   marginBottom: '12px',
