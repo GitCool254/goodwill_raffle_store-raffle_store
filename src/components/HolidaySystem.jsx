@@ -10,6 +10,7 @@ import React, { useEffect, useMemo, useState } from "react";
   - Smooth slide animation
   - Premium animated zebra + color wave + pulsing gradient glow
   - General holiday (e.g., Ramadan) – uses Black Friday styling
+  - Black Friday is suppressed if it collides with any other holiday
 */
 
 export default function HolidaySystem({ onNavigate }) {
@@ -77,31 +78,91 @@ export default function HolidaySystem({ onNavigate }) {
     return date > now && date <= twoDaysFromNow;
   };
 
+  // Helper: check if a fixed-date holiday is active today
+  const isFixedDateHolidayActive = (holiday) => {
+    return now >= holiday.start && now <= holiday.end;
+  };
+
+  // Helper: check if Black Friday collides with any other holiday
+  const doesBlackFridayCollide = () => {
+    // Check if any other holiday (excluding Black Friday) is active today
+    const otherActiveHolidays = holidays.filter(h => h.id !== "blackfriday").some(h => {
+      if (h.weeklyFriday) return false; // only fixed-date holidays
+      return isFixedDateHolidayActive(h);
+    });
+    if (otherActiveHolidays) return true;
+
+    // Check if any other holiday is upcoming within the next 2 days
+    const otherUpcomingHolidays = holidays.filter(h => h.id !== "blackfriday").some(h => {
+      if (h.weeklyFriday) return false;
+      if (now >= h.start && now <= h.end) return false; // already active, covered above
+      return isWithinNextTwoDays(h.start);
+    });
+    if (otherUpcomingHolidays) return true;
+
+    return false;
+  };
+
+  // Helper: check if today is Friday
+  const isTodayFriday = () => now.getDay() === 5;
+
+  // Determine if Black Friday should be active (only if no collision)
+  const isBlackFridayActive = () => {
+    if (!isTodayFriday()) return false;
+    if (doesBlackFridayCollide()) return false;
+    return true;
+  };
+
+  // Determine if Black Friday should be upcoming (only if no collision)
+  const isBlackFridayUpcoming = () => {
+    // Find the next Friday
+    const nextFriday = new Date(now);
+    nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
+    nextFriday.setHours(0, 0, 0, 0);
+    const nextFridayEnd = new Date(nextFriday);
+    nextFridayEnd.setHours(23, 59, 59, 999);
+    
+    // If today is Friday, it's active → not upcoming
+    if (isTodayFriday()) return false;
+    
+    // Check if any other holiday collides with next Friday
+    const otherHolidayCollision = holidays.filter(h => h.id !== "blackfriday").some(h => {
+      if (h.weeklyFriday) return false;
+      // Check if next Friday falls within any other holiday's date range
+      return (nextFriday >= h.start && nextFriday <= h.end) ||
+             (nextFridayEnd >= h.start && nextFridayEnd <= h.end);
+    });
+    
+    if (otherHolidayCollision) return false;
+    return isWithinNextTwoDays(nextFriday);
+  };
+
   const activeHolidays = holidays.filter((h) => {
+    if (h.id === "blackfriday") {
+      return isBlackFridayActive();
+    }
     if (h.weeklyFriday) {
       const todayStart = new Date(now);
       todayStart.setHours(0, 0, 0, 0);
-
       const todayEnd = new Date(now);
       todayEnd.setHours(23, 59, 59, 999);
-
       const isFriday = now.getDay() === 5;
-
       return isFriday && now >= todayStart && now <= todayEnd;
     }
-
     return now >= h.start && now <= h.end;
   });
 
   const upcomingHolidays = holidays.filter((h) => {
+    if (h.id === "blackfriday") {
+      return isBlackFridayUpcoming();
+    }
     if (h.weeklyFriday) {
-      // For Black Friday: find the next Friday date
+      // For other weekly holidays (none currently), but kept for consistency
       const nextFriday = new Date(now);
       nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
       nextFriday.setHours(0, 0, 0, 0);
       const nextFridayEnd = new Date(nextFriday);
       nextFridayEnd.setHours(23, 59, 59, 999);
-      // If today is Friday, it's active → not upcoming
       if (now.getDay() === 5) return false;
       return isWithinNextTwoDays(nextFriday);
     } else {
