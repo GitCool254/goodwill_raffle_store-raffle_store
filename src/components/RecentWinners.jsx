@@ -4,7 +4,6 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [phase, setPhase] = useState("statement"); // "statement" or "winners"
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -26,8 +25,6 @@ export default function RecentWinners() {
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 ❖❖❖";
-  // Duplicate for seamless scroll (only one full screen pass needed)
-  const statementContent = `${statementText}  •  ${statementText}  •  ${statementText}`;
 
   // Build winner text
   const winnerItems = winners.map(
@@ -36,18 +33,12 @@ export default function RecentWinners() {
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticket_no}`
   );
-  const fullText = winnerItems.join("  •  ");
-  const scrollContent = `${fullText}  •  ${fullText}  •  ${fullText}`;
+  const winnerText = winnerItems.join("  •  ");
+
+  // Combine statement and winners into one seamless message
+  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
-
-  const handleStatementEnd = () => {
-    setPhase("winners");
-    // After winners have run for a full loop, reset phase to repeat the cycle
-    setTimeout(() => {
-      setPhase("statement");
-    }, 20000); // Match the winner animation duration
-  };
 
   return (
     <>
@@ -61,11 +52,6 @@ export default function RecentWinners() {
         @keyframes zebraMove {
           0% { background-position: 0 0; }
           100% { background-position: 40px 40px; }
-        }
-
-        @keyframes scrollOnce {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.333%); }
         }
 
         @keyframes scrollInfinite {
@@ -140,12 +126,6 @@ export default function RecentWinners() {
           width: 100%;
         }
 
-        .scroll-once {
-          display: inline-block;
-          white-space: nowrap;
-          animation: scrollOnce 12s linear forwards;
-        }
-
         .scroll-infinite {
           display: inline-block;
           white-space: nowrap;
@@ -157,34 +137,17 @@ export default function RecentWinners() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container">
-              {phase === "statement" ? (
-                <div
-                  className="scroll-once"
-                  onAnimationEnd={handleStatementEnd}
-                >
-                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                    <h3
-                      className="premium-title inline-block text-base"
-                      style={{ fontSize: '1rem' }}
-                      data-text={statementContent}
-                    >
-                      {statementContent}
-                    </h3>
-                  </div>
+              <div className="scroll-infinite">
+                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                  <h3
+                    className="premium-title inline-block text-base"
+                    style={{ fontSize: '1rem' }}
+                    data-text={combinedMessage}
+                  >
+                    {combinedMessage}
+                  </h3>
                 </div>
-              ) : (
-                <div className="scroll-infinite">
-                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                    <h3
-                      className="premium-title inline-block text-base"
-                      style={{ fontSize: '1rem' }}
-                      data-text={scrollContent}
-                    >
-                      {scrollContent}
-                    </h3>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
