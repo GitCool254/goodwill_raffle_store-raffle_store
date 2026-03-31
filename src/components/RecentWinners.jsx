@@ -4,7 +4,7 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [statementCompleted, setStatementCompleted] = useState(false);
+  const [phase, setPhase] = useState("statement"); // "statement" or "winners"
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -26,10 +26,10 @@ export default function RecentWinners() {
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 ❖❖❖";
-  // Duplicate for seamless loop
+  // Duplicate for seamless scroll (only one full screen pass needed)
   const statementContent = `${statementText}  •  ${statementText}  •  ${statementText}`;
 
-  // Build winner text (only after statement completes)
+  // Build winner text
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
@@ -40,6 +40,14 @@ export default function RecentWinners() {
   const scrollContent = `${fullText}  •  ${fullText}  •  ${fullText}`;
 
   if (!show || winners.length === 0) return null;
+
+  const handleStatementEnd = () => {
+    setPhase("winners");
+    // After winners have run for a full loop, reset phase to repeat the cycle
+    setTimeout(() => {
+      setPhase("statement");
+    }, 20000); // Match the winner animation duration
+  };
 
   return (
     <>
@@ -55,12 +63,12 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollTextStatement {
+        @keyframes scrollOnce {
           0% { transform: translateX(0); }
           100% { transform: translateX(-33.333%); }
         }
 
-        @keyframes scrollTextWinners {
+        @keyframes scrollInfinite {
           0% { transform: translateX(0); }
           100% { transform: translateX(-33.333%); }
         }
@@ -131,26 +139,28 @@ export default function RecentWinners() {
           white-space: nowrap;
           width: 100%;
         }
-        .marquee-content-statement {
+
+        .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollTextStatement 12s linear forwards;
+          animation: scrollOnce 12s linear forwards;
         }
-        .marquee-content-winners {
+
+        .scroll-infinite {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollTextWinners 20s linear infinite;
+          animation: scrollInfinite 20s linear infinite;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            {!statementCompleted ? (
-              <div className="marquee-container">
+            <div className="marquee-container">
+              {phase === "statement" ? (
                 <div
-                  className="marquee-content-statement"
-                  onAnimationEnd={() => setStatementCompleted(true)}
+                  className="scroll-once"
+                  onAnimationEnd={handleStatementEnd}
                 >
                   <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                     <h3
@@ -162,10 +172,8 @@ export default function RecentWinners() {
                     </h3>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="marquee-container">
-                <div className="marquee-content-winners">
+              ) : (
+                <div className="scroll-infinite">
                   <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                     <h3
                       className="premium-title inline-block text-base"
@@ -176,8 +184,8 @@ export default function RecentWinners() {
                     </h3>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </section>
