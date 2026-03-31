@@ -341,7 +341,10 @@ export default function MyTickets() {
         </h2>
 
         {!isDrawDone && (
-          <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-4">
+          <div 
+            className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-4"
+            style={{ marginTop: "15px", marginBottom: "15px" }}
+          >
             <p className="text-sm text-yellow-800">
               ℹ️ The raffle draw has not yet taken place. Ticket status checking will be available after the draw is completed.
             </p>
