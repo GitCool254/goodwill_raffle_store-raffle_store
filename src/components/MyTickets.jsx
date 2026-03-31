@@ -402,11 +402,16 @@ export default function MyTickets() {
 
               {/* Prize Item button row */}
               <div className="flex items-center">
-                <span className="w-24 text-sm text-slate-600 mr-4">Prize Item: </span>
+                <span 
+                  className="w-24 text-sm text-slate-600"
+                  style={{ marginRight: "10px" }}
+                >
+                  Prize Item:
+                </span>
                 <button
                   onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
                   disabled={!matchedWinner}
-                  className={`ml-4 px-4 py-2 rounded-lg transition ${
+                  className={`px-4 py-2 rounded-lg transition ${
                     matchedWinner
                       ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -418,11 +423,16 @@ export default function MyTickets() {
 
               {/* Cash Out Money button row */}
               <div className="flex items-center">
-                <span className="w-24 text-sm text-slate-600 mr-4">Cash Out Money: </span>
+                <span 
+                  className="w-24 text-sm text-slate-600"
+                  style={{ marginRight: "10px" }}
+                >
+                  Cash Out Money:
+                </span>
                 <button
                   onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
                   disabled={!matchedWinner}
-                  className={`ml-4 px-4 py-2 rounded-lg transition ${
+                  className={`px-4 py-2 rounded-lg transition ${
                     matchedWinner
                       ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
