@@ -406,7 +406,7 @@ export default function MyTickets() {
                 <button
                   onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
                   disabled={!matchedWinner}
-                  className={`px-4 py-2 rounded-lg transition ${
+                  className={`ml-4 px-4 py-2 rounded-lg transition ${
                     matchedWinner
                       ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -422,7 +422,7 @@ export default function MyTickets() {
                 <button
                   onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
                   disabled={!matchedWinner}
-                  className={`px-4 py-2 rounded-lg transition ${
+                  className={`ml-4 px-4 py-2 rounded-lg transition ${
                     matchedWinner
                       ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
