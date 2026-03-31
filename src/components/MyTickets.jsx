@@ -310,14 +310,8 @@ export default function MyTickets() {
       </form>
 
       {/* TICKET NUMBER LOOKUP SECTION */}
-      <div 
-        className="mb-8"
-        style={{ marginTop: "30px" }}
-      >
-        <h2 
-          className="text-lg font-semibold mb-3"
-          style={{ fontSize: "1.2rem" }}
-        >
+      <div className="mb-8" style={{ marginTop: "30px" }}>
+        <h2 className="text-lg font-semibold mb-3" style={{ fontSize: "1.2rem" }}>
           Check Your Ticket Status
         </h2>
         <form onSubmit={handleTicketNumberLookup} className="mb-4">
@@ -360,60 +354,74 @@ export default function MyTickets() {
           </button>
         </form>
 
-        {/* Ticket Check Result */}
-        {ticketCheckPerformed && (
-          <div className="mt-4 p-4 rounded-lg border">
-            {matchedWinner ? (
-              <>
-                <div className="bg-green-50 border border-green-300 rounded-lg p-3 mb-4">
-                  <p className="text-sm font-semibold text-green-800 mb-2">
-                    🎉 Congratulations! Your ticket number matches a recent winner! 🎉
-                  </p>
-                  <p className="text-sm text-green-700">
-                    You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
-                  </p>
-                </div>
-                <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
-                  <p className="text-sm font-semibold text-yellow-800 mb-2">
-                    Claim Your Prize
-                  </p>
-                  <p className="text-sm text-yellow-700 mb-3">
-                    You have the option to claim either the prize item or the cash out for the product's market value.
-                  </p>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => handleClaimItem(matchedWinner.ticket_no)}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                    >
-                      Claim Item
-                    </button>
-                    <button
-                      onClick={() => handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
-                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
-                    >
-                      Cash Out {matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="bg-red-50 border border-red-300 rounded-lg p-3">
-                <p className="text-sm font-semibold text-red-800 mb-2">
-                  ❌ Ticket Number Not Found
-                </p>
-                <p className="text-sm text-red-700">
-                  The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <p
-          className="mt-2 text-xs text-slate-500"
-        >
+        {/* Instruction text with added space below */}
+        <p className="mt-2 text-xs text-slate-500 mb-6">
           Enter your ticket number to check if it matches any recent winners. If your ticket is a winner, you can choose to claim the prize item or cash out.
         </p>
+
+        {/* Plain rows for claims */}
+        <div className="space-y-3">
+          {/* Claims label row */}
+          <div className="flex items-center">
+            <span className="w-24 text-sm font-medium text-slate-700">Claims:</span>
+          </div>
+
+          {/* Prize Item button row */}
+          <div className="flex items-center">
+            <span className="w-24 text-sm text-slate-600">Prize Item</span>
+            <button
+              onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
+              disabled={!matchedWinner}
+              className={`px-4 py-2 rounded-lg transition ${
+                matchedWinner
+                  ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Claim Item
+            </button>
+          </div>
+
+          {/* Cash Out Money button row */}
+          <div className="flex items-center">
+            <span className="w-24 text-sm text-slate-600">Cash Out Money</span>
+            <button
+              onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
+              disabled={!matchedWinner}
+              className={`px-4 py-2 rounded-lg transition ${
+                matchedWinner
+                  ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Cash Out {matchedWinner && matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
+            </button>
+          </div>
+
+          {/* Congratulatory message (only appears when a winning ticket is found) */}
+          {matchedWinner && (
+            <div className="mt-4 p-3 bg-green-50 border border-green-300 rounded-lg">
+              <p className="text-sm font-semibold text-green-800">
+                🎉 Congratulations! Your ticket number matches a recent winner! 🎉
+              </p>
+              <p className="text-sm text-green-700 mt-1">
+                You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
+              </p>
+            </div>
+          )}
+
+          {/* Apology note when ticket not found (only after check) */}
+          {ticketCheckPerformed && !matchedWinner && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+              <p className="text-sm font-semibold text-red-800">
+                ❌ Ticket Number Not Found
+              </p>
+              <p className="text-sm text-red-700 mt-1">
+                The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* RESULTS */}
