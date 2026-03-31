@@ -24,7 +24,7 @@ export default function RecentWinners() {
   }, []);
 
   // Statement text
-  const statementText = <span style={{ marginLeft: "50px" }} >"❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";</span>
+  const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
 
   // Build winner text
   const winnerItems = winners.map(
@@ -138,7 +138,7 @@ export default function RecentWinners() {
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container">
               <div className="scroll-infinite">
-                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                <div className="inline-flex items-center" style={{ fontSize: 0, marginLeft: '50px' }}>
                   <h3
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem' }}
