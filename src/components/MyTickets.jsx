@@ -397,7 +397,12 @@ export default function MyTickets() {
             <div className="space-y-3">
               {/* Claims label row */}
               <div className="flex items-center">
-                <span className="w-24 text-sm font-medium text-slate-700">Claims:</span>
+                <span 
+                  className="w-24 text-sm font-medium text-slate-700"
+                  style={{ fontWeight: "480" }}
+                >
+                  Claims:
+                </span>
               </div>
 
               {/* Prize Item button row */}
