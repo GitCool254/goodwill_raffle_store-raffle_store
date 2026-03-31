@@ -9,6 +9,7 @@ import React, { useEffect, useMemo, useState } from "react";
   - Adaptive snow density
   - Smooth slide animation
   - Premium animated zebra + color wave + pulsing gradient glow
+  - General holiday (e.g., Ramadan) – uses Black Friday styling
 */
 
 export default function HolidaySystem({ onNavigate }) {
@@ -55,6 +56,15 @@ export default function HolidaySystem({ onNavigate }) {
         name: "Easter Celebration Draw",
         start: new Date(year, 3, 3),
         end: new Date(year, 3, 10),
+      },
+      // General holiday (e.g., Ramadan) – adjust dates as needed
+      {
+        id: "general",
+        name: "Ramadan Special Raffle",
+        start: new Date(year, 2, 1),   // March 1st (adjust as needed)
+        end: new Date(year, 3, 30),     // April 30th (adjust as needed)
+        countdown: true,                // show countdown timer
+        useBlackFridayStyle: true,      // use black friday color scheme
       },
     ];
   }, []);
@@ -156,7 +166,8 @@ export default function HolidaySystem({ onNavigate }) {
           animation: colorWave 4s linear infinite;
         }
 
-        .blackfriday .premium-title::before {
+        .blackfriday .premium-title::before,
+        .general .premium-title::before {
           background: linear-gradient(
             90deg,
             #000000,

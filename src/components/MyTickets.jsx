@@ -332,6 +332,8 @@ export default function MyTickets() {
         </button>
       </form>
 
+      <br />
+
       {/* TICKET NUMBER LOOKUP SECTION - Only enabled when draw is done (remaining tickets = 0) */}
       <div className="mb-8" style={{ marginTop: "30px" }}>
         <h2 className="text-lg font-semibold mb-3" style={{ fontSize: "1.2rem" }}>
@@ -400,7 +402,7 @@ export default function MyTickets() {
 
               {/* Prize Item button row */}
               <div className="flex items-center">
-                <span className="w-24 text-sm text-slate-600">Prize Item: </span>
+                <span className="w-24 text-sm text-slate-600 mr-4">Prize Item: </span>
                 <button
                   onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
                   disabled={!matchedWinner}
@@ -416,7 +418,7 @@ export default function MyTickets() {
 
               {/* Cash Out Money button row */}
               <div className="flex items-center">
-                <span className="w-24 text-sm text-slate-600">Cash Out Money: </span>
+                <span className="w-24 text-sm text-slate-600 mr-4">Cash Out Money: </span>
                 <button
                   onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
                   disabled={!matchedWinner}
