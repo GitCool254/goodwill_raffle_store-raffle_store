@@ -4,6 +4,7 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [statementCompleted, setStatementCompleted] = useState(false);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -23,9 +24,12 @@ export default function RecentWinners() {
     fetchWinners();
   }, []);
 
-  if (!show || winners.length === 0) return null;
+  // Statement text
+  const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 ❖❖❖";
+  // Duplicate for seamless loop
+  const statementContent = `${statementText}  •  ${statementText}  •  ${statementText}`;
 
-  // Build a single text line from all winners
+  // Build winner text (only after statement completes)
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
@@ -33,8 +37,9 @@ export default function RecentWinners() {
       } – Ticket ${w.ticket_no}`
   );
   const fullText = winnerItems.join("  •  ");
-  // Duplicate the text to ensure smooth infinite scrolling
   const scrollContent = `${fullText}  •  ${fullText}  •  ${fullText}`;
+
+  if (!show || winners.length === 0) return null;
 
   return (
     <>
@@ -50,7 +55,12 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollText {
+        @keyframes scrollTextStatement {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
+        }
+
+        @keyframes scrollTextWinners {
           0% { transform: translateX(0); }
           100% { transform: translateX(-33.333%); }
         }
@@ -121,29 +131,53 @@ export default function RecentWinners() {
           white-space: nowrap;
           width: 100%;
         }
-        .marquee-content {
+        .marquee-content-statement {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollText 20s linear infinite;
+          animation: scrollTextStatement 12s linear forwards;
+        }
+        .marquee-content-winners {
+          display: inline-block;
+          white-space: nowrap;
+          animation: scrollTextWinners 20s linear infinite;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              <div className="marquee-content">
-                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                  <h3
-                    className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
-                    data-text={scrollContent}
-                  >
-                    {scrollContent}
-                  </h3>
+            {!statementCompleted ? (
+              <div className="marquee-container">
+                <div
+                  className="marquee-content-statement"
+                  onAnimationEnd={() => setStatementCompleted(true)}
+                >
+                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                    <h3
+                      className="premium-title inline-block text-base"
+                      style={{ fontSize: '1rem' }}
+                      data-text={statementContent}
+                    >
+                      {statementContent}
+                    </h3>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="marquee-container">
+                <div className="marquee-content-winners">
+                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                    <h3
+                      className="premium-title inline-block text-base"
+                      style={{ fontSize: '1rem' }}
+                      data-text={scrollContent}
+                    >
+                      {scrollContent}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
