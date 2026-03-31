@@ -401,7 +401,10 @@ export default function MyTickets() {
               </div>
 
               {/* Prize Item button row */}
-              <div className="flex items-center">
+              <div 
+                className="flex items-center"
+                style={{ marginBottom: "5px" }}
+              >
                 <span 
                   className="w-24 text-sm text-slate-600"
                   style={{ marginRight: "10px" }}
