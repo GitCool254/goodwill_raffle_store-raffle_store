@@ -55,7 +55,7 @@ export default function RecentWinners() {
         }
 
         @keyframes scrollInfinite {
-          0% { transform: translateX(0); }
+          0% { transform: translateX(100%); }
           100% { transform: translateX(-33.333%); }
         }
 
@@ -138,7 +138,7 @@ export default function RecentWinners() {
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container">
               <div className="scroll-infinite">
-                <div className="inline-flex items-center" style={{ fontSize: 0, marginLeft: '50px' }}>
+                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem' }}
