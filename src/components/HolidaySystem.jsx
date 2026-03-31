@@ -61,9 +61,9 @@ export default function HolidaySystem({ onNavigate }) {
       // General holiday (e.g., Ramadan) – adjust dates as needed
       {
         id: "general",
-        name: "Ramadan Special Raffle",
-        start: new Date(year, 2, 1),   // March 1st (adjust as needed)
-        end: new Date(year, 3, 30),     // April 30th (adjust as needed)
+        name: "Labor's Day Special Raffle",
+        start: new Date(year, 3, 30),   // (adjust as needed)
+        end: new Date(year, 4, 1),     // (adjust as needed)
         countdown: true,                // show countdown timer
         useBlackFridayStyle: true,      // use black friday color scheme
       },

@@ -24,7 +24,7 @@ export default function RecentWinners() {
   }, []);
 
   // Statement text
-  const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 ❖❖❖";
+  const statementText = "         ❖❖❖ Empowerment Raffle Campaign 20/03/2026- Winners ❖❖❖";
 
   // Build winner text
   const winnerItems = winners.map(
