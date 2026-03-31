@@ -334,148 +334,155 @@ export default function MyTickets() {
 
       <br />
 
-      {/* TICKET NUMBER LOOKUP SECTION - Only enabled when draw is done (remaining tickets = 0) */}
+      {/* TICKET NUMBER LOOKUP SECTION - Visible but disabled when draw not done */}
       <div className="mb-8" style={{ marginTop: "30px" }}>
         <h2 className="text-lg font-semibold mb-3" style={{ fontSize: "1.2rem" }}>
           Check Your Ticket Status
         </h2>
 
-        {!isDrawDone ? (
+        {!isDrawDone && (
           <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-4">
             <p className="text-sm text-yellow-800">
               ℹ️ The raffle draw has not yet taken place. Ticket status checking will be available after the draw is completed.
             </p>
           </div>
-        ) : (
-          <>
-            <form onSubmit={handleTicketNumberLookup} className="mb-4">
-              <input
-                type="text"
-                value={ticketNumber}
-                placeholder="Enter Ticket Number (e.g., RF-48219)"
-                onChange={(e) => setTicketNumber(e.target.value)}
-                onFocus={() => setTicketNumberFocused(true)}
-                onBlur={() => setTicketNumberFocused(false)}
-                style={{
-                  border: ticketNumberError
-                    ? `1px solid ${ERROR_RED}`
-                    : ticketNumberFocused
-                    ? `1px solid ${FOCUS_BLUE}`
-                    : "1px solid #d1d5db",
-                  boxShadow: ticketNumberError
-                    ? "0 0 0 2px rgba(239,68,68,0.3)"
-                    : ticketNumberFocused
-                    ? "0 0 0 2px rgba(56,189,248,0.4)"
-                    : "none",
-                  outline: "none",
-                  transition: "all 0.15s ease",
-                  ...(ticketNumberError ? shakeStyle : {}),
-                }}
-                className="w-full rounded-lg px-4 py-3 mb-2"
-              />
-
-              {ticketNumberError && (
-                <div className="text-red-600 text-sm mb-2">
-                  {ticketNumberError}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-700 transition"
-              >
-                Check Ticket Number
-              </button>
-            </form>
-
-            {/* Instruction text with added space below */}
-            <p className="mt-2 text-xs text-slate-500 mb-6">
-              Enter your ticket number to check if it matches any recent winners. If your ticket is a winner, you can choose to claim the prize item or cash out.
-            </p>
-
-            {/* Plain rows for claims */}
-            <div className="space-y-3">
-              {/* Claims label row */}
-              <div className="flex items-center">
-                <span 
-                  className="w-24 text-sm font-medium text-slate-700"
-                  style={{ fontWeight: "480" }}
-                >
-                  Claims:
-                </span>
-              </div>
-
-              {/* Prize Item button row */}
-              <div 
-                className="flex items-center"
-                style={{ marginBottom: "5px" }}
-              >
-                <span 
-                  className="w-24 text-sm text-slate-600"
-                  style={{ marginRight: "10px" }}
-                >
-                  Prize Item:
-                </span>
-                <button
-                  onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
-                  disabled={!matchedWinner}
-                  className={`px-4 py-2 rounded-lg transition ${
-                    matchedWinner
-                      ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
-                >
-                  Claim Item
-                </button>
-              </div>
-
-              {/* Cash Out Money button row */}
-              <div className="flex items-center">
-                <span 
-                  className="w-24 text-sm text-slate-600"
-                  style={{ marginRight: "10px" }}
-                >
-                  Cash Out Money:
-                </span>
-                <button
-                  onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
-                  disabled={!matchedWinner}
-                  className={`px-4 py-2 rounded-lg transition ${
-                    matchedWinner
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
-                >
-                  Cash Out {matchedWinner && matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
-                </button>
-              </div>
-
-              {/* Congratulatory message (only appears when a winning ticket is found) */}
-              {matchedWinner && (
-                <div className="mt-4 p-3 bg-green-50 border border-green-300 rounded-lg">
-                  <p className="text-sm font-semibold text-green-800">
-                    🎉 Congratulations! Your ticket number matches a recent winner! 🎉
-                  </p>
-                  <p className="text-sm text-green-700 mt-1">
-                    You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
-                  </p>
-                </div>
-              )}
-
-              {/* Apology note when ticket not found (only after check) */}
-              {ticketCheckPerformed && !matchedWinner && (
-                <div className="mt-4 p-3 bg-red-50 border border-red-300 rounded-lg">
-                  <p className="text-sm font-semibold text-red-800">
-                    ❌ Ticket Number Not Found
-                  </p>
-                  <p className="text-sm text-red-700 mt-1">
-                    The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
-                  </p>
-                </div>
-              )}
-            </div>
-          </>
         )}
+
+        <form onSubmit={handleTicketNumberLookup} className="mb-4">
+          <input
+            type="text"
+            value={ticketNumber}
+            placeholder="Enter Ticket Number (e.g., RF-48219)"
+            onChange={(e) => setTicketNumber(e.target.value)}
+            onFocus={() => setTicketNumberFocused(true)}
+            onBlur={() => setTicketNumberFocused(false)}
+            disabled={!isDrawDone}
+            style={{
+              border: ticketNumberError
+                ? `1px solid ${ERROR_RED}`
+                : ticketNumberFocused && isDrawDone
+                ? `1px solid ${FOCUS_BLUE}`
+                : "1px solid #d1d5db",
+              boxShadow: ticketNumberError
+                ? "0 0 0 2px rgba(239,68,68,0.3)"
+                : ticketNumberFocused && isDrawDone
+                ? "0 0 0 2px rgba(56,189,248,0.4)"
+                : "none",
+              outline: "none",
+              transition: "all 0.15s ease",
+              ...(ticketNumberError ? shakeStyle : {}),
+              opacity: !isDrawDone ? 0.6 : 1,
+              cursor: !isDrawDone ? "not-allowed" : "text",
+              backgroundColor: !isDrawDone ? "#f3f4f6" : "white",
+            }}
+            className="w-full rounded-lg px-4 py-3 mb-2"
+          />
+
+          {ticketNumberError && (
+            <div className="text-red-600 text-sm mb-2">
+              {ticketNumberError}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!isDrawDone}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              isDrawDone
+                ? "bg-sky-600 text-white hover:bg-sky-700 cursor-pointer"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Check Ticket Number
+          </button>
+        </form>
+
+        {/* Instruction text with added space below */}
+        <p className="mt-2 text-xs text-slate-500 mb-6">
+          Enter your ticket number to check if it matches any recent winners. If your ticket is a winner, you can choose to claim the prize item or cash out.
+        </p>
+
+        {/* Plain rows for claims */}
+        <div className="space-y-3">
+          {/* Claims label row */}
+          <div className="flex items-center">
+            <span
+              className="w-24 text-sm font-medium text-slate-700"
+              style={{ fontWeight: "480" }}
+            >
+              Claims:
+            </span>
+          </div>
+
+          {/* Prize Item button row */}
+          <div
+            className="flex items-center"
+            style={{ marginBottom: "5px" }}
+          >
+            <span
+              className="w-24 text-sm text-slate-600"
+              style={{ marginRight: "10px" }}
+            >
+              Prize Item:
+            </span>
+            <button
+              onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
+              disabled={!matchedWinner || !isDrawDone}
+              className={`px-4 py-2 rounded-lg transition ${
+                matchedWinner && isDrawDone
+                  ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Claim Item
+            </button>
+          </div>
+
+          {/* Cash Out Money button row */}
+          <div className="flex items-center">
+            <span
+              className="w-24 text-sm text-slate-600"
+              style={{ marginRight: "10px" }}
+            >
+              Cash Out Money:
+            </span>
+            <button
+              onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
+              disabled={!matchedWinner || !isDrawDone}
+              className={`px-4 py-2 rounded-lg transition ${
+                matchedWinner && isDrawDone
+                  ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Cash Out {matchedWinner && matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
+            </button>
+          </div>
+
+          {/* Congratulatory message (only appears when a winning ticket is found) */}
+          {matchedWinner && isDrawDone && (
+            <div className="mt-4 p-3 bg-green-50 border border-green-300 rounded-lg">
+              <p className="text-sm font-semibold text-green-800">
+                🎉 Congratulations! Your ticket number matches a recent winner! 🎉
+              </p>
+              <p className="text-sm text-green-700 mt-1">
+                You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
+              </p>
+            </div>
+          )}
+
+          {/* Apology note when ticket not found (only after check) */}
+          {ticketCheckPerformed && !matchedWinner && isDrawDone && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+              <p className="text-sm font-semibold text-red-800">
+                ❌ Ticket Number Not Found
+              </p>
+              <p className="text-sm text-red-700 mt-1">
+                The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* RESULTS */}
