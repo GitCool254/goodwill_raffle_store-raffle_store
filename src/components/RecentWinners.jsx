@@ -8,6 +8,7 @@ export default function RecentWinners() {
   const contentRef = useRef(null);
   const containerRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -15,7 +16,7 @@ export default function RecentWinners() {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
         const data = await res.json();
         setShow(data.show);
-        setWinners(data.winners);
+        setWinners(data.winners || []);
       } catch (err) {
         console.error("Failed to fetch recent winners:", err);
         setShow(false);
@@ -43,72 +44,103 @@ export default function RecentWinners() {
   // Single, non-repeating message: statement + all winners (once)
   const combinedMessage = `${statementText}  •  ${winnerText}`;
 
+  // Safety check: if no winners or show is false, don't render anything
   if (!show || winners.length === 0) return null;
 
   // Start the animation after content is rendered
   useEffect(() => {
-    if (contentRef.current && containerRef.current && !isAnimating) {
+    // Clear any existing timeouts or animation frames
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+
+    if (contentRef.current && containerRef.current && !isAnimating && combinedMessage) {
       // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        const contentWidth = contentRef.current.scrollWidth;
-        const containerWidth = containerRef.current.clientWidth;
-        
-        if (contentWidth > containerWidth) {
-          const distance = contentWidth + containerWidth; // Total distance to travel
-          const speed = 50; // pixels per second (adjust for desired speed)
-          const duration = distance / speed;
+      timeoutRef.current = setTimeout(() => {
+        try {
+          const contentWidth = contentRef.current.scrollWidth;
+          const containerWidth = containerRef.current.clientWidth;
           
-          setIsAnimating(true);
-          
-          // Start the animation
-          const startTime = performance.now();
-          const startPosition = containerWidth;
-          
-          const animate = (currentTime) => {
-            const elapsed = (currentTime - startTime) / 1000;
-            const progress = Math.min(elapsed / duration, 1);
-            const position = startPosition - (distance * progress);
+          if (contentWidth > containerWidth && containerWidth > 0) {
+            const distance = contentWidth + containerWidth; // Total distance to travel
+            const speed = 50; // pixels per second (adjust for desired speed)
+            const duration = distance / speed;
             
-            if (contentRef.current) {
-              contentRef.current.style.transform = `translateX(${position}px)`;
-            }
+            setIsAnimating(true);
             
-            if (progress < 1) {
-              animationFrameRef.current = requestAnimationFrame(animate);
-            } else {
-              // Animation complete, reset and start again
-              if (contentRef.current) {
-                contentRef.current.style.transform = `translateX(${containerWidth}px)`;
-              }
-              setIsAnimating(false);
-              // Force reflow to reset animation
-              setTimeout(() => {
+            // Start the animation
+            const startTime = performance.now();
+            const startPosition = containerWidth;
+            
+            const animate = (currentTime) => {
+              try {
+                const elapsed = (currentTime - startTime) / 1000;
+                const progress = Math.min(elapsed / duration, 1);
+                const position = startPosition - (distance * progress);
+                
                 if (contentRef.current) {
-                  contentRef.current.style.transform = '';
+                  contentRef.current.style.transform = `translateX(${position}px)`;
                 }
-              }, 50);
+                
+                if (progress < 1) {
+                  animationFrameRef.current = requestAnimationFrame(animate);
+                } else {
+                  // Animation complete, reset and start again
+                  if (contentRef.current) {
+                    contentRef.current.style.transform = `translateX(${containerWidth}px)`;
+                  }
+                  setIsAnimating(false);
+                  // Force reflow to reset animation
+                  setTimeout(() => {
+                    if (contentRef.current) {
+                      contentRef.current.style.transform = '';
+                    }
+                  }, 50);
+                }
+              } catch (err) {
+                console.error("Animation error:", err);
+                setIsAnimating(false);
+              }
+            };
+            
+            // Set initial position
+            if (contentRef.current) {
+              contentRef.current.style.transform = `translateX(${containerWidth}px)`;
             }
-          };
-          
-          // Set initial position
-          contentRef.current.style.transform = `translateX(${containerWidth}px)`;
-          animationFrameRef.current = requestAnimationFrame(animate);
-        }
-        
-        return () => {
-          if (animationFrameRef.current) {
-            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = requestAnimationFrame(animate);
+          } else {
+            // Content fits in container, no animation needed
+            if (contentRef.current) {
+              contentRef.current.style.transform = 'translateX(0)';
+            }
           }
-        };
+        } catch (err) {
+          console.error("Animation setup error:", err);
+          setIsAnimating(false);
+        }
       }, 100);
     }
+    
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [isAnimating, combinedMessage, winners]);
 
   // Reset animation when winners change
   useEffect(() => {
     if (contentRef.current && containerRef.current) {
       setIsAnimating(false);
-      contentRef.current.style.transform = '';
+      if (contentRef.current) {
+        contentRef.current.style.transform = '';
+      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
