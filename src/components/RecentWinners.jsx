@@ -13,6 +13,7 @@ export default function RecentWinners() {
       try {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
         const data = await res.json();
+        console.log("Fetched winners:", data.winners); // Debug log
         setShow(data.show);
         setWinners(data.winners);
       } catch (err) {
@@ -36,20 +37,30 @@ export default function RecentWinners() {
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticket_no}`
   );
+  
+  console.log("Winner items count:", winnerItems.length); // Debug log
+  console.log("Winner items:", winnerItems); // Debug log
+  
   // Join all winners with separator
   const winnerText = winnerItems.join("  •  ");
+  
+  console.log("Winner text length:", winnerText.length); // Debug log
 
   // Single, non-repeating message: statement + all winners (once)
-  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  const combinedMessage = `${statementText}  •  ${winnerText}`;
+  
+  console.log("Full message length:", combinedMessage.length); // Debug log
+  console.log("Full message preview:", combinedMessage.substring(0, 200)); // Debug log
 
   if (!show || winners.length === 0) return null;
 
-  // Calculate animation duration based on content length (approx 0.2 seconds per character)
+  // Calculate animation duration based on content length (approx 0.08 seconds per character)
   const messageLength = combinedMessage.length;
-  const animationDuration = Math.max(15, Math.min(45, messageLength * 0.08));
+  const animationDuration = Math.max(20, Math.min(60, messageLength * 0.08));
 
   // Handle animation end - reset to start
   const handleAnimationEnd = () => {
+    console.log("Animation ended, resetting..."); // Debug log
     setResetKey(prev => prev + 1);
   };
 
@@ -160,7 +171,7 @@ export default function RecentWinners() {
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
+                    style={{ fontSize: '1rem', whiteSpace: 'pre' }}
                     data-text={combinedMessage}
                   >
                     {combinedMessage}
