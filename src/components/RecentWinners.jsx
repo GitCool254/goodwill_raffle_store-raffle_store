@@ -4,6 +4,7 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentTrack, setCurrentTrack] = useState("statement");
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -38,8 +39,17 @@ export default function RecentWinners() {
   if (!show || winners.length === 0) return null;
 
   // Create duplicate content for seamless looping
-  const statementLoop = `${statementText}  •  `;
-  const winnersLoop = `${winnerText}  •  `;
+  const statementLoop = `${statementText}  •  ${statementText}  •  ${statementText}`;
+  const winnersLoop = `${winnerText}  •  ${winnerText}  •  ${winnerText}`;
+
+  // Handle animation end to switch tracks
+  const handleStatementEnd = () => {
+    setCurrentTrack("winners");
+  };
+
+  const handleWinnersEnd = () => {
+    setCurrentTrack("statement");
+  };
 
   return (
     <>
@@ -55,12 +65,7 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollStatement {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-
-        @keyframes scrollWinners {
+        @keyframes scrollContent {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
@@ -134,17 +139,18 @@ export default function RecentWinners() {
           height: 3rem;
         }
 
-        .statement-track {
+        .scroll-track {
           position: absolute;
           white-space: nowrap;
-          animation: scrollStatement 12s linear infinite;
+          animation: scrollContent 20s linear forwards;
         }
 
-        .winners-track {
-          position: absolute;
-          white-space: nowrap;
-          animation: scrollWinners 20s linear infinite;
-          animation-delay: 12s;
+        .track-enter {
+          opacity: 1;
+        }
+
+        .track-exit {
+          opacity: 0;
         }
       `}</style>
 
@@ -152,31 +158,41 @@ export default function RecentWinners() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container">
-              {/* Statement track - runs first */}
-              <div className="statement-track">
-                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                  <h3
-                    className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
-                    data-text={statementLoop}
-                  >
-                    {statementLoop}
-                  </h3>
+              {/* Statement track */}
+              {currentTrack === "statement" && (
+                <div
+                  className="scroll-track"
+                  onAnimationEnd={handleStatementEnd}
+                >
+                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                    <h3
+                      className="premium-title inline-block text-base"
+                      style={{ fontSize: '1rem' }}
+                      data-text={statementLoop}
+                    >
+                      {statementLoop}
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Winners track - starts after statement finishes */}
-              <div className="winners-track">
-                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                  <h3
-                    className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
-                    data-text={winnersLoop}
-                  >
-                    {winnersLoop}
-                  </h3>
+              {/* Winners track */}
+              {currentTrack === "winners" && (
+                <div
+                  className="scroll-track"
+                  onAnimationEnd={handleWinnersEnd}
+                >
+                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                    <h3
+                      className="premium-title inline-block text-base"
+                      style={{ fontSize: '1rem' }}
+                      data-text={winnersLoop}
+                    >
+                      {winnersLoop}
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
