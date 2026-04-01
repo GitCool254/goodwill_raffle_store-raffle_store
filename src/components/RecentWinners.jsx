@@ -4,6 +4,9 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [resetTrigger, setResetTrigger] = useState(0);
+  const contentRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -41,12 +44,28 @@ export default function RecentWinners() {
 
   if (!show || winners.length === 0) return null;
 
-  // Create a double version for seamless loop (statement + winners repeated twice)
-  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
-
   // Calculate animation duration based on content length
-  const messageLength = scrollingContent.length;
-  const animationDuration = Math.max(20, Math.min(50, messageLength * 0.07));
+  const messageLength = combinedMessage.length;
+  const animationDuration = Math.max(15, Math.min(45, messageLength * 0.07));
+
+  // Handle animation end - restart immediately
+  const handleAnimationEnd = () => {
+    setResetTrigger(prev => prev + 1);
+  };
+
+  // Reset animation by removing and re-adding the element
+  useEffect(() => {
+    if (resetTrigger > 0 && contentRef.current) {
+      const element = contentRef.current;
+      const parent = element.parentNode;
+      const clone = element.cloneNode(true);
+      parent.replaceChild(clone, element);
+      // Update ref to the new element
+      contentRef.current = clone;
+      // Re-attach animation end listener
+      clone.addEventListener('animationend', handleAnimationEnd);
+    }
+  }, [resetTrigger]);
 
   return (
     <>
@@ -62,9 +81,9 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollInfinite {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        @keyframes scrollOnce {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -136,25 +155,30 @@ export default function RecentWinners() {
           height: 3rem;
         }
 
-        .scroll-infinite {
+        .scroll-once {
+          position: relative;
           display: inline-block;
           white-space: nowrap;
-          animation: scrollInfinite ${animationDuration}s linear infinite;
+          animation: scrollOnce ${animationDuration}s linear forwards;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              <div className="scroll-infinite">
+            <div className="marquee-container" ref={containerRef}>
+              <div
+                ref={contentRef}
+                className="scroll-once"
+                onAnimationEnd={handleAnimationEnd}
+              >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={scrollingContent}
+                    data-text={combinedMessage}
                   >
-                    {scrollingContent}
+                    {combinedMessage}
                   </h3>
                 </div>
               </div>
