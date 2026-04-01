@@ -35,8 +35,11 @@ export default function RecentWinners() {
   );
   const winnerText = winnerItems.join("  •  ");
 
-  // Combine statement and winners into one seamless message
-  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  // Create statement with left margin
+  const indentedStatement = `<span style="margin-left: 50px;">${statementText}</span>`;
+
+  // Combine statement and winners into one seamless message with indented statement
+  const combinedMessage = `${indentedStatement}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
@@ -143,9 +146,8 @@ export default function RecentWinners() {
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem' }}
                     data-text={combinedMessage}
-                  >
-                    {combinedMessage}
-                  </h3>
+                    dangerouslySetInnerHTML={{ __html: combinedMessage }}
+                  />
                 </div>
               </div>
             </div>
