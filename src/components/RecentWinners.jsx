@@ -37,12 +37,12 @@ export default function RecentWinners() {
   );
   const winnerText = winnerItems.join("  •  ");
 
-  // Create a message that repeats to ensure seamless transition
-  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  // Create a single, non-repeating message that starts with statement and ends with last winner
+  const combinedMessage = `${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
-  // Handle animation end - reset to start immediately
+  // Handle animation end - reset to start
   const handleAnimationEnd = () => {
     setResetKey(prev => prev + 1);
   };
@@ -63,7 +63,7 @@ export default function RecentWinners() {
 
         @keyframes scrollOnce {
           0% { transform: translateX(100%); }
-          100% { transform: translateX(-50%); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -136,9 +136,9 @@ export default function RecentWinners() {
         }
 
         .scroll-once {
-          position: absolute;
+          position: relative;
           white-space: nowrap;
-          animation: scrollOnce 15s linear forwards;
+          animation: scrollOnce 20s linear forwards;
         }
       `}</style>
 
