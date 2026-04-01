@@ -35,11 +35,15 @@ export default function RecentWinners() {
   );
   const winnerText = winnerItems.join("  •  ");
 
-  // Create statement with left margin
-  const indentedStatement = `<span style="margin-left: 50px;">${statementText}</span>`;
-
-  // Combine statement and winners into one seamless message with indented statement
-  const combinedMessage = `${indentedStatement}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  // Create the repeating content with the first statement having left margin
+  const repeatedContent = [
+    { text: statementText, marginLeft: "50px" },
+    { text: `  •  ${winnerText}  •  `, marginLeft: "0" },
+    { text: statementText, marginLeft: "0" },
+    { text: `  •  ${winnerText}  •  `, marginLeft: "0" },
+    { text: statementText, marginLeft: "0" },
+    { text: `  •  ${winnerText}`, marginLeft: "0" },
+  ];
 
   if (!show || winners.length === 0) return null;
 
@@ -142,12 +146,16 @@ export default function RecentWinners() {
             <div className="marquee-container">
               <div className="scroll-infinite">
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                  <h3
-                    className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
-                    data-text={combinedMessage}
-                    dangerouslySetInnerHTML={{ __html: combinedMessage }}
-                  />
+                  {repeatedContent.map((item, idx) => (
+                    <span
+                      key={idx}
+                      style={{ marginLeft: item.marginLeft }}
+                      className="premium-title inline-block text-base"
+                      data-text={item.text}
+                    >
+                      {item.text}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
