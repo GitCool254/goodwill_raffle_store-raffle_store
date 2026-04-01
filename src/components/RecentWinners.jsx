@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function RecentWinners() {
-  const [winners, setWinners] = useState([]);
-  const [show, setShow] = useState(false);
+  const [winners, setWinners] = useState([]);                            const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,15 +34,8 @@ export default function RecentWinners() {
   );
   const winnerText = winnerItems.join("  •  ");
 
-  // Create the repeating content with the first statement having left margin
-  const repeatedContent = [
-    { text: statementText, marginLeft: "50px" },
-    { text: `  •  ${winnerText}  •  `, marginLeft: "0" },
-    { text: statementText, marginLeft: "0" },
-    { text: `  •  ${winnerText}  •  `, marginLeft: "0" },
-    { text: statementText, marginLeft: "0" },
-    { text: `  •  ${winnerText}`, marginLeft: "0" },
-  ];
+  // Combine statement and winners into one seamless message
+  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
@@ -57,8 +49,7 @@ export default function RecentWinners() {
         }
 
         @keyframes zebraMove {
-          0% { background-position: 0 0; }
-          100% { background-position: 40px 40px; }
+          0% { background-position: 0 0; }                                       100% { background-position: 40px 40px; }
         }
 
         @keyframes scrollInfinite {
@@ -70,14 +61,11 @@ export default function RecentWinners() {
           position: relative;
           display: inline-block;
           font-weight: 600;
-          letter-spacing: 0.04em;
-          color: transparent;
-        }
+          letter-spacing: 0.04em;                                                color: transparent;                                                  }
 
         .premium-title::before {
           content: attr(data-text);
-          position: absolute;
-          inset: 0;
+          position: absolute;                                                    inset: 0;
           background: linear-gradient(
             90deg,
             #ef4444,
@@ -128,8 +116,7 @@ export default function RecentWinners() {
         }
 
         .marquee-container {
-          overflow: hidden;
-          white-space: nowrap;
+          overflow: hidden;                                                      white-space: nowrap;
           width: 100%;
         }
 
@@ -143,19 +130,15 @@ export default function RecentWinners() {
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              <div className="scroll-infinite">
+            <div className="marquee-container">                                      <div className="scroll-infinite">
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                  {repeatedContent.map((item, idx) => (
-                    <span
-                      key={idx}
-                      style={{ marginLeft: item.marginLeft }}
-                      className="premium-title inline-block text-base"
-                      data-text={item.text}
-                    >
-                      {item.text}
-                    </span>
-                  ))}
+                  <h3
+                    className="premium-title inline-block text-base"
+                    style={{ fontSize: '1rem' }}
+                    data-text={combinedMessage}
+                  >
+                    {combinedMessage}
+                  </h3>
                 </div>
               </div>
             </div>
