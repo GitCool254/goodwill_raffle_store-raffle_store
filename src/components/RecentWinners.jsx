@@ -7,6 +7,7 @@ export default function RecentWinners() {
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const animationRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -48,15 +49,24 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
+  // Start animation after component is mounted
+  useEffect(() => {
+    // Small delay to ensure DOM is ready, then start animation
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Handle animation end - restart animation
   const handleAnimationEnd = () => {
     if (animationRef.current) {
+      // Remove animation
       animationRef.current.style.animation = 'none';
-      setTimeout(() => {
-        if (animationRef.current) {
-          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
-        }
-      }, 10);
+      // Force reflow
+      animationRef.current.offsetHeight;
+      // Restart animation
+      animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
     }
   };
 
@@ -154,7 +164,6 @@ export default function RecentWinners() {
           display: inline-block;
           white-space: nowrap;
           will-change: transform;
-          transform: translateX(0);
         }
       `}</style>
 
@@ -166,8 +175,7 @@ export default function RecentWinners() {
                 ref={animationRef}
                 className="scroll-once"
                 style={{ 
-                  animation: `scrollOnce ${animationDuration}s linear forwards`,
-                  transform: 'translateX(0)'
+                  animation: isReady ? `scrollOnce ${animationDuration}s linear forwards` : 'none'
                 }}
                 onAnimationEnd={handleAnimationEnd}
               >
