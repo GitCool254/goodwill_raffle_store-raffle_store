@@ -4,9 +4,9 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [resetTrigger, setResetTrigger] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
+  const scrollRef = useRef(null);
   const contentRef = useRef(null);
-  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -46,26 +46,12 @@ export default function RecentWinners() {
 
   // Calculate animation duration based on content length
   const messageLength = combinedMessage.length;
-  const animationDuration = Math.max(15, Math.min(45, messageLength * 0.07));
+  const animationDuration = Math.max(12, Math.min(35, messageLength * 0.06));
 
-  // Handle animation end - restart immediately
+  // Handle animation end - reset to start
   const handleAnimationEnd = () => {
-    setResetTrigger(prev => prev + 1);
+    setResetKey(prev => prev + 1);
   };
-
-  // Reset animation by removing and re-adding the element
-  useEffect(() => {
-    if (resetTrigger > 0 && contentRef.current) {
-      const element = contentRef.current;
-      const parent = element.parentNode;
-      const clone = element.cloneNode(true);
-      parent.replaceChild(clone, element);
-      // Update ref to the new element
-      contentRef.current = clone;
-      // Re-attach animation end listener
-      clone.addEventListener('animationend', handleAnimationEnd);
-    }
-  }, [resetTrigger]);
 
   return (
     <>
@@ -153,27 +139,29 @@ export default function RecentWinners() {
           width: 100%;
           position: relative;
           height: 3rem;
+          display: flex;
+          align-items: center;
         }
 
         .scroll-once {
-          position: relative;
           display: inline-block;
           white-space: nowrap;
           animation: scrollOnce ${animationDuration}s linear forwards;
+          will-change: transform;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container" ref={containerRef}>
+            <div className="marquee-container" key={resetKey}>
               <div
-                ref={contentRef}
                 className="scroll-once"
                 onAnimationEnd={handleAnimationEnd}
               >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
+                    ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
                     data-text={combinedMessage}
