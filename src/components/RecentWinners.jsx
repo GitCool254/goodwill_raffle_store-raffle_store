@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 export default function RecentWinners() {
-  const [winners, setWinners] = useState([]);
-  const [show, setShow] = useState(false);
+  const [winners, setWinners] = useState([]);                            const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [currentTrack, setCurrentTrack] = useState("statement");
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -36,20 +34,10 @@ export default function RecentWinners() {
   );
   const winnerText = winnerItems.join("  •  ");
 
+  // Combine statement and winners into one seamless message
+  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+
   if (!show || winners.length === 0) return null;
-
-  // Create duplicate content for seamless looping
-  const statementLoop = `${statementText}  •  ${statementText}  •  ${statementText}`;
-  const winnersLoop = `${winnerText}  •  ${winnerText}  •  ${winnerText}`;
-
-  // Handle animation end to switch tracks
-  const handleStatementEnd = () => {
-    setCurrentTrack("winners");
-  };
-
-  const handleWinnersEnd = () => {
-    setCurrentTrack("statement");
-  };
 
   return (
     <>
@@ -61,27 +49,23 @@ export default function RecentWinners() {
         }
 
         @keyframes zebraMove {
-          0% { background-position: 0 0; }
-          100% { background-position: 40px 40px; }
+          0% { background-position: 0 0; }                                       100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollContent {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
+        @keyframes scrollInfinite {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
         }
 
         .premium-title {
           position: relative;
           display: inline-block;
           font-weight: 600;
-          letter-spacing: 0.04em;
-          color: transparent;
-        }
+          letter-spacing: 0.04em;                                                color: transparent;                                                  }
 
         .premium-title::before {
           content: attr(data-text);
-          position: absolute;
-          inset: 0;
+          position: absolute;                                                    inset: 0;
           background: linear-gradient(
             90deg,
             #ef4444,
@@ -132,67 +116,31 @@ export default function RecentWinners() {
         }
 
         .marquee-container {
-          overflow: hidden;
-          white-space: nowrap;
+          overflow: hidden;                                                      white-space: nowrap;
           width: 100%;
-          position: relative;
-          height: 3rem;
         }
 
-        .scroll-track {
-          position: absolute;
+        .scroll-infinite {
+          display: inline-block;
           white-space: nowrap;
-          animation: scrollContent 20s linear forwards;
-        }
-
-        .track-enter {
-          opacity: 1;
-        }
-
-        .track-exit {
-          opacity: 0;
+          animation: scrollInfinite 20s linear infinite;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              {/* Statement track */}
-              {currentTrack === "statement" && (
-                <div
-                  className="scroll-track"
-                  onAnimationEnd={handleStatementEnd}
-                >
-                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                    <h3
-                      className="premium-title inline-block text-base"
-                      style={{ fontSize: '1rem' }}
-                      data-text={statementLoop}
-                    >
-                      {statementLoop}
-                    </h3>
-                  </div>
+            <div className="marquee-container">                                      <div className="scroll-infinite">
+                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                  <h3
+                    className="premium-title inline-block text-base"
+                    style={{ fontSize: '1rem' }}
+                    data-text={combinedMessage}
+                  >
+                    {combinedMessage}
+                  </h3>
                 </div>
-              )}
-
-              {/* Winners track */}
-              {currentTrack === "winners" && (
-                <div
-                  className="scroll-track"
-                  onAnimationEnd={handleWinnersEnd}
-                >
-                  <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                    <h3
-                      className="premium-title inline-block text-base"
-                      style={{ fontSize: '1rem' }}
-                      data-text={winnersLoop}
-                    >
-                      {winnersLoop}
-                    </h3>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
