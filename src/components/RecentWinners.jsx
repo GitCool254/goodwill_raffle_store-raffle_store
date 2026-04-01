@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function RecentWinners() {
-  const [winners, setWinners] = useState([]);
-  const [show, setShow] = useState(false);
+  const [winners, setWinners] = useState([]);                            const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const scrollRef = useRef(null);
-  const contentRef = useRef(null);
-  const animationRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -29,36 +25,19 @@ export default function RecentWinners() {
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
 
-  // Build winner text - include ALL winners, each as a separate item
+  // Build winner text
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticket_no}`
   );
-  // Join all winners with separator
   const winnerText = winnerItems.join("  •  ");
 
-  // Single, non-repeating message: statement + all winners (once)
-  const combinedMessage = `${statementText}  •  ${winnerText}`;
+  // Combine statement and winners into one seamless message
+  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
-
-  // Calculate animation duration based on content length
-  const messageLength = combinedMessage.length;
-  const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
-
-  // Handle animation end - restart animation without component remount
-  const handleAnimationEnd = (e) => {
-    if (animationRef.current) {
-      animationRef.current.style.animation = 'none';
-      setTimeout(() => {
-        if (animationRef.current) {
-          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
-        }
-      }, 10);
-    }
-  };
 
   return (
     <>
@@ -70,27 +49,23 @@ export default function RecentWinners() {
         }
 
         @keyframes zebraMove {
-          0% { background-position: 0 0; }
-          100% { background-position: 40px 40px; }
+          0% { background-position: 0 0; }                                       100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollOnce {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
+        @keyframes scrollInfinite {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333%); }
         }
 
         .premium-title {
           position: relative;
           display: inline-block;
           font-weight: 600;
-          letter-spacing: 0.04em;
-          color: transparent;
-        }
+          letter-spacing: 0.04em;                                                color: transparent;                                                  }
 
         .premium-title::before {
           content: attr(data-text);
-          position: absolute;
-          inset: 0;
+          position: absolute;                                                    inset: 0;
           background: linear-gradient(
             90deg,
             #ef4444,
@@ -141,38 +116,25 @@ export default function RecentWinners() {
         }
 
         .marquee-container {
-          overflow: hidden;
-          white-space: nowrap;
+          overflow: hidden;                                                      white-space: nowrap;
           width: 100%;
-          position: relative;
-          height: 3rem;
-          display: flex;
-          align-items: center;
         }
 
-        .scroll-once {
+        .scroll-infinite {
           display: inline-block;
           white-space: nowrap;
-          will-change: transform;
-          position: absolute;
+          animation: scrollInfinite 20s linear infinite;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              <div
-                ref={animationRef}
-                className="scroll-once"
-                style={{ animation: `scrollOnce ${animationDuration}s linear forwards` }}
-                onAnimationEnd={handleAnimationEnd}
-              >
+            <div className="marquee-container">                                      <div className="scroll-infinite">
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
-                    ref={contentRef}
                     className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem', whiteSpace: 'pre' }}
+                    style={{ fontSize: '1rem' }}
                     data-text={combinedMessage}
                   >
                     {combinedMessage}
