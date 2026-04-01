@@ -6,6 +6,7 @@ export default function RecentWinners() {
   const [loading, setLoading] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const scrollRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -35,13 +36,17 @@ export default function RecentWinners() {
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticket_no}`
   );
-  // Join all winners with separator, but keep them as distinct items
+  // Join all winners with separator
   const winnerText = winnerItems.join("  •  ");
 
   // Single, non-repeating message: statement + all winners (once)
   const combinedMessage = `${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
+
+  // Calculate animation duration based on content length (approx 0.2 seconds per character)
+  const messageLength = combinedMessage.length;
+  const animationDuration = Math.max(15, Math.min(45, messageLength * 0.08));
 
   // Handle animation end - reset to start
   const handleAnimationEnd = () => {
@@ -139,7 +144,7 @@ export default function RecentWinners() {
         .scroll-once {
           position: relative;
           white-space: nowrap;
-          animation: scrollOnce 20s linear forwards;
+          animation: scrollOnce ${animationDuration}s linear forwards;
         }
       `}</style>
 
@@ -153,6 +158,7 @@ export default function RecentWinners() {
               >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
+                    ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem' }}
                     data-text={combinedMessage}
@@ -168,4 +174,3 @@ export default function RecentWinners() {
     </>
   );
 }
-
