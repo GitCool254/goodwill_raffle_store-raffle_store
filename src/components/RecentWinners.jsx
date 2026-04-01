@@ -75,7 +75,7 @@ export default function RecentWinners() {
         }
 
         @keyframes scrollOnce {
-          0% { transform: translateX(0); }
+          0% { transform: translateX(10%); }
           100% { transform: translateX(-100%); }
         }
 
