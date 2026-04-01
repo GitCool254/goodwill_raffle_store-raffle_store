@@ -28,17 +28,18 @@ export default function RecentWinners() {
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
 
-  // Build winner text
+  // Build winner text - include ALL winners, each as a separate item
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
         w.cash_out ? `$${w.prize} cash` : w.prize
       } – Ticket ${w.ticket_no}`
   );
+  // Join all winners with separator, but keep them as distinct items
   const winnerText = winnerItems.join("  •  ");
 
-  // Create a single, non-repeating message that starts with statement and ends with last winner
-  const combinedMessage = `${statementText}  •  ${winnerText}  •  {statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  // Single, non-repeating message: statement + all winners (once)
+  const combinedMessage = `${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
@@ -167,3 +168,4 @@ export default function RecentWinners() {
     </>
   );
 }
+
