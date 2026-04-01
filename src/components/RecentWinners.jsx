@@ -56,7 +56,7 @@ export default function RecentWinners() {
 
         @keyframes scrollInfinite {
           0% { transform: translateX(100%); }
-          100% { transform: translateX(-33.333%); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -129,7 +129,7 @@ export default function RecentWinners() {
         .scroll-infinite {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollInfinite 20s linear infinite;
+          animation: scrollInfinite 35s linear infinite;
         }
       `}</style>
 
