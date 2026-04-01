@@ -35,7 +35,7 @@ export default function RecentWinners() {
   const winnerText = winnerItems.join("  •  ");
 
   // Combine statement and winners into one seamless message
-  const combinedMessage = `${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}  •  ${statementText}  •  ${winnerText}`;
+  const combinedMessage = `${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
