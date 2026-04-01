@@ -4,11 +4,6 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const contentRef = useRef(null);
-  const containerRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -16,7 +11,7 @@ export default function RecentWinners() {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
         const data = await res.json();
         setShow(data.show);
-        setWinners(data.winners || []);
+        setWinners(data.winners);
       } catch (err) {
         console.error("Failed to fetch recent winners:", err);
         setShow(false);
@@ -44,108 +39,14 @@ export default function RecentWinners() {
   // Single, non-repeating message: statement + all winners (once)
   const combinedMessage = `${statementText}  •  ${winnerText}`;
 
-  // Safety check: if no winners or show is false, don't render anything
   if (!show || winners.length === 0) return null;
 
-  // Start the animation after content is rendered
-  useEffect(() => {
-    // Clear any existing timeouts or animation frames
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
+  // Create a double version for seamless loop (statement + winners repeated twice)
+  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
 
-    if (contentRef.current && containerRef.current && !isAnimating && combinedMessage) {
-      // Small delay to ensure DOM is ready
-      timeoutRef.current = setTimeout(() => {
-        try {
-          const contentWidth = contentRef.current.scrollWidth;
-          const containerWidth = containerRef.current.clientWidth;
-          
-          if (contentWidth > containerWidth && containerWidth > 0) {
-            const distance = contentWidth + containerWidth; // Total distance to travel
-            const speed = 50; // pixels per second (adjust for desired speed)
-            const duration = distance / speed;
-            
-            setIsAnimating(true);
-            
-            // Start the animation
-            const startTime = performance.now();
-            const startPosition = containerWidth;
-            
-            const animate = (currentTime) => {
-              try {
-                const elapsed = (currentTime - startTime) / 1000;
-                const progress = Math.min(elapsed / duration, 1);
-                const position = startPosition - (distance * progress);
-                
-                if (contentRef.current) {
-                  contentRef.current.style.transform = `translateX(${position}px)`;
-                }
-                
-                if (progress < 1) {
-                  animationFrameRef.current = requestAnimationFrame(animate);
-                } else {
-                  // Animation complete, reset and start again
-                  if (contentRef.current) {
-                    contentRef.current.style.transform = `translateX(${containerWidth}px)`;
-                  }
-                  setIsAnimating(false);
-                  // Force reflow to reset animation
-                  setTimeout(() => {
-                    if (contentRef.current) {
-                      contentRef.current.style.transform = '';
-                    }
-                  }, 50);
-                }
-              } catch (err) {
-                console.error("Animation error:", err);
-                setIsAnimating(false);
-              }
-            };
-            
-            // Set initial position
-            if (contentRef.current) {
-              contentRef.current.style.transform = `translateX(${containerWidth}px)`;
-            }
-            animationFrameRef.current = requestAnimationFrame(animate);
-          } else {
-            // Content fits in container, no animation needed
-            if (contentRef.current) {
-              contentRef.current.style.transform = 'translateX(0)';
-            }
-          }
-        } catch (err) {
-          console.error("Animation setup error:", err);
-          setIsAnimating(false);
-        }
-      }, 100);
-    }
-    
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [isAnimating, combinedMessage, winners]);
-
-  // Reset animation when winners change
-  useEffect(() => {
-    if (contentRef.current && containerRef.current) {
-      setIsAnimating(false);
-      if (contentRef.current) {
-        contentRef.current.style.transform = '';
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    }
-  }, [combinedMessage]);
+  // Calculate animation duration based on content length
+  const messageLength = scrollingContent.length;
+  const animationDuration = Math.max(20, Math.min(50, messageLength * 0.07));
 
   return (
     <>
@@ -159,6 +60,11 @@ export default function RecentWinners() {
         @keyframes zebraMove {
           0% { background-position: 0 0; }
           100% { background-position: 40px 40px; }
+        }
+
+        @keyframes scrollInfinite {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
 
         .premium-title {
@@ -230,25 +136,25 @@ export default function RecentWinners() {
           height: 3rem;
         }
 
-        .scroll-content {
+        .scroll-infinite {
           display: inline-block;
           white-space: nowrap;
-          will-change: transform;
+          animation: scrollInfinite ${animationDuration}s linear infinite;
         }
       `}</style>
 
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container" ref={containerRef}>
-              <div className="scroll-content" ref={contentRef}>
+            <div className="marquee-container">
+              <div className="scroll-infinite">
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem' }}
-                    data-text={combinedMessage}
+                    style={{ fontSize: '1rem', whiteSpace: 'pre' }}
+                    data-text={scrollingContent}
                   >
-                    {combinedMessage}
+                    {scrollingContent}
                   </h3>
                 </div>
               </div>
