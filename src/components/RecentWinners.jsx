@@ -154,7 +154,7 @@ export default function RecentWinners() {
           display: inline-block;
           white-space: nowrap;
           will-change: transform;
-          position: relative;
+          position: absolute;
         }
       `}</style>
 
