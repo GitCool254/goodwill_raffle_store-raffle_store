@@ -137,7 +137,7 @@ export default function RecentWinners() {
           overflow: hidden;
           white-space: nowrap;
           width: 100%;
-          position: relative;
+          position: absolute;
           height: 3rem;
         }
 
