@@ -52,6 +52,8 @@ export default function RecentWinners() {
   const handleAnimationEnd = () => {
     if (animationRef.current) {
       animationRef.current.style.animation = 'none';
+      // Force reflow
+      animationRef.current.offsetHeight;
       setTimeout(() => {
         if (animationRef.current) {
           animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
@@ -75,7 +77,7 @@ export default function RecentWinners() {
         }
 
         @keyframes scrollOnce {
-          0% { transform: translateX(25%); }
+          0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
 
@@ -154,7 +156,6 @@ export default function RecentWinners() {
           display: inline-block;
           white-space: nowrap;
           will-change: transform;
-          transform: translateX(0);
         }
       `}</style>
 
@@ -166,8 +167,7 @@ export default function RecentWinners() {
                 ref={animationRef}
                 className="scroll-once"
                 style={{ 
-                  animation: `scrollOnce ${animationDuration}s linear forwards`,
-                  transform: 'translateX(0)'
+                  animation: `scrollOnce ${animationDuration}s linear forwards`
                 }}
                 onAnimationEnd={handleAnimationEnd}
               >
