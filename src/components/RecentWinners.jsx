@@ -4,6 +4,7 @@ export default function RecentWinners() {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
   const scrollRef = useRef(null);
   const contentRef = useRef(null);
 
@@ -38,17 +39,19 @@ export default function RecentWinners() {
   // Join all winners with separator
   const winnerText = winnerItems.join("  •  ");
 
-  // Single message: statement + all winners (once)
+  // Single, non-repeating message: statement + all winners (once)
   const combinedMessage = `${statementText}  •  ${winnerText}`;
 
   if (!show || winners.length === 0) return null;
 
-  // Calculate animation duration based on content length - slower speed
+  // Calculate animation duration based on content length
   const messageLength = combinedMessage.length;
-  const animationDuration = Math.max(25, Math.min(60, messageLength * 0.1));
+  const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Duplicate the message for seamless looping
-  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
+  // Handle animation end - reset to start
+  const handleAnimationEnd = () => {
+    setResetKey(prev => prev + 1);
+  };
 
   return (
     <>
@@ -64,9 +67,9 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollContinuous {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        @keyframes scrollOnce {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -140,10 +143,10 @@ export default function RecentWinners() {
           align-items: center;
         }
 
-        .scroll-continuous {
+        .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollContinuous ${animationDuration}s linear infinite;
+          animation: scrollOnce ${animationDuration}s linear forwards;
           will-change: transform;
         }
       `}</style>
@@ -151,16 +154,19 @@ export default function RecentWinners() {
       <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container">
-              <div className="scroll-continuous">
+            <div className="marquee-container" key={resetKey}>
+              <div
+                className="scroll-once"
+                onAnimationEnd={handleAnimationEnd}
+              >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={scrollingContent}
+                    data-text={combinedMessage}
                   >
-                    {scrollingContent}
+                    {combinedMessage}
                   </h3>
                 </div>
               </div>
