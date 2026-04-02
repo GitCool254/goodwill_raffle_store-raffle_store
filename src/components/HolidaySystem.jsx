@@ -62,10 +62,10 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "general",
         name: "Labor's Day Special Raffle",
-        start: new Date(year, 3, 30),   // (adjust as needed)
-        end: new Date(year, 4, 1),     // (adjust as needed)
-        countdown: true,                // show countdown timer
-        useBlackFridayStyle: true,      // use black friday color scheme
+        start: new Date(year, 3, 30),
+        end: new Date(year, 4, 1),
+        countdown: true,
+        useBlackFridayStyle: true,
       },
     ];
   }, []);
@@ -74,7 +74,7 @@ export default function HolidaySystem({ onNavigate }) {
   const isWithinNextTwoDays = (date) => {
     const twoDaysFromNow = new Date(now);
     twoDaysFromNow.setDate(now.getDate() + 2);
-    twoDaysFromNow.setHours(23, 59, 59, 999); // end of that day
+    twoDaysFromNow.setHours(23, 59, 59, 999);
     return date > now && date <= twoDaysFromNow;
   };
 
@@ -85,17 +85,15 @@ export default function HolidaySystem({ onNavigate }) {
 
   // Helper: check if Black Friday collides with any other holiday
   const doesBlackFridayCollide = () => {
-    // Check if any other holiday (excluding Black Friday) is active today
     const otherActiveHolidays = holidays.filter(h => h.id !== "blackfriday").some(h => {
-      if (h.weeklyFriday) return false; // only fixed-date holidays
+      if (h.weeklyFriday) return false;
       return isFixedDateHolidayActive(h);
     });
     if (otherActiveHolidays) return true;
 
-    // Check if any other holiday is upcoming within the next 2 days
     const otherUpcomingHolidays = holidays.filter(h => h.id !== "blackfriday").some(h => {
       if (h.weeklyFriday) return false;
-      if (now >= h.start && now <= h.end) return false; // already active, covered above
+      if (now >= h.start && now <= h.end) return false;
       return isWithinNextTwoDays(h.start);
     });
     if (otherUpcomingHolidays) return true;
@@ -115,24 +113,20 @@ export default function HolidaySystem({ onNavigate }) {
 
   // Determine if Black Friday should be upcoming (only if no collision)
   const isBlackFridayUpcoming = () => {
-    // Find the next Friday
     const nextFriday = new Date(now);
     nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
     nextFriday.setHours(0, 0, 0, 0);
     const nextFridayEnd = new Date(nextFriday);
     nextFridayEnd.setHours(23, 59, 59, 999);
-    
-    // If today is Friday, it's active → not upcoming
+
     if (isTodayFriday()) return false;
-    
-    // Check if any other holiday collides with next Friday
+
     const otherHolidayCollision = holidays.filter(h => h.id !== "blackfriday").some(h => {
       if (h.weeklyFriday) return false;
-      // Check if next Friday falls within any other holiday's date range
       return (nextFriday >= h.start && nextFriday <= h.end) ||
              (nextFridayEnd >= h.start && nextFridayEnd <= h.end);
     });
-    
+
     if (otherHolidayCollision) return false;
     return isWithinNextTwoDays(nextFriday);
   };
@@ -157,7 +151,6 @@ export default function HolidaySystem({ onNavigate }) {
       return isBlackFridayUpcoming();
     }
     if (h.weeklyFriday) {
-      // For other weekly holidays (none currently), but kept for consistency
       const nextFriday = new Date(now);
       nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
       nextFriday.setHours(0, 0, 0, 0);
@@ -166,7 +159,6 @@ export default function HolidaySystem({ onNavigate }) {
       if (now.getDay() === 5) return false;
       return isWithinNextTwoDays(nextFriday);
     } else {
-      // For fixed‑date holidays: exclude if already active
       if (now >= h.start && now <= h.end) return false;
       return isWithinNextTwoDays(h.start);
     }
@@ -198,6 +190,11 @@ export default function HolidaySystem({ onNavigate }) {
           50% {
             filter: drop-shadow(0 0 12px rgba(0,0,0,0.45));
           }
+        }
+
+        @keyframes scrollOnce {
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -279,24 +276,16 @@ export default function HolidaySystem({ onNavigate }) {
           pointer-events: none;
         }
 
-        /* Marquee for upcoming banner */
         .marquee-container {
           overflow: hidden;
           white-space: nowrap;
           width: 100%;
         }
-        .marquee-content {
+
+        .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollText 6s linear infinite;
-        }
-        .marquee-content span {
-          display: inline-block;
-          margin-right: 2rem; /* gap between repeated messages */
-        }
-        @keyframes scrollText {
-          0% { transform: translateX(100vw); }
-          100% { transform: translateX(-100%); }
+          animation: scrollOnce 8s linear infinite;
         }
       `}</style>
 
@@ -434,18 +423,11 @@ function UpcomingBanner({ holiday, onNavigate }) {
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="w-full overflow-hidden md:mr-4">
           <div className="marquee-container">
-            <div className="marquee-content">
+            <div className="scroll-once">
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                 <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
                   {message}
                 </h3>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
-              </div>
-              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
-                  {message}
-                </h3>
-                <span className="inline-block text-base" style={{ fontSize: '1rem' }}>...🛒</span>
               </div>
             </div>
           </div>
