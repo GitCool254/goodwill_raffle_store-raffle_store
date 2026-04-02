@@ -49,13 +49,13 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "valentine",
         name: "Valentine’s Special Raffles",
-        start: new Date(year, 1, 10),
-        end: new Date(year, 1, 14),
+        start: new Date(year, 3, 3),
+        end: new Date(year, 3, 4),
       },
       {
         id: "easter",
         name: "Easter Celebration Draw",
-        start: new Date(year, 3, 3),
+        start: new Date(year, 3, 6),
         end: new Date(year, 3, 10),
       },
       // General holiday (e.g., Ramadan) – adjust dates as needed
@@ -423,7 +423,7 @@ function UpcomingBanner({ holiday, onNavigate }) {
 
   const daysUntil = getDaysUntil();
   const dayText = daysUntil === 1 ? 'tomorrow' : '2 days';
-  const message = `${holiday.name} starts in ${dayText}! Get ready for special offers.`;
+  const message = `${holiday.name} starts in ${dayText}! Get ready for special offers•••🛒`;
 
   // Calculate animation duration based on message length (like RecentWinners)
   const messageLength = message.length;
