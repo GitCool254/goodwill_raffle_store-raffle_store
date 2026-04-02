@@ -6,7 +6,7 @@ export default function RecentWinners() {
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
-  const animationRef = useRef(null);
+  const [startPosition, setStartPosition] = useState("100%");
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -25,6 +25,20 @@ export default function RecentWinners() {
     };
     fetchWinners();
   }, []);
+
+  // Measure container and content to calculate precise starting position
+  useEffect(() => {
+    if (containerRef.current && contentRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const contentWidth = contentRef.current.offsetWidth;
+      
+      // Calculate starting position: content should start just off-screen right
+      // We want the right edge of the content to align with the right edge of the container
+      // Starting position = containerWidth (so content starts at the right edge)
+      // But we need to use viewport-relative units for consistent behavior
+      setStartPosition(`${containerWidth}px`);
+    }
+  }, [combinedMessage, winners]);
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
@@ -48,17 +62,8 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Handle animation end - restart animation
-  const handleAnimationEnd = () => {
-    if (animationRef.current) {
-      animationRef.current.style.animation = 'none';
-      setTimeout(() => {
-        if (animationRef.current) {
-          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
-        }
-      }, 10);
-    }
-  };
+  // Create a duplicate message for seamless infinite looping
+  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
 
   return (
     <>
@@ -74,9 +79,9 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollOnce {
-          0% { transform: translateX(50%); }
-          100% { transform: translateX(-50%); }
+        @keyframes scrollContinuous {
+          0% { transform: translateX(var(--start-pos, 100%)); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -150,11 +155,11 @@ export default function RecentWinners() {
           align-items: center;
         }
 
-        .scroll-once {
+        .scroll-continuous {
           display: inline-block;
           white-space: nowrap;
+          animation: scrollContinuous ${animationDuration}s linear infinite;
           will-change: transform;
-          transform: translateX(0);
         }
       `}</style>
 
@@ -162,23 +167,18 @@ export default function RecentWinners() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container" ref={containerRef}>
-              <div
-                ref={animationRef}
-                className="scroll-once"
-                style={{ 
-                  animation: `scrollOnce ${animationDuration}s linear forwards`,
-                  transform: 'translateX(0)'
-                }}
-                onAnimationEnd={handleAnimationEnd}
+              <div 
+                className="scroll-continuous"
+                style={{ '--start-pos': startPosition }}
               >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={combinedMessage}
+                    data-text={scrollingContent}
                   >
-                    {combinedMessage}
+                    {scrollingContent}
                   </h3>
                 </div>
               </div>
