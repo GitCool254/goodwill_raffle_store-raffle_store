@@ -161,7 +161,7 @@ export default function RecentWinners() {
                 className="scroll-once"
                 style={{
                   animation: `scrollOnce ${animationDuration}s linear forwards`,
-                  transform: 'translateX(0)'
+                  transform: 'translateX(100vw)'
                 }}
                 onAnimationEnd={handleAnimationEnd}                                  >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
