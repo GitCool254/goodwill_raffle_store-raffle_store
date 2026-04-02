@@ -214,6 +214,7 @@ export default function HolidaySystem({ onNavigate }) {
             90deg,
             #ef4444,
             #ec4899,
+            #1a5c1a,
             #d946ef,
             #a855f7,
             #ef4444
@@ -246,6 +247,7 @@ export default function HolidaySystem({ onNavigate }) {
             #1a5c1a,
             #2d6a4f,
             #d4a017,
+            #1a5c1a,
             #9b59b6,
             #e67e22,
             #1a5c1a
