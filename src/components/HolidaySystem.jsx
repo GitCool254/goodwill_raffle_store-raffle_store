@@ -231,8 +231,10 @@ export default function HolidaySystem({ onNavigate }) {
             90deg,
             #000000,
             #1f2937,
+            #1a5c1a,
             #111827,
             #d4af37,
+            #1a5c1a,
             #000000
           );
           background-size: 200% auto;
