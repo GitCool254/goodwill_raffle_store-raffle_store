@@ -97,12 +97,15 @@ export default function RecentWinners() {
           color: transparent;
         }
 
-        .premium-title::before {                                                 content: attr(data-text);
-          position: absolute;                                                    inset: 0;
+        .premium-title::before {
+          content: attr(data-text);
+          position: absolute;
+          inset: 0;
           background: linear-gradient(
             90deg,
             #ef4444,
-            #ec4899,                                                               #d946ef,
+            #ec4899,
+            #d946ef,
             #a855f7,
             #ef4444
           );
@@ -119,7 +122,8 @@ export default function RecentWinners() {
             #000000,
             #1f2937,
             #111827,
-            #d4af37,                                                               #000000
+            #d4af37,
+            #000000
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
@@ -134,7 +138,8 @@ export default function RecentWinners() {
           background: repeating-linear-gradient(
             45deg,
             rgba(255,255,255,0.9) 0px,
-            rgba(255,255,255,0.9) 3px,                                             transparent 3px,
+            rgba(255,255,255,0.9) 3px,
+            transparent 3px,
             transparent 8px
           );
           background-size: 40px 40px;
@@ -146,7 +151,8 @@ export default function RecentWinners() {
         }
 
         .marquee-container {
-          overflow: hidden;                                                      white-space: nowrap;
+          overflow: hidden;
+          white-space: nowrap;
           width: 100%;
           position: relative;
           height: 3rem;
@@ -161,12 +167,14 @@ export default function RecentWinners() {
         }
       `}</style>
 
-      <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">                                  <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-          <div className="w-full overflow-hidden md:mr-4">                         <div className="marquee-container" ref={containerRef}>
+      <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+          <div className="w-full overflow-hidden md:mr-4">
+            <div className="marquee-container" ref={containerRef}>
               <div
                 ref={animationRef}
                 className="scroll-once"
-                style={{
+                style={{ 
                   animation: isReady ? `scrollOnce ${animationDuration}s linear forwards` : 'none'
                 }}
                 onAnimationEnd={handleAnimationEnd}
