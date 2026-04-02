@@ -108,8 +108,10 @@ export default function RecentWinners() {
           background: linear-gradient(
             90deg,
             #000000,
+            #1a5c1a,
             #1f2937,
             #111827,
+            #1a5c1a,
             #d4af37,
             #000000
           );
