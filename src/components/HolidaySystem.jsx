@@ -49,13 +49,13 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "valentine",
         name: "Valentine’s Special Raffles",
-        start: new Date(year, 3, 3),
-        end: new Date(year, 3, 4),
+        start: new Date(year, 1, 10),
+        end: new Date(year, 1, 14),
       },
       {
         id: "easter",
         name: "Easter Celebration Draw",
-        start: new Date(year, 3, 6),
+        start: new Date(year, 3, 3),
         end: new Date(year, 3, 10),
       },
       // General holiday (e.g., Ramadan) – adjust dates as needed
