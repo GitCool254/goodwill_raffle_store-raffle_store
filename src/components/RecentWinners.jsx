@@ -47,9 +47,8 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Create a duplicate message for seamless looping with pause
-  // We add a second copy so that when the first finishes, the second starts immediately
-  const loopingContent = `${combinedMessage}  •  ${combinedMessage}`;
+  // Create a duplicate message for seamless infinite looping
+  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
 
   return (
     <>
@@ -159,9 +158,9 @@ export default function RecentWinners() {
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={loopingContent}
+                    data-text={scrollingContent}
                   >
-                    {loopingContent}
+                    {scrollingContent}
                   </h3>
                 </div>
               </div>
