@@ -148,7 +148,7 @@ export default function RecentWinners() {
           display: inline-block;
           white-space: nowrap;
           will-change: transform;
-          transform: translateX(0);
+          transform: translateX(100vw);
         }
       `}</style>
 
