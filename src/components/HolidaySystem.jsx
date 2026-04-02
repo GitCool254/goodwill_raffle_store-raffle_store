@@ -427,7 +427,7 @@ function UpcomingBanner({ holiday, onNavigate }) {
 
   // Calculate animation duration based on message length (like RecentWinners)
   const messageLength = message.length;
-  const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
+  const animationDuration = Math.max(8, Math.min(10, messageLength * 0.08));
 
   // Handle animation end - restart animation
   const handleAnimationEnd = () => {
