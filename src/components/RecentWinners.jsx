@@ -6,7 +6,6 @@ export default function RecentWinners() {
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
-  const animationRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -48,19 +47,9 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Handle animation end - restart animation
-  const handleAnimationEnd = () => {
-    if (animationRef.current) {
-      animationRef.current.style.animation = 'none';
-      // Force reflow
-      animationRef.current.offsetHeight;
-      setTimeout(() => {
-        if (animationRef.current) {
-          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
-        }
-      }, 10);
-    }
-  };
+  // Create a duplicate message for seamless looping with pause
+  // We add a second copy so that when the first finishes, the second starts immediately
+  const loopingContent = `${combinedMessage}  •  ${combinedMessage}`;
 
   return (
     <>
@@ -76,9 +65,9 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollOnce {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(100%); }
+        @keyframes scrollContinuous {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
         }
 
         .premium-title {
@@ -152,9 +141,10 @@ export default function RecentWinners() {
           align-items: center;
         }
 
-        .scroll-once {
+        .scroll-continuous {
           display: inline-block;
           white-space: nowrap;
+          animation: scrollContinuous ${animationDuration}s linear infinite;
           will-change: transform;
         }
       `}</style>
@@ -163,22 +153,15 @@ export default function RecentWinners() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container" ref={containerRef}>
-              <div
-                ref={animationRef}
-                className="scroll-once"
-                style={{ 
-                  animation: `scrollOnce ${animationDuration}s linear forwards`
-                }}
-                onAnimationEnd={handleAnimationEnd}
-              >
+              <div className="scroll-continuous">
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={combinedMessage}
+                    data-text={loopingContent}
                   >
-                    {combinedMessage}
+                    {loopingContent}
                   </h3>
                 </div>
               </div>
