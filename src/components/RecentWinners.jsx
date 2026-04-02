@@ -6,6 +6,8 @@ export default function RecentWinners() {
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
+  const animationRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const fetchWinners = async () => {
@@ -47,8 +49,26 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Create a duplicate message for seamless infinite looping
-  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
+  // Start animation after component is mounted
+  useEffect(() => {
+    // Small delay to ensure DOM is ready, then start animation
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle animation end - restart animation
+  const handleAnimationEnd = () => {
+    if (animationRef.current) {
+      // Remove animation
+      animationRef.current.style.animation = 'none';
+      // Force reflow
+      animationRef.current.offsetHeight;
+      // Restart animation
+      animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
+    }
+  };
 
   return (
     <>
@@ -64,7 +84,7 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollContinuous {
+        @keyframes scrollOnce {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
@@ -77,15 +97,12 @@ export default function RecentWinners() {
           color: transparent;
         }
 
-        .premium-title::before {
-          content: attr(data-text);
-          position: absolute;
-          inset: 0;
+        .premium-title::before {                                                 content: attr(data-text);
+          position: absolute;                                                    inset: 0;
           background: linear-gradient(
             90deg,
             #ef4444,
-            #ec4899,
-            #d946ef,
+            #ec4899,                                                               #d946ef,
             #a855f7,
             #ef4444
           );
@@ -102,8 +119,7 @@ export default function RecentWinners() {
             #000000,
             #1f2937,
             #111827,
-            #d4af37,
-            #000000
+            #d4af37,                                                               #000000
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
@@ -118,8 +134,7 @@ export default function RecentWinners() {
           background: repeating-linear-gradient(
             45deg,
             rgba(255,255,255,0.9) 0px,
-            rgba(255,255,255,0.9) 3px,
-            transparent 3px,
+            rgba(255,255,255,0.9) 3px,                                             transparent 3px,
             transparent 8px
           );
           background-size: 40px 40px;
@@ -131,8 +146,7 @@ export default function RecentWinners() {
         }
 
         .marquee-container {
-          overflow: hidden;
-          white-space: nowrap;
+          overflow: hidden;                                                      white-space: nowrap;
           width: 100%;
           position: relative;
           height: 3rem;
@@ -140,27 +154,31 @@ export default function RecentWinners() {
           align-items: center;
         }
 
-        .scroll-continuous {
+        .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollContinuous ${animationDuration}s linear infinite;
           will-change: transform;
         }
       `}</style>
 
-      <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-          <div className="w-full overflow-hidden md:mr-4">
-            <div className="marquee-container" ref={containerRef}>
-              <div className="scroll-continuous">
+      <section className="w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 recent-winners">                                  <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+          <div className="w-full overflow-hidden md:mr-4">                         <div className="marquee-container" ref={containerRef}>
+              <div
+                ref={animationRef}
+                className="scroll-once"
+                style={{
+                  animation: isReady ? `scrollOnce ${animationDuration}s linear forwards` : 'none'
+                }}
+                onAnimationEnd={handleAnimationEnd}
+              >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={scrollingContent}
+                    data-text={combinedMessage}
                   >
-                    {scrollingContent}
+                    {combinedMessage}
                   </h3>
                 </div>
               </div>
