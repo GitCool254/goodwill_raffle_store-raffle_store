@@ -295,8 +295,8 @@ export default function HolidaySystem({ onNavigate }) {
           margin-right: 2rem; /* gap between repeated messages */
         }
         @keyframes scrollText {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
         }
       `}</style>
 
