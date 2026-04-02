@@ -38,7 +38,7 @@ export default function RecentWinners() {
   const winnerText = winnerItems.join("  •  ");
 
   // Single, non-repeating message: statement + all winners (once)
-  const combinedMessage = `${statementText}  •  ${winnerText}`;
+  const combinedMessage = `${statementText}  •  ${winnerText}...`;
 
   if (!show || winners.length === 0) return null;
 
