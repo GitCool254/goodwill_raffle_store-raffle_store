@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 
 /*
   Holiday System
@@ -280,12 +280,17 @@ export default function HolidaySystem({ onNavigate }) {
           overflow: hidden;
           white-space: nowrap;
           width: 100%;
+          position: relative;
+          height: 3rem;
+          display: flex;
+          align-items: center;
         }
 
         .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollOnce 8s linear infinite;
+          will-change: transform;
+          transform: translateX(100vw);
         }
       `}</style>
 
@@ -394,6 +399,8 @@ function HolidayBanner({ holiday, onNavigate }) {
    UPCOMING HOLIDAY BANNER (2 days ahead)
 ---------------------------------- */
 function UpcomingBanner({ holiday, onNavigate }) {
+  const animationRef = useRef(null);
+  
   // Compute days until the holiday start
   const getDaysUntil = () => {
     const now = new Date();
@@ -418,12 +425,36 @@ function UpcomingBanner({ holiday, onNavigate }) {
   const dayText = daysUntil === 1 ? 'tomorrow' : '2 days';
   const message = `${holiday.name} starts in ${dayText}! Get ready for special offers.`;
 
+  // Calculate animation duration based on message length (like RecentWinners)
+  const messageLength = message.length;
+  const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
+
+  // Handle animation end - restart animation
+  const handleAnimationEnd = () => {
+    if (animationRef.current) {
+      animationRef.current.style.animation = 'none';
+      setTimeout(() => {
+        if (animationRef.current) {
+          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
+        }
+      }, 10);
+    }
+  };
+
   return (
     <section className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}>
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="w-full overflow-hidden md:mr-4">
           <div className="marquee-container">
-            <div className="scroll-once">
+            <div
+              ref={animationRef}
+              className="scroll-once"
+              style={{
+                animation: `scrollOnce ${animationDuration}s linear forwards`,
+                transform: 'translateX(100vw)'
+              }}
+              onAnimationEnd={handleAnimationEnd}
+            >
               <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                 <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
                   {message}
