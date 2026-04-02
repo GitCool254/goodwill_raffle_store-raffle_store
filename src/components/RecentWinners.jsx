@@ -6,12 +6,11 @@ export default function RecentWinners() {
   const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
-  const [startPosition, setStartPosition] = useState("100%");
+  const animationRef = useRef(null);
 
   useEffect(() => {
     const fetchWinners = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
+      try {                                                                    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
         const data = await res.json();
         setShow(data.show);
         setWinners(data.winners);
@@ -22,23 +21,8 @@ export default function RecentWinners() {
       } finally {
         setLoading(false);
       }
-    };
-    fetchWinners();
+    };                                                                     fetchWinners();
   }, []);
-
-  // Measure container and content to calculate precise starting position
-  useEffect(() => {
-    if (containerRef.current && contentRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const contentWidth = contentRef.current.offsetWidth;
-      
-      // Calculate starting position: content should start just off-screen right
-      // We want the right edge of the content to align with the right edge of the container
-      // Starting position = containerWidth (so content starts at the right edge)
-      // But we need to use viewport-relative units for consistent behavior
-      setStartPosition(`${containerWidth}px`);
-    }
-  }, [combinedMessage, winners]);
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
@@ -62,8 +46,17 @@ export default function RecentWinners() {
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Create a duplicate message for seamless infinite looping
-  const scrollingContent = `${combinedMessage}  •  ${combinedMessage}`;
+  // Handle animation end - restart animation
+  const handleAnimationEnd = () => {
+    if (animationRef.current) {
+      animationRef.current.style.animation = 'none';
+      setTimeout(() => {
+        if (animationRef.current) {
+          animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
+        }
+      }, 10);
+    }
+  };
 
   return (
     <>
@@ -79,8 +72,8 @@ export default function RecentWinners() {
           100% { background-position: 40px 40px; }
         }
 
-        @keyframes scrollContinuous {
-          0% { transform: translateX(var(--start-pos, 100%)); }
+        @keyframes scrollOnce {
+          0% { transform: translateX(100vw); }
           100% { transform: translateX(-100%); }
         }
 
@@ -122,15 +115,12 @@ export default function RecentWinners() {
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: colorWave 4s linear infinite;
-        }
-
+          -webkit-text-fill-color: transparent;                                  animation: colorWave 4s linear infinite;
+        }                                                              
         .premium-title::after {
           content: attr(data-text);
           position: absolute;
-          inset: 0;
-          background: repeating-linear-gradient(
+          inset: 0;                                                              background: repeating-linear-gradient(
             45deg,
             rgba(255,255,255,0.9) 0px,
             rgba(255,255,255,0.9) 3px,
@@ -147,19 +137,18 @@ export default function RecentWinners() {
 
         .marquee-container {
           overflow: hidden;
-          white-space: nowrap;
-          width: 100%;
+          white-space: nowrap;                                                   width: 100%;
           position: relative;
           height: 3rem;
           display: flex;
           align-items: center;
         }
 
-        .scroll-continuous {
+        .scroll-once {
           display: inline-block;
           white-space: nowrap;
-          animation: scrollContinuous ${animationDuration}s linear infinite;
           will-change: transform;
+          transform: translateX(0);
         }
       `}</style>
 
@@ -167,25 +156,28 @@ export default function RecentWinners() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full overflow-hidden md:mr-4">
             <div className="marquee-container" ref={containerRef}>
-              <div 
-                className="scroll-continuous"
-                style={{ '--start-pos': startPosition }}
-              >
+              <div
+                ref={animationRef}
+                className="scroll-once"
+                style={{
+                  animation: `scrollOnce ${animationDuration}s linear forwards`,
+                  transform: 'translateX(0)'
+                }}
+                onAnimationEnd={handleAnimationEnd}                                  >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
                     style={{ fontSize: '1rem', whiteSpace: 'pre' }}
-                    data-text={scrollingContent}
+                    data-text={combinedMessage}
                   >
-                    {scrollingContent}
+                    {combinedMessage}
                   </h3>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </section>                                                           </>
   );
 }
