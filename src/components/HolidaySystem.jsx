@@ -243,13 +243,12 @@ export default function HolidaySystem({ onNavigate }) {
         .easter .premium-title::before {
           background: linear-gradient(
             90deg,
-            #000000,
-            #84cc16,
-            #a7f3d0,
-            #facc15,
-            #c4b5fd,
-            #84cc16,
-            #000000
+            #1a5c1a,
+            #2d6a4f,
+            #d4a017,
+            #9b59b6,
+            #e67e22,
+            #1a5c1a
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
