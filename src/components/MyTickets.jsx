@@ -202,7 +202,7 @@ export default function MyTickets() {
     e.preventDefault();
     setTicketNumberError("");
     setMatchedWinner(null);
-    setTicketCheckPerformed(true);
+    setTicketCheckPerformed(false); // Reset to false initially
 
     if (!ticketNumber.trim()) {
       setTicketNumberError("Please enter a ticket number.");
@@ -216,6 +216,9 @@ export default function MyTickets() {
       );
       return;
     }
+
+    // Only set ticketCheckPerformed to true when format is valid
+    setTicketCheckPerformed(true);
 
     const normalizedTicket = ticketNumber.trim().toUpperCase();
     const foundWinner = recentWinners.find(
@@ -397,7 +400,7 @@ export default function MyTickets() {
           />
 
           {ticketNumberError && (
-            <div className="text-red-600 text-sm mb-2">
+            <div className="text-red-600 text-sm mb-2" style={{ marginTop: '10px', marginBottom: '10px' }}>
               {ticketNumberError}
             </div>
           )}
@@ -495,7 +498,7 @@ export default function MyTickets() {
             </div>
           )}
 
-          {/* Apology note when ticket not found (only after check) */}
+          {/* Apology note when ticket not found (only after check AND valid format) */}
           {ticketCheckPerformed && !matchedWinner && isDrawDone && (
             <div
               className="mt-4 p-3 bg-amber-50 rounded-lg"
@@ -506,7 +509,8 @@ export default function MyTickets() {
                 style={{
                   width: "100%",
                   height: "2px",
-                  marginBottom: "12px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
                   background: "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
                   backgroundSize: "200% auto",
                   animation: "rainbowMove 4s linear infinite",
