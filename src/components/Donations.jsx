@@ -342,8 +342,8 @@ export default function Donations() {
                       src={program.overlayImage || program.image}
                       alt="overlay"
                       style={{
-                        width: '90%',
-                        height: '90%',
+                        width: '98%',
+                        height: '98%',
                         borderRadius: '50%',
                         objectFit: 'cover',
                       }}
