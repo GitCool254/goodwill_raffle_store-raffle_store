@@ -26,29 +26,19 @@ export default function RecentWinners() {
     fetchWinners();
   }, []);
 
-  // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
-
-  // Build winner text - include ALL winners, each as a separate item
   const winnerItems = winners.map(
     (w) =>
-      `${w.name} (${w.state}, ${w.country}) won: ${
-        w.cash_out ? `$${w.prize} cash` : w.prize
-      } – Ticket ${w.ticket_no}`
+      `${w.name} (${w.state}, ${w.country}) won: ${w.cash_out ? `$${w.prize} cash` : w.prize} – Ticket ${w.ticket_no}`
   );
-  // Join all winners with separator
   const winnerText = winnerItems.join("  •  ");
-
-  // Single, non-repeating message: statement + all winners (once)
   const combinedMessage = `${statementText}  •  ${winnerText}...`;
 
   if (!show || winners.length === 0) return null;
 
-  // Calculate animation duration based on content length
   const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
-  // Handle animation end - restart animation
   const handleAnimationEnd = () => {
     if (animationRef.current) {
       animationRef.current.style.animation = 'none';
@@ -63,24 +53,20 @@ export default function RecentWinners() {
   return (
     <>
       <style>{`
-        /* Premium text styles – adapted from HolidaySystem */
         @keyframes colorWave {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
         }
-
         @keyframes zebraMove {
           0% { background-position: 0 0; }
           100% { background-position: 40px 40px; }
         }
-
         @keyframes scrollOnce {
           0% { transform: translateX(100vw); }
           100% { transform: translateX(-100%); }
         }
-
-        /* Rainbow gradient line animation */
-        @keyframes rainbowLine {
+        /* Rainbow gradient line animation – matches "Not This Time" block */
+        @keyframes rainbowMove {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
         }
@@ -111,7 +97,6 @@ export default function RecentWinners() {
           animation: colorWave 4s linear infinite;
         }
 
-        /* Black Friday style (used for recent winners) */
         .recent-winners .premium-title::before {
           background: linear-gradient(
             90deg,
@@ -159,7 +144,7 @@ export default function RecentWinners() {
           border: none;
         }
 
-        /* Top and bottom rainbow gradient lines - NO solid borders */
+        /* Top and bottom rainbow gradient lines – adapted from "Not This Time" block */
         .marquee-container::before,
         .marquee-container::after {
           content: '';
@@ -170,16 +155,16 @@ export default function RecentWinners() {
           height: 2px;
           background: linear-gradient(
             90deg,
-            rgba(255, 0, 0, 0.3),
-            rgba(255, 136, 0, 0.3),
-            rgba(255, 255, 0, 0.3),
-            rgba(0, 255, 0, 0.3),
-            rgba(0, 136, 255, 0.3),
-            rgba(68, 0, 255, 0.3),
-            rgba(255, 0, 0, 0.3)
+            rgba(255, 0, 0, 0.2),
+            rgba(255, 136, 0, 0.2),
+            rgba(255, 255, 0, 0.2),
+            rgba(0, 255, 0, 0.2),
+            rgba(0, 136, 255, 0.2),
+            rgba(68, 0, 255, 0.2),
+            rgba(255, 0, 0, 0.2)
           );
           background-size: 200% auto;
-          animation: rainbowLine 4s linear infinite;
+          animation: rainbowMove 4s linear infinite;
           pointer-events: none;
         }
 
