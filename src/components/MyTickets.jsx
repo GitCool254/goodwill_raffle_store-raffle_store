@@ -467,7 +467,7 @@ export default function MyTickets() {
 
           {/* Congratulatory message (only appears when a winning ticket is found) */}
           {matchedWinner && isDrawDone && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-300 rounded-lg">
+            <div className="mt-4 p-3 bg-green-50 rounded-lg">
               <p className="text-sm font-semibold text-green-800">
                 Congratulations! Your ticket number has been selected.
               </p>
@@ -482,12 +482,18 @@ export default function MyTickets() {
 
           {/* Apology note when ticket not found (only after check) */}
           {ticketCheckPerformed && !matchedWinner && isDrawDone && (
-            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-              <p className="text-sm font-semibold text-amber-800">
+            <div 
+              className="mt-4 p-3 bg-amber-50 rounded-lg"
+              style={{ fontSize: "1rem", color: "#64748b", marginBott
+om: "10px" }}
+            >
+              <p 
+                className="text-sm font-semibold text-amber-800"
+              >
                 🙏 Not This Time
               </p>
               <p className="text-sm text-amber-700 mt-1">
-                Thank you for participating. Your ticket number wasn't selected in this draw, but your support makes our programs possible. 
+                Thank you for participating. Your ticket number wasn't selected in this draw, but your support makes our programs possible.
                 Stay tuned — a new raffle campaign begins soon. We'd love to have you with us again.
               </p>
             </div>
