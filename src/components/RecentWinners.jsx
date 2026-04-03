@@ -19,15 +19,13 @@ export default function RecentWinners() {
         setShow(false);
         setWinners([]);
       } finally {
-        setLoading(false);
-      }
+        setLoading(false);                                                   }
     };                                                                     fetchWinners();
   }, []);
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
-
-  // Build winner text - include ALL winners, each as a separate item
+                                                                         // Build winner text - include ALL winners, each as a separate item
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
@@ -42,8 +40,7 @@ export default function RecentWinners() {
 
   if (!show || winners.length === 0) return null;
 
-  // Calculate animation duration based on content length
-  const messageLength = combinedMessage.length;
+  // Calculate animation duration based on content length                const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
   // Handle animation end - restart animation
@@ -56,52 +53,41 @@ export default function RecentWinners() {
         }
       }, 10);
     }
-  };
-
+  };                                                                   
   return (
     <>
       <style>{`
         /* Premium text styles – adapted from HolidaySystem */
         @keyframes colorWave {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 200% 50%; }
+          0% { background-position: 0% 50%; }                                    100% { background-position: 200% 50%; }
         }
 
         @keyframes zebraMove {
           0% { background-position: 0 0; }
-          100% { background-position: 40px 40px; }
-        }
+          100% { background-position: 40px 40px; }                             }
 
         @keyframes scrollOnce {
           0% { transform: translateX(100vw); }
           100% { transform: translateX(-100%); }
         }
 
-        /* Faint rainbow border animation */
-        @keyframes rainbowBorder {
-          0% { border-color: rgba(255, 0, 0, 0.2); }
-          17% { border-color: rgba(255, 136, 0, 0.2); }
-          33% { border-color: rgba(255, 255, 0, 0.2); }
-          50% { border-color: rgba(0, 255, 0, 0.2); }
-          67% { border-color: rgba(0, 136, 255, 0.2); }
-          83% { border-color: rgba(68, 0, 255, 0.2); }
-          100% { border-color: rgba(255, 0, 0, 0.2); }
+        /* Rainbow gradient line animation */
+        @keyframes rainbowLine {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
         }
 
-        .premium-title {
-          position: relative;
+        .premium-title {                                                         position: relative;
           display: inline-block;
           font-weight: 600;
           letter-spacing: 0.04em;
-          color: transparent;
-        }
+          color: transparent;                                                  }
 
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            90deg,
+          background: linear-gradient(                                             90deg,
             #ef4444,
             #ec4899,
             #d946ef,
@@ -117,8 +103,7 @@ export default function RecentWinners() {
         /* Black Friday style (used for recent winners) */
         .recent-winners .premium-title::before {
           background: linear-gradient(
-            90deg,
-            #000000,
+            90deg,                                                                 #000000,
             #1a5c1a,
             #1f2937,
             #111827,
@@ -129,8 +114,7 @@ export default function RecentWinners() {
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;                                  animation: colorWave 4s linear infinite;
-        }
-        .premium-title::after {
+        }                                                                      .premium-title::after {
           content: attr(data-text);
           position: absolute;
           inset: 0;                                                              background: repeating-linear-gradient(
@@ -143,8 +127,7 @@ export default function RecentWinners() {
           background-size: 40px 40px;
           animation: zebraMove 3s linear infinite;
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          mix-blend-mode: overlay;
+          -webkit-text-fill-color: transparent;                                  mix-blend-mode: overlay;
           pointer-events: none;
         }
 
@@ -155,14 +138,41 @@ export default function RecentWinners() {
           height: 3rem;
           display: flex;
           align-items: center;
-          border-top: 2px;
-          border-bottom: 2px;
-          animation: rainbowBorder 4s linear infinite;
+          position: relative;
+        }
+
+        /* Top and bottom rainbow gradient lines */
+        .marquee-container::before,
+        .marquee-container::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.3),
+            rgba(255, 136, 0, 0.3),
+            rgba(255, 255, 0, 0.3),
+            rgba(0, 255, 0, 0.3),
+            rgba(0, 136, 255, 0.3),
+            rgba(68, 0, 255, 0.3),
+            rgba(255, 0, 0, 0.3)
+          );
+          background-size: 200% auto;
+          animation: rainbowLine 4s linear infinite;
+        }
+
+        .marquee-container::before {
+          top: 0;
+        }
+
+        .marquee-container::after {
+          bottom: 0;
         }
 
         .scroll-once {
-          display: inline-block;
-          white-space: nowrap;
+          display: inline-block;                                                 white-space: nowrap;
           will-change: transform;
           transform: translateX(100vw);
         }
