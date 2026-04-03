@@ -155,8 +155,8 @@ export default function RecentWinners() {
           height: 3rem;
           display: flex;
           align-items: center;
-          border-top: 2px solid;
-          border-bottom: 2px solid;
+          border-top: 2px;
+          border-bottom: 2px;
           animation: rainbowBorder 4s linear infinite;
         }
 
