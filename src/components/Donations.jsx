@@ -24,7 +24,7 @@ export default function Donations() {
     {
       id: 2,
       title: "Palliative Care Support",
-      description: "We support home-based care, medical assistance, and daily necessities for the elderly and those with chronic illnesses, ensuring dignity and comfort.",
+      description: "We provide home-based care, medical assistance, daily necessities, and moral support for the elderly and those with chronic illnesses — ensuring dignity, comfort, and emotional well-being.",
       image: "/Palliative Outreach 14.jpg",
       images: [
         "/Palliative Outreach 13.jpg",
@@ -32,7 +32,7 @@ export default function Donations() {
         "/Palliative Outreach 11.jpg",
         "/Community Project Theme.jpg",
       ],
-      quote: "“When the Foundation first came to our home, I was exhausted and had lost hope. They didn't just bring medication—they brought prayer, encouragement, and a gentle presence that lifted my spirit. They taught my daughter how to care for me, checked on us every week, and even helped arrange a wheelchair so I could sit outside again. Now I feel seen, supported, and at peace. This program gave us back our dignity.”",
+      quote: "“When the Foundation first came to our home, I was exhausted and had lost hope. They didn't just bring medication—they brought prayer, encouragement, and a gentle presence that lifted my spirit. They taught my family how to care for me, checked on us every week, and even helped arrange a wheelchair so I could sit outside again. Now I feel seen, supported, and at peace. This program gave us back our dignity.”",
       quoteName: "—Elena Martinez,",
       quotePosition: "Palliative Care Recipient",
       overlayImage: "/Palliative Outreach 12.jpg",
@@ -40,7 +40,7 @@ export default function Donations() {
     {
       id: 3,
       title: "Community Projects",
-      description: "Partnering with local churches and associations to build small-scale infrastructure, feeding programs, and more.",
+      description: "We have partnered with the local churches and associations to support children's homes through feeding programs, school supplies (books, uniforms, tuition), talent discovery workshops, and ongoing mentorship — empowering every child to grow, learn, and thrive.",
       image: "/Community Outreach 2.jpg",
       images: [
         "/Community Outreach 1.jpg",
@@ -50,7 +50,7 @@ export default function Donations() {
         "/Outreach team - USA.jpg",
         "/Community Outreach2.jpg",
       ],
-      quote: "“Goodwillstores continues to walk alongside our children's home—providing food, clothing, and school essentials while also investing in our children's gifts. We run weekend workshops where our kids explore art, music, and even basic coding. Our girls now attend school with confidence, and our boys tend to a vegetable garden. The team visits regularly, offering mentorship and helping us build life skills. It's not just support—it's a partnership in building a brighter future.”",
+      quote: "“Goodwillstores continues to walk alongside our children's home—providing food, clothing, and school essentials while also investing in our children's gifts. We run weekend workshops where our kids explore art, music, and even basic coding. Our kids now attend school with confidence. The team visits regularly, offering mentorship and helping us build life skills. It's not just support—it's a partnership in building a brighter future.”",
       quoteName: "—Sarah Njoroge,",
       quotePosition: "Community Project Coordinator",
       overlayImage: "/Outreach theme1.jpg",
