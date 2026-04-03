@@ -77,6 +77,17 @@ export default function RecentWinners() {
           100% { transform: translateX(-100%); }
         }
 
+        /* Rainbow border animation */
+        @keyframes rainbowBorder {
+          0% { border-color: #ff0000; }
+          17% { border-color: #ff8800; }
+          33% { border-color: #ffff00; }
+          50% { border-color: #00ff00; }
+          67% { border-color: #0088ff; }
+          83% { border-color: #4400ff; }
+          100% { border-color: #ff0000; }
+        }
+
         .premium-title {
           position: relative;
           display: inline-block;
@@ -118,7 +129,7 @@ export default function RecentWinners() {
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;                                  animation: colorWave 4s linear infinite;
-        }                                                              
+        }
         .premium-title::after {
           content: attr(data-text);
           position: absolute;
@@ -144,6 +155,9 @@ export default function RecentWinners() {
           height: 3rem;
           display: flex;
           align-items: center;
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          animation: rainbowBorder 4s linear infinite;
         }
 
         .scroll-once {

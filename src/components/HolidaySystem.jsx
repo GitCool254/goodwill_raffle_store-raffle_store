@@ -28,8 +28,7 @@ export default function HolidaySystem({ onNavigate }) {
     const year = now.getFullYear();
 
     return [
-      {
-        id: "blackfriday",
+      {                                                                        id: "blackfriday",
         name: "Black Friday Raffle Days",
         weeklyFriday: true,
         countdown: true,
@@ -155,12 +154,10 @@ export default function HolidaySystem({ onNavigate }) {
       nextFriday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
       nextFriday.setHours(0, 0, 0, 0);
       const nextFridayEnd = new Date(nextFriday);
-      nextFridayEnd.setHours(23, 59, 59, 999);
-      if (now.getDay() === 5) return false;
+      nextFridayEnd.setHours(23, 59, 59, 999);                               if (now.getDay() === 5) return false;
       return isWithinNextTwoDays(nextFriday);
     } else {
-      if (now >= h.start && now <= h.end) return false;
-      return isWithinNextTwoDays(h.start);
+      if (now >= h.start && now <= h.end) return false;                      return isWithinNextTwoDays(h.start);
     }
   });
 
@@ -197,6 +194,17 @@ export default function HolidaySystem({ onNavigate }) {
           100% { transform: translateX(-100%); }
         }
 
+        /* Rainbow border animation */
+        @keyframes rainbowBorder {
+          0% { border-color: #ff0000; }
+          17% { border-color: #ff8800; }
+          33% { border-color: #ffff00; }
+          50% { border-color: #00ff00; }
+          67% { border-color: #0088ff; }
+          83% { border-color: #4400ff; }
+          100% { border-color: #ff0000; }
+        }
+
         .premium-title {
           position: relative;
           display: inline-block;
@@ -216,13 +224,10 @@ export default function HolidaySystem({ onNavigate }) {
             #ec4899,
             #1a5c1a,
             #d946ef,
-            #a855f7,
-            #ef4444
+            #a855f7,                                                               #ef4444
           );
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: colorWave 4s linear infinite;
+          background-size: 200% auto;                                            -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;                                  animation: colorWave 4s linear infinite;
         }
 
         .blackfriday .premium-title::before,
@@ -236,8 +241,7 @@ export default function HolidaySystem({ onNavigate }) {
             #d4af37,
             #1a5c1a,
             #000000
-          );
-          background-size: 200% auto;
+          );                                                                     background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: colorWave 4s linear infinite;
@@ -248,8 +252,7 @@ export default function HolidaySystem({ onNavigate }) {
             90deg,
             #1a5c1a,
             #2d6a4f,
-            #d4a017,
-            #1a5c1a,
+            #d4a017,                                                               #1a5c1a,
             #9b59b6,
             #e67e22,
             #1a5c1a
@@ -284,32 +287,27 @@ export default function HolidaySystem({ onNavigate }) {
           white-space: nowrap;
           width: 100%;
           position: relative;
-          height: 3rem;
-          display: flex;
+          height: 3rem;                                                          display: flex;
           align-items: center;
+          border-top: 2px solid;
+          border-bottom: 2px solid;
+          animation: rainbowBorder 4s linear infinite;
         }
-
-        .scroll-once {
-          display: inline-block;
-          white-space: nowrap;
+                                                                               .scroll-once {
+          display: inline-block;                                                 white-space: nowrap;
           will-change: transform;
           transform: translateX(100vw);
         }
-      `}</style>
-
-      {isWinter && <SnowLayer isMobile={isMobile} />}
-
+      `}</style>                                                       
+      {isWinter && <SnowLayer isMobile={isMobile} />}                  
       <div className="holiday-slide">
         {activeHolidays.map((holiday) => (
           <HolidayBanner key={holiday.id} holiday={holiday} onNavigate={onNavigate} />
         ))}
-        {upcomingHolidays.map((holiday) => (
-          <UpcomingBanner key={`upcoming-${holiday.id}`} holiday={holiday} onNavigate={onNavigate} />
-        ))}
+        {upcomingHolidays.map((holiday) => (                                     <UpcomingBanner key={`upcoming-${holiday.id}`} holiday={holiday} onNavigate={onNavigate} />                                                 ))}
       </div>
     </>
-  );
-}
+  );                                                                   }
 
 /* ----------------------------------
    HOLIDAY BANNER
@@ -346,8 +344,7 @@ function HolidayBanner({ holiday, onNavigate }) {
 
       if (diff <= 0) {
         setTimeLeft("");
-        return;
-      }
+        return;                                                              }
 
       const d = Math.floor(diff / (1000 * 60 * 60 * 24));
       const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -361,20 +358,17 @@ function HolidayBanner({ holiday, onNavigate }) {
 
   return (
     <section
-      className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}
-    >
+      className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}                                       >
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-sm tracking-wide flex flex-col items-center md:items-start">
-
-          <h3 className="premium-title" data-text={holiday.name}>
+                                                                                 <h3 className="premium-title" data-text={holiday.name}>
             {holiday.name}
           </h3>
 
           {holiday.countdown && timeLeft && (
             <span className="mt-1 opacity-80 text-sm">
               Draw closes in <strong>{timeLeft}</strong>
-            </span>
-          )}
+            </span>                                                              )}
 
           {/* Holiday special offer */}
           <div
@@ -404,7 +398,7 @@ function HolidayBanner({ holiday, onNavigate }) {
 ---------------------------------- */
 function UpcomingBanner({ holiday, onNavigate }) {
   const animationRef = useRef(null);
-  
+
   // Compute days until the holiday start
   const getDaysUntil = () => {
     const now = new Date();
@@ -448,19 +442,15 @@ function UpcomingBanner({ holiday, onNavigate }) {
   return (
     <section className={`w-full text-center py-4 bg-white text-slate-800 border-b border-slate-200 ${holiday.id}`}>
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-        <div className="w-full overflow-hidden md:mr-4">
-          <div className="marquee-container">
-            <div
-              ref={animationRef}
+        <div className="w-full overflow-hidden md:mr-4">                         <div className="marquee-container">
+            <div                                                                     ref={animationRef}
               className="scroll-once"
               style={{
                 animation: `scrollOnce ${animationDuration}s linear forwards`,
                 transform: 'translateX(100vw)'
               }}
-              onAnimationEnd={handleAnimationEnd}
-            >
-              <div className="inline-flex items-center" style={{ fontSize: 0 }}>
-                <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
+              onAnimationEnd={handleAnimationEnd}                                  >
+              <div className="inline-flex items-center" style={{ fontSize: 0 }}>                                                                              <h3 className="premium-title inline-block text-base" style={{ fontSize: '1rem' }} data-text={message}>
                   {message}
                 </h3>
               </div>
@@ -477,8 +467,7 @@ function UpcomingBanner({ holiday, onNavigate }) {
 ---------------------------------- */
 
 function SnowLayer({ isMobile }) {
-  const snowCount = isMobile ? 25 : 60;
-  const snowflakes = Array.from({ length: snowCount });
+  const snowCount = isMobile ? 25 : 60;                                  const snowflakes = Array.from({ length: snowCount });
 
   return (
     <div className="snow-container">
@@ -491,11 +480,9 @@ function SnowLayer({ isMobile }) {
             animationDuration: `${5 + Math.random() * 5}s`,
             opacity: Math.random(),
             fontSize: `${8 + Math.random() * 10}px`,
-          }}
-        >
+          }}                                                                   >
           ❄
-        </div>
-      ))}
+        </div>                                                               ))}
     </div>
   );
 }
