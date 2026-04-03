@@ -79,13 +79,13 @@ export default function RecentWinners() {
 
         /* Faint rainbow border animation */
         @keyframes rainbowBorder {
-          0% { border-color: rgba(255, 0, 0, 0.3); }
-          17% { border-color: rgba(255, 136, 0, 0.3); }
-          33% { border-color: rgba(255, 255, 0, 0.3); }
-          50% { border-color: rgba(0, 255, 0, 0.3); }
-          67% { border-color: rgba(0, 136, 255, 0.3); }
-          83% { border-color: rgba(68, 0, 255, 0.3); }
-          100% { border-color: rgba(255, 0, 0, 0.3); }
+          0% { border-color: rgba(255, 0, 0, 0.1); }
+          17% { border-color: rgba(255, 136, 0, 0.1); }
+          33% { border-color: rgba(255, 255, 0, 0.1); }
+          50% { border-color: rgba(0, 255, 0, 0.1); }
+          67% { border-color: rgba(0, 136, 255, 0.1); }
+          83% { border-color: rgba(68, 0, 255, 0.1); }
+          100% { border-color: rgba(255, 0, 0, 0.1); }
         }
 
         .premium-title {
