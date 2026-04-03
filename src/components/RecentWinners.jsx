@@ -156,14 +156,16 @@ export default function RecentWinners() {
           height: 3rem;
           display: flex;
           align-items: center;
+          border: none;
         }
 
-        /* Top and bottom rainbow gradient lines */
+        /* Top and bottom rainbow gradient lines - NO solid borders */
         .marquee-container::before,
         .marquee-container::after {
           content: '';
           position: absolute;
           left: 0;
+          right: 0;
           width: 100%;
           height: 2px;
           background: linear-gradient(
@@ -178,6 +180,7 @@ export default function RecentWinners() {
           );
           background-size: 200% auto;
           animation: rainbowLine 4s linear infinite;
+          pointer-events: none;
         }
 
         .marquee-container::before {
