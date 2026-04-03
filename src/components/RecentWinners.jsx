@@ -10,7 +10,8 @@ export default function RecentWinners() {
 
   useEffect(() => {
     const fetchWinners = async () => {
-      try {                                                                    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
         const data = await res.json();
         setShow(data.show);
         setWinners(data.winners);
@@ -19,13 +20,16 @@ export default function RecentWinners() {
         setShow(false);
         setWinners([]);
       } finally {
-        setLoading(false);                                                   }
-    };                                                                     fetchWinners();
+        setLoading(false);
+      }
+    };
+    fetchWinners();
   }, []);
 
   // Statement text
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
-                                                                         // Build winner text - include ALL winners, each as a separate item
+
+  // Build winner text - include ALL winners, each as a separate item
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${
@@ -40,7 +44,8 @@ export default function RecentWinners() {
 
   if (!show || winners.length === 0) return null;
 
-  // Calculate animation duration based on content length                const messageLength = combinedMessage.length;
+  // Calculate animation duration based on content length
+  const messageLength = combinedMessage.length;
   const animationDuration = Math.max(20, Math.min(45, messageLength * 0.08));
 
   // Handle animation end - restart animation
@@ -53,18 +58,21 @@ export default function RecentWinners() {
         }
       }, 10);
     }
-  };                                                                   
+  };
+
   return (
     <>
       <style>{`
         /* Premium text styles – adapted from HolidaySystem */
         @keyframes colorWave {
-          0% { background-position: 0% 50%; }                                    100% { background-position: 200% 50%; }
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
         }
 
         @keyframes zebraMove {
           0% { background-position: 0 0; }
-          100% { background-position: 40px 40px; }                             }
+          100% { background-position: 40px 40px; }
+        }
 
         @keyframes scrollOnce {
           0% { transform: translateX(100vw); }
@@ -77,17 +85,20 @@ export default function RecentWinners() {
           100% { background-position: 200% 50%; }
         }
 
-        .premium-title {                                                         position: relative;
+        .premium-title {
+          position: relative;
           display: inline-block;
           font-weight: 600;
           letter-spacing: 0.04em;
-          color: transparent;                                                  }
+          color: transparent;
+        }
 
         .premium-title::before {
           content: attr(data-text);
           position: absolute;
           inset: 0;
-          background: linear-gradient(                                             90deg,
+          background: linear-gradient(
+            90deg,
             #ef4444,
             #ec4899,
             #d946ef,
@@ -103,7 +114,8 @@ export default function RecentWinners() {
         /* Black Friday style (used for recent winners) */
         .recent-winners .premium-title::before {
           background: linear-gradient(
-            90deg,                                                                 #000000,
+            90deg,
+            #000000,
             #1a5c1a,
             #1f2937,
             #111827,
@@ -113,11 +125,15 @@ export default function RecentWinners() {
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;                                  animation: colorWave 4s linear infinite;
-        }                                                                      .premium-title::after {
+          -webkit-text-fill-color: transparent;
+          animation: colorWave 4s linear infinite;
+        }
+
+        .premium-title::after {
           content: attr(data-text);
           position: absolute;
-          inset: 0;                                                              background: repeating-linear-gradient(
+          inset: 0;
+          background: repeating-linear-gradient(
             45deg,
             rgba(255,255,255,0.9) 0px,
             rgba(255,255,255,0.9) 3px,
@@ -127,18 +143,19 @@ export default function RecentWinners() {
           background-size: 40px 40px;
           animation: zebraMove 3s linear infinite;
           -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;                                  mix-blend-mode: overlay;
+          -webkit-text-fill-color: transparent;
+          mix-blend-mode: overlay;
           pointer-events: none;
         }
 
         .marquee-container {
           overflow: hidden;
-          white-space: nowrap;                                                   width: 100%;
+          white-space: nowrap;
+          width: 100%;
           position: relative;
           height: 3rem;
           display: flex;
           align-items: center;
-          position: relative;
         }
 
         /* Top and bottom rainbow gradient lines */
@@ -172,7 +189,8 @@ export default function RecentWinners() {
         }
 
         .scroll-once {
-          display: inline-block;                                                 white-space: nowrap;
+          display: inline-block;
+          white-space: nowrap;
           will-change: transform;
           transform: translateX(100vw);
         }
@@ -189,7 +207,8 @@ export default function RecentWinners() {
                   animation: `scrollOnce ${animationDuration}s linear forwards`,
                   transform: 'translateX(100vw)'
                 }}
-                onAnimationEnd={handleAnimationEnd}                                  >
+                onAnimationEnd={handleAnimationEnd}
+              >
                 <div className="inline-flex items-center" style={{ fontSize: 0 }}>
                   <h3
                     ref={contentRef}
@@ -204,6 +223,7 @@ export default function RecentWinners() {
             </div>
           </div>
         </div>
-      </section>                                                           </>
+      </section>
+    </>
   );
 }
