@@ -289,9 +289,9 @@ export default function Donations() {
                 className="bg-white rounded-lg p-4 mb-4"
                 style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
               >
-                <h2 
+                <h2
                   className="font-semibold text-lg mb-2 text-slate-800"                  style={{ fontSize: "1.19rem" }}
-                  
+
                 >
                   {program.title}
                 </h2>
@@ -318,7 +318,7 @@ export default function Donations() {
                     className="max-w-full h-auto object-contain rounded-md"
                   />
                 </div>
-                {/* Circular overlay image – only on the first image */}
+                {/* Circular overlay image – only on the first image, sized to 1/5 of main image */}
                 {currentImageIndex === 0 && (
                   <div
                     style={{
@@ -326,8 +326,9 @@ export default function Donations() {
                       bottom: '20px',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      width: '120px',
-                      height: '120px',
+                      width: '20%',
+                      height: 'auto',
+                      aspectRatio: '1/1',
                       backgroundColor: 'white',
                       borderRadius: '50%',
                       display: 'flex',
@@ -341,8 +342,8 @@ export default function Donations() {
                       src={program.overlayImage || program.image}
                       alt="overlay"
                       style={{
-                        width: '97%',
-                        height: '97%',
+                        width: '90%',
+                        height: '90%',
                         borderRadius: '50%',
                         objectFit: 'cover',
                       }}
