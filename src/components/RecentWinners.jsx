@@ -77,15 +77,15 @@ export default function RecentWinners() {
           100% { transform: translateX(-100%); }
         }
 
-        /* Rainbow border animation */
+        /* Faint rainbow border animation */
         @keyframes rainbowBorder {
-          0% { border-color: #ff0000; }
-          17% { border-color: #ff8800; }
-          33% { border-color: #ffff00; }
-          50% { border-color: #00ff00; }
-          67% { border-color: #0088ff; }
-          83% { border-color: #4400ff; }
-          100% { border-color: #ff0000; }
+          0% { border-color: rgba(255, 0, 0, 0.3); }
+          17% { border-color: rgba(255, 136, 0, 0.3); }
+          33% { border-color: rgba(255, 255, 0, 0.3); }
+          50% { border-color: rgba(0, 255, 0, 0.3); }
+          67% { border-color: rgba(0, 136, 255, 0.3); }
+          83% { border-color: rgba(68, 0, 255, 0.3); }
+          100% { border-color: rgba(255, 0, 0, 0.3); }
         }
 
         .premium-title {
