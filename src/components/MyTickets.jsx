@@ -401,8 +401,8 @@ export default function MyTickets() {
         </form>
 
         {/* Instruction text with added space below */}
-        <p className="mt-2 text-xs text-slate-500 mb-6">
-          Enter your ticket number to check if it matches any recent winners. If your ticket is a winner, you can choose to claim the prize item or cash out.
+        <p className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed">
+          Thank you for your trust and participation. Please enter your ticket number to check if it has been selected. If selected, you may claim the prize item or its cash value. We're grateful to have you with us. Best of luck!
         </p>
 
         {/* Plain rows for claims */}
@@ -466,7 +466,10 @@ export default function MyTickets() {
           {matchedWinner && isDrawDone && (
             <div className="mt-4 p-3 bg-green-50 border border-green-300 rounded-lg">
               <p className="text-sm font-semibold text-green-800">
-                🎉 Congratulations! Your ticket number matches a recent winner! 🎉
+                Congratulations! Your ticket number has been selected.
+              </p>
+              <p className="text-sm text-green-700 mt-1">
+                You may now choose to claim the prize item or receive its cash value. Thank you for being part of this campaign — we look forward to seeing you in our upcoming raffles.
               </p>
               <p className="text-sm text-green-700 mt-1">
                 You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
@@ -476,12 +479,13 @@ export default function MyTickets() {
 
           {/* Apology note when ticket not found (only after check) */}
           {ticketCheckPerformed && !matchedWinner && isDrawDone && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-300 rounded-lg">
-              <p className="text-sm font-semibold text-red-800">
-                ❌ Ticket Number Not Found
+            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm font-semibold text-amber-800">
+                🙏 Not This Time
               </p>
-              <p className="text-sm text-red-700 mt-1">
-                The ticket number you entered does not match any recent winners. Please double-check your ticket number or contact support if you believe this is an error.
+              <p className="text-sm text-amber-700 mt-1">
+                Thank you for participating. Your ticket number wasn't selected in this draw, but your support makes our programs possible. 
+                Stay tuned — a new raffle campaign begins soon. We'd love to have you with us again.
               </p>
             </div>
           )}
