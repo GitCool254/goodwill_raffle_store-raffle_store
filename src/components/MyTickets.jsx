@@ -405,7 +405,7 @@ export default function MyTickets() {
           className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed"
           style={{ fontSize: "0.875rem", color: "#64748b" }}
         >
-          Thank you for your trust and participation. Please enter your ticket number to check if it has been selected. If selected, you may claim the prize item or its cash value. We're grateful to have you with us. Best of luck!
+          Please enter your ticket number to check if it has been selected. If selected, you may claim the prize item or its cash value. We're grateful to have you with us. Best of luck!
         </p>
 
         {/* Plain rows for claims */}
@@ -484,8 +484,7 @@ export default function MyTickets() {
           {ticketCheckPerformed && !matchedWinner && isDrawDone && (
             <div 
               className="mt-4 p-3 bg-amber-50 rounded-lg"
-              style={{ fontSize: "1rem", color: "#64748b", marginBott
-om: "10px" }}
+              style={{ fontSize: "1rem", color: "#64748b", marginBottom: "10px" }}
             >
               <p 
                 className="text-sm font-semibold text-amber-800"
@@ -493,7 +492,7 @@ om: "10px" }}
                 🙏 Not This Time
               </p>
               <p className="text-sm text-amber-700 mt-1">
-                Thank you for participating. Your ticket number wasn't selected in this draw, but your support makes our programs possible.
+                Thank you for your trust and participation. Your ticket number wasn't selected in this draw, but your support makes our programs possible.
                 Stay tuned — a new raffle campaign begins soon. We'd love to have you with us again.
               </p>
             </div>
