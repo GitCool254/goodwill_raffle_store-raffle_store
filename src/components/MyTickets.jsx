@@ -401,7 +401,10 @@ export default function MyTickets() {
         </form>
 
         {/* Instruction text with added space below */}
-        <p className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed">
+        <p 
+          className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed"
+          style={{ fontSize: "0.875rem", color: "#64748b" }}
+        >
           Thank you for your trust and participation. Please enter your ticket number to check if it has been selected. If selected, you may claim the prize item or its cash value. We're grateful to have you with us. Best of luck!
         </p>
 
