@@ -65,6 +65,12 @@ export default function MyTickets() {
   // Determine if the draw is done (no tickets remaining)
   const isDrawDone = ticketStateLoaded && remainingTickets !== null && remainingTickets === 0;
 
+  // Validate ticket number format: GWS-XXXXXXXX (case-insensitive, 8 alphanumeric)
+  const isValidTicketFormat = (ticket) => {
+    const regex = /^[Gg][Ww][Ss]-[A-Za-z0-9]{8}$/;
+    return regex.test(ticket);
+  };
+
   function isValidEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
@@ -191,7 +197,7 @@ export default function MyTickets() {
     }
   }
 
-  // Ticket number lookup handler
+  // Ticket number lookup handler with format validation
   const handleTicketNumberLookup = (e) => {
     e.preventDefault();
     setTicketNumberError("");
@@ -203,8 +209,17 @@ export default function MyTickets() {
       return;
     }
 
+    // Validate format
+    if (!isValidTicketFormat(ticketNumber)) {
+      setTicketNumberError(
+        "Invalid ticket format. Please use format: GWS-XXXXXXXX (e.g., GWS-WA0P1KQ, case insensitive, 8 alphanumeric characters after the dash)."
+      );
+      return;
+    }
+
+    const normalizedTicket = ticketNumber.trim().toUpperCase();
     const foundWinner = recentWinners.find(
-      (winner) => winner.ticket_no === ticketNumber.trim().toUpperCase()
+      (winner) => winner.ticket_no.toUpperCase() === normalizedTicket
     );
 
     if (foundWinner) {
@@ -341,7 +356,7 @@ export default function MyTickets() {
         </h2>
 
         {!isDrawDone && (
-          <div 
+          <div
             className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-4"
             style={{ marginTop: "15px", marginBottom: "15px" }}
           >
@@ -355,7 +370,7 @@ export default function MyTickets() {
           <input
             type="text"
             value={ticketNumber}
-            placeholder="Enter Ticket Number (e.g., RF-48219)"
+            placeholder="Enter Ticket Number (e.g., GWS-WA0P1KQ)"
             onChange={(e) => setTicketNumber(e.target.value)}
             onFocus={() => setTicketNumberFocused(true)}
             onBlur={() => setTicketNumberFocused(false)}
@@ -401,7 +416,7 @@ export default function MyTickets() {
         </form>
 
         {/* Instruction text with added space below */}
-        <p 
+        <p
           className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed"
           style={{ fontSize: "0.875rem", color: "#64748b" }}
         >
@@ -482,11 +497,22 @@ export default function MyTickets() {
 
           {/* Apology note when ticket not found (only after check) */}
           {ticketCheckPerformed && !matchedWinner && isDrawDone && (
-            <div 
+            <div
               className="mt-4 p-3 bg-amber-50 rounded-lg"
               style={{ fontSize: "1rem", color: "#64748b", marginBottom: "10px" }}
             >
-              <p 
+              {/* Rainbow border line above the note */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "2px",
+                  marginBottom: "12px",
+                  background: "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
+                  backgroundSize: "200% auto",
+                  animation: "rainbowMove 4s linear infinite",
+                }}
+              />
+              <p
                 className="text-sm font-semibold text-amber-800"
               >
                 🙏 Not This Time
@@ -499,6 +525,14 @@ export default function MyTickets() {
           )}
         </div>
       </div>
+
+      {/* Add rainbow animation keyframes */}
+      <style>{`
+        @keyframes rainbowMove {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+      `}</style>
 
       {/* RESULTS */}
       {tickets && (
