@@ -65,11 +65,6 @@ export default function RecentWinners() {
           0% { transform: translateX(100vw); }
           100% { transform: translateX(-100%); }
         }
-        /* Rainbow gradient line animation – matches "Not This Time" block */
-        @keyframes rainbowMove {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 200% 50%; }
-        }
 
         .premium-title {
           position: relative;
@@ -144,7 +139,7 @@ export default function RecentWinners() {
           border: none;
         }
 
-        /* Top and bottom rainbow gradient lines – adapted from "Not This Time" block */
+        /* Simple solid lines (2px, light gray) instead of rainbow gradient */
         .marquee-container::before,
         .marquee-container::after {
           content: '';
@@ -153,18 +148,7 @@ export default function RecentWinners() {
           right: 0;
           width: 100%;
           height: 2px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 0, 0, 0.2),
-            rgba(255, 136, 0, 0.2),
-            rgba(255, 255, 0, 0.2),
-            rgba(0, 255, 0, 0.2),
-            rgba(0, 136, 255, 0.2),
-            rgba(68, 0, 255, 0.2),
-            rgba(255, 0, 0, 0.2)
-          );
-          background-size: 200% auto;
-          animation: rainbowMove 4s linear infinite;
+          background: #cbd5e1;  /* slate-300 – simple normal line */
           pointer-events: none;
         }
 
