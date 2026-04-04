@@ -147,7 +147,7 @@ export default function RecentWinners() {
           left: 0;
           right: 0;
           width: 100%;
-          height: 2px;
+          height: 0px;
           background: #cbd5e1;  /* slate-300 – simple normal line */
           pointer-events: none;
         }
