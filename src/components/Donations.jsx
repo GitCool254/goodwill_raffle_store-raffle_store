@@ -460,7 +460,7 @@ export default function Donations() {
       {/* Donation Button - with visible pulse ripple */}
       <div style={{ textAlign: 'center' }}>
         <a
-          href="https://www.sandbox.paypal.com/donate/?hosted_button_id=PH4HCPSBP5HQJ"
+          href="https://www.paypal.com/donate/?hosted_button_id=NH9S7JC5F3FPE"
           target="_blank"
           rel="noopener noreferrer"
           style={{

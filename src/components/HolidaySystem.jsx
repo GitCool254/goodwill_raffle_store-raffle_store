@@ -285,8 +285,8 @@ export default function HolidaySystem({ onNavigate }) {
           height: 3rem;
           display: flex;
           align-items: center;
-          border-top: 2px solid #cbd5e1;
-          border-bottom: 2px solid #cbd5e1;
+          border-top: 0px solid #cbd5e1;
+          border-bottom: 0px solid #cbd5e1;
         }
 
         .scroll-once {
