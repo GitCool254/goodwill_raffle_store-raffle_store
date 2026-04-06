@@ -46,13 +46,14 @@ export default function HolidaySystem({ onNavigate }) {
   const holidays = useMemo(() => {
     const year = now.getFullYear();
 
-    // Easter Sunday calculation
+    // Easter range: Good Friday → Easter Monday (4 days)
     const easterSunday = getEasterSunday(year);
-    const easterStart = new Date(easterSunday);
-    easterStart.setHours(0, 0, 0, 0);
-    const easterEnd = new Date(easterSunday);
-    easterEnd.setDate(easterSunday.getDate() + 6); // one week inclusive
-    easterEnd.setHours(23, 59, 59, 999);
+    const goodFriday = new Date(easterSunday);
+    goodFriday.setDate(easterSunday.getDate() - 2);
+    goodFriday.setHours(0, 0, 0, 0);
+    const easterMonday = new Date(easterSunday);
+    easterMonday.setDate(easterSunday.getDate() + 1);
+    easterMonday.setHours(23, 59, 59, 999);
 
     return [
       {
@@ -64,8 +65,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "christmas",
         name: "Christmas Raffle Specials",
-        start: new Date(year, 11, 10),
-        end: new Date(year, 11, 26),
+        start: new Date(year, 1, 25),
+        end: new Date(year, 1, 26),
       },
       {
         id: "newyear",
@@ -82,8 +83,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "easter",
         name: "Easter Celebration Draw",
-        start: easterStart,
-        end: easterEnd,
+        start: goodFriday,
+        end: easterMonday,
         countdown: true,
       },
       // General holiday (e.g., Ramadan) – adjust dates as needed
