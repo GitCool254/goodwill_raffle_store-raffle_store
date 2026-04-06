@@ -23,8 +23,36 @@ export default function HolidaySystem({ onNavigate }) {
 
   const month = now.getMonth();
   const isWinter = month === 11 || month === 0 || month === 1;
+
+  // Helper: calculate Easter Sunday for a given year
+  const getEasterSunday = (year) => {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    const d = Math.floor(b / 4);
+    const e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4);
+    const k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31);
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+  };
+
   const holidays = useMemo(() => {
     const year = now.getFullYear();
+
+    // Easter Sunday calculation
+    const easterSunday = getEasterSunday(year);
+    const easterStart = new Date(easterSunday);
+    easterStart.setHours(0, 0, 0, 0);
+    const easterEnd = new Date(easterSunday);
+    easterEnd.setDate(easterSunday.getDate() + 6); // one week inclusive
+    easterEnd.setHours(23, 59, 59, 999);
 
     return [
       {
@@ -36,8 +64,8 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "christmas",
         name: "Christmas Raffle Specials",
-        start: new Date(year, 1, 25),
-        end: new Date(year, 1, 26),
+        start: new Date(year, 11, 10),
+        end: new Date(year, 11, 26),
       },
       {
         id: "newyear",
@@ -54,8 +82,9 @@ export default function HolidaySystem({ onNavigate }) {
       {
         id: "easter",
         name: "Easter Celebration Draw",
-        start: new Date(year, 3, 3),
-        end: new Date(year, 3, 10),
+        start: easterStart,
+        end: easterEnd,
+        countdown: true,
       },
       // General holiday (e.g., Ramadan) – adjust dates as needed
       {
