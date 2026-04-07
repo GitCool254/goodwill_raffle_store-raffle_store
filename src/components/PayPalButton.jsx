@@ -1,4 +1,4 @@
-import { useEffect, useRef, useId } from "react";
+import { useEffect, useRef, useId, useState } from "react";
 
 export default function PayPalButton({
   amount,
@@ -10,11 +10,11 @@ export default function PayPalButton({
   name,
   email
 }) {
-  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-  const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`;
-  const containerId = useId(); // unique per instance
+  const [configLoaded, setConfigLoaded] = useState(false);
+  const [clientId, setClientId] = useState(null);
+  const containerId = useId();
 
-  // 🔒 Refs to prevent stale data
+  // Refs to prevent stale data
   const validateRef = useRef(validateForm);
   const successRef = useRef(onPaymentSuccess);
   const nameRef = useRef(name);
@@ -22,9 +22,9 @@ export default function PayPalButton({
   const quantityRef = useRef(quantity);
   const productRef = useRef(product);
   const amountRef = useRef(amount);
-  const buttonsRef = useRef(null); // store the PayPal buttons instance
+  const buttonsRef = useRef(null);
 
-  // 🔄 Keep refs always fresh
+  // Keep refs fresh
   useEffect(() => {
     validateRef.current = validateForm;
     successRef.current = onPaymentSuccess;
@@ -35,7 +35,34 @@ export default function PayPalButton({
     amountRef.current = amount;
   });
 
+  // Fetch PayPal client ID from backend
   useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/paypal_config`);
+        if (res.ok) {
+          const data = await res.json();
+          setClientId(data.client_id);
+        } else {
+          // Fallback to old environment variable
+          setClientId(import.meta.env.VITE_PAYPAL_CLIENT_ID);
+        }
+      } catch (err) {
+        console.error("Failed to fetch PayPal config, using fallback:", err);
+        setClientId(import.meta.env.VITE_PAYPAL_CLIENT_ID);
+      } finally {
+        setConfigLoaded(true);
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  // Load PayPal SDK when clientId is known
+  useEffect(() => {
+    if (!configLoaded || !clientId) return;
+
+    const scriptUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+
     function renderButton() {
       const container = document.getElementById(containerId);
       if (!container || !window.paypal) return;
@@ -82,17 +109,14 @@ export default function PayPalButton({
               .toUpperCase()}`
           };
 
-          // 🔹 Guaranteed ticket generation
           successRef.current({
             ...orderObj,
             orderId: order.id
           });
 
           try {
-            // Fetch backend-authoritative state
             const stateRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ticket_state`);
             const stateData = await stateRes.json();
-
             window.dispatchEvent(
               new CustomEvent("ticketsPurchased", {
                 detail: {
@@ -123,13 +147,12 @@ export default function PayPalButton({
       renderButton();
     }
 
-    // Cleanup on unmount
     return () => {
       if (buttonsRef.current) {
         buttonsRef.current.close();
       }
     };
-  }, []); // ✅ MUST stay empty
+  }, [configLoaded, clientId, containerId, description]);
 
   return <div id={containerId}></div>;
 }
