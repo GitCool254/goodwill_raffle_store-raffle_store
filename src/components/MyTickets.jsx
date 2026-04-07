@@ -352,6 +352,102 @@ export default function MyTickets() {
 
       <br />
 
+      {/* RESULTS - moved directly after the "View My Tickets" button */}
+      {tickets && (
+        <>
+          {tickets.length === 0 ? (
+            <div className="text-slate-600 mb-6">
+              No tickets found for this email address.
+            </div>
+          ) : (
+            <div className="space-y-4 mb-8">
+              {tickets.map((t, i) => (
+                <div
+                  key={i}
+                  className="border rounded-xl p-4 bg-white shadow-sm"
+                  style={{ paddingLeft: "10px", marginTop: "20px" }}
+                >
+                  {/* ORDER ID */}
+                  <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
+                    {t.order_id}
+                  </LabelWithBullet>
+
+                  {/* PRODUCT */}
+                  {(t.product_name || t.product_id || t.product) && (
+                    <LabelWithBullet label="Product:" className="text-sm text-slate-700 mt-2">
+                      {t.product_name || t.product_id || t.product}
+                    </LabelWithBullet>
+                  )}
+
+                  {/* MARKET PRICE (if winner) */}
+                  {t.winner && t.product_market_price && (
+                    <LabelWithBullet label="Market value:" className="text-sm text-emerald-600 font-semibold mt-2">
+                      ${t.product_market_price}
+                    </LabelWithBullet>
+                  )}
+
+                  {/* QUANTITY */}
+                  {typeof t.quantity === "number" && (
+                    <LabelWithBullet label="Quantity:" className="text-sm text-slate-700 mt-2">
+                      {t.quantity}
+                    </LabelWithBullet>
+                  )}
+
+                  {/* TICKET NUMBERS */}
+                  {Array.isArray(t.tickets) && t.tickets.length > 0 && (
+                    <LabelWithBullet label="Ticket No:" className="text-sm text-slate-700 mt-2">
+                      <div className="mt-1 flex flex-col gap-1">
+                        {t.tickets.map((no, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs font-mono text-slate-800"
+                          >
+                            {no}
+                          </span>
+                        ))}
+                      </div>
+                    </LabelWithBullet>
+                  )}
+
+                  {/* WINNER OPTIONS */}
+                  {t.winner && (
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+                      <p className="text-sm font-semibold text-yellow-800 mb-2">
+                        🎉 Congratulations! You are a winner! 🎉
+                      </p>
+                      <p className="text-sm text-yellow-700 mb-3">
+                        You can either receive the prize item or cash out the market value.
+                      </p>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => handleClaimItem(t.order_id)}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        >
+                          Claim Item
+                        </button>
+                        <button
+                          onClick={() => handleCashOut(t.order_id, t.product_market_price)}
+                          className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                        >
+                          Cash Out (${t.product_market_price})
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DATE / TIME */}
+                  {t.date && (
+                    <LabelWithBullet label="Generated on:" className="text-xs text-slate-500 mt-3">
+                      {new Date(t.date).toLocaleString()}
+                    </LabelWithBullet>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
       {/* TICKET NUMBER LOOKUP SECTION - Visible but disabled when draw not done */}
       <div className="mb-8" style={{ marginTop: "30px" }}>
         <h2 className="text-lg font-semibold mb-3" style={{ fontSize: "1.2rem" }}>
@@ -537,102 +633,6 @@ export default function MyTickets() {
           100% { background-position: 200% 50%; }
         }
       `}</style>
-
-      {/* RESULTS */}
-      {tickets && (
-        <>
-          {tickets.length === 0 ? (
-            <div className="text-slate-600">
-              No tickets found for this email address.
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {tickets.map((t, i) => (
-                <div
-                  key={i}
-                  className="border rounded-xl p-4 bg-white shadow-sm"
-                  style={{ paddingLeft: "10px", marginTop: "20px" }}
-                >
-                  {/* ORDER ID */}
-                  <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
-                    {t.order_id}
-                  </LabelWithBullet>
-
-                  {/* PRODUCT */}
-                  {(t.product_name || t.product_id || t.product) && (
-                    <LabelWithBullet label="Product:" className="text-sm text-slate-700 mt-2">
-                      {t.product_name || t.product_id || t.product}
-                    </LabelWithBullet>
-                  )}
-
-                  {/* MARKET PRICE (if winner) */}
-                  {t.winner && t.product_market_price && (
-                    <LabelWithBullet label="Market value:" className="text-sm text-emerald-600 font-semibold mt-2">
-                      ${t.product_market_price}
-                    </LabelWithBullet>
-                  )}
-
-                  {/* QUANTITY */}
-                  {typeof t.quantity === "number" && (
-                    <LabelWithBullet label="Quantity:" className="text-sm text-slate-700 mt-2">
-                      {t.quantity}
-                    </LabelWithBullet>
-                  )}
-
-                  {/* TICKET NUMBERS */}
-                  {Array.isArray(t.tickets) && t.tickets.length > 0 && (
-                    <LabelWithBullet label="Ticket No:" className="text-sm text-slate-700 mt-2">
-                      <div className="mt-1 flex flex-col gap-1">
-                        {t.tickets.map((no, idx) => (
-                          <span
-                            key={idx}
-                            className="text-xs font-mono text-slate-800"
-                          >
-                            {no}
-                          </span>
-                        ))}
-                      </div>
-                    </LabelWithBullet>
-                  )}
-
-                  {/* WINNER OPTIONS */}
-                  {t.winner && (
-                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
-                      <p className="text-sm font-semibold text-yellow-800 mb-2">
-                        🎉 Congratulations! You are a winner! 🎉
-                      </p>
-                      <p className="text-sm text-yellow-700 mb-3">
-                        You can either receive the prize item or cash out the market value.
-                      </p>
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => handleClaimItem(t.order_id)}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        >
-                          Claim Item
-                        </button>
-                        <button
-                          onClick={() => handleCashOut(t.order_id, t.product_market_price)}
-                          className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
-                        >
-                          Cash Out (${t.product_market_price})
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* DATE / TIME */}
-                  {t.date && (
-                    <LabelWithBullet label="Generated on:" className="text-xs text-slate-500 mt-3">
-                      {new Date(t.date).toLocaleString()}
-                    </LabelWithBullet>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </>
-      )}
     </div>
   );
 }
