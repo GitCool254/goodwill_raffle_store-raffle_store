@@ -12,6 +12,7 @@ export default function PayPalButton({
 }) {
   const [configLoaded, setConfigLoaded] = useState(false);
   const [clientId, setClientId] = useState(null);
+  const [sdkError, setSdkError] = useState(null);
   const containerId = useId();
 
   // Refs to prevent stale data
@@ -142,6 +143,10 @@ export default function PayPalButton({
       s.src = scriptUrl;
       s.async = true;
       s.onload = renderButton;
+      s.onerror = () => {
+        console.error("PayPal SDK failed to load");
+        setSdkError("Unable to load PayPal. Please check your internet connection or try again later.");
+      };
       document.body.appendChild(s);
     } else if (window.paypal) {
       renderButton();
@@ -153,6 +158,17 @@ export default function PayPalButton({
       }
     };
   }, [configLoaded, clientId, containerId, description]);
+
+  // Show error message if SDK loading failed
+  if (sdkError) {
+    return (
+      <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <p className="font-semibold">⚠️ Payment temporarily unavailable</p>
+        <p>{sdkError}</p>
+        <p className="mt-2 text-xs">Please refresh the page or contact support if the issue persists.</p>
+      </div>
+    );
+  }
 
   return <div id={containerId}></div>;
 }
