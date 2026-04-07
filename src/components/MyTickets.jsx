@@ -551,6 +551,7 @@ export default function MyTickets() {
                 <div
                   key={i}
                   className="border rounded-xl p-4 bg-white shadow-sm"
+                  style={{ paddingLeft: "10px" }}
                 >
                   {/* ORDER ID */}
                   <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
