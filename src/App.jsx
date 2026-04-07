@@ -1100,6 +1100,7 @@ export default function App() {
                           border: "none",
                           cursor: "pointer",
                           padding: 0,
+                          fontSize: "1.1rem",
                           font: "inherit"
                         }}
                         className="hover:underline"
