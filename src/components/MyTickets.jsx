@@ -466,7 +466,7 @@ export default function MyTickets() {
           <div className="flex items-center">
             <span
               className="w-24 text-sm text-slate-600"
-              style={{ marginRight: "10px", marginBottom: "20px" }}
+              style={{ marginRight: "10px" }}
             >
               Cash Out Money:
             </span>
@@ -551,7 +551,7 @@ export default function MyTickets() {
                 <div
                   key={i}
                   className="border rounded-xl p-4 bg-white shadow-sm"
-                  style={{ paddingLeft: "10px" }}
+                  style={{ paddingLeft: "10px", marginTop: "20px" }}
                 >
                   {/* ORDER ID */}
                   <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
