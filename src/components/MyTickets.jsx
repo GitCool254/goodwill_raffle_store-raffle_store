@@ -523,7 +523,9 @@ export default function MyTickets() {
         </p>
 
         {/* Plain rows for claims */}
-        <div className="space-y-3">
+        <div 
+          className="space-y-3"
+        >
           {/* Claims label row */}
           <div className="flex items-center">
             <span
