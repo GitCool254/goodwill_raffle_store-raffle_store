@@ -1087,10 +1087,25 @@ export default function App() {
 
                   <div
                     className="space-y-2 text-slate-700"
-                    style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0" }}
+                    style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0", paddingLeft: "10px" }}
                   >
                     <p>
-                      • <strong>Location:</strong> [EVENT PLACE]
+                      • <strong>Location:</strong>{" "}
+                      <button
+                        onClick={() => navigate("address")}
+                        style={{
+                          color: "#3b82f6",
+                          textDecoration: "none",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          font: "inherit"
+                        }}
+                        className="hover:underline"
+                      >
+                        Our Physical Stores
+                      </button>
                     </p>
                     <p>
                       • <strong>Date & Time:</strong> [EVENT DATE & TIME]
