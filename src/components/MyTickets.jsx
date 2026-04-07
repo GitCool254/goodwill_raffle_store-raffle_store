@@ -248,7 +248,7 @@ export default function MyTickets() {
     >
       <h1
         className="font-bold mb-4"
-        style={{ fontSize: "24px" }}
+        style={{ fontSize: "1.2rem" }}
       >
         🎟️ My Tickets
       </h1>
@@ -466,7 +466,7 @@ export default function MyTickets() {
           <div className="flex items-center">
             <span
               className="w-24 text-sm text-slate-600"
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "10px", marginBottom: "20px" }}
             >
               Cash Out Money:
             </span>
