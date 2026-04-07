@@ -310,7 +310,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setIsTicketGenerating(true);
-              // Generate tickets silently
+              // --- NEW: compute user's local datetime for backend holiday check ---
+              const now = new Date();
+              const userLocalTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+                .toISOString()
+                .slice(0, 19);
+              // --- end new code ---
               const payload = {
                 name,
                 email: email.trim().toLowerCase(),
@@ -318,6 +323,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 ticket_price: product.ticketPrice,
                 order_id: orderObj.orderId,
                 product_title: product.title,
+                user_local_time: userLocalTime,   // 👈 added
               };
               const nonce = crypto.randomUUID();
               const payloadWithNonce = { ...payload, nonce };
