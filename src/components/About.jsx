@@ -137,6 +137,11 @@ export default function About({ navigate }) {
           <strong>Cash‑Out Option</strong> — Winners can choose the prize item or
           receive its fair market value in cash. Enjoy flexibility and peace of mind.
         </li>
+        <li>
+          <strong>Every Ticket Gives Back</strong> — Each raffle entry supports
+          Goodwill Foundation, a church‑driven initiative focused on uplifting
+          under‑resourced and vulnerable communities through education, palliative care, and feeding programs. 
+        </li>
       </ul>
 
       {/* SECTION: COMMITMENT */}
