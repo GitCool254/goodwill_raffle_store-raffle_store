@@ -21,29 +21,28 @@ export default function RecentlyViewed({ onProductClick }) {
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-slate-800">Recently Viewed</h2>
-        {/* Optional "See All" link – could link to a full history page, but we skip for now */}
       </div>
 
       {/* Horizontal scrollable product row */}
-      <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-thin">
+      <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-thin">
         {recentProducts.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-36 cursor-pointer hover:shadow-md transition"
+            className="flex-shrink-0 w-20 cursor-pointer hover:shadow-md transition"
             onClick={() => onProductClick(product)}
           >
-            <div className="bg-gray-100 rounded-lg p-2">
+            <div className="bg-gray-100 rounded-md p-1">
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-full h-24 object-contain"
+                className="w-full h-12 object-contain"
               />
             </div>
-            <div className="mt-2 text-sm font-medium text-slate-800 truncate">
+            <div className="mt-1 text-xs font-medium text-slate-800 truncate">
               {product.title}
             </div>
             <div className="text-xs text-slate-500">
-              ${product.ticketPrice} / ticket
+              ${product.ticketPrice}/ticket
             </div>
           </div>
         ))}
