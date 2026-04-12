@@ -61,7 +61,7 @@ export default function RecentlyViewed({ onProductClick }) {
                 alt={product.title}
                 style={{
                   width: '100%',
-                  height: '80px',
+                  height: '140px',
                   objectFit: 'contain',
                 }}
               />
