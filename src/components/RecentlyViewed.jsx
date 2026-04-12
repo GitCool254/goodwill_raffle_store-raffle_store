@@ -23,25 +23,63 @@ export default function RecentlyViewed({ onProductClick }) {
         <h2 className="text-lg font-semibold text-slate-800">Recently Viewed</h2>
       </div>
 
-      {/* Horizontal scrollable product row */}
-      <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-thin">
+      {/* Horizontal scrollable product row with inline styles for gap */}
+      <div
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          gap: '20px',
+          paddingBottom: '8px',
+        }}
+      >
         {recentProducts.map((product) => (
           <div
             key={product.id}
-            className="flex-shrink-0 w-20 cursor-pointer hover:shadow-md transition"
+            style={{
+              flexShrink: 0,
+              width: '80px',
+              cursor: 'pointer',
+              transition: 'box-shadow 0.2s ease',
+            }}
+            className="hover:shadow-md"
             onClick={() => onProductClick(product)}
           >
-            <div className="bg-gray-100 rounded-md p-1">
+            <div
+              style={{
+                backgroundColor: '#f3f4f6',
+                borderRadius: '6px',
+                padding: '4px',
+              }}
+            >
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-full h-12 object-contain"
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  objectFit: 'contain',
+                }}
               />
             </div>
-            <div className="mt-1 text-xs font-medium text-slate-800 truncate">
+            <div
+              style={{
+                marginTop: '4px',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#1e293b',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {product.title}
             </div>
-            <div className="text-xs text-slate-500">
+            <div
+              style={{
+                fontSize: '12px',
+                color: '#64748b',
+              }}
+            >
               ${product.ticketPrice}/ticket
             </div>
           </div>
