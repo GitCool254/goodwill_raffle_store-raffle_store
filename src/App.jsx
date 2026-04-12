@@ -569,9 +569,10 @@ export default function App() {
               display: "inline-block",
               fontWeight: 500,
               color: "#94a3b8",
+              marginTop: "15px",
             }}
           >
-            1000+ Winners Since Launch
+            6500+ Winners Since Launch
           </p>
 
           <p
@@ -1033,7 +1034,10 @@ export default function App() {
               </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
               </p>
-              <div className="mt-3 flex items-center justify-between">
+              <div 
+                className="mt-3 flex items-center justify-between"
+                style={{ marginBottom: "15px" }}
+              >
                 <div className="text-slate-700 font-medium">                             $ {p.ticketPrice} / ticket
                 </div>                                                                 <button
                   className="bg-sky-600 text-white px-3 py-1 rounded-lg"
