@@ -23,7 +23,6 @@ export default function RecentlyViewed({ onProductClick }) {
         <h2 
           className="text-lg font-semibold text-slate-800"
           style={{ fontSize: "1.1rem", color: "#94a3b8" }}
-        > }}
         >
           Recently Viewed
         </h2>
@@ -62,7 +61,7 @@ export default function RecentlyViewed({ onProductClick }) {
                 alt={product.title}
                 style={{
                   width: '100%',
-                  height: '48px',
+                  height: '64px',
                   objectFit: 'contain',
                 }}
               />
