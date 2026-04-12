@@ -548,6 +548,7 @@ export default function App() {
           style={{
             border: "1px solid #e2e8f0",
             backgroundColor: "#f8fafc",
+            marginTop: "15px",
             backdropFilter: "blur(6px)",
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
