@@ -17,6 +17,7 @@ import Donations from "./components/Donations"; // 👈 new import
 import TermsOfUse from "./components/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import RecentWinners from "./components/RecentWinners";
+import RecentlyViewed from "./components/RecentlyViewed"; // 👈 new import
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -272,7 +273,22 @@ export default function App() {
       window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  // 👇 NEW: Add to recently viewed (localStorage)
+  function addToRecentlyViewed(product) {
+    if (!product || !product.id) return;
+    const stored = localStorage.getItem("gw_recently_viewed");
+    let recent = stored ? JSON.parse(stored) : [];
+    // Remove if already exists
+    recent = recent.filter((p) => p.id !== product.id);
+    // Add to front
+    recent.unshift(product);
+    // Keep only last 10
+    if (recent.length > 10) recent.pop();
+    localStorage.setItem("gw_recently_viewed", JSON.stringify(recent));
+  }
+
   function openProduct(p) {
+    addToRecentlyViewed(p);  // 👈 record this product
     setSelected(p);
     navigate("detail");
   }
@@ -1127,7 +1143,10 @@ export default function App() {
             )}
                                                                                    <Home />
             <br />
-            <AutoRotateWinners />                                                </>
+            <AutoRotateWinners />
+            <RecentlyViewed onProductClick={openProduct} />  {/* 👈 Added */}
+            <RecentWinners />
+          </>
         )}
 
         {view === "detail" && selected && (
