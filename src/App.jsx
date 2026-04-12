@@ -1025,7 +1025,10 @@ export default function App() {
                     borderRadius: '0.5rem',
                     cursor: 'zoom-in'
                   }}
-                  onClick={() => openImage(p.images?.length ? p.images : [p.image], 0)}
+                  onClick={() => {
+                    addToRecentlyViewed(p);
+                    openImage(p.images?.length ? p.images : [p.image], 0);
+                  }}
                 />
               </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
