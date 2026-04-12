@@ -1034,7 +1034,7 @@ export default function App() {
               </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
               <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
               </p>
-              <div 
+              <div
                 className="mt-3 flex items-center justify-between"
                 style={{ marginBottom: "15px" }}
               >
@@ -1046,6 +1046,15 @@ export default function App() {
                   Enter
                 </button>
               </div>
+              {/* Faint rainbow line below price/button row */}
+              <div
+                style={{
+                  width: '100%',
+                  height: '1px',
+                  background: 'linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))',
+                  marginBottom: '12px',
+                }}
+              />
               {p.winner && (
                 <div className="mt-3 text-sm text-green-700">
                   Winner: {p.winner.name} ({p.winner.ticketNo})
