@@ -20,7 +20,13 @@ export default function RecentlyViewed({ onProductClick }) {
     <div className="max-w-6xl mx-auto px-4 py-6 my-6 bg-white rounded-lg shadow-sm">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-slate-800">Recently Viewed</h2>
+        <h2 
+          className="text-lg font-semibold text-slate-800"
+          style={{ fontSize: "1.1rem", color: "#94a3b8" }}
+        > }}
+        >
+          Recently Viewed
+        </h2>
       </div>
 
       {/* Horizontal scrollable product row with inline styles for gap */}
@@ -47,7 +53,7 @@ export default function RecentlyViewed({ onProductClick }) {
             <div
               style={{
                 backgroundColor: '#f3f4f6',
-                borderRadius: '6px',
+                borderRadius: '0px',
                 padding: '4px',
               }}
             >
