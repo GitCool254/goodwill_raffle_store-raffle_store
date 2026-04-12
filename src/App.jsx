@@ -1143,8 +1143,8 @@ export default function App() {
             )}
                                                                                    <Home />
             <br />
-            <AutoRotateWinners />
             <RecentlyViewed onProductClick={openProduct} />  {/* 👈 Added */}
+            <AutoRotateWinners />
             <RecentWinners />
           </>
         )}
