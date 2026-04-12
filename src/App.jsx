@@ -1052,7 +1052,7 @@ export default function App() {
                 style={{
                   width: '100%',
                   height: '1px',
-                  background: 'linear-gradient(90deg, rgba(255,0,0,0.3), rgba(255,136,0,0.3), rgba(255,255,0,0.3), rgba(0,255,0,0.3), rgba(0,136,255,0.3), rgba(68,0,255,0.3), rgba(255,0,0,0.3))',
+                  background: 'linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))',
                   marginBottom: '16px',
                 }}
               />
