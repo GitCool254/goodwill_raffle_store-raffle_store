@@ -409,13 +409,13 @@ export default function MyTickets() {
 
       <h2
         className="text-lg font-semibold mb-2"
-        style={{ fontSize: "1.2rem", paddingLeft: "5px" }}
+        style={{ fontSize: "1.2rem" }}
       >
         Refer a Friend, Earn Free Tickets
       </h2>
 
       {/* REFERRAL SECTION */}
-      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px" }}>
         <p className="text-sm text-slate-600 mb-3">
           Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
         </p>
