@@ -418,60 +418,6 @@ export default function MyTickets() {
 
       <br />
 
-      <h2
-        className="text-lg font-semibold mb-2"
-        style={{ fontSize: "1.2rem" }}
-      >
-        Refer a Friend, Earn Free Tickets
-      </h2>
-
-      {/* REFERRAL SECTION */}
-      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px", marginBottom: "10px" }}>
-        <p className="text-sm text-slate-600 mb-3">
-          Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
-        </p>
-        {email ? (
-          <>
-            <div className="flex flex-col gap-2 mb-3">
-              <button
-                onClick={fetchReferralCode}
-                className="bg-sky-600 text-white px-3 py-1 rounded text-sm self-start"
-                style={{ marginBottom: "10px" }}
-              >
-                Get My Referral Code
-              </button>
-              {referralCode && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-slate-700" style={{ marginRight: "5px" }}>Referral code:</span>
-                    <code className="bg-gray-100 px-2 py-1 rounded text-sm">
-                      {referralCode}
-                    </code>
-                  </div>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    }}
-                    className="text-sky-600 text-sm underline self-start" style={{ marginBottom: "10px" }}
-                  >
-                    {copied ? "Copied!" : "Copy link"}
-                  </button>
-                </>
-              )}
-            </div>
-            {referralCredits > 0 && (
-              <div className="text-sm text-emerald-700 font-medium">
-                🎉 You have {referralCredits} free ticket credit(s)! Use them on your next purchase.
-              </div>
-            )}
-          </>
-        ) : (
-          <p className="text-sm text-slate-500">Enter your email above to get your referral code.</p>
-        )}
-      </div>
-
       {/* RESULTS - moved directly after the "View My Tickets" button */}
       {tickets && (
         <>
@@ -567,6 +513,71 @@ export default function MyTickets() {
           )}
         </>
       )}
+
+      <h2
+        className="text-lg font-semibold mb-2"
+        style={{ fontSize: "1.2rem" }}
+      >
+        Refer a Friend, Earn Free Tickets
+      </h2>
+
+      {/* REFERRAL SECTION */}
+      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px", marginBottom: "10px" }}>
+        <p className="text-sm text-slate-600 mb-3">
+          Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
+        </p>
+        {email ? (
+          <>
+            <div className="flex flex-col gap-2 mb-3">
+              <button
+                onClick={fetchReferralCode}
+                className="bg-sky-600 text-white px-3 py-1 rounded text-sm self-start"
+                style={{ marginBottom: "10px" }}
+              >
+                Get My Referral Code
+              </button>
+              {referralCode && (
+                <>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-slate-700" style={{ marginRight: "5px" }}>Referral code:</span>
+                    <code className="bg-gray-100 px-2 py-1 rounded text-sm">
+                      {referralCode}
+                    </code>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    className="text-sky-600 text-sm underline self-start"
+                    style={{ marginBottom: "10px" }}
+                  >
+                    {copied ? "Copied!" : "Copy link"}
+                  </button>
+                  {/* Informative note after copy link */}
+                  <p
+                    className="mt-1"
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#64748b",
+                    }}
+                  >
+                    Share this link with friends. When they purchase 3 or more tickets, you earn 1 free ticket credit!
+                  </p>
+                </>
+              )}
+            </div>
+            {referralCredits > 0 && (
+              <div className="text-sm text-emerald-700 font-medium">
+                🎉 You have {referralCredits} free ticket credit(s)! Use them on your next purchase.
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-slate-500">Enter your email above to get your referral code.</p>
+        )}
+      </div>
 
       {/* TICKET NUMBER LOOKUP SECTION - Visible but disabled when draw not done */}
       <div className="mb-8" style={{ marginTop: "30px" }}>
