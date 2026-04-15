@@ -443,7 +443,7 @@ export default function MyTickets() {
               {referralCode && (
                 <>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-slate-700">Referral code:</span>
+                    <span className="text-sm font-medium text-slate-700" style={{ marginRight: "5px" }}>Referral code:</span>
                     <code className="bg-gray-100 px-2 py-1 rounded text-sm">
                       {referralCode}
                     </code>
@@ -454,7 +454,7 @@ export default function MyTickets() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="text-sky-600 text-sm underline self-start"
+                    className="text-sky-600 text-sm underline self-start" style={{ marginBottom: "10px" }}
                   >
                     {copied ? "Copied!" : "Copy link"}
                   </button>
