@@ -22,6 +22,15 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [useFreeTicket, setUseFreeTicket] = useState(false);
   const [referralCredits, setReferralCredits] = useState(0);
 
+  // Auto‑read referral code from URL (?ref=CODE)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get("ref");
+    if (refCode) {
+      setReferralCode(refCode);
+    }
+  }, []);
+
   // Description toggle
   const DESCRIPTION_LIMIT = 70;
   const MAX_TICKETS_PER_ORDER = 10;
