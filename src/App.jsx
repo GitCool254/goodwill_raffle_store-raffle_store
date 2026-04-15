@@ -1087,7 +1087,9 @@ export default function App() {
 
       {view !== "image" && (
         <>
-          <HolidaySystem onNavigate={navigate} />
+          {remainingTickets !== null && remainingTickets > 0 && (
+            <HolidaySystem onNavigate={navigate} />
+          )}
           <RecentWinners />
         </>
       )}
