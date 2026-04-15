@@ -426,7 +426,7 @@ export default function MyTickets() {
       </h2>
 
       {/* REFERRAL SECTION */}
-      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px" }}>
+      <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px", marginBottom: "10px" }}>
         <p className="text-sm text-slate-600 mb-3">
           Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
         </p>
@@ -436,14 +436,18 @@ export default function MyTickets() {
               <button
                 onClick={fetchReferralCode}
                 className="bg-sky-600 text-white px-3 py-1 rounded text-sm self-start"
+                style={{ marginBottom: "10px" }}
               >
                 Get My Referral Code
               </button>
               {referralCode && (
                 <>
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm w-fit">
-                    {referralCode}
-                  </code>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-slate-700">Referral code:</span>
+                    <code className="bg-gray-100 px-2 py-1 rounded text-sm">
+                      {referralCode}
+                    </code>
+                  </div>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
