@@ -371,7 +371,7 @@ export default function MyTickets() {
             color: "#64748b",
           }}
         >
-          Simply enter your email above, then click "Get My Referral Code" below to receive your unique referral link.
+          ℹ️  Simply enter your email, then click "Get My Referral Code" below to receive your unique referral link.
         </p>
       </div>
 
