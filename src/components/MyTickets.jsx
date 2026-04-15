@@ -360,8 +360,19 @@ export default function MyTickets() {
         </form>
 
         <hr className="my-6" />
-        Enter the email address you used during ticket purchase to view all your
-        generated tickets.
+        <p className="text-sm text-slate-600">
+          Enter the email address you used during ticket purchase to view all your generated tickets.
+        </p>
+        {/* NEW NOTE: referral code info */}
+        <p
+          className="mt-1"
+          style={{
+            fontSize: "0.75rem",
+            color: "#64748b",
+          }}
+        >
+          Simply enter your email above, then click "Get My Referral Code" below to receive your unique referral link.
+        </p>
       </div>
 
       {/* EMAIL FORM */}
@@ -421,27 +432,29 @@ export default function MyTickets() {
         </p>
         {email ? (
           <>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex flex-col gap-2 mb-3">
               <button
                 onClick={fetchReferralCode}
-                className="bg-sky-600 text-white px-3 py-1 rounded text-sm"
+                className="bg-sky-600 text-white px-3 py-1 rounded text-sm self-start"
               >
                 Get My Referral Code
               </button>
               {referralCode && (
-                <div className="flex items-center gap-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">{referralCode}</code>
+                <>
+                  <code className="bg-gray-100 px-2 py-1 rounded text-sm w-fit">
+                    {referralCode}
+                  </code>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="text-sky-600 text-sm underline"
+                    className="text-sky-600 text-sm underline self-start"
                   >
                     {copied ? "Copied!" : "Copy link"}
                   </button>
-                </div>
+                </>
               )}
             </div>
             {referralCredits > 0 && (
@@ -626,9 +639,7 @@ export default function MyTickets() {
         </p>
 
         {/* Plain rows for claims */}
-        <div
-          className="space-y-3"
-        >
+        <div className="space-y-3">
           {/* Claims label row */}
           <div className="flex items-center">
             <span
@@ -640,10 +651,7 @@ export default function MyTickets() {
           </div>
 
           {/* Prize Item button row */}
-          <div
-            className="flex items-center"
-            style={{ marginBottom: "5px" }}
-          >
+          <div className="flex items-center" style={{ marginBottom: "5px" }}>
             <span
               className="w-24 text-sm text-slate-600"
               style={{ marginRight: "10px" }}
@@ -717,9 +725,7 @@ export default function MyTickets() {
                   animation: "rainbowMove 4s linear infinite",
                 }}
               />
-              <p
-                className="text-sm font-semibold text-amber-800"
-              >
+              <p className="text-sm font-semibold text-amber-800">
                 🙏 Not This Time
               </p>
               <p className="text-sm text-amber-700 mt-1">
