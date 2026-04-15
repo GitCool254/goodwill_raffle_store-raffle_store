@@ -30,6 +30,11 @@ export default function MyTickets() {
 
   const [focusedField, setFocusedField] = useState(null);
 
+  // --- Referral states ---
+  const [referralCode, setReferralCode] = useState("");
+  const [referralCredits, setReferralCredits] = useState(0);
+  const [copied, setCopied] = useState(false);
+
   // Fetch ticket state to determine if draw has been done
   useEffect(() => {
     const fetchTicketState = async () => {
@@ -241,6 +246,56 @@ export default function MyTickets() {
     alert(`You have chosen to receive the prize item for order ${orderId}. Our team will contact you shortly.`);
   }
 
+  // --- Referral handlers ---
+  const fetchReferralCode = async () => {
+    if (!email || !isValidEmail(email)) {
+      alert("Please enter a valid email address first.");
+      return;
+    }
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
+      });
+      const data = await res.json();
+      if (data.code) {
+        setReferralCode(data.code);
+        setReferralCredits(data.credits || 0);
+      } else {
+        alert("Could not generate referral code.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to fetch referral code.");
+    }
+  };
+
+  const fetchReferralRewards = async () => {
+    if (!email || !isValidEmail(email)) return;
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/rewards`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
+      });
+      const data = await res.json();
+      setReferralCredits(data.credits || 0);
+    } catch (err) {
+      console.error("Failed to fetch referral rewards:", err);
+    }
+  };
+
+  // When email changes (and is valid), fetch rewards (credits)
+  useEffect(() => {
+    if (email && isValidEmail(email)) {
+      fetchReferralRewards();
+    } else {
+      setReferralCredits(0);
+      setReferralCode("");
+    }
+  }, [email]);
+
   return (
     <div
       className="max-w-3xl mx-auto p-6 text-left"
@@ -351,6 +406,48 @@ export default function MyTickets() {
       </form>
 
       <br />
+
+      {/* REFERRAL SECTION */}
+      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <h2 className="text-lg font-semibold mb-2">Refer a Friend, Earn Free Tickets</h2>
+        <p className="text-sm text-slate-600 mb-3">
+          Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
+        </p>
+        {email ? (
+          <>
+            <div className="flex items-center gap-2 mb-3">
+              <button
+                onClick={fetchReferralCode}
+                className="bg-sky-600 text-white px-3 py-1 rounded text-sm"
+              >
+                Get My Referral Code
+              </button>
+              {referralCode && (
+                <div className="flex items-center gap-2">
+                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">{referralCode}</code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    className="text-sky-600 text-sm underline"
+                  >
+                    {copied ? "Copied!" : "Copy link"}
+                  </button>
+                </div>
+              )}
+            </div>
+            {referralCredits > 0 && (
+              <div className="text-sm text-emerald-700 font-medium">
+                🎉 You have {referralCredits} free ticket credit(s)! Use them on your next purchase.
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-slate-500">Enter your email above to get your referral code.</p>
+        )}
+      </div>
 
       {/* RESULTS - moved directly after the "View My Tickets" button */}
       {tickets && (
@@ -523,7 +620,7 @@ export default function MyTickets() {
         </p>
 
         {/* Plain rows for claims */}
-        <div 
+        <div
           className="space-y-3"
         >
           {/* Claims label row */}

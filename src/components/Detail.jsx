@@ -17,6 +17,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isTicketGenerating, setIsTicketGenerating] = useState(false);
 
+  // --- Referral states ---
+  const [referralCode, setReferralCode] = useState("");
+  const [useFreeTicket, setUseFreeTicket] = useState(false);
+  const [referralCredits, setReferralCredits] = useState(0);
+
   // Description toggle
   const DESCRIPTION_LIMIT = 70;
   const MAX_TICKETS_PER_ORDER = 10;
@@ -36,6 +41,22 @@ export default function Detail({ product, openImage, remainingTickets }) {
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;
   const safeQty = Number(quantity) || 0;
   const amount = Number((price * safeQty).toFixed(2));
+
+  // Fetch referral credits when email changes
+  useEffect(() => {
+    if (email && /^\S+@\S+\.\S+$/.test(email)) {
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/rewards`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
+      })
+        .then(res => res.json())
+        .then(data => setReferralCredits(data.credits || 0))
+        .catch(err => console.error("Failed to fetch referral credits", err));
+    } else {
+      setReferralCredits(0);
+    }
+  }, [email]);
 
   function validateForm() {
     const newErrors = {};
@@ -286,6 +307,32 @@ export default function Detail({ product, openImage, remainingTickets }) {
             )}
           </div>
 
+          {/* REFERRAL CODE INPUT (optional) */}
+          <div className="mb-3 max-w-md mx-auto text-left">
+            <label className="block mb-1 text-sm font-medium">Referral code (if any)</label>
+            <input
+              type="text"
+              value={referralCode}
+              onChange={(e) => setReferralCode(e.target.value)}
+              placeholder="Enter referral code"
+              className="p-2 w-full rounded border border-gray-300"
+            />
+          </div>
+
+          {/* FREE TICKET CREDIT CHECKBOX (only if credits > 0) */}
+          {referralCredits > 0 && (
+            <div className="mb-3 max-w-md mx-auto text-left">
+              <label className="flex items-center gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={useFreeTicket}
+                  onChange={(e) => setUseFreeTicket(e.target.checked)}
+                />
+                Use 1 free ticket credit (you have {referralCredits})
+              </label>
+            </div>
+          )}
+
           <br />
 
           <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
@@ -323,7 +370,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 ticket_price: product.ticketPrice,
                 order_id: orderObj.orderId,
                 product_title: product.title,
-                user_local_time: userLocalTime,   // 👈 added
+                user_local_time: userLocalTime,
+                referral_code: referralCode,           // 👈 added
+                use_free_ticket: useFreeTicket,        // 👈 added
               };
               const nonce = crypto.randomUUID();
               const payloadWithNonce = { ...payload, nonce };
