@@ -551,7 +551,7 @@ export default function MyTickets() {
                       setTimeout(() => setCopied(false), 2000);
                     }}
                     className="text-sky-600 text-sm underline self-start"
-                    style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "5px" }}
                   >
                     {copied ? "Copied!" : "Copy link"}
                   </button>
