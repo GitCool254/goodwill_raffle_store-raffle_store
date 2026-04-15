@@ -367,7 +367,7 @@ export default function MyTickets() {
         <p
           className="mt-1"
           style={{
-            fontSize: "0.75rem",
+            fontSize: "0.875rem",
             color: "#64748b",
           }}
         >
@@ -559,11 +559,11 @@ export default function MyTickets() {
                   <p
                     className="mt-1"
                     style={{
-                      fontSize: "0.75rem",
+                      fontSize: "0.875rem",
                       color: "#64748b",
                     }}
                   >
-                    Share this link with friends. When they purchase 3 or more tickets, you earn 1 free ticket credit!
+                    Share this link with friends to  earn free ticket credit!
                   </p>
                 </>
               )}
