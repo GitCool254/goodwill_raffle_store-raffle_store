@@ -624,7 +624,7 @@ export default function App() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                backgroundColor: "#10b981",
+                backgroundColor: "#d1fae5", // very faint green
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -634,7 +634,7 @@ export default function App() {
             >
               <span
                 style={{
-                  color: "white",
+                  color: "#10b981", // green text
                   fontWeight: "bold",
                   fontSize: "18px",
                   textTransform: "uppercase",
