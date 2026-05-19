@@ -477,9 +477,19 @@ export default function App() {
     const [expanded, setExpanded] = useState(false);
     const [animate, setAnimate] = useState(true);
     const [paused, setPaused] = useState(false);
+    const [imgError, setImgError] = useState(false); // track image load error for current winner
 
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
+
+    // Helper to get initials from name (e.g., "Jane M." -> "JM", "Samuel K." -> "SK")
+    const getInitials = (name) => {
+      const parts = name.trim().split(/\s+/);
+      if (parts.length === 0) return "";
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+      // First letter of first name + first letter of last name
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
 
     useEffect(() => {
       if (paused) return;
@@ -491,11 +501,17 @@ export default function App() {
           setExpanded(false);
           setIndex((i) => (i + 1) % winners.length);
           setAnimate(true);
+          setImgError(false); // reset error for new winner
         }, 250);
       }, 4500);
 
       return () => clearInterval(interval);
     }, [paused]);
+
+    // Reset image error when winner changes
+    useEffect(() => {
+      setImgError(false);
+    }, [index]);
 
     const handleTouchStart = (e) => {
       touchStartX.current = e.touches[0].clientX;
@@ -535,7 +551,9 @@ export default function App() {
 
     const w = winners[index];
     const shortProduct = w.product.slice(0, 75);
-                                                                           return (
+    const initials = getInitials(w.name);
+
+    return (
       <section className="max-w-6xl mx-auto px-6 py-8 text-center">
         <div
           key={index}
@@ -553,12 +571,10 @@ export default function App() {
             transition: "opacity 0.45s ease, transform 0.45s ease",
             opacity: animate ? 1 : 0,
             transform: animate ? "translateY(0)" : "translateY(10px)",
-
-            // 👇 Controlled vertical spacing
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            rowGap: "2px", // ← Adjust this value to control spacing
+            rowGap: "2px",
           }}
         >
           <p
@@ -588,7 +604,6 @@ export default function App() {
             <p className="text-base font-semibold text-slate-800">
               {w.name}
             </p>
-
             {w.verified && (
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
                 ✔ Verified
@@ -598,26 +613,52 @@ export default function App() {
 
           {/* 2. Location Row */}
           <div className="flex items-center justify-center gap-1">
-            <p className="text-xs text-slate-500">
-              {w.location}
-            </p>
-            <span className="text-sm">
-              {w.countryFlag}
-            </span>
+            <p className="text-xs text-slate-500">{w.location}</p>
+            <span className="text-sm">{w.countryFlag}</span>
           </div>
 
-          {/* 2. Winner Image */}
-          <img
-            src={w.winnerImg}                                                      alt="Winner"
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              display: "block",                                                      margin: "0 auto",
-              border: "1px solid #cbd5e1",
-            }}
-          />
+          {/* 2. Winner Image (with fallback initials) */}
+          {!imgError ? (
+            <img
+              src={w.winnerImg}
+              alt="Winner"
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                display: "block",
+                margin: "0 auto",
+                border: "1px solid #cbd5e1",
+              }}
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                backgroundColor: "#10b981", // emerald-600
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto",
+                border: "1px solid #cbd5e1",
+              }}
+            >
+              <span
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  textTransform: "uppercase",
+                }}
+              >
+                {initials}
+              </span>
+            </div>
+          )}
 
           {/* 3. Product Name */}
           <p className="text-sm font-semibold text-slate-800">
@@ -628,16 +669,26 @@ export default function App() {
                 className="ml-1 text-xs underline text-slate-500"
               >
                 {expanded ? "See less" : "See more"}
-              </button>                                                            )}                                                                   </p>
+              </button>
+            )}
+          </p>
 
           {/* 4. Product Image */}
-          <img                                                                     src={w.productImg}                                                     alt="Product"
+          <img
+            src={w.productImg}
+            alt="Product"
             style={{
-              width: "48px",                                                         height: "48px",
-              borderRadius: "8px",                                                   objectFit: "cover",
-              display: "block",                                                      margin: "12px auto 0 auto",                                            border: "1px solid #cbd5e1",                                         }}                                                                   />
+              width: "48px",
+              height: "48px",
+              borderRadius: "8px",
+              objectFit: "cover",
+              display: "block",
+              margin: "12px auto 0 auto",
+              border: "1px solid #cbd5e1",
+            }}
+          />
 
-          {/* 6. Ticket No */}
+          {/* 5. Ticket No */}
           <p
             className="text-xs"
             style={{
@@ -652,13 +703,11 @@ export default function App() {
             Ticket {w.ticketNo}
           </p>
 
-          {/* 5. Date */}
-          <p
-            className="text-xs text-slate-500"
-            style={{ color: "#94a3b8" }}
-          >
+          {/* 6. Date */}
+          <p className="text-xs text-slate-500" style={{ color: "#94a3b8" }}>
             Draw date: {w.date}
-          </p>                                                                 </div>
+          </p>
+        </div>
 
         <br />
 
@@ -673,6 +722,7 @@ export default function App() {
                   setExpanded(false);
                   setIndex(i);
                   setAnimate(true);
+                  setImgError(false);
                 }, 150);
               }}
               style={{
@@ -689,11 +739,9 @@ export default function App() {
           ))}
         </div>
 
-        <p
-          className="text-xs mt-3"
-          style={{ color: "#94a3b8", fontStyle: "italic" }}
-        >
-          Recent raffle winners. Names are partially anonymized for privacy.                                                                          </p>
+        <p className="text-xs mt-3" style={{ color: "#94a3b8", fontStyle: "italic" }}>
+          Recent raffle winners. Names are partially anonymized for privacy.
+        </p>
       </section>
     );
   }
