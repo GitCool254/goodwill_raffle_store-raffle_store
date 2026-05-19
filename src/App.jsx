@@ -477,7 +477,7 @@ export default function App() {
     const [expanded, setExpanded] = useState(false);
     const [animate, setAnimate] = useState(true);
     const [paused, setPaused] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState(false);  // true = image loaded successfully
+    const [imgError, setImgError] = useState(false);
 
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
@@ -497,15 +497,14 @@ export default function App() {
           setExpanded(false);
           setIndex((i) => (i + 1) % winners.length);
           setAnimate(true);
-          setImageLoaded(false);   // reset for new winner
+          setImgError(false);
         }, 250);
       }, 4500);
       return () => clearInterval(interval);
     }, [paused]);
 
-    // When index changes, reset imageLoaded state
     useEffect(() => {
-      setImageLoaded(false);
+      setImgError(false);
     }, [index]);
 
     const handleTouchStart = (e) => {
@@ -603,8 +602,8 @@ export default function App() {
             <span className="text-sm">{w.countryFlag}</span>
           </div>
 
-          {/* 2. Winner Image – show image only if a valid URL exists AND it loaded successfully */}
-          {hasValidImage && imageLoaded ? (
+          {/* 2. Winner Image – fallback to initials if image missing or fails */}
+          {hasValidImage && !imgError ? (
             <img
               src={w.winnerImg}
               alt="Winner"
@@ -617,8 +616,7 @@ export default function App() {
                 margin: "0 auto",
                 border: "1px solid #cbd5e1",
               }}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageLoaded(false)}
+              onError={() => setImgError(true)}
             />
           ) : (
             <div
@@ -626,7 +624,7 @@ export default function App() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                backgroundColor: "#10b981", // emerald-600
+                backgroundColor: "#10b981",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -709,7 +707,7 @@ export default function App() {
                   setExpanded(false);
                   setIndex(i);
                   setAnimate(true);
-                  setImageLoaded(false);
+                  setImgError(false);
                 }, 150);
               }}
               style={{
