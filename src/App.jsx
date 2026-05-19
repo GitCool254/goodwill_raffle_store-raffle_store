@@ -439,7 +439,7 @@ export default function App() {
         location: "Texas, USA",
       },
       {
-        name: "Brian O.",
+        name: "Ferdinard Gates A.",
         date: "29 Dec 2025",
         ticketNo: "RF-29410",
         product: "Coolster 125cc",
