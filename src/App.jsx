@@ -421,7 +421,7 @@ export default function App() {
         date: "12 Jan 2026",
         ticketNo: "RF-48219",
         product: "Wonderfold Wagon",
-        winnerImg: ,
+        winnerImg: "",
         productImg: "/Beachcroft Patio.jpg",
         verified: true,
         countryFlag: "🇺🇸",
@@ -443,7 +443,7 @@ export default function App() {
         date: "29 Dec 2025",
         ticketNo: "RF-29410",
         product: "Coolster 125cc",
-        winnerImg: ,
+        winnerImg: "",
         productImg: "/images/products/coolster.jpg",
         verified: true,
         countryFlag: "🇱🇷",
@@ -477,7 +477,7 @@ export default function App() {
     const [expanded, setExpanded] = useState(false);
     const [animate, setAnimate] = useState(true);
     const [paused, setPaused] = useState(false);
-    const [imgError, setImgError] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);  // true = image loaded successfully
 
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
@@ -497,14 +497,15 @@ export default function App() {
           setExpanded(false);
           setIndex((i) => (i + 1) % winners.length);
           setAnimate(true);
-          setImgError(false);
+          setImageLoaded(false);   // reset for new winner
         }, 250);
       }, 4500);
       return () => clearInterval(interval);
     }, [paused]);
 
+    // When index changes, reset imageLoaded state
     useEffect(() => {
-      setImgError(false);
+      setImageLoaded(false);
     }, [index]);
 
     const handleTouchStart = (e) => {
@@ -538,7 +539,7 @@ export default function App() {
     const w = winners[index];
     const shortProduct = w.product.slice(0, 75);
     const initials = getInitials(w.name);
-    const hasImage = w.winnerImg && w.winnerImg.trim() !== "";
+    const hasValidImage = w.winnerImg && w.winnerImg.trim() !== "";
 
     return (
       <section className="max-w-6xl mx-auto px-6 py-8 text-center">
@@ -602,8 +603,8 @@ export default function App() {
             <span className="text-sm">{w.countryFlag}</span>
           </div>
 
-          {/* 2. Winner Image – fallback to initials if no image or image fails */}
-          {hasImage && !imgError ? (
+          {/* 2. Winner Image – show image only if a valid URL exists AND it loaded successfully */}
+          {hasValidImage && imageLoaded ? (
             <img
               src={w.winnerImg}
               alt="Winner"
@@ -616,7 +617,8 @@ export default function App() {
                 margin: "0 auto",
                 border: "1px solid #cbd5e1",
               }}
-              onError={() => setImgError(true)}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(false)}
             />
           ) : (
             <div
@@ -624,7 +626,7 @@ export default function App() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                backgroundColor: "#10b981",
+                backgroundColor: "#10b981", // emerald-600
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -707,7 +709,7 @@ export default function App() {
                   setExpanded(false);
                   setIndex(i);
                   setAnimate(true);
-                  setImgError(false);
+                  setImageLoaded(false);
                 }, 150);
               }}
               style={{
