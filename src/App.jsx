@@ -421,7 +421,7 @@ export default function App() {
         date: "12 Jan 2026",
         ticketNo: "RF-48219",
         product: "Wonderfold Wagon",
-        winnerImg: "",
+        winnerImg: ,
         productImg: "/Beachcroft Patio.jpg",
         verified: true,
         countryFlag: "🇺🇸",
@@ -443,7 +443,7 @@ export default function App() {
         date: "29 Dec 2025",
         ticketNo: "RF-29410",
         product: "Coolster 125cc",
-        winnerImg: "",
+        winnerImg: ,
         productImg: "/images/products/coolster.jpg",
         verified: true,
         countryFlag: "🇱🇷",
@@ -477,38 +477,32 @@ export default function App() {
     const [expanded, setExpanded] = useState(false);
     const [animate, setAnimate] = useState(true);
     const [paused, setPaused] = useState(false);
-    const [imgError, setImgError] = useState(false); // track image load error for current winner
+    const [imgError, setImgError] = useState(false);
 
     const touchStartX = useRef(0);
     const touchEndX = useRef(0);
 
-    // Helper to get initials from name (e.g., "Jane M." -> "JM", "Samuel K." -> "SK")
     const getInitials = (name) => {
       const parts = name.trim().split(/\s+/);
       if (parts.length === 0) return "";
       if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-      // First letter of first name + first letter of last name
       return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
     };
 
     useEffect(() => {
       if (paused) return;
-
       const interval = setInterval(() => {
         setAnimate(false);
-
         setTimeout(() => {
           setExpanded(false);
           setIndex((i) => (i + 1) % winners.length);
           setAnimate(true);
-          setImgError(false); // reset error for new winner
+          setImgError(false);
         }, 250);
       }, 4500);
-
       return () => clearInterval(interval);
     }, [paused]);
 
-    // Reset image error when winner changes
     useEffect(() => {
       setImgError(false);
     }, [index]);
@@ -524,27 +518,19 @@ export default function App() {
 
     const handleTouchEnd = () => {
       const delta = touchStartX.current - touchEndX.current;
-
-      // 👉 TAP (pause / resume)
       if (Math.abs(delta) < 15) {
         setPaused((p) => !p);
         return;
       }
-
-      // 👉 SWIPE (normal behavior)
       if (Math.abs(delta) < 50) return;
-
       setAnimate(false);
-
       setTimeout(() => {
         setExpanded(false);
-
         if (delta > 0) {
           setIndex((i) => (i + 1) % winners.length);
         } else {
           setIndex((i) => (i - 1 + winners.length) % winners.length);
         }
-
         setAnimate(true);
       }, 200);
     };
@@ -552,6 +538,7 @@ export default function App() {
     const w = winners[index];
     const shortProduct = w.product.slice(0, 75);
     const initials = getInitials(w.name);
+    const hasImage = w.winnerImg && w.winnerImg.trim() !== "";
 
     return (
       <section className="max-w-6xl mx-auto px-6 py-8 text-center">
@@ -601,9 +588,7 @@ export default function App() {
 
           {/* 1. Winner Name */}
           <div className="flex items-center justify-center gap-2">
-            <p className="text-base font-semibold text-slate-800">
-              {w.name}
-            </p>
+            <p className="text-base font-semibold text-slate-800">{w.name}</p>
             {w.verified && (
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
                 ✔ Verified
@@ -617,8 +602,8 @@ export default function App() {
             <span className="text-sm">{w.countryFlag}</span>
           </div>
 
-          {/* 2. Winner Image (with fallback initials) */}
-          {!imgError ? (
+          {/* 2. Winner Image – fallback to initials if no image or image fails */}
+          {hasImage && !imgError ? (
             <img
               src={w.winnerImg}
               alt="Winner"
@@ -639,7 +624,7 @@ export default function App() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                backgroundColor: "#10b981", // emerald-600
+                backgroundColor: "#10b981",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
