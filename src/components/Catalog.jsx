@@ -57,7 +57,7 @@ export default function Catalog({ openProduct }) {
         "/Golf car.png",
         "/Golf car1.png",
         "/Golf car2.png",
-        "/Golf car3.png",
+        "/Golf car3.jpg",
       ],
     },
     {
@@ -210,7 +210,7 @@ export default function Catalog({ openProduct }) {
         "/light grey cross-sectional5.png",
         "/light grey cross-sectional9.png",
         "/light grey cross-sectional6.png",
-        "/light grey cross-sectional2.png",
+        "/light grey cross-sectional2.jpg",
         "/light grey cross-sectional7.png",
       ],
     },
@@ -255,7 +255,7 @@ export default function Catalog({ openProduct }) {
       image: "/Washer & Dryer.png",
       images: [
         "/Washer & Dryer.png",
-        "/Washer & Dryer1.png",
+        "/Washer & Dryer1.jpg",
         "/Washer & Dryer2.png",
         "/Washer & Dryer3.png",
       ],
@@ -296,7 +296,6 @@ export default function Catalog({ openProduct }) {
       image: "/Snoo Baby.jpg",
       images: [
         "/Snoo Baby.jpg",
-        "/Snoo Baby1.jpg",
         "/Snoo Baby2.jpg",
         "/Snoo Baby3.jpg",
         "/Snoo Baby4.jpg",
