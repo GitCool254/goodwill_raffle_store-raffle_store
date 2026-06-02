@@ -366,12 +366,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
             onPaymentSuccess={async (orderObj) => {
               setLastOrder(orderObj);
               setIsTicketGenerating(true);
-              // --- NEW: compute user's local datetime for backend holiday check ---
-              const now = new Date();
-              const userLocalTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-                .toISOString()
-                .slice(0, 19);
-              // --- end new code ---
+
+              // --- Get user's timezone offset in minutes ---
+              // Example: For EST (UTC-5) the offset is -300, for AEST (UTC+10) the offset is +600
+              const timezoneOffset = -new Date().getTimezoneOffset();
+
+              // --- Prepare payload (without user_local_time) ---
               const payload = {
                 name,
                 email: email.trim().toLowerCase(),
@@ -379,9 +379,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 ticket_price: product.ticketPrice,
                 order_id: orderObj.orderId,
                 product_title: product.title,
-                user_local_time: userLocalTime,
-                referral_code: referralCode,           // 👈 added
-                use_free_ticket: useFreeTicket,        // 👈 added
+                referral_code: referralCode,
+                use_free_ticket: useFreeTicket,
               };
               const nonce = crypto.randomUUID();
               const payloadWithNonce = { ...payload, nonce };
@@ -395,6 +394,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                     "Content-Type": "application/json",
                     "X-Nonce": nonce,
                     "X-Timestamp": timestamp.toString(),
+                    "X-Timezone-Offset": timezoneOffset.toString(),   // 👈 NEW header
                   },
                   body: JSON.stringify(payloadWithNonce),
                 }
