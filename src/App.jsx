@@ -51,7 +51,7 @@ export default function App() {
       images: [
         "/wonderfold.png",
         "/wonderfold2.png",
-        "/wonderfold3.png",
+        "/Wonderfold3.png",
       ],
       ticketPrice: 6,
       totalTickets: 100,
