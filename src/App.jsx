@@ -134,7 +134,6 @@ export default function App() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const [imageReturnView, setImageReturnView] = useState("home");
-  const [productSlug, setProductSlug] = useState(null); // 👈 NEW STATE
 
   const navStackRef = React.useRef(["home"]);
 
@@ -230,6 +229,30 @@ export default function App() {
       window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
 
+  // Helper: generate URL-friendly slug from product title
+  const generateSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')  // replace non-alphanumeric with hyphens
+      .replace(/^-+|-+$/g, '');      // trim leading/trailing hyphens
+  };
+
+  // On page load, check URL for product slug and navigate accordingly
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === "/" || path === "") return; // home page
+
+    // Extract slug from path (e.g., "/wonderfold-wagon")
+    const slug = path.startsWith("/") ? path.slice(1) : path;
+    if (!slug) return;
+
+    // Find product by matching slug
+    const matchedProduct = products.find((p) => generateSlug(p.title) === slug);
+    if (matchedProduct) {
+      // Open the product detail view
+      openProduct(matchedProduct);
+    }
+  }, [products]);
 
   // -------------------- CORE FUNCTIONS --------------------
 
@@ -290,6 +313,9 @@ export default function App() {
     addToRecentlyViewed(p);  // 👈 record this product
     setSelected(p);
     navigate("detail");
+    // Update URL with product slug
+    const slug = generateSlug(p.title);
+    window.history.pushState({ view: "detail", productId: p.id }, "", `/${slug}`);
   }
 
   function openTicketProduct(ticket) {
@@ -303,19 +329,20 @@ export default function App() {
     navigate("detail");
   }
 
-  // 👇 UPDATED: openImage now accepts a product slug
-  function openImage(images, index = 0, returnView = "home", slug = null) {
+  function openImage(images, index = 0, returnView = "home", product = null) {
     setImageImages(images);
     setImageIndex(index);
     setActiveImage(images[index]);
     setImageReturnView(returnView);
-    setProductSlug(slug); // store product slug
     setView("image");
-    // Update URL hash to product-specific fragment
-    if (slug) {
-      window.history.pushState({}, "", `#${slug}`);
+    // If a product is provided, update URL with its slug
+    if (product) {
+      const slug = generateSlug(product.title);
+      window.history.pushState({ view: "image", productId: product.id }, "", `/${slug}`);
     }
   }
+
+
 
   // -------------------- COMPONENTS --------------------
 
@@ -428,7 +455,7 @@ export default function App() {
         productImg: "/Dining set_melissa.png",
         verified: true,
         countryFlag: "🇺🇸",
-        location: "New York, USA",
+        location: "New York, USA on",
       },
       {
         name: "Liam J..",
@@ -1065,9 +1092,7 @@ export default function App() {
                   }}
                   onClick={() => {
                     addToRecentlyViewed(p);
-                    // generate slug from product title
-                    const slug = p.title.toLowerCase().replace(/\s+/g, '-');
-                    openImage(p.images?.length ? p.images : [p.image], 0, "home", slug);
+                    openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
                   }}
                 />
               </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
@@ -1238,16 +1263,7 @@ export default function App() {
           images={imageImages}
           index={imageIndex}
           setIndex={(i) => {
-            setImageIndex(i);
-            setActiveImage(imageImages[i]);
-          }}
-          onBack={() => {
-            // Reset URL hash to the return view (home, catalog, etc.)
-            const returnView = imageReturnView || "home";
-            window.history.pushState({}, "", `#${returnView}`);
-            setView(imageReturnView);
-            setProductSlug(null);
-          }}
+            setImageIndex(i);                                                      setActiveImage(imageImages[i]);                                      }}                                                                     onBack={() => setView(imageReturnView)}
         />
       )}
                                                                              <br />                                                                                                                                        {/* FOOTER - Amazon style with white text and gradient fade */}
