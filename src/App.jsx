@@ -249,8 +249,11 @@ export default function App() {
     // Find product by matching slug
     const matchedProduct = products.find((p) => generateSlug(p.title) === slug);
     if (matchedProduct) {
-      // Open the product detail view
-      openProduct(matchedProduct);
+      // Directly set the view and selected product without pushing history (URL already contains the slug)
+      setSelected(matchedProduct);
+      setView("detail");
+      // Add to navigation stack so back button works
+      navStackRef.current.push("detail");
     }
   }, [products]);
 
@@ -312,8 +315,8 @@ export default function App() {
   function openProduct(p) {
     addToRecentlyViewed(p);  // 👈 record this product
     setSelected(p);
-    navigate("detail");
-    // Update URL with product slug
+    setView("detail");
+    navStackRef.current.push("detail");
     const slug = generateSlug(p.title);
     window.history.pushState({ view: "detail", productId: p.id }, "", `/${slug}`);
   }
