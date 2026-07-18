@@ -221,6 +221,7 @@ export default function App() {
     terms: "/terms",
     privacy: "/privacy",
     myTickets: "/tickets",
+    tickets: "/tickets",   // ← ADDED: supports both "myTickets" and "tickets"
   };
 
   // Reverse mapping: path -> view name (excluding detail and image)
