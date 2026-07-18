@@ -13,11 +13,11 @@ import About from "./components/About";
 import Menu from "./components/Menu";
 import MyTickets from "./components/MyTickets";
 import HolidaySystem from "./components/HolidaySystem";
-import Donations from "./components/Donations"; // 👈 new import
+import Donations from "./components/Donations";
 import TermsOfUse from "./components/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import RecentWinners from "./components/RecentWinners";
-import RecentlyViewed from "./components/RecentlyViewed"; // 👈 new import
+import RecentlyViewed from "./components/RecentlyViewed";
 
 // 👇 Import catalog items for URL resolution fallback
 import { catalogItems } from "./components/Catalog";
@@ -25,7 +25,7 @@ import { catalogItems } from "./components/Catalog";
 /**
  * Goodwill Raffle Store - Upgraded UI
  * Place logo at: public/logo.png
- * Remove banne
+ * Remove banner
  *
  * Minimal client-only app (localStorage) for testing.
  * Later we'll wire payments and Google Sheets via server endpoints.
@@ -48,50 +48,36 @@ export default function App() {
     {
       id: "p1",
       title: "Wonderfold wagon",
-      description: "Barely used wagon, excellent condition(only selling because my kids have outgrown it)\nPick up or delivery\nThe W4Luxe stroller Wagon Model\nHolds up to 4passengers\nExtra storage all sides\nDeep carriage with mesh sides\nRemovable canopy with Adjustable canopy Fabric and Rods\nEasy to fold",
+      description:
+        "Barely used wagon, excellent condition(only selling because my kids have outgrown it)\nPick up or delivery\nThe W4Luxe stroller Wagon Model\nHolds up to 4passengers\nExtra storage all sides\nDeep carriage with mesh sides\nRemovable canopy with Adjustable canopy Fabric and Rods\nEasy to fold",
       price: 6,
       image: "/wonderfold.png",
-      images: [
-        "/wonderfold.png",
-        "/wonderfold2.png",
-        "/Wonderfold3.png",
-      ],
+      images: ["/wonderfold.png", "/wonderfold2.png", "/Wonderfold3.png"],
       ticketPrice: 6,
       totalTickets: 100,
       category: "Eletronics",
-      marketPrice: 300, // Fair market value ($) – winner can take cash instead of the item
+      marketPrice: 300,
     },
-
     {
       id: "p2",
       title: "Beachcroft Patio set",
-      description: "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
+      description:
+        "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
       price: 6,
       image: "/BeachCroft.png",
-      images: [
-        "/BeachCroft.png",
-        "/BeachCroft1.png",
-        "/BeachCroft3.png",
-        "/BeachCroft2.png",
-      ],
+      images: ["/BeachCroft.png", "/BeachCroft1.png", "/BeachCroft3.png", "/BeachCroft2.png"],
       ticketPrice: 6,
       totalTickets: 200,
       category: "Households",
       marketPrice: 400,
     },
-
     {
       id: "p3",
       title: "Coolster 125cc",
       description: "Coolster 125cc.\nGreat little starter for your kid",
       price: 7,
       image: "/coolster.png",
-      images: [
-        "/coolster.png",
-        "/coolster1.png",
-        "/coolster2.png",
-        "/coolster3.png",
-      ],
+      images: ["/coolster.png", "/coolster1.png", "/coolster2.png", "/coolster3.png"],
       ticketPrice: 8,
       totalTickets: 150,
       category: "Eletronics",
@@ -111,9 +97,7 @@ export default function App() {
         // 🔍 compare full product content
         const changed =
           parsed.length !== sampleProducts.length ||
-          parsed.some((p, i) =>
-            JSON.stringify(p) !== JSON.stringify(sampleProducts[i])
-          );
+          parsed.some((p, i) => JSON.stringify(p) !== JSON.stringify(sampleProducts[i]));
 
         if (!changed) return parsed;
       } catch {}
@@ -128,20 +112,13 @@ export default function App() {
     return saved ? JSON.parse(saved) : {};
   });
 
-  const [view, setView] = useState("home"); // home | detail
+  const [view, setView] = useState("home");
   const [selected, setSelected] = useState(null);
 
   const [activeImage, setActiveImage] = useState(null);
-
   const [imageImages, setImageImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
-
   const [imageReturnView, setImageReturnView] = useState("home");
-
-  const navStackRef = React.useRef(["home"]);
-
-  // -------------------- HISTORY SYNC --------------------
-  const VIEW_KEY = "gw_view";
 
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
@@ -183,26 +160,21 @@ export default function App() {
       }
     }
 
-    // Initial load
     fetchTicketState();
-
-    // ✅ Auto-refresh every 30 seconds
     intervalId = setInterval(() => {
       fetchTicketState();
-    }, 30000); // 30,000ms = 30 sec
+    }, 30000);
 
     return () => {
       isMounted = false;
-      clearInterval(intervalId); // cleanup
+      clearInterval(intervalId);
     };
   }, [backendUrl]);
-
 
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
         const res = await fetch(`${backendUrl}/ticket_state`);
-
         const data = await res.json();
 
         if (!isNaN(data.remaining)) {
@@ -218,8 +190,7 @@ export default function App() {
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
-    return () =>
-      window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
+    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
 
   useEffect(() => {
@@ -228,117 +199,144 @@ export default function App() {
 
   useEffect(() => {
     window.addEventListener("goMyTickets", () => navigate("myTickets"));
-    return () =>
-      window.removeEventListener("goMyTickets", () => setView("myTickets"));
+    return () => window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
 
-  // Helper: generate URL-friendly slug from product title
+  // -------------------- URL / ROUTING HELPERS --------------------
   const generateSlug = (title) => {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')  // replace non-alphanumeric with hyphens
-      .replace(/^-+|-+$/g, '');      // trim leading/trailing hyphens
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
   };
 
-  // On page load, check URL for product slug and navigate accordingly
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path === "/" || path === "") return; // home page
+  // Mapping view name -> URL path
+  const viewToPath = {
+    home: "/",
+    catalog: "/catalog",
+    about: "/about",
+    contact: "/contact",
+    address: "/address",
+    donations: "/donations",
+    terms: "/terms",
+    privacy: "/privacy",
+    myTickets: "/tickets",
+  };
 
-    // Extract slug from path (e.g., "/wonderfold-wagon")
-    const slug = path.startsWith("/") ? path.slice(1) : path;
-    if (!slug) return;
+  // Reverse mapping: path -> view name (excluding detail and image)
+  const pathToView = Object.fromEntries(
+    Object.entries(viewToPath).map(([view, path]) => [path, view])
+  );
 
-    // 1️⃣ Try to find product in the main products state (featured items)
-    let matchedProduct = products.find((p) => generateSlug(p.title) === slug);
-
-    // 2️⃣ If not found, search in the full catalog list
-    if (!matchedProduct) {
-      matchedProduct = catalogItems.find((p) => generateSlug(p.title) === slug);
-    }
-
-    if (matchedProduct) {
-      // Directly set the view and selected product without pushing history (URL already contains the slug)
-      setSelected(matchedProduct);
-      setView("detail");
-      // Add to navigation stack so back button works
-      navStackRef.current.push("detail");
-    }
-  }, [products]);
-
-  // -------------------- CORE FUNCTIONS --------------------
-
-  function navigate(nextView) {
-    setView((prev) => {
-      if (prev !== nextView) {
-        navStackRef.current.push(nextView);
-        window.history.pushState(
-          { view: nextView },
-          "",
-          `#${nextView}`
-        );
-      }
-      return nextView;
-    });
+  // Determine if a path is a product slug (and return the product if found)
+  function findProductBySlug(slug) {
+    // 1️⃣ Check main products (featured)
+    let product = products.find((p) => generateSlug(p.title) === slug);
+    if (product) return product;
+    // 2️⃣ Check catalog items
+    product = catalogItems.find((p) => generateSlug(p.title) === slug);
+    return product || null;
   }
 
+  // Core navigation: update view and URL (push state)
+  function navigate(nextView, product = null) {
+    let path;
+    let newView = nextView;
+
+    if (nextView === "detail") {
+      if (!product) return;
+      path = `/${generateSlug(product.title)}`;
+      setSelected(product);
+    } else if (nextView === "image") {
+      // Image view uses the same path as the product (if available)
+      path = viewToPath[imageReturnView] || "/";
+      // but we actually want to keep the product slug if coming from detail
+      // we handle image separately via openImage
+      return;
+    } else {
+      path = viewToPath[nextView] || "/";
+      setSelected(null);
+    }
+
+    // Update view state
+    setView(newView);
+    // Push new history entry
+    window.history.pushState({ view: newView, product: product || null }, "", path);
+  }
+
+  // Restore view from a given path (used on initial load and popstate)
+  function restoreViewFromPath(path) {
+    // 1. Check if it's a known static view
+    if (path === "/") {
+      setView("home");
+      setSelected(null);
+      return;
+    }
+    const viewName = pathToView[path];
+    if (viewName) {
+      setView(viewName);
+      setSelected(null);
+      return;
+    }
+
+    // 2. Check if it's a product slug
+    const slug = path.startsWith("/") ? path.slice(1) : path;
+    const product = findProductBySlug(slug);
+    if (product) {
+      setSelected(product);
+      setView("detail");
+      return;
+    }
+
+    // 3. Fallback to home
+    setView("home");
+    setSelected(null);
+  }
+
+  // -------------------- INITIAL LOAD & POPSTATE --------------------
   useEffect(() => {
-    const handlePopState = () => {
-      const stack = navStackRef.current;
+    // On initial load, read the current path and set the view
+    const path = window.location.pathname;
+    restoreViewFromPath(path);
 
-      // 🚫 Prevent browser exit
-      if (stack.length <= 1) {
-        window.history.pushState({ view: "home" }, "", "#home");
-        setView("home");
-        return;
-      }
-
-      // 🔙 Go back internally
-      stack.pop();
-      const previous = stack[stack.length - 1];
-      setView(previous);
+    // Handle browser back/forward
+    const handlePopState = (event) => {
+      const currentPath = window.location.pathname;
+      restoreViewFromPath(currentPath);
     };
 
-    // 🔒 Lock root
-    window.history.replaceState({ view: "home" }, "", "#home");
     window.addEventListener("popstate", handlePopState);
 
-    return () =>
+    return () => {
       window.removeEventListener("popstate", handlePopState);
-  }, []);
+    };
+  }, [products]); // re-run when products load (for slug matching)
 
-  // 👇 NEW: Add to recently viewed (localStorage)
+  // -------------------- PRODUCT & IMAGE INTERACTIONS --------------------
   function addToRecentlyViewed(product) {
     if (!product || !product.id) return;
     const stored = localStorage.getItem("gw_recently_viewed");
     let recent = stored ? JSON.parse(stored) : [];
-    // Remove if already exists
     recent = recent.filter((p) => p.id !== product.id);
-    // Add to front
     recent.unshift(product);
-    // Keep only last 10
     if (recent.length > 10) recent.pop();
     localStorage.setItem("gw_recently_viewed", JSON.stringify(recent));
   }
 
   function openProduct(p) {
-    addToRecentlyViewed(p);  // 👈 record this product
-    setSelected(p);
-    setView("detail");
-    navStackRef.current.push("detail");
-    const slug = generateSlug(p.title);
-    window.history.pushState({ view: "detail", productId: p.id }, "", `/${slug}`);
+    addToRecentlyViewed(p);
+    // Use navigate with detail view and product
+    navigate("detail", p);
   }
 
   function openTicketProduct(ticket) {
     const product = products.find((p) => p.id === ticket.productId);
     if (!product) return;
-
     setSelected({
       ...product,
-      _ticket: ticket, // marks read-only ticket view
+      _ticket: ticket,
     });
-    navigate("detail");
+    navigate("detail", product);
   }
 
   function openImage(images, index = 0, returnView = "home", product = null) {
@@ -347,35 +345,35 @@ export default function App() {
     setActiveImage(images[index]);
     setImageReturnView(returnView);
     setView("image");
-    // If a product is provided, update URL with its slug
+
+    // If product is provided, push a history entry with the product slug
     if (product) {
       const slug = generateSlug(product.title);
       window.history.pushState({ view: "image", productId: product.id }, "", `/${slug}`);
+    } else {
+      // Fallback: push the current view path
+      const path = viewToPath[returnView] || "/";
+      window.history.pushState({ view: "image" }, "", path);
     }
   }
 
-
-
-  // -------------------- COMPONENTS --------------------
-
+  // Close image viewer by going back in history
+  function closeImageViewer() {
+    window.history.back();
+  }
 
   // -------------------- HERO COMPONENT --------------------
   function Hero({ remainingTickets, ticketsSold }) {
     const [scale, setScale] = useState(1);
 
-    // Determine actual remaining tickets
+    const ticketStateReady = remainingTickets !== null && ticketStateLoaded;
 
-    const ticketStateReady =
-      remainingTickets !== null && ticketStateLoaded;
-
-    // Animate when ticket count changes
     useEffect(() => {
-      if (!ticketStateReady) return; // skip if not ready
-      setScale(1.3); // grow
-      const timeout = setTimeout(() => setScale(1), 300); // shrink
+      if (!ticketStateReady) return;
+      setScale(1.3);
+      const timeout = setTimeout(() => setScale(1), 300);
       return () => clearTimeout(timeout);
     }, [remainingTickets, ticketStateReady]);
-
 
     return (
       <section className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white py-12">
@@ -384,14 +382,13 @@ export default function App() {
             <div className="mt-6 flex gap-3">
               <button
                 className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
-                style={{ marginTop: '20px' }}
+                style={{ marginTop: "20px" }}
                 onClick={() => navigate("catalog")}
               >
                 Explore Finds
               </button>
             </div>
 
-            {/* Tickets remaining — now below button */}
             <div
               style={{
                 textAlign: "left",
@@ -424,21 +421,20 @@ export default function App() {
               )}
             </div>
 
-            {/* RAFFLE ENDED MESSAGE */}
             {ticketStateLoaded && Number(remainingTickets) <= 0 && (
               <div
                 className="mt-3"
                 style={{
-                  color: "#1e293b",                 // elegant deep charcoal
+                  color: "#1e293b",
                   fontWeight: 600,
                   letterSpacing: "0.01em",
                   marginLeft: "0",
-                  fontSize: "1.08rem",              // slightly increased
+                  fontSize: "1.08rem",
                   marginBottom: "20px",
                   textAlign: "left",
                   lineHeight: "1.6",
-                  border: "1.5px dotted #d4af37",   // subtle gold border
-                  backgroundColor: "#fffdf7",       // soft warm ivory
+                  border: "1.5px dotted #d4af37",
+                  backgroundColor: "#fffdf7",
                   padding: "14px 16px",
                   borderRadius: "10px",
                 }}
@@ -448,14 +444,13 @@ export default function App() {
                 announced shortly.
               </div>
             )}
-
           </div>
         </div>
       </section>
     );
   }
 
-  // -------------------- AUTO-ROTATING WINNERS (ENHANCED + SLIDE/FADE + PAUSE + SWIPE + DOTS) -----
+  // -------------------- AUTO-ROTATING WINNERS --------------------
   function AutoRotateWinners() {
     const winners = [
       {
@@ -628,7 +623,6 @@ export default function App() {
             RECENT WINNERS
           </p>
 
-          {/* 1. Winner Name */}
           <div className="flex items-center justify-center gap-2">
             <p className="text-base font-semibold text-slate-800">{w.name}</p>
             {w.verified && (
@@ -638,13 +632,11 @@ export default function App() {
             )}
           </div>
 
-          {/* 2. Location Row */}
           <div className="flex items-center justify-center gap-1">
             <p className="text-xs text-slate-500">{w.location}</p>
             <span className="text-sm">{w.countryFlag}</span>
           </div>
 
-          {/* 2. Winner Image – fallback to initials if image missing or fails */}
           {hasValidImage && !imgError ? (
             <img
               src={w.winnerImg}
@@ -666,7 +658,7 @@ export default function App() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "50%",
-                backgroundColor: "#d1fae5", // very faint green
+                backgroundColor: "#d1fae5",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -676,7 +668,7 @@ export default function App() {
             >
               <span
                 style={{
-                  color: "#10b981", // green text
+                  color: "#10b981",
                   fontWeight: "bold",
                   fontSize: "18px",
                   textTransform: "uppercase",
@@ -687,7 +679,6 @@ export default function App() {
             </div>
           )}
 
-          {/* 3. Product Name */}
           <p className="text-sm font-semibold text-slate-800">
             {expanded ? w.product : shortProduct}
             {w.product.length > 75 && (
@@ -700,7 +691,6 @@ export default function App() {
             )}
           </p>
 
-          {/* 4. Product Image */}
           <img
             src={w.productImg}
             alt="Product"
@@ -715,7 +705,6 @@ export default function App() {
             }}
           />
 
-          {/* 5. Ticket No */}
           <p
             className="text-xs"
             style={{
@@ -730,7 +719,6 @@ export default function App() {
             Ticket {w.ticketNo}
           </p>
 
-          {/* 6. Date */}
           <p className="text-xs text-slate-500" style={{ color: "#94a3b8" }}>
             Draw date: {w.date}
           </p>
@@ -738,7 +726,6 @@ export default function App() {
 
         <br />
 
-        {/* PROGRESS DOTS */}
         <div className="mt-4 text-center select-none">
           {winners.map((_, i) => (
             <span
@@ -773,6 +760,7 @@ export default function App() {
     );
   }
 
+  // -------------------- IMAGE PAGE (overlay) --------------------
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
@@ -783,12 +771,10 @@ export default function App() {
     const containerRef = useRef(null);
     const imgRef = useRef(null);
 
-    // Reset loading state when image changes
     useEffect(() => {
       setIsLoading(true);
     }, [index]);
 
-    // Lock body scroll on mount
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       const originalBg = document.body.style.backgroundColor;
@@ -802,7 +788,6 @@ export default function App() {
       };
     }, []);
 
-    // Reset scroll position on image change
     useEffect(() => {
       if (containerRef.current) {
         containerRef.current.scrollTo({
@@ -813,7 +798,6 @@ export default function App() {
       }
     }, [index]);
 
-    // After render, check if image is already complete (cached)
     useEffect(() => {
       if (imgRef.current && imgRef.current.complete) {
         setNaturalSize({
@@ -824,7 +808,6 @@ export default function App() {
       }
     }, [index]);
 
-    // Center scroll position after zooming in
     useEffect(() => {
       if (scale > 1 && naturalSize.width && containerRef.current) {
         const scaledWidth = naturalSize.width * scale;
@@ -896,9 +879,6 @@ export default function App() {
       lastDistanceRef.current = null;
     }
 
-    const scaledWidth = naturalSize.width * scale;
-    const scaledHeight = naturalSize.height * scale;
-
     return (
       <>
         <style>{`
@@ -924,10 +904,10 @@ export default function App() {
           ref={containerRef}
           className="fixed inset-0 bg-black z-50"
           style={{
-            overflow: scale > 1 ? 'auto' : 'hidden',
-            width: '100vw',
-            height: '100vh',
-            WebkitOverflowScrolling: 'touch',
+            overflow: scale > 1 ? "auto" : "hidden",
+            width: "100vw",
+            height: "100vh",
+            WebkitOverflowScrolling: "touch",
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -936,9 +916,8 @@ export default function App() {
             handleTouchEndZoom();
           }}
         >
-          {/* SPINNER (fixed centered) */}
           {isLoading && (
-            <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10001 }}>
+            <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10001 }}>
               <svg className="spinner" viewBox="0 0 50 50">
                 <circle className="ring" cx="25" cy="25" r="20"></circle>
                 <path className="star" d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z" />
@@ -946,7 +925,6 @@ export default function App() {
             </div>
           )}
 
-          {/* BACK BUTTON */}
           <button
             onClick={onBack}
             style={{
@@ -961,22 +939,21 @@ export default function App() {
             ✕
           </button>
 
-          {/* PREV BUTTON (if not first image) */}
           {images.length > 1 && index > 0 && (
             <button
               onClick={prev}
               style={{
-                position: 'fixed',
-                left: '16px',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                position: "fixed",
+                left: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
                 zIndex: 10001,
-                fontSize: '64px',
-                color: 'white',
-                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
+                fontSize: "64px",
+                color: "white",
+                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
               }}
               aria-label="Previous image"
             >
@@ -984,22 +961,21 @@ export default function App() {
             </button>
           )}
 
-          {/* NEXT BUTTON (if not last image) */}
           {images.length > 1 && index < images.length - 1 && (
             <button
               onClick={next}
               style={{
-                position: 'fixed',
-                right: '16px',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                position: "fixed",
+                right: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
                 zIndex: 10001,
-                fontSize: '64px',
-                color: 'white',
-                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
+                fontSize: "64px",
+                color: "white",
+                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
               }}
               aria-label="Next image"
             >
@@ -1017,7 +993,6 @@ export default function App() {
               overflow: "hidden",
             }}
           >
-            {/* IMAGE WRAPPER */}
             <div
               style={{
                 position: "relative",
@@ -1027,7 +1002,6 @@ export default function App() {
                 height: "auto",
               }}
             >
-              {/* IMAGE */}
               <img
                 ref={imgRef}
                 key={index}
@@ -1052,7 +1026,6 @@ export default function App() {
                 }}
               />
 
-              {/* IMAGE INDEX */}
               <div
                 style={{
                   position: "fixed",
@@ -1076,59 +1049,56 @@ export default function App() {
     );
   }
 
+  // -------------------- HOME COMPONENT (featured products) --------------------
   function Home() {
     return (
       <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p) => (                                                   <div                                                                     key={p.id}
-              className="bg-white rounded-2xl shadow p-4 flex flex-col"
-            >
+          {products.map((p) => (
+            <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
               <div
                 style={{
-                  width: '100%',
-                  marginBottom: '12px',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  width: "100%",
+                  marginBottom: "12px",
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <img
                   src={p.image}
                   alt={p.title}
                   style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '0.5rem',
-                    cursor: 'zoom-in'
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "0.5rem",
+                    cursor: "zoom-in",
                   }}
                   onClick={() => {
                     addToRecentlyViewed(p);
                     openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
                   }}
                 />
-              </div>                                                                     <h3 className="font-semibold">{p.title}</h3>
-              <p className="text-sm text-slate-600 mt-1">                              {p.description?.slice(0, 50)}…
-              </p>
-              <div
-                className="mt-3 flex items-center justify-between"
-                style={{ marginBottom: "15px" }}
-              >
-                <div className="text-slate-700 font-medium">                             $ {p.ticketPrice} / ticket
-                </div>                                                                 <button
+              </div>
+              <h3 className="font-semibold">{p.title}</h3>
+              <p className="text-sm text-slate-600 mt-1">{p.description?.slice(0, 50)}…</p>
+              <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
+                <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
+                <button
                   className="bg-sky-600 text-white px-3 py-1 rounded-lg"
                   onClick={() => openProduct(p)}
                 >
                   Enter
                 </button>
               </div>
-              {/* Faint rainbow line below price/button row */}
               <div
                 style={{
-                  width: '100%',
-                  height: '1px',
-                  background: 'linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))',
-                  marginBottom: '16px',
+                  width: "100%",
+                  height: "1px",
+                  background:
+                    "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
+                  marginBottom: "16px",
                 }}
               />
               {p.winner && (
@@ -1138,10 +1108,10 @@ export default function App() {
               )}
             </div>
           ))}
-        </div>                                                               </main>
+        </div>
+      </main>
     );
   }
-
 
   // -------------------- MAIN RETURN --------------------
   return (
@@ -1150,13 +1120,12 @@ export default function App() {
         view === "image" ? "bg-black" : "bg-slate-50"
       }`}
     >
-
       {/* HEADER */}
       {view !== "image" && (
         <Header
           setView={setView}
           onMenuClick={() => setMenuOpen(true)}
-          onDonateClick={() => navigate("donations")} // 👈 new prop
+          onDonateClick={() => navigate("donations")}
         />
       )}
 
@@ -1169,16 +1138,12 @@ export default function App() {
         </>
       )}
 
-
-      {/* MAIN CONTENT - grows to push footer down */}                       <main className="flex-grow">
+      {/* MAIN CONTENT */}
+      <main className="flex-grow">
         {view === "home" && (
           <>
-            <Hero
-              remainingTickets={remainingTickets}
-              ticketsSold={ticketsSold}
-            />
+            <Hero remainingTickets={remainingTickets} ticketsSold={ticketsSold} />
 
-            {/* EVENT INFORMATION */}
             {ticketStateLoaded && Number(remainingTickets) > 0 && (
               <section
                 className="max-w-5xl mx-auto px-6 py-6"
@@ -1211,7 +1176,7 @@ export default function App() {
                           cursor: "pointer",
                           padding: 0,
                           fontSize: "1.1rem",
-                          font: "inherit"
+                          font: "inherit",
                         }}
                         className="hover:underline"
                       >
@@ -1235,9 +1200,10 @@ export default function App() {
                 </div>
               </section>
             )}
-                                                                                   <Home />
+
+            <Home />
             <br />
-            <RecentlyViewed onProductClick={openProduct} />  {/* 👈 Added */}
+            <RecentlyViewed onProductClick={openProduct} />
             <AutoRotateWinners />
             <RecentWinners />
           </>
@@ -1252,14 +1218,12 @@ export default function App() {
           />
         )}
 
-        {view === "catalog" && (
-          <Catalog openProduct={openProduct} />
-        )}
+        {view === "catalog" && <Catalog openProduct={openProduct} />}
 
         {view === "address" && <Address />}
         {view === "contact" && <Contact />}
         {view === "about" && <About navigate={navigate} />}
-        {view === "donations" && <Donations />} {/* 👈 new view */}
+        {view === "donations" && <Donations />}
         {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
         {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
         {(view === "tickets" || view === "myTickets") && (
@@ -1275,19 +1239,24 @@ export default function App() {
           images={imageImages}
           index={imageIndex}
           setIndex={(i) => {
-            setImageIndex(i);                                                      setActiveImage(imageImages[i]);                                      }}                                                                     onBack={() => setView(imageReturnView)}
+            setImageIndex(i);
+            setActiveImage(imageImages[i]);
+          }}
+          onBack={closeImageViewer}
         />
       )}
-                                                                             <br />                                                                                                                                        {/* FOOTER - Amazon style with white text and gradient fade */}
+
+      <br />
+
+      {/* FOOTER */}
       {view !== "image" && (
         <footer
           className="w-full text-center py-6"
           style={{
             background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
-            color: "white"
+            color: "white",
           }}
         >
-          {/* First row: links */}
           <div className="mb-4">
             <button
               onClick={() => navigate("terms")}
@@ -1313,7 +1282,6 @@ export default function App() {
               Contact
             </a>
           </div>
-          {/* Second row: copyright */}
           <div className="text-white text-sm">
             © {new Date().getFullYear()} Goodwillstores. All rights reserved.
           </div>
