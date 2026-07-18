@@ -19,6 +19,9 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import RecentWinners from "./components/RecentWinners";
 import RecentlyViewed from "./components/RecentlyViewed"; // 👈 new import
 
+// 👇 Import catalog items for URL resolution fallback
+import { catalogItems } from "./components/Catalog";
+
 /**
  * Goodwill Raffle Store - Upgraded UI
  * Place logo at: public/logo.png
@@ -246,8 +249,14 @@ export default function App() {
     const slug = path.startsWith("/") ? path.slice(1) : path;
     if (!slug) return;
 
-    // Find product by matching slug
-    const matchedProduct = products.find((p) => generateSlug(p.title) === slug);
+    // 1️⃣ Try to find product in the main products state (featured items)
+    let matchedProduct = products.find((p) => generateSlug(p.title) === slug);
+
+    // 2️⃣ If not found, search in the full catalog list
+    if (!matchedProduct) {
+      matchedProduct = catalogItems.find((p) => generateSlug(p.title) === slug);
+    }
+
     if (matchedProduct) {
       // Directly set the view and selected product without pushing history (URL already contains the slug)
       setSelected(matchedProduct);
