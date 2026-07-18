@@ -1123,7 +1123,7 @@ export default function App() {
       {/* HEADER */}
       {view !== "image" && (
         <Header
-          setView={setView}
+          setView={navigate}   // ← FIXED: now uses navigate to update URL as well
           onMenuClick={() => setMenuOpen(true)}
           onDonateClick={() => navigate("donations")}
         />
