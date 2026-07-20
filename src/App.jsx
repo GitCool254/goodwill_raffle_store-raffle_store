@@ -78,10 +78,10 @@ export default function App() {
       price: 7,
       image: "/coolster.png",
       images: ["/coolster.png", "/coolster1.png", "/coolster2.png", "/coolster3.png"],
-      ticketPrice: 8,
+      ticketPrice: 10,
       totalTickets: 150,
       category: "Eletronics",
-      marketPrice: 800,
+      marketPrice: 400,
     },
   ];
 
