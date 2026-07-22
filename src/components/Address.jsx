@@ -142,6 +142,46 @@ export default function Address() {
 
         <br />
 
+        {/* ================= New Zealand ================= */}
+        <strong>New Zealand</strong>
+
+        <AddressLine
+          line1="20A Trewavas Street, Motueka"
+          line2="7120"
+        />
+
+        <AddressLine
+          line1="Near 19A Saxon Street, Motueka"
+          line2="7120"
+        />
+
+        <AddressLine
+          line1="1B Fry Street, Motueka"
+          line2="7120"
+        />
+
+        <AddressLine
+          line1="126 Whakarewa Street, Motueka"
+          line2="7120"
+        />
+
+        <AddressLine
+          line1="Near 11 West Avenue, Richmond"
+          line2="7020"
+        />
+
+        <AddressLine
+          line1="36 William Street, Richmond"
+          line2="7020"
+        />
+
+        <AddressLine
+          line1="7A Green Street, Tāhunanui, Nelson 7011, New Zealand"
+          line2="7011"
+        />
+
+        <br />
+
         {/* ================= HOURS ================= */}
         <p className="mb-2">
           <strong>We're Open:</strong>
