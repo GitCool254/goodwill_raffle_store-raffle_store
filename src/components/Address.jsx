@@ -176,7 +176,7 @@ export default function Address() {
         />
 
         <AddressLine
-          line1="7A Green Street, Tāhunanui, Nelson 7011, New Zealand"
+          line1="7A Green Street, Tāhunanui, Nelson"
           line2="7011"
         />
 
