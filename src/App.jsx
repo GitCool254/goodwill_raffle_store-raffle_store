@@ -47,16 +47,16 @@ export default function App() {
   const sampleProducts = [
     {
       id: "p1",
-      title: "4D-V15 Drone Zeros Mini Quadcopter",
+      title: "DJI Mini 2 drone",
       description:
-        "Drone with 1080P camera. Comes with an extra battery, battery charging adapter, and propellers restrains.\nThe V15 mini drone captures great in-flight pictures and videos. FPV Real-time transmission, you can upload the HD footage from your iphone/ipad.\nComes with instruction book and accessories.\n\nPerfect working condition.",
+        "Extra battery, battery charging adapters, foldable landing legs and propellers restrains.\nReal-time transmission.\nCuisine carrying case. Sil works perfectly fine.\nComes with instruction manual.\n\nGood working condition.",
       price: 6,
-      image: "/Drone zeros.png",
-      images: ["/Drone zeros.png", "/Drone zeros1.png", "/Drone zeros2.png", "Drone zeros3.png", "/Drone zeros4.png", "/Drone zeros5.png"],
+      image: "/Mini drone.png",
+      images: ["/Mini drone.png", "/Mini drone1.png", "/Mini drone2.png"],
       ticketPrice: 6,
-      totalTickets: 100,
+      totalTickets: 200,
       category: "Sports",
-      marketPrice: 200,
+      marketPrice: 300,
     },
     {
       id: "p2",
