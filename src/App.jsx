@@ -51,8 +51,8 @@ export default function App() {
       description:
         "Extra battery, battery charging adapters, foldable landing legs and propellers restrains.\nReal-time transmission.\nCuisine carrying case. Sil works perfectly fine.\nComes with instruction manual.\n\nGood working condition.",
       price: 6,
-      image: "/Mini drone.png",
-      images: ["/Mini drone.png", "/Mini drone1.png", "/Mini drone2.png"],
+      image: "/Mini drone1.png",
+      images: ["/Mini drone1.png", "/Mini drone2.png", "/Mini drone.png"],
       ticketPrice: 6,
       totalTickets: 200,
       category: "Sports",
