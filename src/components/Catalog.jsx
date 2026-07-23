@@ -81,6 +81,26 @@ export const catalogItems = [
     ],
   },
   {
+    id: "p21",
+    category: "Sports",
+    title: "4D-V15 Drone Zeros Mini Quadcopter",
+    ticketPrice: 5,
+    marketPrice: 200,
+    description:
+      "Drone with 1080P camera. Comes with an extra battery, battery
+charging adapter, and propellers restrains.\nThe V15 mini drone captures great in-flight pictures and videos. FPV Real-time transmission, you
+can upload the HD footage from your iphone/ipad.\nComes with instruction manual and accessories.\n\nPerfect working condition.",
+    image: "/Drone zeros.png",
+    images: [
+      "/Drone zeros.png",
+      "/Drone zeros1.png",
+      "/Drone zeros2.png",
+      "/Drone zeros3.png",
+      "/Drone zeros4.png",
+      "/Drone zeros5.png",
+    ],
+  },
+  {
     id: "p6",
     category: "Sports",
     title: "Surfboard",
@@ -102,7 +122,7 @@ export const catalogItems = [
     title: "Treadmill Proform Carbon",
     ticketPrice: 8,
     marketPrice: 600,
-    description: "Speed 10\nIncline 10\nMore models available.",
+  p  description: "Speed 10\nIncline 10\nMore models available.",
     image: "/treadmill.png",
     images: [
       "/treadmill1.png",
