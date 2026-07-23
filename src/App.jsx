@@ -47,12 +47,12 @@ export default function App() {
   const sampleProducts = [
     {
       id: "p1",
-      title: "Wonderfold wagon",
+      title: "4D-V15 Drone Zeros Mini Quadcopter",
       description:
-        "Barely used wagon, excellent condition(only selling because my kids have outgrown it)\nPick up or delivery\nThe W4Luxe stroller Wagon Model\nHolds up to 4passengers\nExtra storage all sides\nDeep carriage with mesh sides\nRemovable canopy with Adjustable canopy Fabric and Rods\nEasy to fold",
+        "Drone with 1080P camera. Comes with an extra battery, battery charging adapter.\nFoldable landing legs and propellers restrains.\nThe V15 mini drone captures great in-flight pictures and videos. FPV Real-time transmission, you can upload the HD footage from your iphone/ipad.\nComes with instruction book and accessories.\n\nPerfect working condition.",
       price: 6,
-      image: "/wonderfold.png",
-      images: ["/wonderfold.png", "/wonderfold2.png", "/Wonderfold3.png"],
+      image: "/Drone zeros.png",
+      images: ["/Drone zeros.png", "/Drone zeros1.png", "/Drone zeros2.png", "Drone zeros3.png", "/Drone zeros4.png", "/Drone zeros5.png"],
       ticketPrice: 6,
       totalTickets: 100,
       category: "Households",
