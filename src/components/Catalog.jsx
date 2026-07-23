@@ -119,7 +119,7 @@ export const catalogItems = [
     title: "Treadmill Proform Carbon",
     ticketPrice: 8,
     marketPrice: 600,
-  p  description: "Speed 10\nIncline 10\nMore models available.",
+    description: "Speed 10\nIncline 10\nMore models available.",
     image: "/treadmill.png",
     images: [
       "/treadmill1.png",
