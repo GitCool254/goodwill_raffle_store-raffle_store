@@ -8,7 +8,7 @@ export const catalogItems = [
     category: "Casual & Outdoor Wear",
     title: "Balaclava",
     ticketPrice: 3,
-    marketPrice: 30,
+    marketPrice: 65,
     description: "Breathable mess fabric balaclava.\nShield from sun, breathable, stretch and wear-resistant.",
     image: "/Balaclava.jpg",
     images: [
@@ -23,7 +23,7 @@ export const catalogItems = [
     category: "Casual & Outdoor Wear",
     title: "Western boots",
     ticketPrice: 3,
-    marketPrice: 50,
+    marketPrice: 80,
     description: "Different sizes & colors in stock.",
     image: "/Western Boots  Gld.jpg",
     images: [
