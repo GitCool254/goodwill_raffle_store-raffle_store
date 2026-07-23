@@ -8,7 +8,7 @@ export const catalogItems = [
     category: "Casual & Outdoor Wear",
     title: "Balaclava",
     ticketPrice: 3,
-    marketPrice: 20,
+    marketPrice: 30,
     description: "Breathable mess fabric balaclava.\nShield from sun, breathable, stretch and wear-resistant.",
     image: "/Balaclava.jpg",
     images: [
@@ -22,8 +22,8 @@ export const catalogItems = [
     id: "p2",
     category: "Casual & Outdoor Wear",
     title: "Western boots",
-    ticketPrice: 4,
-    marketPrice: 80,
+    ticketPrice: 3,
+    marketPrice: 50,
     description: "Different sizes & colors in stock.",
     image: "/Western Boots  Gld.jpg",
     images: [
@@ -40,8 +40,8 @@ export const catalogItems = [
     id: "p3",
     category: "Sports",
     title: "2004 Golf cart club car",
-    ticketPrice: 8,
-    marketPrice: 1800,
+    ticketPrice: 10,
+    marketPrice: 500,
     description: "The cart come with charger. Currently the cart doesn't move on its own since the battery is dead.\nClub car also have aluminum frames, so it'll never rust out.",
     image: "/Golf car.png",
     images: [
@@ -56,7 +56,7 @@ export const catalogItems = [
     category: "Sports",
     title: "G2 Virtual Reality Headset",
     ticketPrice: 5,
-    marketPrice: 300,
+    marketPrice: 250,
     description: "HP Reverb G2 Virtual Reality Headset VR3000-0XX.\nBarely used. Works great!.",
     image: "/G2 virtual reality headset.png",
     images: [
@@ -70,7 +70,7 @@ export const catalogItems = [
     category: "Sports",
     title: "Yamaha Jetski",
     ticketPrice: 8,
-    marketPrice: 5000,
+    marketPrice: 650,
     description: "2008 Yamaha vx110 waverunner jetski.\nFresh rebuilt motor runs 52 mph. \nGood performance stator and battery.",
     image: "/Jetski.png",
     images: [
@@ -85,7 +85,7 @@ export const catalogItems = [
     category: "Sports",
     title: "Surfboard",
     ticketPrice: 4,
-    marketPrice: 300,
+    marketPrice: 200,
     description: `Brand is Nansfems\n\nDimension: 5'9" × 19" × 2 3/8"\n\nConstruction: Polyurethane & Polyester resin\n\nCondition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \n\nWatertight and ready to surf.`,
     image: "/Surfboard1.png",
     images: [
@@ -101,7 +101,7 @@ export const catalogItems = [
     category: "Electronics",
     title: "Treadmill Proform Carbon",
     ticketPrice: 8,
-    marketPrice: 1200,
+    marketPrice: 600,
     description: "Speed 10\nIncline 10\nMore models available.",
     image: "/treadmill.png",
     images: [
@@ -116,7 +116,7 @@ export const catalogItems = [
     category: "Electronics",
     title: "E bike",
     ticketPrice: 7,
-    marketPrice: 1500,
+    marketPrice: 500,
     description: "2 years old Mokwheel Mesa Lite e-bikes. They are well maintained and in perfect condition.",
     image: "/Ebikes.png",
     images: [
@@ -133,7 +133,7 @@ export const catalogItems = [
     category: "Electronics",
     title: "Sightmark wraith night vision scope.",
     ticketPrice: 5,
-    marketPrice: 450,
+    marketPrice: 350,
     description: "Night vision scope is barely used.",
     image: "/Night vision scope.png",
     images: [
@@ -164,7 +164,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Kitchen Island",
     ticketPrice: 5,
-    marketPrice: 250,
+    marketPrice: 400,
     description: "Kitchen Island.Excellent condition no damages.\nDimensions 1.5m long, 1m wide and 1m high.",
     image: "/Kitchen Island.png",
     images: [
@@ -178,7 +178,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Stunning Brand Broyhill Patio Set - Like New.",
     ticketPrice: 5,
-    marketPrice: 700,
+    marketPrice: 450,
     description: "Elevate your outdoor space with this exquisite Brand Broyhill patio set. Perfect for entertaining, this set comfortably seats 7 and includes a table plus two extra seats, expanding to accommodate up to 9 people. \n\nIt's used only once, it looks like new. \nFree of parties, kids and pets.",
     image: "/Sofa set.jpg",
     images: [
@@ -192,7 +192,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Light Grey Sectional",
     ticketPrice: 6,
-    marketPrice: 1200,
+    marketPrice: 500,
     description: "Light Grey weave fabric with piping on edge.It can give a hint of beige with the wood trim.Bought at The Brick, special ordered as colour not shown in store.The legs and bottom is wood trim in a medium to dark stain. This sectional is very heavy and good quality. The extra seat can be attached to make one side longer or used as extra seat like here.\n95”x 95” width and XSeat is 24”width, and all seating 34” in depth (Back to front),\nheight is 34” floor to top of cushion. \nThere is no marks nicks or stains.No pets, no kids, non smoking very clean home! It never gets sat on only when company comes for seasonal holidays! I can show how to connect the extra seat.",
     image: "/light grey cross-sectional.png",
     images: [
@@ -210,7 +210,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Power Recliner Set",
     ticketPrice: 6,
-    marketPrice: 900,
+    marketPrice: 450,
     description: "Beautiful Sofa set with power recliners and USB charging ports. \nSofas are bonded leather white color fabric. Sofas include easily removable backrests which makes it ideal for transporting and maneuvering around into tight spaces. Sofas are just 6 months old, adult used and considered to be in mint condition.\nSofa is 85 inches long and Loveseat is 63 inches long.",
     image: "/Beautiful Sofa.jpg",
     images: [
@@ -225,7 +225,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Modern L - Shaped Sofa",
     ticketPrice: 4,
-    marketPrice: 800,
+    marketPrice: 300,
     description: `Comfy 3-seater with reversible storage ottoman\n\n78" D x 53" W x 32" H (seat depth 21", seat height 18.5")\n\nCold beige linen (light gray-ish), sturdy iron frame, soft cushions.\n\nModern, sleek, and super functional.\n\nNo pets, no smoking home.`,
     image: "/Modern L - shaped.jpg",
     images: [
@@ -241,7 +241,7 @@ export const catalogItems = [
     category: "Household",
     title: "Washer &Dryer",
     ticketPrice: 5,
-    marketPrice: 600,
+    marketPrice: 400,
     description: "Dryer works best.\nWasher works but make noise at high spin.",
     image: "/Washer & Dryer.png",
     images: [
@@ -255,8 +255,8 @@ export const catalogItems = [
     id: "p17",
     category: "Household",
     title: "Eco Spa Hot Tub",
-    ticketPrice: 4,
-    marketPrice: 3000,
+    ticketPrice: 5,
+    marketPrice: 350,
     description: `Tuff Spa Seats 4, 72"x 60"x 30" 210 gallons, weighs 360 lbs. 12 jets, hydro therapy.\nPlug and play 110 v.`,
     image: "/Eco Spa2.png",
     images: [
@@ -270,7 +270,7 @@ export const catalogItems = [
     category: "Household",
     title: "Inflatable Hot Tub",
     ticketPrice: 4,
-    marketPrice: 500,
+    marketPrice: 300,
     description: "Used only 2 months.In perfect working condition.",
     image: "/Inflatable hot tub.png",
     images: [
@@ -282,7 +282,7 @@ export const catalogItems = [
     category: "Household",
     title: "Snoo Happiest Baby Bassinet",
     ticketPrice: 6,
-    marketPrice: 1200,
+    marketPrice: 250,
     description: "Snoo Happiest Baby Bassinet \nNo smoking house :)\n1st owner. It's clean and looks great , I've included pictures for reference. Price includes ;\n -Smart Bassinet\n-Snoo Mattress\n-Snoo Mattress Sheet\n-3 sleep sacks, size small, medium and large.",
     image: "/Snoo Baby.jpg",
     images: [
@@ -297,7 +297,7 @@ export const catalogItems = [
     category: "Household",
     title: "Irest massage chair",
     ticketPrice: 6,
-    marketPrice: 2000,
+    marketPrice: 250,
     description: "In almost new condition, works great.\nHas many nodes.\nMassages from neck to feet.",
     image: "/Massage sit.png",
     images: [

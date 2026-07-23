@@ -55,8 +55,8 @@ export default function App() {
       images: ["/wonderfold.png", "/wonderfold2.png", "/Wonderfold3.png"],
       ticketPrice: 6,
       totalTickets: 100,
-      category: "Eletronics",
-      marketPrice: 300,
+      category: "Households",
+      marketPrice: 350,
     },
     {
       id: "p2",
@@ -75,13 +75,13 @@ export default function App() {
       id: "p3",
       title: "Coolster 125cc",
       description: "Coolster 125cc.\nGreat little starter for your kid",
-      price: 7,
+      price: 10,
       image: "/coolster.png",
       images: ["/coolster.png", "/coolster1.png", "/coolster2.png", "/coolster3.png"],
       ticketPrice: 10,
       totalTickets: 150,
       category: "Eletronics",
-      marketPrice: 400,
+      marketPrice: 650,
     },
   ];
 

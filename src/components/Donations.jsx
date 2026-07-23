@@ -114,8 +114,8 @@ export default function Donations() {
 
   const targetValues = {
     churchPartners: 517,
-    childrenYouth: 12762,
-    countries: 3,
+    childrenYouth: 21055,
+    countries: 4,
   };
 
   useEffect(() => {
