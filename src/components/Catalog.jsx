@@ -54,10 +54,10 @@ export const catalogItems = [
   {
     id: "p4",
     category: "Sports",
-    title: "G2 Virtual Reality Headset",
+    title: "G1 Virtual Reality Headset",
     ticketPrice: 5,
     marketPrice: 250,
-    description: "HP Reverb G2 Virtual Reality Headset VR3000-0XX.\nBarely used. Works great!.",
+    description: "• Display & Optics\nDisplay Type: Dual 2.89-inch LCD panels (RGB stripe subpixels\nResolution: 2160 \times 2160 pixels per eye (4320 \times 2160 combined)\nRefresh Rate: 90 Hz\nField of View (FOV): 114° diagonal (~95° horizontal)\nLenses: Dual Fresnel lenses\nInterpupillary Distance (IPD): Fixed hardware at 63 mm (software-adjustable IPD offset)\n\n• Tracking & Sensors\nTracking Type: 6 Degrees of Freedom (6 DoF) Inside-Out Tracking\nCameras: 2 Front-facing visible spectrum cameras\nSensors: Integrated gyroscope, accelerometer, and magnetometer\n\n• Audio & Connectivity\nAudio System: Integrated spatial audio with removable headphones\nMicrophone: Dual integrated noise-canceling smart assistant microphones\nCable Connection: 2-in-1 cable with DisplayPort 1.3 and USB 3.0\n\n• Controllers (WMR 1st-Gen)\nTracking: 6 DoF tracked via LED constellation rings\nConnectivity: Bluetooth 4.0 (pre-synced to the headset)\nPower Source: 2× AA batteries per controller",
     image: "/G2 virtual reality headset.png",
     images: [
       "/G2 virtual reality headset.png",
@@ -119,7 +119,7 @@ export const catalogItems = [
     title: "Treadmill Proform Carbon",
     ticketPrice: 8,
     marketPrice: 600,
-    description: "Speed 10\nIncline 10\nMore models available.",
+    description: `• Motor & Drive System\nMotor: 2.6 CHP (Continuous Horsepower) Mach Z™ / Quiet Drive Motor\nSpeed Range: 0 – 10 MPH (0 – 16 km/h) with QuickSpeed® digital control buttons\nIncline Range: 0% – 10% Powered Incline with QuickIncline® controls\n\n• Running Deck & Cushioning\nRunning Surface / Belt Size: 20" W × 55" L (46 cm × 140 cm)\nCushioning: ProShox™ Deck Cushioning (absorbs landing impact)\nRollers: 1.9" Precision-Balanced Non-Flex Rollers\n\n• Display, Audio & Connectivity\nDisplay: 5-inch High-Contrast Backlit LCD Display\nApp Integration: iFIT Enabled (Bluetooth sync for trainer-led auto-adjusting workouts)\nAudio: Dual 2-inch Bluetooth speakers\nHeart Rate: Bluetooth Smart HR Monitor compatible (no pulse grips on console)\nConvenience Extras: Integrated tablet/device ledge, dual water bottle holders\n\n• Frame & Dimensions\nDesign: SpaceSaver® Folding Design with EasyLift™ Assist hydraulic release mechanism\nAssembled Footprint: 65" L × 35" W × 64" H (165 cm × 89 cm × 163 cm)\nMaximum User Capacity: 300 lbs (136 kg)\nProduct Weight: ~186 lbs (84 kg)\nMore models available.`,
     image: "/treadmill.png",
     images: [
       "/treadmill1.png",
@@ -131,10 +131,10 @@ export const catalogItems = [
   {
     id: "p8",
     category: "Electronics",
-    title: "E bike",
+    title: "Mokwheel Mesa Lite e-bikes",
     ticketPrice: 7,
     marketPrice: 500,
-    description: "2 years old Mokwheel Mesa Lite e-bikes. They are well maintained and in perfect condition.",
+    description: `• Motor & Electronics\nMotor: 350W Rear Hub Motor (Peak Power: 600W / 45+ Nm Torque)\nBattery: 36V 14.7Ah LG Lithium-Ion (IPX7 Waterproof rating)\nTop Speed: Up to 20 MPH (Throttle) / 25–28 MPH (Pedal Assist)\nEstimated Range: 40 – 50 miles per charge\nPedal Assist / Drive: Cadence Sensor with 5 PAS Levels + Thumb Throttle\nCharger: 36V 2.0A Smart Charger\n\n• Drivetrain, Suspension & Brakes\nGearing: Shimano 7-Speed Derailleur & Shifter\nCrankset: Aluminum Alloy, 170 mm, 44T Chainring\nBrakes: ZOOM Mechanical Dual-Pull Disc Brakes\nFront Fork: 100 mm Suspension Fork\nTires: 27.5" × 2.4" City / Urban All-Terrain Tires\n\n• Frame & Dimensions\nFrame Material: 6061 Aluminum Alloy Step-Thru Frame\nMax Payload Capacity: 350 lbs (158 kg)\nRider Height Compatibility: 5'2" to 6'4"\nAccessories Included: Front headlight, rear integrated brake light, front cargo basket with wooden base, rear rack with trunk bag, full-coverage fenders, and side mirrors.`,
     image: "/Ebikes.png",
     images: [
       "/Ebikes.png",
@@ -151,7 +151,7 @@ export const catalogItems = [
     title: "Sightmark wraith night vision scope.",
     ticketPrice: 5,
     marketPrice: 350,
-    description: "Night vision scope is barely used.",
+    description: `• Optics & Sensor\nSensor Type & Resolution: 1920 \times 1080 CMOS Sensor\nDisplay Type & Resolution: 1280 \times 720 FLCOS Display\nOptical Magnification: 4x\nDigital Zoom: 1\text{x} - 8\text{x} (total magnification up to 32x)\nField of View: 21 ft @ 100 yards (7m @ 100 m)\nDiopter Adjustment: -6 to +3\n\n• IR Illuminator & Night Range\n​IR Wavelength: 850 nm (Removable IR Flashlight included)\nNight Vision Detection Range: Up to 200 yards (183 meters)\nIR Battery Type: 2× CR123A batteries\n\n• Video & Recording\nVideo Recording Resolution: 1080p HD / 720p HD (AVI format)\nPhoto Resolution: JPEG format\nStorage Support: MicroSD card slot (supports up to 64GB)\nOutput Port: Micro-USB port for video export and external power\n\n• Power & Construction\nPower Supply (Scope): 4× AA batteries\nBattery Life (Scope): ~3.5 hours (recording mode) / ~4.5 hours (preview mode)\nWater Resistance Rating: IP55 (water-resistant)\nDimensions (L × W × H): 10.5" × 1.875" × 3.0" (266 mm × 63 mm × 75 mm)\nWeight: 36.3 oz / 1030 g (including batteries)`,
     image: "/Night vision scope.png",
     images: [
       "/Night vision scope.png",
@@ -259,7 +259,8 @@ export const catalogItems = [
     title: "Washer &Dryer",
     ticketPrice: 5,
     marketPrice: 400,
-    description: "Dryer works best.\nWasher works but make noise at high spin.",
+    description: `LG WM3570HVA Front-Load Washer\n\n• Capacity & Dimensions}\nCapacity: 4.3 cu. ft. Ultra Large Capacity\nDimensions (W × H × D): 27" × 38 11/16" × 29 3/4" (51" Depth with door open)
+​Weight: 192 lbs\nWeight: 192 lbs\n\n• Performance & Features\nMotor Type: Inverter Direct Drive Motor (10-Year Limited Warranty)\n​Max Spin Speed: 1,300 RPM\nTechnologies: TurboWash® (saves up to 20 mins per load), 6Motion™ Technology, TrueBalance™ Anti-Vibration\nSteam Options: TrueSteam™, AAFA Certified Allergiene™ Cycle, NSF Certified Sanitary Cycle\nWash Programs (12): Cotton/Normal, Bulky/Large, Perm Press, Delicates, Speed Wash, Sanitary, Heavy Duty, BrightWhites™, Towels, Allergiene™, Tub Clean, Downloaded Cycle\nEnergy Rating: ENERGY STAR® Most Efficient\n\nLG DLEX3570V / DLGX3571V Dryer\n• Capacity & Dimensions\nCapacity: 7.4 cu. ft. Ultra Capacity\nDimensions (W × H × D): 27" × 38 11/16" × 29 3/4" (51" Depth with door open)\nWeight: 136 lbs\n\n• Performance & Features\nDrying System: Sensor Dry System with Precise Temperature Control\nSteam Features: TrueSteam™, SteamFresh™ Cycle (20-min refresh for up to 5 garments), SteamSanitary™ Cycle\nDrying Programs (12): SteamFresh™, SteamSanitary™, Heavy Duty, Regular/Normal, Bulky/Large, Towels, Perm Press, Delicates, Small Load, Antibacterial, Speed Dry, Air Dry\nDrum Material: Aluminized Alloy Steel Drum (Alcosta) with Interior Light\nPower Requirements: 240V / 30A (Electric model DLEX3570V) or 120V / 15A (Gas model DLGX3571V)`,
     image: "/Washer & Dryer.png",
     images: [
       "/Washer & Dryer.png",
@@ -315,7 +316,7 @@ export const catalogItems = [
     title: "Irest massage chair",
     ticketPrice: 6,
     marketPrice: 250,
-    description: "In almost new condition, works great.\nHas many nodes.\nMassages from neck to feet.",
+    description: `iRest SL-Track Full Body Zero Gravity Massage Chair\n\n• Massage & Track System\nTrack Type: Ergonomic 53–55 in (135 cm) SL-Track (follows the natural S-curve of the spine from head down to the glutes/hamstrings)\nMassage Mechanism: 3D Quad-Roller Intelligent Mechanical Massage Hands (simulates human techniques: kneading, tapping, knocking, shiatsu, and flapping)\nAuto Body Scanning: Smart sensor auto-detects spine curves and shoulder height for custom roller alignment\nAuto Programs: 8+ pre-programmed automatic massage routines\nManual Adjustments: 3 roller width levels, 3-level intensity adjustment, and speed controls\n\n• Comfort & Features\nZero Gravity: 3-stage Zero-Gravity reclining angles (aligns knees and heart to relieve spinal compression)\nAir Compression: Full-body airbag compression system (shoulders, arms, hips, calves, and feet)\nHeat Therapy: Carbon fiber lumbar/lower back heating (~122°F / 50°C)\nAudio System: Integrated Bluetooth stereo speakers built into the headrest\nFoot & Calf Massage: Under-foot reflexology rollers with surrounding calf compression airbags\n\n• Frame & Dimensions\nUpholstery: Premium wear-resistant, easy-clean PU Faux Leather\nAssembled Dimensions (Upright): ~60" L × 30" W × 45" H (152 cm × 76 cm × 114 cm)\nWeight Capacity: Up to 300 lbs (136 kg)\nChair Weight: ~183 lbs / 83 kg (Net)\nPower & Noise: 120W | Operating noise level ≤ 50 dB\n\nRecline Clearance Needed: Forward-sliding base design (requires ~10 in / 25 cm clearance from the wall)`,
     image: "/Massage sit.png",
     images: [
       "/Massage sit.png",
