@@ -39,10 +39,10 @@ export const catalogItems = [
   {
     id: "p3",
     category: "Sports",
-    title: "2004 Golf cart club car",
+    title: "Club Car DS",
     ticketPrice: 10,
     marketPrice: 500,
-    description: "The cart come with charger. Currently the cart doesn't move on its own since the battery is dead.\nClub car also have aluminum frames, so it'll never rust out.",
+    description: "• General & Dimensions\nModel: Club Car DS (2-Passenger)\nOverall Length: 91.5 inches (232 cm)\nOverall Width: 48.75 inches (123.8 cm)\nOverall Height (with canopy): 69.0 – 71.0 inches (175–180 cm)\nVehicle Load Capacity: 500 lbs (226kg)\n\n• Chassis & Body\nFrame: AlumiCore™ lightweight, rustproof ladder-style aluminum box beam frame\nBody Finish: ArmorFlex® injection-molded composite with UV protection*\n​Front Suspension: Independent leaf spring with dual hydraulic shocks\nRear Suspension: Leaf spring with dual hydraulic shocks\nSteering: SportDrive™ self-compensating double-reduction helical rack & pinion\nBrakes: Rear-wheel mechanical drum brakes with foot-actuated 3-position parking brake\nStandard Tires: 18 × 8.50 – 8 (4-ply rated)\n\n• Powertrain\nMotor: 3.3 HP to 3.7 HP DC electric motor\nPower system: 48-Volt PowerDrive\nBatteries: four 12V batteries (48V system)\nCurb Weight: ~910 lbs – 975 lbs (including lead-acid batteries)\nTop Speed: 12 – 15 mph (Standard)",
     image: "/Golf car.png",
     images: [
       "/Golf car.png",
@@ -71,7 +71,7 @@ export const catalogItems = [
     title: "Yamaha Jetski",
     ticketPrice: 8,
     marketPrice: 650,
-    description: "2008 Yamaha vx110 waverunner jetski.\nFresh rebuilt motor runs 52 mph. \nGood performance stator and battery.",
+    description: "• Engine & Performance\nEngine Type: 1052cc, 4-Stroke, 4-Cylinder, DOHC (20 Valves) Yamaha MR-1 Marine Engine\nHorsepower: ~102 HP @ 8,000 RPM\nCompression Ratio: 11.4:1\nInduction / Fuel System: Electronic Fuel Injection (EFI)\nCooling System: Open-loop, water-cooled\nTop Speed: ~52 – 54 mph\n\n• Drive Unit & Propulsion\nPump Type: 155 mm Axial Flow, Single-Stage\nImpeller: 3-Blade Stainless Steel\nReverse System: Manual Reverse Bucket with Left-Side Lever\nSteering Assist: Yamaha Off-Throttle Steering (OTS)\n\n• Dimensions & Capacities\nOverall Length: 126.8 inches (3,220 mm)\nOverall Width: 46.1 inches (1,170 mm)\nOverall Height: 45.3 inches (1,150 mm)\n​Dry Weight: 716 lbs (325 kg)\nRider Capacity: 1–3 Persons (Max Weight: 530 lbs / 240 kg)\nFuel Tank Capacity: 15.9 Gallons (60 Liters)\nTotal Storage Capacity: 17.8 Gallons / 67.4 Liters (Front Bow Storage + Glovebox)\nInstrumentation: Digital Multi-Function Display (Speedometer, Tachometer, Fuel Level, Hour Meter)",
     image: "/Jetski.png",
     images: [
       "/Jetski.png",
