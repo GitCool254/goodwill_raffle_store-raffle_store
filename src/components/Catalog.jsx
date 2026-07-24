@@ -85,8 +85,8 @@ export const catalogItems = [
     category: "Sports",
     title: "4D-V15 Drone Zeros Mini Quadcopter",
     ticketPrice: 5,
-    marketPrice: 200,
-    description: "Drone with 1080P camera. Comes with an extra battery, battery charging adapter, and propellers restrains.\nThe V15 mini drone captures great in-flight pictures and videos. FPV Real-time transmission, you can upload the HD footage from your iphone/ipad.\nComes with instruction manual and accessories.\n\nPerfect working condition.",
+    marketPrice: 75,
+    description: "• Camera & Imaging\nPrimary Front Camera - 1080P HD\nBottom Camera - Basic optical flow secondary camera\nTransmission - 2.4GHz Wi-Fi FPV feed directly to a smartphone app up to ~80 meters away\n\n• Battery Capacity & Power\nBattery Type - Modular, plug-in 3.7V Lithium Battery\nCapacity - 1200mAh\nCharging time - Approximately 90min\n\n• Propellers & Motors\nPropellers - Lightweight, flexible 2-blade plastic propellers\nProtective Guards - Comes with 4 snap-on propeller guard frames to prevent blade damage during indoor crashes\n\n• Flexibility, Flight Modes & Controls\nFoldability - Highly compact & foldable\n360° Stunt Flips - Dedicated button to perform automatic aerial flips\nOptical Flow & Altitude Hold - Automatically hovers in place using its bottom camera sensor\nGesture Control - Take photos/videos using hand gestures (peace sign / open palm)\nTrajectory Flight - Draw a line on the smartphone screen for the drone to follow\nComes with instruction manual and accessories\nThe V15 mini drone captures great in-flight pictures and videos.\n\nPerfect working condition.",
     image: "/Drone zeros.png",
     images: [
       "/Drone zeros.png",
