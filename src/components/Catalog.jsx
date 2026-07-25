@@ -103,7 +103,7 @@ export const catalogItems = [
     title: "Surfboard",
     ticketPrice: 4,
     marketPrice: 200,
-    description: `Brand is Nansfems\n\nDimension: 5'9" × 19" × 2 3/8"\n\nConstruction: Polyurethane & Polyester resin\n\nCondition: Excellent used condition. Only minor pressure dents and typical wear from use. No major dings, repairs, or delamination. \n\nWatertight and ready to surf.`,
+    description: `Wavestorm 8ft Classic Soft-Top Surfboards\n\n• Dimensions & Capacities\nLength: 8 ft (96 in / 243.8 cm)\nWidth: 22.5 in (57.1 cm)\nThickness: 3.25 in (8.25 cm)\nVolume: 86 Liters\nBoard Weight: ~11.5 lbs (5.2 kg)\n\n• Core Construction & Materials\nCore: High-density EPS (Expanded Polystyrene) foam core\nStringer System: 3× Marine-ply wood stringers (provides rigidity and flex control)\nDecking Skin: Soft WBS-IXL (Water Barrier Skin) cross-linked foam deck with UV-inhibiting graphics\nBottom Slick: High-Density Polyethylene (HDPE) high-speed slick bottom skin\n\n• Hardware & Accessories Included\nFin Setup: Thruster setup (3× 4.5" bolt-through removable fins)\nTraction Pad: Textured EVA tail traction pad pre-installed\nLeash: Removable polyurethane ankle leash with pre-installed leash plug`,
     image: "/Surfboard1.png",
     images: [
       "/Surfboard1.png",
@@ -289,7 +289,7 @@ export const catalogItems = [
     title: "Inflatable Hot Tub",
     ticketPrice: 4,
     marketPrice: 300,
-    description: "Used only 2 months.In perfect working condition.",
+    description: `Bestway SaluSpa Hawaii AirJet Inflatable Hot Tub (Square, Navy Blue)\n\n• Capacity & Dimensions\nSeating Capacity: 4 to 6 Adults\nExterior Dimensions: 71" L × 71" W × 28" H (180 cm × 180 cm × 71 cm)\nInterior Width: ~51 inches (130 cm)\nWater Capacity (80% full): 222 Gallons (840 Liters)\nNet/Unfilled Weight: ~96.5 lbs (43.8 kg)\nFilled Weight: ~1,938 lbs (879 kg)\n\n• Heating & Jet System\nMassage Jets: 140 AirJet™ bubbling massage system along the bottom perimeter\nMaximum Heating Temperature: 104°F (40°C)\nHeating System Speed: Approx. 2°F – 3°F per hour (1.0°C – 1.5°C/hr)\nWater Flow Rate: 320 gal/hr (1,211 L/hr)\n\n• Construction & Features\nMaterial: 3-layer DuraPlus™ / TriTech™ puncture-resistant PVC wall construction with Y-beam internal support\nFreeze Shield™: Automatic heating function turns on when ambient temps drop below 42°F (6°C) to prevent water freezing and pump damage\nControl Panel: Flip-up digital control panel accessible from inside the tub\nIncluded Accessories: Reinforced clip-on thermal cover, multi-function pump with integrated filtration, ChemConnect™ chemical dispenser, and Vi-type filter cartridge.\nPower Supply: 110–120V AC, 60Hz, 12A (standard household 15A or 20A outlet)\nHeater Rating: 1,350W @ 120V\nMassage Tube/Blower Power: 800W`,
     image: "/Inflatable hot tub.png",
     images: [
       "/Inflatable hot tub.png",
@@ -301,7 +301,7 @@ export const catalogItems = [
     title: "Snoo Happiest Baby Bassinet",
     ticketPrice: 6,
     marketPrice: 250,
-    description: "Snoo Happiest Baby Bassinet \nNo smoking house :)\n1st owner. It's clean and looks great , I've included pictures for reference. Price includes ;\n -Smart Bassinet\n-Snoo Mattress\n-Snoo Mattress Sheet\n-3 sleep sacks, size small, medium and large.",
+    description: `• Core Functionality & Soothing\nMotion & Sound Levels: 5 distinct levels of specially designed sound (white noise) and gentle rocking motion\nResponsiveness: Advanced algorithm and microphones distinguish infant crying from background ambient noise to automatically scale soothing levels\nSafety Mechanism: Built-in safety clips require the proprietary SNOO Sleep Sack wings to be attached before the motor activates (prevents rolling)\n\n• Dimensions & Weight\nAssembled Dimensions: 35.75" L × 19" W × 31" H (90.8 cm × 48.3 cm × 78.7 cm)\nAssembled Weight: 38 lbs (17.2 kg)\n\n• Connectivity & Electronics\nWi-Fi Connectivity: 802.11\text{b/g/n} @ 2.4\text{ GHz}\nApp Control: iOS and Android compatible (features remote control, customizable motion/sound limits, weaning mode, and daily sleep logs)\nRadiation Safeguard: Internal Wi-Fi shield to direct wireless radiation away from the infant\nPower Supply: 12\text{V} DC power adapter (100–240V universal wall input)\n\n• Construction & Materials\nMesh Outer Wall: 100\% breathable polyester mesh for max airflow and visibility\nBase Finish: Dark faux-wood trim with white metal hairpin legs\nMattress & Sheet: Polyurethane foam mattress with a water-resistant cover and 100\% GOTS-certified organic cotton fitted sheet`,
     image: "/Snoo Baby.jpg",
     images: [
       "/Snoo Baby.jpg",
