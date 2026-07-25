@@ -9,7 +9,7 @@ export const catalogItems = [
     title: "Balaclava",
     ticketPrice: 3,
     marketPrice: 65,
-    description: "Breathable mess fabric balaclava.\nShield from sun, breathable, stretch and wear-resistant.",
+    description: "Tactical Lightweight Hinged Balaclava\n\n• Material & Fabric Construction\nMaterial Composition: 95% High-Density Polyester / 5% Spandex\nFabric Weight: Ultra-lightweight (~40g to 45g)\nProperties: Moisture-wicking, quick-drying, breathable, and anti-static\n\n• Operational Features & Compatibility\nProtection: Blocks dust, wind, mild cold, and harmful UV rays\nAnti-Fogging: Breathable mesh structure helps disperse warm breath to reduce goggle/eyewear fogging\nHelmet Compatibility: Designed as a low-drag inner layer for tactical helmets (FAST/MICH), motorcycle helmets, or bicycle helmets\n​Full Face Balaclava (Head, neck, and face coverage)",
     image: "/Balaclava.jpg",
     images: [
       "/Balaclava.jpg",
