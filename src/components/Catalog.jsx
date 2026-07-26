@@ -22,7 +22,7 @@ export const catalogItems = [
     id: "p2",
     category: "Casual & Outdoor Wear",
     title: "Western boots",
-    ticketPrice: 3,
+    ticketPrice: 4,
     marketPrice: 80,
     description: "Different sizes & colors in stock.",
     image: "/Western Boots  Gld.jpg",
@@ -301,7 +301,7 @@ export const catalogItems = [
     title: "Snoo Happiest Baby Bassinet",
     ticketPrice: 6,
     marketPrice: 250,
-    description: `• Core Functionality & Soothing\nMotion & Sound Levels: 5 distinct levels of specially designed sound (white noise) and gentle rocking motion\nResponsiveness: Advanced algorithm and microphones distinguish infant crying from background ambient noise to automatically scale soothing levels\nSafety Mechanism: Built-in safety clips require the proprietary SNOO Sleep Sack wings to be attached before the motor activates (prevents rolling)\n\n• Dimensions & Weight\nAssembled Dimensions: 35.75" L × 19" W × 31" H (90.8 cm × 48.3 cm × 78.7 cm)\nAssembled Weight: 38 lbs (17.2 kg)\n\n• Connectivity & Electronics\nWi-Fi Connectivity: 802.11\text{b/g/n} @ 2.4\text{ GHz}\nApp Control: iOS and Android compatible (features remote control, customizable motion/sound limits, weaning mode, and daily sleep logs)\nRadiation Safeguard: Internal Wi-Fi shield to direct wireless radiation away from the infant\nPower Supply: 12\text{V} DC power adapter (100–240V universal wall input)\n\n• Construction & Materials\nMesh Outer Wall: 100\% breathable polyester mesh for max airflow and visibility\nBase Finish: Dark faux-wood trim with white metal hairpin legs\nMattress & Sheet: Polyurethane foam mattress with a water-resistant cover and 100\% GOTS-certified organic cotton fitted sheet`,
+    description: `• Core Functionality & Soothing\nMotion & Sound Levels: 5 distinct levels of specially designed sound (white noise) and gentle rocking motion\nResponsiveness: Advanced algorithm and microphones distinguish infant crying from background ambient noise to automatically scale soothing levels\nSafety Mechanism: Built-in safety clips require the proprietary SNOO Sleep Sack wings to be attached before the motor activates (prevents rolling)\n\n• Dimensions & Weight\nAssembled Dimensions: 35.75" L × 19" W × 31" H (90.8 cm × 48.3 cm × 78.7 cm)\nAssembled Weight: 38 lbs (17.2 kg)\n\n• Connectivity & Electronics\nWi-Fi Connectivity: 802.11b/g/n @ 2.4GHz\nApp Control: iOS and Android compatible (features remote control, customizable motion/sound limits, weaning mode, and daily sleep logs)\nRadiation Safeguard: Internal Wi-Fi shield to direct wireless radiation away from the infant\nPower Supply: 12\text{V} DC power adapter (100–240V universal wall input)\n\n• Construction & Materials\nMesh Outer Wall: 100\% breathable polyester mesh for max airflow and visibility\nBase Finish: Dark faux-wood trim with white metal hairpin legs\nMattress & Sheet: Polyurethane foam mattress with a water-resistant cover and 100% GOTS-certified organic cotton fitted sheet`,
     image: "/Snoo Baby.jpg",
     images: [
       "/Snoo Baby.jpg",
