@@ -203,20 +203,15 @@ export default function Detail({ product, openImage, remainingTickets }) {
         </p>
       )}
 
-      {/* DESCRIPTION SECTION with "Product Details:" label */}
+      {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
       <div className="mb-10">
-        <div className="text-sm text-slate-600 leading-relaxed mb-1 whitespace-pre-line text-left max-w-md mx-auto">
-          <span 
-            style={{
-              marginBottom: "20px",
-              fontWeight: 600,
-            }}
-          >
-            Product Details
-          </span>
-          {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
-            ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
-            : product.description}
+        <div className="text-left max-w-md mx-auto">
+          <div className="text-sm font-semibold text-slate-700 mb-1">Product Details</div>
+          <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+            {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
+              ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
+              : product.description}
+          </div>
         </div>
         {product.description.length > DESCRIPTION_LIMIT && (
           <button
@@ -402,7 +397,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                     "Content-Type": "application/json",
                     "X-Nonce": nonce,
                     "X-Timestamp": timestamp.toString(),
-                    "X-Timezone-Offset": timezoneOffset.toString(),   // 👈 NEW header
+                    "X-Timezone-Offset": timezoneOffset.toString(),
                   },
                   body: JSON.stringify(payloadWithNonce),
                 }
