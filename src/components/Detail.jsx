@@ -211,7 +211,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
               marginBottom: "20px",
               fontWeight: 600,
             }}
-            Product Details: 
+          >
+            Product Details
           </span>
           {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
             ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
