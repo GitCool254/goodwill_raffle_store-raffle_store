@@ -435,7 +435,6 @@ export default function Catalog({ openProduct }) {
                 $ {item.ticketPrice} <span style={{ fontSize: '0.75rem' }}>/ticket</span>
               </div>
             </div>
-
             {/* White container for image with 10px margins and padding */}
             <div
               style={{
@@ -457,26 +456,6 @@ export default function Catalog({ openProduct }) {
                     (e.target.src = "https://via.placeholder.com/200x150")
                   }
                 />
-              </div>
-            </div>
-
-            {/* NEW: Product Details section – exactly like the description but with a label */}
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: '0px',
-                padding: '10px',
-                marginLeft: '10px',
-                marginRight: '10px',
-                marginTop: '10px',
-                marginBottom: '10px'
-              }}
-            >
-              <div style={{ fontWeight: '600', fontSize: '0.875rem', color: '#334155', marginBottom: '4px' }}>
-                Product Details:
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#475569', lineHeight: '1.5' }}>
-                {item.description.length > 100 ? item.description.slice(0, 100) + '...' : item.description}
               </div>
             </div>
           </div>

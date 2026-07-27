@@ -203,9 +203,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
         </p>
       )}
 
-      {/* DESCRIPTION SECTION */}
+      {/* DESCRIPTION SECTION with "Product Details:" label */}
       <div className="mb-10">
         <div className="text-sm text-slate-600 leading-relaxed mb-1 whitespace-pre-line text-left max-w-md mx-auto">
+          <span className="font-semibold">Product Details: </span>
           {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
             ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
             : product.description}
