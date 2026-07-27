@@ -7,7 +7,7 @@ export const catalogItems = [
     id: "p1",
     category: "Casual & Outdoor Wear",
     title: "Balaclava",
-    ticketPrice: 4,
+    ticketPrice: 3,
     marketPrice: 65,
     description: "Tactical Lightweight Hinged Balaclava\n\n• Material & Fabric Construction\nMaterial Composition: 95% High-Density Polyester / 5% Spandex\nFabric Weight: Ultra-lightweight (~40g to 45g)\nProperties: Moisture-wicking, quick-drying, breathable, and anti-static\n\n• Operational Features & Compatibility\nProtection: Blocks dust, wind, mild cold, and harmful UV rays\nAnti-Fogging: Breathable mesh structure helps disperse warm breath to reduce goggle/eyewear fogging\nHelmet Compatibility: Designed as a low-drag inner layer for tactical helmets (FAST/MICH), motorcycle helmets, or bicycle helmets\n​Full Face Balaclava (Head, neck, and face coverage)",
     image: "/Balaclava.jpg",
@@ -260,7 +260,7 @@ export const catalogItems = [
     ticketPrice: 5,
     marketPrice: 400,
     description: `LG WM3570HVA Front-Load Washer\n\n• Capacity & Dimensions}\nCapacity: 4.3 cu. ft. Ultra Large Capacity\nDimensions (W × H × D): 27" × 38 11/16" × 29 3/4" (51" Depth with door open)
-​Weight: 192 lbs\nWeight: 192 lbs\n\n• Performance & Features\nMotor Type: Inverter Direct Drive Motor (10-Year Limited Warranty)\n​Max Spin Speed: 1,300 RPM\nTechnologies: TurboWash® (saves up to 20 mins per load), 6Motion™ Technology, TrueBalance™ Anti-Vibration\nSteam Options: TrueSteam™, AAFA Certified Allergiene™ Cycle, NSF Certified Sanitary Cycle\nWash Programs (12): Cotton/Normal, Bulky/Large, Perm Press, Delicates, Speed Wash, Sanitary, Heavy Duty, BrightWhites™, Towels, Allergiene™, Tub Clean, Downloaded Cycle\nEnergy Rating: ENERGY STAR® Most Efficient\n\nLG DLEX3570V / DLGX3571V Dryer\n\n• Capacity & Dimensions\nCapacity: 7.4 cu. ft. Ultra Capacity\nDimensions (W × H × D): 27" × 38 11/16" × 29 3/4" (51" Depth with door open)\nWeight: 136 lbs\n\n• Performance & Features\nDrying System: Sensor Dry System with Precise Temperature Control\nSteam Features: TrueSteam™, SteamFresh™ Cycle (20-min refresh for up to 5 garments), SteamSanitary™ Cycle\nDrying Programs (12): SteamFresh™, SteamSanitary™, Heavy Duty, Regular/Normal, Bulky/Large, Towels, Perm Press, Delicates, Small Load, Antibacterial, Speed Dry, Air Dry\nDrum Material: Aluminized Alloy Steel Drum (Alcosta) with Interior Light\nPower Requirements: 240V / 30A (Electric model DLEX3570V) or 120V / 15A (Gas model DLGX3571V)`,
+Weight: 192 lbs\nWeight: 192 lbs\n\n• Performance & Features\nMotor Type: Inverter Direct Drive Motor (10-Year Limited Warranty)\n​Max Spin Speed: 1,300 RPM\nTechnologies: TurboWash® (saves up to 20 mins per load), 6Motion™ Technology, TrueBalance™ Anti-Vibration\nSteam Options: TrueSteam™, AAFA Certified Allergiene™ Cycle, NSF Certified Sanitary Cycle\nWash Programs (12): Cotton/Normal, Bulky/Large, Perm Press, Delicates, Speed Wash, Sanitary, Heavy Duty, BrightWhites™, Towels, Allergiene™, Tub Clean, Downloaded Cycle\nEnergy Rating: ENERGY STAR® Most Efficient\n\nLG DLEX3570V / DLGX3571V Dryer\n\n• Capacity & Dimensions\nCapacity: 7.4 cu. ft. Ultra Capacity\nDimensions (W × H × D): 27" × 38 11/16" × 29 3/4" (51" Depth with door open)\nWeight: 136 lbs\n\n• Performance & Features\nDrying System: Sensor Dry System with Precise Temperature Control\nSteam Features: TrueSteam™, SteamFresh™ Cycle (20-min refresh for up to 5 garments), SteamSanitary™ Cycle\nDrying Programs (12): SteamFresh™, SteamSanitary™, Heavy Duty, Regular/Normal, Bulky/Large, Towels, Perm Press, Delicates, Small Load, Antibacterial, Speed Dry, Air Dry\nDrum Material: Aluminized Alloy Steel Drum (Alcosta) with Interior Light\nPower Requirements: 240V / 30A (Electric model DLEX3570V) or 120V / 15A (Gas model DLGX3571V)`,
     image: "/Washer & Dryer.png",
     images: [
       "/Washer & Dryer.png",
@@ -435,6 +435,7 @@ export default function Catalog({ openProduct }) {
                 $ {item.ticketPrice} <span style={{ fontSize: '0.75rem' }}>/ticket</span>
               </div>
             </div>
+
             {/* White container for image with 10px margins and padding */}
             <div
               style={{
@@ -456,6 +457,26 @@ export default function Catalog({ openProduct }) {
                     (e.target.src = "https://via.placeholder.com/200x150")
                   }
                 />
+              </div>
+            </div>
+
+            {/* NEW: Product Details section – exactly like the description but with a label */}
+            <div
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: '0px',
+                padding: '10px',
+                marginLeft: '10px',
+                marginRight: '10px',
+                marginTop: '10px',
+                marginBottom: '10px'
+              }}
+            >
+              <div style={{ fontWeight: '600', fontSize: '0.875rem', color: '#334155', marginBottom: '4px' }}>
+                Product Details:
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#475569', lineHeight: '1.5' }}>
+                {item.description.length > 100 ? item.description.slice(0, 100) + '...' : item.description}
               </div>
             </div>
           </div>

@@ -1083,7 +1083,11 @@ export default function App() {
                 />
               </div>
               <h3 className="font-semibold">{p.title}</h3>
-              <p className="text-sm text-slate-600 mt-1">{p.description?.slice(0, 50)}…</p>
+              {/* NEW: "Product Details:" label before description */}
+              <div className="text-sm text-slate-600 mt-1">
+                <span className="font-semibold">Product Details: </span>
+                {p.description?.slice(0, 50)}…
+              </div>
               <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
                 <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
                 <button
