@@ -206,7 +206,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
       <div className="mb-10">
         <div className="text-left max-w-md mx-auto">
-          <div className="text-sm font-semibold text-slate-700 mb-10">Product Details</div>
+          <div 
+            className="text-sm font-semibold text-slate-700 mb-1"
+            style={{ marginBottom: "20px", fontWeight: 500 }}
+          >
+            Product Details
+          </div>
           <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
             {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
               ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
