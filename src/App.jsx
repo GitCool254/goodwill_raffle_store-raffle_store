@@ -62,7 +62,7 @@ export default function App() {
       id: "p2",
       title: "Beachcroft Patio set",
       description:
-        "2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
+        "• 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
       price: 6,
       image: "/BeachCroft.png",
       images: ["/BeachCroft.png", "/BeachCroft1.png", "/BeachCroft3.png", "/BeachCroft2.png"],

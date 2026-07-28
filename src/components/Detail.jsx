@@ -188,6 +188,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
         }
       />
 
+      {/* White shadow line above price */}
+      <div style={{ height: '3px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '5px' }} />
+
       <p className="text-lg mb-2">Price per ticket: ${product.ticketPrice}</p>
 
       {/* Market price display – new */}
@@ -206,7 +209,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
       <div className="mb-10">
         <div className="text-left max-w-md mx-auto">
-          <div 
+          <div
             className="text-sm font-semibold text-slate-700 mb-1"
             style={{ marginBottom: "20px", fontWeight: 500 }}
           >
@@ -226,6 +229,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
             {expandedDesc ? "See less" : "See more"}
           </button>
         )}
+        {/* White shadow line below the toggle button */}
+        <div style={{ height: '3px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '5px' }} />
       </div>
 
       <br />
