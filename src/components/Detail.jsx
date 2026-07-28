@@ -191,11 +191,19 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* White shadow line above price */}
       <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '10px' }} />
 
-      <p className="text-lg mb-2">Price per ticket: ${product.ticketPrice}</p>
+      <p 
+        className="text-lg mb-2"
+        style={{ color: '#334155', fontSize: "18px" }}
+      >
+        Price per ticket: ${product.ticketPrice}
+      </p>
 
       {/* Market price display – new */}
       {product.marketPrice && (
-        <p className="text-sm text-slate-500 mb-2">
+        <p 
+        className="text-sm text-slate-500 mb-2"
+        style={{ color: '#334155', fontSize: "18px" }}
+        >
           Market value: ${product.marketPrice}
         </p>
       )}
@@ -211,7 +219,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
         <div className="text-left max-w-md mx-auto">
           <div
             className="text-sm font-semibold text-slate-700 mb-1"
-            style={{ marginBottom: "20px", fontWeight: 500 }}
+            style={{ marginBottom: "20px", fontWeight: 500, color: '#334155', fontSize: "18px" }}
           >
             Product Details
           </div>
