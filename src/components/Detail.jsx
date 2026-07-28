@@ -189,7 +189,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
       />
 
       {/* White shadow line above price */}
-      <div style={{ height: '3px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '5px' }} />
+      <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '10px' }} />
 
       <p className="text-lg mb-2">Price per ticket: ${product.ticketPrice}</p>
 
@@ -230,7 +230,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
           </button>
         )}
         {/* White shadow line below the toggle button */}
-        <div style={{ height: '3px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '5px' }} />
+        <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '10px' }} />
       </div>
 
       <br />
