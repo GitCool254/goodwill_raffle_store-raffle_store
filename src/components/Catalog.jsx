@@ -280,7 +280,7 @@ Weight: 192 lbs\n• Weight: 192 lbs\n\n◆ Performance & Features\n• Motor Ty
     images: [
       "/Eco Spa2.png",
       "/Eco Spa1.png",
-      "/eco spa3.png",
+      "/Eco Spa.png",
     ],
   },
   {
