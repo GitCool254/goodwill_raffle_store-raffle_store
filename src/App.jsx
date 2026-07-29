@@ -496,7 +496,7 @@ export default function App() {
         productImg: "/Trek Marlin_mae.png",
         verified: true,
         countryFlag: "🇦🇺",
-        location: ", "Ocean Grove VIC 3226",
+        location: "Ocean Grove VIC 3226",
       },
       {
         name: "Joshua T.",
