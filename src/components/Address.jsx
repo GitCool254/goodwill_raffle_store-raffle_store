@@ -33,12 +33,26 @@ function AddressLine({ line1, line2, enabled = true }) {
 }
 
 export default function Address() {
-  const [toggles, setToggles] = useState({
-    usa: true,
-    canada: true,
-    australia: true,
-    newZealand: true,
-  });
+  // Initialize state from localStorage if available, else default all false
+  const getInitialToggles = () => {
+    const stored = localStorage.getItem("addressToggles");
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        // ignore
+      }
+    }
+    // Default: all false (conservative) until we fetch from backend
+    return {
+      usa: false,
+      canada: false,
+      australia: false,
+      newZealand: false,
+    };
+  };
+
+  const [toggles, setToggles] = useState(getInitialToggles);
 
   useEffect(() => {
     const fetchToggles = async () => {
@@ -46,15 +60,21 @@ export default function Address() {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/address_toggles`);
         if (response.ok) {
           const data = await response.json();
-          setToggles({
-            usa: data.usa ?? true,
-            canada: data.canada ?? true,
-            australia: data.australia ?? true,
-            newZealand: data.newZealand ?? true,
-          });
+          const newToggles = {
+            usa: data.usa ?? false,
+            canada: data.canada ?? false,
+            australia: data.australia ?? false,
+            newZealand: data.newZealand ?? false,
+          };
+          setToggles(newToggles);
+          localStorage.setItem("addressToggles", JSON.stringify(newToggles));
+        } else {
+          // If response not ok, keep what we have (from localStorage or default)
+          console.warn("Failed to fetch toggles, using stored values.");
         }
       } catch (error) {
         console.error("Failed to fetch address toggles:", error);
+        // keep existing toggles (from localStorage or default)
       }
     };
     fetchToggles();
