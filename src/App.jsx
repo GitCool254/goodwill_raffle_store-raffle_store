@@ -1189,7 +1189,7 @@ export default function App() {
                       </button>
                     </p>
                     <p>
-                      • <strong>Date & Time:</strong> [EVENT DATE & TIME]
+                      • <strong>Date & Time:</strong> 15/August/2026, 0200PM 
                     </p>
                     <p>
                       • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
