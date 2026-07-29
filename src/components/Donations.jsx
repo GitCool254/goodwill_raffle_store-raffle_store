@@ -50,7 +50,7 @@ export default function Donations() {
         "/Community Outreach2.jpg",
       ],
       quote: "“Goodwillstores continues to walk alongside our children's home—providing food, clothing, and school essentials while also investing in our children's gifts. We run weekend workshops where our kids explore art, music, and even basic coding. Our kids now attend school with confidence. The team visits regularly, offering mentorship and helping us build life skills. It's not just support—it's a partnership in building a brighter future.”",
-      quoteName: "—Sarah Njoroge,",
+      quoteName: "—Mellisa Marie ,",
       quotePosition: "Community Project Coordinator",
       overlayImage: "/Outreach theme1.jpg",
     }
