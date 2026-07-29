@@ -70,7 +70,7 @@ export const catalogItems = [
     category: "Sports",
     title: "Yamaha Jetski",
     ticketPrice: 8,
-    marketPrice: 650,
+    marketPrice: 500,
     description: "◆ Engine & Performance\n• Engine Type: 1052cc, 4-Stroke, 4-Cylinder, DOHC (20 Valves) Yamaha MR-1 Marine Engine\n• Horsepower: ~102 HP @ 8,000 RPM\n• Compression Ratio: 11.4:1\n• Induction / Fuel System: Electronic Fuel Injection (EFI)\n• Cooling System: Open-loop, water-cooled\n• Top Speed: ~52 – 54 mph\n\n◆ Drive Unit & Propulsion\n• Pump Type: 155 mm Axial Flow, Single-Stage\n• Impeller: 3-Blade Stainless Steel\n• Reverse System: Manual Reverse Bucket with Left-Side Lever\n• Steering Assist: Yamaha Off-Throttle Steering (OTS)\n\n◆ Dimensions & Capacities\n• Overall Length: 126.8 inches (3,220 mm)\n• Overall Width: 46.1 inches (1,170 mm)\n• Overall Height: 45.3 inches (1,150 mm)\n​• Dry Weight: 716 lbs (325 kg)\n• Rider Capacity: 1–3 Persons (Max Weight: 530 lbs / 240 kg)\n• Fuel Tank Capacity: 15.9 Gallons (60 Liters)\n• Total Storage Capacity: 17.8 Gallons / 67.4 Liters (Front Bow Storage + Glovebox)\n• Instrumentation: Digital Multi-Function Display (Speedometer, Tachometer, Fuel Level, Hour Meter)",
     image: "/Jetski.png",
     images: [
@@ -166,7 +166,7 @@ export const catalogItems = [
     category: "Furniture",
     title: "Beachcroft Patio Set",
     ticketPrice: 6,
-    marketPrice: 400,
+    marketPrice: 250,
     description: "• 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
     image: "/BeachCroft.png",
     images: [

@@ -69,7 +69,7 @@ export default function App() {
       ticketPrice: 6,
       totalTickets: 200,
       category: "Households",
-      marketPrice: 400,
+      marketPrice: 250,
     },
     {
       id: "p3",
