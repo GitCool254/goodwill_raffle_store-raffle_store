@@ -462,8 +462,8 @@ export default function App() {
         winnerImg: "",
         productImg: "/Dining set_melissa.png",
         verified: true,
-        countryFlag: "🇳🇿",
-        location: "Alongside Trewavas Street, Motueka",
+        countryFlag: "🇦🇺",
+        location: "Dodges Ferry TAS",
       },
       {
         name: "Liam J..",
@@ -473,8 +473,8 @@ export default function App() {
         winnerImg: "",
         productImg: "/Ballinasloe_Liam.png",
         verified: true,
-        countryFlag: "🇳🇿",
-        location: "Alongside Saxon Street, Motueka",
+        countryFlag: "🇦🇺",
+        location: "Albans VIC",
       },
       {
         name: "Alexander G.",
@@ -484,8 +484,8 @@ export default function App() {
         winnerImg: "",
         productImg: "/Surf Betty.png",
         verified: true,
-        countryFlag: "🇳🇿",
-        location: "Alongside William Street, Richmond",
+        countryFlag: "🇦🇺",
+        location: "Dodges Ferry TAS",
       },
       {
         name: "Mae W.",
@@ -496,7 +496,7 @@ export default function App() {
         productImg: "/Trek Marlin_mae.png",
         verified: true,
         countryFlag: "🇦🇺",
-        location: "Ocean Grove VIC 3226",
+        location: "Elanora QLD",
       },
       {
         name: "Joshua T.",
@@ -506,8 +506,8 @@ export default function App() {
         winnerImg: "",
         productImg: "/Venom X21_Joshua.png",
         verified: true,
-        countryFlag: "🇳🇿",
-        location: "Tahunanui, Nelson",
+        countryFlag: "🇦🇺",
+        location: "Applecross WA",
       },
     ];
 
