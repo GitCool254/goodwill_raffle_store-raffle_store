@@ -193,7 +193,7 @@ export const catalogItems = [
   {
     id: "p12",
     category: "Furniture",
-    title: "Stunning Brand Broyhill Patio Set - Like New.",
+    title: "Stunning Brand Broyhill Patio Set",
     ticketPrice: 5,
     marketPrice: 450,
     description: "• Elevate your outdoor space with this exquisite Brand Broyhill patio set. Perfect for entertaining, this set comfortably seats 7 and includes a table plus two extra seats, expanding to accommodate up to 9 people. \n\n• It's used only once, it looks like new. \n• Free of parties, kids and pets.",
