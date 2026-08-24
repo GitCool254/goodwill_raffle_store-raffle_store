@@ -4,7 +4,7 @@ export default function WinnersDetail() {
   const winners = [
     {
       name: "Melissa D.",
-      date: "2 July 2026",
+      date: "30 July 2026",
       ticketNo: "GWS-240715B9",
       product: "Larchmont Dining Set",
       winnerImg: "",
@@ -15,7 +15,7 @@ export default function WinnersDetail() {
     },
     {
       name: "Liam J..",
-      date: "30 June 2026",
+      date: "30 July 2026",
       ticketNo: "GWS-3B8381E",
       product: "Ballinasloe 3-piece Sectional",
       winnerImg: "",
@@ -26,7 +26,7 @@ export default function WinnersDetail() {
     },
     {
       name: "Alexander G.",
-      date: "29 May 2026",
+      date: "1 August 2026",
       ticketNo: "GWS-74BD35F1",
       product: "NSF Surf Betty",
       winnerImg: "",
@@ -37,7 +37,7 @@ export default function WinnersDetail() {
     },
     {
       name: "Mae W.",
-      date: "26 April 2026",
+      date: "30 July 2026",
       ticketNo: "GWS-8B43622A",
       product: "Trek Marlin 5 Gen 2",
       winnerImg: "",
@@ -48,7 +48,7 @@ export default function WinnersDetail() {
     },
     {
       name: "Joshua T.",
-      date: "20 March 2026",
+      date: "31 July 2026",
       ticketNo: "GWS-C2C2621C",
       product: "Venom X21(Dongfang DF50SRT)",
       winnerImg: "",
