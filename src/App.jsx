@@ -916,7 +916,7 @@ export default function App() {
             <RecentlyViewed onProductClick={openProduct} />
             {/* 👇 Conditional rendering of WinnersDetail */}
             {showWinnersDetail && <WinnersDetail />}
-            <RecentWinners />
+            {/* 👇 REMOVED duplicate RecentWinners from here */}
           </>
         )}
 
