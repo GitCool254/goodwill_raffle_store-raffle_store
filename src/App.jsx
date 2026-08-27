@@ -48,7 +48,7 @@ export default function App() {
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
 
   // -------------------- SAMPLE DATA --------------------
-  const sampleProducts = [
+  export const sampleProducts = [
     {
       id: "p1",
       title: "DJI Mini 2 drone",
