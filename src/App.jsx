@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 
-// eruda console
-
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Detail from "./components/Detail";
@@ -18,10 +16,10 @@ import TermsOfUse from "./components/TermsOfUse";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import RecentWinners from "./components/RecentWinners";
 import RecentlyViewed from "./components/RecentlyViewed";
-import WinnersDetail from "./components/WinnersDetail";   // 👈 NEW IMPORT
+import WinnersDetail from "./components/WinnersDetail";
 
-// 👇 Import catalog items for URL resolution fallback
-import { catalogItems } from "./components/Catalog";
+// Import product data from shared file
+import { sampleProducts, catalogItems } from "./data/products";
 
 /**
  * Goodwill Raffle Store - Upgraded UI
@@ -46,48 +44,6 @@ export default function App() {
 
   // --- State for WinnersDetail toggle ---
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
-
-  // -------------------- SAMPLE DATA --------------------
-  export const sampleProducts = [
-    {
-      id: "p1",
-      title: "DJI Mini 2 drone",
-      description:
-        "◆ Camera\n• Resolution - 48MP photos\n• Sensor - 1/1.3-inch CMOS with Dual Native ISO Fusion\n• Video Recording - FHD (1080p): Up to 200fps Slow Motion\n\n◆ Battery\n• Standard Intelligent Flight Battery - Capacity: 2590mAh\n• Charging speed - 58min(Standard)\n\n◆ Propellers & Propulsion\n• Type - Folding, low-noise, and quick-release propellers\n• Max Speed(Sport mode) -horizontal speed: 16m/s; Ascent/Descend speed: 5m/s\n• Wind resistance - Up to 11m/s\n\n◆ Flexibility, Flight Modes & Sensors\n• Foldability - Folded: 148 × 94 × 64 mm; Unfolded: 298 × 373 × 101 mm\n• Omnidirectional Obstacle Sensing - Equipped with binocular vision sensors and a 3D infrared sensor underneath. Detects obstacles in front, back, left, right, top, and bottom\n• Transmission (DJI O4): Provides 1080p/60fps video feed up to 20 km (FCC) or 10 km (CE)\n\n◆ Smart Tracking Features\n• ActiveTrack 360°: Trace path control directly from the controller touch screen; Waypoint Flight: Program autonomous flight paths and actions; Cruise Control & Advanced RTH: Automatic obstacle navigation during return home.\n• Cuisine carrying case. Sil works perfectly fine.\n• Comes with instruction manual.\n\nGood working condition.",
-      price: 6,
-      image: "/Mini drone1.png",
-      images: ["/Mini drone1.png", "/Mini drone2.png", "/Mini drone.png"],
-      ticketPrice: 6,
-      totalTickets: 200,
-      category: "Sports",
-      marketPrice: 300,
-    },
-    {
-      id: "p2",
-      title: "Beachcroft Patio set",
-      description:
-        "• 2 Swivel rocking outdoors chairs, fire pit, and 5 pc sectional.\nBrand is Beachcroft.",
-      price: 6,
-      image: "/BeachCroft.png",
-      images: ["/BeachCroft.png", "/BeachCroft1.png", "/BeachCroft3.png", "/BeachCroft2.png"],
-      ticketPrice: 6,
-      totalTickets: 200,
-      category: "Households",
-      marketPrice: 250,
-    },
-    {
-      id: "p3",
-      title: "Coolster 3125CX-2 125cc",
-      description: `◆ Engine & Performance\n• Engine Type: 125cc Single-Cylinder, 4-stroke, Air-Cooled\n• Max Horsepower: ~7.4 HP (5.7 kW) @ 7,500 RPM\n• Max Torque: 8.0 N·m @ 5,500 RPM\n• Top Speed: Up to 25–35 mph\n\n◆ Drivetrain & Transmission\n• Starting System: Electric Push-Button Start\n• Transmission: Fully Automatic with Reverse (Forward-Neutral-Reverse)\n• Drive System: Chain Drive (Rear-Wheel Drive)\n\n◆ Chassis, Suspension & Brakes\nFront Brakes: Mechanical Drum / Hub\nRear Brakes: Hydraulic Disc\n• Front Suspension: Dual A-Arm with Shocks\n• Rear Suspension: Rear Swing Arm with Mono-Shock\n• Front Tires: 19 × 7.00 – 8\n​• Rear Tires: 18 × 9.50 – 8\n\n◆ Dimensions & Capacities\n• Overall Dimensions (L × W × H): 57" × 38" × 39" (1450 mm × 970 mm × 990 mm)\n​• Net Weight / Gross Weight: ~225 lbs / 260 lbs\n​• Max Weight Capacity: 165 lbs (75 kg)\n​• Fuel Capacity: ~0.63 Gallons (2.4 L)\n\n• Great working condition and performer for kids`,
-      price: 10,
-      image: "/coolster.png",
-      images: ["/coolster.png", "/coolster1.png", "/coolster2.png", "/coolster3.png"],
-      ticketPrice: 10,
-      totalTickets: 150,
-      category: "Eletronics",
-      marketPrice: 650,
-    },
-  ];
 
   // -------------------- STATE --------------------
   const [products, setProducts] = useState(() => {
@@ -236,7 +192,7 @@ export default function App() {
     terms: "/terms",
     privacy: "/privacy",
     myTickets: "/tickets",
-    tickets: "/tickets",   // ← ADDED: supports both "myTickets" and "tickets"
+    tickets: "/tickets",
   };
 
   // Reverse mapping: path -> view name (excluding detail and image)
@@ -264,25 +220,19 @@ export default function App() {
       path = `/${generateSlug(product.title)}`;
       setSelected(product);
     } else if (nextView === "image") {
-      // Image view uses the same path as the product (if available)
       path = viewToPath[imageReturnView] || "/";
-      // but we actually want to keep the product slug if coming from detail
-      // we handle image separately via openImage
       return;
     } else {
       path = viewToPath[nextView] || "/";
       setSelected(null);
     }
 
-    // Update view state
     setView(newView);
-    // Push new history entry
     window.history.pushState({ view: newView, product: product || null }, "", path);
   }
 
   // Restore view from a given path (used on initial load and popstate)
   function restoreViewFromPath(path) {
-    // 1. Check if it's a known static view
     if (path === "/") {
       setView("home");
       setSelected(null);
@@ -295,7 +245,6 @@ export default function App() {
       return;
     }
 
-    // 2. Check if it's a product slug
     const slug = path.startsWith("/") ? path.slice(1) : path;
     const product = findProductBySlug(slug);
     if (product) {
@@ -304,29 +253,25 @@ export default function App() {
       return;
     }
 
-    // 3. Fallback to home
     setView("home");
     setSelected(null);
   }
 
   // -------------------- INITIAL LOAD & POPSTATE --------------------
   useEffect(() => {
-    // On initial load, read the current path and set the view
     const path = window.location.pathname;
     restoreViewFromPath(path);
 
-    // Handle browser back/forward
     const handlePopState = (event) => {
       const currentPath = window.location.pathname;
       restoreViewFromPath(currentPath);
     };
 
     window.addEventListener("popstate", handlePopState);
-
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [products]); // re-run when products load (for slug matching)
+  }, [products]);
 
   // -------------------- PRODUCT & IMAGE INTERACTIONS --------------------
   function addToRecentlyViewed(product) {
@@ -341,7 +286,6 @@ export default function App() {
 
   function openProduct(p) {
     addToRecentlyViewed(p);
-    // Use navigate with detail view and product
     navigate("detail", p);
   }
 
@@ -362,18 +306,15 @@ export default function App() {
     setImageReturnView(returnView);
     setView("image");
 
-    // If product is provided, push a history entry with the product slug
     if (product) {
       const slug = generateSlug(product.title);
       window.history.pushState({ view: "image", productId: product.id }, "", `/${slug}`);
     } else {
-      // Fallback: push the current view path
       const path = viewToPath[returnView] || "/";
       window.history.pushState({ view: "image" }, "", path);
     }
   }
 
-  // Close image viewer by going back in history
   function closeImageViewer() {
     window.history.back();
   }
@@ -788,7 +729,6 @@ export default function App() {
                 />
               </div>
               <h3 className="font-semibold">{p.title}</h3>
-              {/* NEW: "Product Details:" label before description */}
               <div className="text-sm text-slate-600 mt-1">
                 <span className="font-semibold">Product Details: </span>
                 {p.description?.slice(0, 50)}…
@@ -833,7 +773,7 @@ export default function App() {
       {/* HEADER */}
       {view !== "image" && (
         <Header
-          setView={navigate}   // ← FIXED: now uses navigate to update URL as well
+          setView={navigate}
           onMenuClick={() => setMenuOpen(true)}
           onDonateClick={() => navigate("donations")}
         />
@@ -914,9 +854,7 @@ export default function App() {
             <Home />
             <br />
             <RecentlyViewed onProductClick={openProduct} />
-            {/* 👇 Conditional rendering of WinnersDetail */}
             {showWinnersDetail && <WinnersDetail />}
-            {/* 👇 REMOVED duplicate RecentWinners from here */}
           </>
         )}
 
@@ -942,7 +880,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Sliding menu panel */}
       <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />
 
       {view === "image" && activeImage && (
@@ -959,45 +896,42 @@ export default function App() {
 
       <br />
 
-      {/* FOOTER */}
-      {view !== "image" && (
-        <footer
-          className="w-full text-center py-6"
-          style={{
-            background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
-            color: "white",
-          }}
-        >
-          <div className="mb-4">
-            <button
-              onClick={() => navigate("terms")}
-              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-              style={{ color: "white" }}
-            >
-              Terms of Use
-            </button>
-            <span className="mx-2 text-gray-400">|</span>
-            <button
-              onClick={() => navigate("privacy")}
-              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-              style={{ color: "white" }}
-            >
-              Privacy Policy
-            </button>
-            <span className="mx-2 text-gray-400">|</span>
-            <a
-              href="mailto:goodwillstores.support@gmail.com"
-              className="text-white hover:text-gray-300 text-sm font-medium transition"
-              style={{ color: "white" }}
-            >
-              Contact
-            </a>
-          </div>
-          <div className="text-white text-sm">
-            © {new Date().getFullYear()} Goodwillstores. All rights reserved.
-          </div>
-        </footer>
-      )}
+      <footer
+        className="w-full text-center py-6"
+        style={{
+          background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
+          color: "white",
+        }}
+      >
+        <div className="mb-4">
+          <button
+            onClick={() => navigate("terms")}
+            className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+            style={{ color: "white" }}
+          >
+            Terms of Use
+          </button>
+          <span className="mx-2 text-gray-400">|</span>
+          <button
+            onClick={() => navigate("privacy")}
+            className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+            style={{ color: "white" }}
+          >
+            Privacy Policy
+          </button>
+          <span className="mx-2 text-gray-400">|</span>
+          <a
+            href="mailto:goodwillstores.support@gmail.com"
+            className="text-white hover:text-gray-300 text-sm font-medium transition"
+            style={{ color: "white" }}
+          >
+            Contact
+          </a>
+        </div>
+        <div className="text-white text-sm">
+          © {new Date().getFullYear()} Goodwillstores. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
