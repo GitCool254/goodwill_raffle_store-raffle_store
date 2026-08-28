@@ -21,7 +21,7 @@ export default function Catalog({ openProduct }) {
         <meta name="description" content="Browse our full catalog of quality second‑hand electronics, furniture, outdoor gear, and more. Enter affordable prices to buy great pre‑owned items." />
       </Helmet>
       <div className="max-w-6xl mx-auto p-6" style={{ backgroundColor: "#f1f5f9" }}>
-        <h1 className="text-xl font-bold mb-4" style={{ fontSize: "1.25rem" }}>Product Catalog</h1>
+        <h1 className="text-xl font-bold mb-4" style={{ fontSize: "1.25rem" }}>Shop Products</h1>
         {/* SEARCH INPUT (full width) */}
         <div className="mb-4">
           <input

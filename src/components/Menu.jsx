@@ -142,7 +142,7 @@ export default function Menu({ isOpen, onClose, setView }) {
                 onClick={() => { setView("catalog"); onClose(); }}
               >
                 <span className="mr-3 text-lg" style={{ marginRight: '0.8rem' }}>🛒</span>
-                <span className="flex-1 text-left">Shop Raffles</span>
+                <span className="flex-1 text-left">Shop</span>
                 <span className="text-gray-400 text-xl group-hover:text-gray-600">›</span>
               </button>
 
