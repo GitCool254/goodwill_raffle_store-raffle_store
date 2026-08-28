@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 function AddressLine({ line1, line2, enabled = true }) {
   if (!enabled) {
@@ -69,18 +70,15 @@ export default function Address() {
           setToggles(newToggles);
           localStorage.setItem("addressToggles", JSON.stringify(newToggles));
         } else {
-          // If response not ok, keep what we have (from localStorage or default)
           console.warn("Failed to fetch toggles, using stored values.");
         }
       } catch (error) {
         console.error("Failed to fetch address toggles:", error);
-        // keep existing toggles (from localStorage or default)
       }
     };
     fetchToggles();
   }, []);
 
-  // Define all country data in one place
   const countriesData = [
     {
       key: "usa",
@@ -135,7 +133,6 @@ export default function Address() {
     },
   ];
 
-  // Sort: enabled first, then alphabetically by label (optional)
   const sortedCountries = [...countriesData].sort((a, b) => {
     if (a.enabled && !b.enabled) return -1;
     if (!a.enabled && b.enabled) return 1;
@@ -143,51 +140,56 @@ export default function Address() {
   });
 
   return (
-    <div
-      className="max-w-2xl mx-auto p-6"
-      style={{ backgroundColor: "#f8fafc" }}
-    >
-      <h1
-        className="text-lg font-bold mb-3 text-left"
-        style={{ fontSize: "1.25rem" }}
+    <>
+      <Helmet>
+        <title>Our Store Locations – Goodwillstores</title>
+        <meta name="description" content="Find Goodwillstores physical locations in the USA, Canada, Australia, and New Zealand. Visit us to browse quality second‑hand products and join our raffles." />
+      </Helmet>
+      <div
+        className="max-w-2xl mx-auto p-6"
+        style={{ backgroundColor: "#f8fafc" }}
       >
-        Visit Our Stores
-      </h1>
+        <h1
+          className="text-lg font-bold mb-3 text-left"
+          style={{ fontSize: "1.25rem" }}
+        >
+          Visit Our Stores
+        </h1>
 
-      <div className="text-slate-700 text-left leading-relaxed text-base">
-        <p className="mb-3">
-          <strong>Goodwillstores</strong> — Your trusted home for classy second-hand products.
-        </p>
+        <div className="text-slate-700 text-left leading-relaxed text-base">
+          <p className="mb-3">
+            <strong>Goodwillstores</strong> — Your trusted home for classy second-hand products.
+          </p>
 
-        <p className="mb-3">
-          <strong>We're located at:</strong>
-        </p>
+          <p className="mb-3">
+            <strong>We're located at:</strong>
+          </p>
 
-        {sortedCountries.map((country) => (
-          <React.Fragment key={country.key}>
-            <strong>{country.label}</strong>
-            {country.addresses.map(([line1, line2], idx) => (
-              <AddressLine
-                key={idx}
-                line1={line1}
-                line2={line2}
-                enabled={country.enabled}
-              />
-            ))}
-            <br />
-          </React.Fragment>
-        ))}
+          {sortedCountries.map((country) => (
+            <React.Fragment key={country.key}>
+              <strong>{country.label}</strong>
+              {country.addresses.map(([line1, line2], idx) => (
+                <AddressLine
+                  key={idx}
+                  line1={line1}
+                  line2={line2}
+                  enabled={country.enabled}
+                />
+              ))}
+              <br />
+            </React.Fragment>
+          ))}
 
-        {/* HOURS */}
-        <p className="mb-2">
-          <strong>We're Open:</strong>
-        </p>
-        <ul className="list-disc pl-4 text-slate-700 space-y-1">
-          <li>Monday – Friday: 8:00 AM – 6:30 PM</li>
-          <li>Saturday: 9:00 AM – 4:00 PM</li>
-          <li>Sunday: Closed</li>
-        </ul>
+          <p className="mb-2">
+            <strong>We're Open:</strong>
+          </p>
+          <ul className="list-disc pl-4 text-slate-700 space-y-1">
+            <li>Monday – Friday: 8:00 AM – 6:30 PM</li>
+            <li>Saturday: 9:00 AM – 4:00 PM</li>
+            <li>Sunday: Closed</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

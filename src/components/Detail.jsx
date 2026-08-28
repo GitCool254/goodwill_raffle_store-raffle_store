@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import PayPalButton from "./PayPalButton";
 
 const shakeStyle = {
@@ -162,373 +163,379 @@ export default function Detail({ product, openImage, remainingTickets }) {
   }
 
   return (
-    <div
-      className="p-6 text-center"
-      style={{ backgroundColor: "#f8fafc" }}
-    >
-      <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
-
-      {ticket && (
-        <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
-          🎟️ Viewing your ticket
-        </div>
-      )}
-
-      <img
-        src={product.image}
-        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
-        onClick={() =>
-          openImage(
-            product.images && product.images.length
-              ? product.images
-              : [product.image],
-            0,
-            "detail"
-          )
-        }
-      />
-
-      {/* White shadow line above price */}
-      <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '10px' }} />
-
-      <p 
-        className="text-lg mb-2"
-        style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
+    <>
+      <Helmet>
+        <title>{product.title} – Goodwillstores</title>
+        <meta name="description" content={`Win ${product.title} through a fair, affordable raffle. Quality second‑hand ${product.category || 'item'} at low ticket prices. Join the draw today!`} />
+      </Helmet>
+      <div
+        className="p-6 text-center"
+        style={{ backgroundColor: "#f8fafc" }}
       >
-        Price per ticket: ${product.ticketPrice}
-      </p>
+        <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
 
-      {/* Market price display – new */}
-      {product.marketPrice && (
-        <p 
-        className="text-sm text-slate-500 mb-2"
-        style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
-        >
-          Market value: ${product.marketPrice}
-        </p>
-      )}
-
-      {ticket && (
-        <p className="text-sm text-slate-700 mb-4">
-          Ticket No: <strong>{ticket.ticketNo}</strong>
-        </p>
-      )}
-
-      {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
-      <div className="mb-10">
-        <div className="text-left max-w-md mx-auto">
-          <div
-            className="text-sm font-semibold text-slate-700 mb-1"
-            style={{ marginBottom: "20px", fontWeight: 600, color: '#334155', fontSize: "16px" }}
-          >
-            Product Details
+        {ticket && (
+          <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
+            🎟️ Viewing your ticket
           </div>
-          <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-            {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
-              ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
-              : product.description}
-          </div>
-        </div>
-        {product.description.length > DESCRIPTION_LIMIT && (
-          <button
-            className="text-sm text-sky-600 hover:underline"
-            onClick={toggleDescription}
-          >
-            {expandedDesc ? "See less" : "See more"}
-          </button>
         )}
-        {/* White shadow line below the toggle button */}
-        <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '10px' }} />
-      </div>
 
-      <br />
+        <img
+          src={product.image}
+          className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
+          onClick={() =>
+            openImage(
+              product.images && product.images.length
+                ? product.images
+                : [product.image],
+              0,
+              "detail"
+            )
+          }
+        />
 
-      {!ticket ? (
-        <>
-          {/* NAME */}
-          <div className="mb-3 max-w-md mx-auto text-left">
-            <label>Full Name</label>
-            <input
-              value={name}
-              placeholder="Enter your full name"
-              onChange={(e) => setName(e.target.value)}
-              onFocus={() => setFocusedField("name")}
-              onBlur={() => setFocusedField(null)}
-              style={{
-                border: errors.name
-                  ? "1px solid #ef4444"
-                  : focusedField === "name"
-                  ? "1px solid #38bdf8"
-                  : "1px solid #d1d5db",
-                boxShadow: errors.name
-                  ? "0 0 0 2px rgba(239,68,68,0.3)"
-                  : focusedField === "name"
-                  ? "0 0 0 2px rgba(56,189,248,0.4)"
-                  : "none",
-                outline: "none",
-                transition: "all 0.15s ease",
-                ...(errors.name ? shakeStyle : {}),
-              }}
-              className="p-2 w-full rounded"
-            />
-            {errors.name && <p className="text-red-500">{errors.name}</p>}
-          </div>
+        {/* White shadow line above price */}
+        <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '10px' }} />
 
-          {/* EMAIL */}
-          <div className="mb-3 max-w-md mx-auto text-left">
-            <label>Email</label>
-            <input
-              value={email}
-              type="email"
-              placeholder="Enter your email address"
-              onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setFocusedField("email")}
-              onBlur={() => setFocusedField(null)}
-              style={{
-                border: errors.email
-                  ? "1px solid #ef4444"
-                  : focusedField === "email"
-                  ? "1px solid #38bdf8"
-                  : "1px solid #d1d5db",
-                boxShadow: errors.email
-                  ? "0 0 0 2px rgba(239,68,68,0.3)"
-                  : focusedField === "email"
-                  ? "0 0 0 2px rgba(56,189,248,0.4)"
-                  : "none",
-                outline: "none",
-                transition: "all 0.15s ease",
-                ...(errors.email ? shakeStyle : {}),
-              }}
-              className="p-2 w-full rounded"
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
-          </div>
+        <p
+          className="text-lg mb-2"
+          style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
+        >
+          Price per ticket: ${product.ticketPrice}
+        </p>
 
-          {/* QUANTITY */}
-          <div className="mb-5 max-w-md mx-auto text-left">
-            <label className="block mb-1">Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              min="1"
-              max="10"
-              onChange={(e) => setQuantity(e.target.value)}
-              onFocus={() => setFocusedField("quantity")}
-              onBlur={() => setFocusedField(null)}
-              style={{
-                border: errors.quantity
-                  ? "1px solid #ef4444"
-                  : focusedField === "quantity"
-                  ? "1px solid #38bdf8"
-                  : "1px solid #d1d5db",
-                boxShadow: errors.quantity
-                  ? "0 0 0 2px rgba(239,68,68,0.3)"
-                  : focusedField === "quantity"
-                  ? "0 0 0 2px rgba(56,189,248,0.4)"
-                  : "none",
-                outline: "none",
-                transition: "all 0.15s ease",
-                ...(errors.quantity ? shakeStyle : {}),
-              }}
-              className="p-2 w-28 rounded mb-4"
-            />
-            {errors.quantity && (
-              <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>
-            )}
-          </div>
+        {/* Market price display – new */}
+        {product.marketPrice && (
+          <p
+          className="text-sm text-slate-500 mb-2"
+          style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
+          >
+            Market value: ${product.marketPrice}
+          </p>
+        )}
 
-          {/* REFERRAL CODE INPUT (optional) */}
-          <div className="mb-3 max-w-md mx-auto text-left">
-            <label className="block mb-1 text-sm font-medium">Referral code (if any)</label>
-            <input
-              type="text"
-              value={referralCode}
-              onChange={(e) => setReferralCode(e.target.value)}
-              placeholder="Enter referral code"
-              className="p-2 w-full rounded border border-gray-300"
-            />
-          </div>
+        {ticket && (
+          <p className="text-sm text-slate-700 mb-4">
+            Ticket No: <strong>{ticket.ticketNo}</strong>
+          </p>
+        )}
 
-          {/* FREE TICKET CREDIT CHECKBOX (only if credits > 0) */}
-          {referralCredits > 0 && (
-            <div className="mb-3 max-w-md mx-auto text-left">
-              <label className="flex items-center gap-2 text-sm text-slate-700">
-                <input
-                  type="checkbox"
-                  checked={useFreeTicket}
-                  onChange={(e) => setUseFreeTicket(e.target.checked)}
-                />
-                Use 1 free ticket credit (you have {referralCredits})
-              </label>
-            </div>
-          )}
-
-          <br />
-
-          <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
-            <div className="text-xl font-semibold text-blue-700">
-              💵 Total: <b>${amount}</b> USD
-            </div>
-            <p className="text-sm text-gray-600 italic mt-1">
-              (This will be charged securely via PayPal)
-            </p>
-          </div>
-          <hr className="my-4" />
-
-          {/* PAYPAL */}
-          <PayPalButton
-            amount={amount}
-            description={`${product.title} — ${quantity} ticket(s)`}
-            validateForm={validateForm}
-            product={product.title}
-            quantity={quantity}
-            name={name}
-            email={email}
-            onPaymentSuccess={async (orderObj) => {
-              setLastOrder(orderObj);
-              setIsTicketGenerating(true);
-
-              // --- Get user's timezone offset in minutes ---
-              // Example: For EST (UTC-5) the offset is -300, for AEST (UTC+10) the offset is +600
-              const timezoneOffset = -new Date().getTimezoneOffset();
-
-              // --- Prepare payload (without user_local_time) ---
-              const payload = {
-                name,
-                email: email.trim().toLowerCase(),
-                quantity: Number(quantity),
-                ticket_price: product.ticketPrice,
-                order_id: orderObj.orderId,
-                product_title: product.title,
-                referral_code: referralCode,
-                use_free_ticket: useFreeTicket,
-              };
-              const nonce = crypto.randomUUID();
-              const payloadWithNonce = { ...payload, nonce };
-              const timestamp = Math.floor(Date.now() / 1000);
-
-              const res = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    "X-Nonce": nonce,
-                    "X-Timestamp": timestamp.toString(),
-                    "X-Timezone-Offset": timezoneOffset.toString(),
-                  },
-                  body: JSON.stringify(payloadWithNonce),
-                }
-              );
-
-              if (!res.ok) {
-                let errorMessage = "Ticket generation failed.";
-                try {
-                  const errJson = await res.json();
-                  if (res.status === 409) {
-                    errorMessage =
-                      "Tickets sold out before your purchase completed.";
-                  } else if (
-                    res.status === 403 &&
-                    errJson.error === "Replay detected"
-                  ) {
-                    errorMessage =
-                      "Security validation failed. Please refresh and try again.";
-                  } else {
-                    errorMessage = errJson.error || errorMessage;
-                  }
-                } catch {
-                  errorMessage = "Unexpected generation error.";
-                }
-                alert(errorMessage);
-                setIsTicketGenerating(false);
-                return;
-              }
-
-              const data = await res.json();
-              if (data.status !== "tickets_generated") {
-                alert("Ticket generation incomplete.");
-                setIsTicketGenerating(false);
-                return;
-              }
-
-              setIsTicketGenerating(false);
-              setDownloadReady(true);
-
-              // Sync backend state
-              const ticketstateRes = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
-              );
-              const ticketstateData = await ticketstateRes.json();
-              window.dispatchEvent(
-                new CustomEvent("ticketsPurchased", {
-                  detail: {
-                    quantity: Number(quantity),
-                    total_sold: ticketstateData.total_sold,
-                    remaining: ticketstateData.remaining,
-                    authoritative: true,
-                  },
-                })
-              );
-            }}
-          />
-
-          <br />
-
-          {/* DOWNLOAD PLACEHOLDER (before payment ONLY) */}
-          {!lastOrder && !downloadReady && (
-            <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
-              <div className="flex items-center gap-3 mb-1">
-                <span className="subtle-spinner" style={{ marginRight: "10px" }} />
-                <span>Waiting for payment confirmation</span>
-              </div>
-              <div className="text-xs text-slate-400">
-                Your ticket download will appear here after successful payment
-              </div>
-            </div>
-          )}
-
-          {/* TICKET GENERATION STATUS (after payment, before download) */}
-          {lastOrder && isTicketGenerating && !downloadReady && (
-            <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="subtle-spinner" style={{ marginRight: "10px" }} />
-                <span className="font-medium">Generating your ticket…</span>
-              </div>
-              <div className="text-xs text-slate-400">
-                This will only take a moment
-              </div>
-            </div>
-          )}
-
-          {downloadReady && (
-            <button
-              onClick={handleTicketDownload}
-              disabled={hasDownloaded || isGenerating}
-              className={`mt-4 px-4 py-2 rounded text-white ${
-                hasDownloaded
-                  ? "bg-gray-400"
-                  : isGenerating
-                  ? "bg-yellow-500"
-                  : "bg-green-600"
-              }`}
+        {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
+        <div className="mb-10">
+          <div className="text-left max-w-md mx-auto">
+            <div
+              className="text-sm font-semibold text-slate-700 mb-1"
+              style={{ marginBottom: "20px", fontWeight: 600, color: '#334155', fontSize: "16px" }}
             >
-              {hasDownloaded
-                ? "Ticket Already Downloaded"
-                : isGenerating
-                ? "Generating Ticket..."
-                : "Download Ticket"}
+              Product Details
+            </div>
+            <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+              {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
+                ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
+                : product.description}
+            </div>
+          </div>
+          {product.description.length > DESCRIPTION_LIMIT && (
+            <button
+              className="text-sm text-sky-600 hover:underline"
+              onClick={toggleDescription}
+            >
+              {expandedDesc ? "See less" : "See more"}
             </button>
           )}
-        </>
-      ) : (
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
-          className="mt-6 text-sky-600 font-semibold"
-        >
-          ← Back to My Tickets
-        </button>
-      )}
-    </div>
+          {/* White shadow line below the toggle button */}
+          <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '10px' }} />
+        </div>
+
+        <br />
+
+        {!ticket ? (
+          <>
+            {/* NAME */}
+            <div className="mb-3 max-w-md mx-auto text-left">
+              <label>Full Name</label>
+              <input
+                value={name}
+                placeholder="Enter your full name"
+                onChange={(e) => setName(e.target.value)}
+                onFocus={() => setFocusedField("name")}
+                onBlur={() => setFocusedField(null)}
+                style={{
+                  border: errors.name
+                    ? "1px solid #ef4444"
+                    : focusedField === "name"
+                    ? "1px solid #38bdf8"
+                    : "1px solid #d1d5db",
+                  boxShadow: errors.name
+                    ? "0 0 0 2px rgba(239,68,68,0.3)"
+                    : focusedField === "name"
+                    ? "0 0 0 2px rgba(56,189,248,0.4)"
+                    : "none",
+                  outline: "none",
+                  transition: "all 0.15s ease",
+                  ...(errors.name ? shakeStyle : {}),
+                }}
+                className="p-2 w-full rounded"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+
+            {/* EMAIL */}
+            <div className="mb-3 max-w-md mx-auto text-left">
+              <label>Email</label>
+              <input
+                value={email}
+                type="email"
+                placeholder="Enter your email address"
+                onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => setFocusedField("email")}
+                onBlur={() => setFocusedField(null)}
+                style={{
+                  border: errors.email
+                    ? "1px solid #ef4444"
+                    : focusedField === "email"
+                    ? "1px solid #38bdf8"
+                    : "1px solid #d1d5db",
+                  boxShadow: errors.email
+                    ? "0 0 0 2px rgba(239,68,68,0.3)"
+                    : focusedField === "email"
+                    ? "0 0 0 2px rgba(56,189,248,0.4)"
+                    : "none",
+                  outline: "none",
+                  transition: "all 0.15s ease",
+                  ...(errors.email ? shakeStyle : {}),
+                }}
+                className="p-2 w-full rounded"
+              />
+              {errors.email && <p className="text-red-500">{errors.email}</p>}
+            </div>
+
+            {/* QUANTITY */}
+            <div className="mb-5 max-w-md mx-auto text-left">
+              <label className="block mb-1">Quantity</label>
+              <input
+                type="number"
+                value={quantity}
+                min="1"
+                max="10"
+                onChange={(e) => setQuantity(e.target.value)}
+                onFocus={() => setFocusedField("quantity")}
+                onBlur={() => setFocusedField(null)}
+                style={{
+                  border: errors.quantity
+                    ? "1px solid #ef4444"
+                    : focusedField === "quantity"
+                    ? "1px solid #38bdf8"
+                    : "1px solid #d1d5db",
+                  boxShadow: errors.quantity
+                    ? "0 0 0 2px rgba(239,68,68,0.3)"
+                    : focusedField === "quantity"
+                    ? "0 0 0 2px rgba(56,189,248,0.4)"
+                    : "none",
+                  outline: "none",
+                  transition: "all 0.15s ease",
+                  ...(errors.quantity ? shakeStyle : {}),
+                }}
+                className="p-2 w-28 rounded mb-4"
+              />
+              {errors.quantity && (
+                <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>
+              )}
+            </div>
+
+            {/* REFERRAL CODE INPUT (optional) */}
+            <div className="mb-3 max-w-md mx-auto text-left">
+              <label className="block mb-1 text-sm font-medium">Referral code (if any)</label>
+              <input
+                type="text"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value)}
+                placeholder="Enter referral code"
+                className="p-2 w-full rounded border border-gray-300"
+              />
+            </div>
+
+            {/* FREE TICKET CREDIT CHECKBOX (only if credits > 0) */}
+            {referralCredits > 0 && (
+              <div className="mb-3 max-w-md mx-auto text-left">
+                <label className="flex items-center gap-2 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={useFreeTicket}
+                    onChange={(e) => setUseFreeTicket(e.target.checked)}
+                  />
+                  Use 1 free ticket credit (you have {referralCredits})
+                </label>
+              </div>
+            )}
+
+            <br />
+
+            <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3 shadow-sm mt-4 mb-4">
+              <div className="text-xl font-semibold text-blue-700">
+                💵 Total: <b>${amount}</b> USD
+              </div>
+              <p className="text-sm text-gray-600 italic mt-1">
+                (This will be charged securely via PayPal)
+              </p>
+            </div>
+            <hr className="my-4" />
+
+            {/* PAYPAL */}
+            <PayPalButton
+              amount={amount}
+              description={`${product.title} — ${quantity} ticket(s)`}
+              validateForm={validateForm}
+              product={product.title}
+              quantity={quantity}
+              name={name}
+              email={email}
+              onPaymentSuccess={async (orderObj) => {
+                setLastOrder(orderObj);
+                setIsTicketGenerating(true);
+
+                // --- Get user's timezone offset in minutes ---
+                // Example: For EST (UTC-5) the offset is -300, for AEST (UTC+10) the offset is +600
+                const timezoneOffset = -new Date().getTimezoneOffset();
+
+                // --- Prepare payload (without user_local_time) ---
+                const payload = {
+                  name,
+                  email: email.trim().toLowerCase(),
+                  quantity: Number(quantity),
+                  ticket_price: product.ticketPrice,
+                  order_id: orderObj.orderId,
+                  product_title: product.title,
+                  referral_code: referralCode,
+                  use_free_ticket: useFreeTicket,
+                };
+                const nonce = crypto.randomUUID();
+                const payloadWithNonce = { ...payload, nonce };
+                const timestamp = Math.floor(Date.now() / 1000);
+
+                const res = await fetch(
+                  `${import.meta.env.VITE_BACKEND_URL}/generate_ticket`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      "X-Nonce": nonce,
+                      "X-Timestamp": timestamp.toString(),
+                      "X-Timezone-Offset": timezoneOffset.toString(),
+                    },
+                    body: JSON.stringify(payloadWithNonce),
+                  }
+                );
+
+                if (!res.ok) {
+                  let errorMessage = "Ticket generation failed.";
+                  try {
+                    const errJson = await res.json();
+                    if (res.status === 409) {
+                      errorMessage =
+                        "Tickets sold out before your purchase completed.";
+                    } else if (
+                      res.status === 403 &&
+                      errJson.error === "Replay detected"
+                    ) {
+                      errorMessage =
+                        "Security validation failed. Please refresh and try again.";
+                    } else {
+                      errorMessage = errJson.error || errorMessage;
+                    }
+                  } catch {
+                    errorMessage = "Unexpected generation error.";
+                  }
+                  alert(errorMessage);
+                  setIsTicketGenerating(false);
+                  return;
+                }
+
+                const data = await res.json();
+                if (data.status !== "tickets_generated") {
+                  alert("Ticket generation incomplete.");
+                  setIsTicketGenerating(false);
+                  return;
+                }
+
+                setIsTicketGenerating(false);
+                setDownloadReady(true);
+
+                // Sync backend state
+                const ticketstateRes = await fetch(
+                  `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
+                );
+                const ticketstateData = await ticketstateRes.json();
+                window.dispatchEvent(
+                  new CustomEvent("ticketsPurchased", {
+                    detail: {
+                      quantity: Number(quantity),
+                      total_sold: ticketstateData.total_sold,
+                      remaining: ticketstateData.remaining,
+                      authoritative: true,
+                    },
+                  })
+                );
+              }}
+            />
+
+            <br />
+
+            {/* DOWNLOAD PLACEHOLDER (before payment ONLY) */}
+            {!lastOrder && !downloadReady && (
+              <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="subtle-spinner" style={{ marginRight: "10px" }} />
+                  <span>Waiting for payment confirmation</span>
+                </div>
+                <div className="text-xs text-slate-400">
+                  Your ticket download will appear here after successful payment
+                </div>
+              </div>
+            )}
+
+            {/* TICKET GENERATION STATUS (after payment, before download) */}
+            {lastOrder && isTicketGenerating && !downloadReady && (
+              <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="subtle-spinner" style={{ marginRight: "10px" }} />
+                  <span className="font-medium">Generating your ticket…</span>
+                </div>
+                <div className="text-xs text-slate-400">
+                  This will only take a moment
+                </div>
+              </div>
+            )}
+
+            {downloadReady && (
+              <button
+                onClick={handleTicketDownload}
+                disabled={hasDownloaded || isGenerating}
+                className={`mt-4 px-4 py-2 rounded text-white ${
+                  hasDownloaded
+                    ? "bg-gray-400"
+                    : isGenerating
+                    ? "bg-yellow-500"
+                    : "bg-green-600"
+                }`}
+              >
+                {hasDownloaded
+                  ? "Ticket Already Downloaded"
+                  : isGenerating
+                  ? "Generating Ticket..."
+                  : "Download Ticket"}
+              </button>
+            )}
+          </>
+        ) : (
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
+            className="mt-6 text-sky-600 font-semibold"
+          >
+            ← Back to My Tickets
+          </button>
+        )}
+      </div>
+    </>
   );
 }
