@@ -27,7 +27,7 @@ export default function About({ navigate }) {
         {/* INTRO */}
         <p className="text-base text-slate-700 leading-relaxed mb-4">
           <strong>
-            Goodwillstores — Where Value, Trust, and Opportunity Meet
+            Goodwillstores — Where Value Gets a Second Chance.
           </strong>
         </p>
 

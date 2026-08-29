@@ -1,0 +1,19 @@
+# Goodwillstores – Raffle & Second‑Hand Marketplace
+
+Goodwillstores is a platform where users buy quality second-hand products at affordable ticket prices, including electronics, furniture, outdoor gear, and more. Every ticket purchase supports community projects and charitable causes. Second-Hand. First Choice.
+
+## Key Pages
+
+- [Home](/) – Browse featured products and services.
+- [Product Catalog](/catalog) – View all available products to shop at affordable ticket price.
+- [About Us](/about) – Learn about our mission and values.
+- [Our Store Locations](/address) – Find physical stores in the USA, Canada, Australia, and New Zealand.
+- [Contact & Support](/contact) – Get help with tickets, payments, or products.
+- [Donations & Impact](/donations) – See how your participation supports community programs.
+- [My Tickets](/tickets) – View and re‑download your purchased tickets.
+
+## Additional Information
+
+- **Fair Play**: All raffle tickets are transparent and digitally generated.
+- **Eligibility**: Open to participants in the USA, Canada, and Australia (age restrictions apply).
+- **Support**: Email goodwillstores.support@gmail.com or call +1 417-539-9237 (USA) / +61 427 612 892 (Australia).

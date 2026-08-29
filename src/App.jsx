@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import "./App.css";
 
 import Header from "./components/Header";
@@ -765,173 +766,180 @@ export default function App() {
 
   // -------------------- MAIN RETURN --------------------
   return (
-    <div
-      className={`min-h-screen flex flex-col ${
-        view === "image" ? "bg-black" : "bg-slate-50"
-      }`}
-    >
-      {/* HEADER */}
-      {view !== "image" && (
-        <Header
-          setView={navigate}
-          onMenuClick={() => setMenuOpen(true)}
-          onDonateClick={() => navigate("donations")}
-        />
-      )}
-
-      {view !== "image" && (
-        <>
-          {remainingTickets !== null && remainingTickets > 0 && (
-            <HolidaySystem onNavigate={navigate} />
-          )}
-          <RecentWinners />
-        </>
-      )}
-
-      {/* MAIN CONTENT */}
-      <main className="flex-grow">
-        {view === "home" && (
-          <>
-            <Hero remainingTickets={remainingTickets} ticketsSold={ticketsSold} />
-
-            {ticketStateLoaded && Number(remainingTickets) > 0 && (
-              <section
-                className="max-w-5xl mx-auto px-6 py-6"
-                style={{ marginBottom: "2.5rem" }}
-              >
-                <div
-                  className="bg-white rounded-xl p-6"
-                  style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
-                >
-                  <h2
-                    className="font-semibold mb-4"
-                    style={{ fontSize: "1.25rem", color: "#64748b" }}
-                  >
-                    Raffle Event Details
-                  </h2>
-
-                  <div
-                    className="space-y-2 text-slate-700"
-                    style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0", paddingLeft: "10px" }}
-                  >
-                    <p>
-                      • <strong>Location:</strong>{" "}
-                      <button
-                        onClick={() => navigate("address")}
-                        style={{
-                          color: "#3b82f6",
-                          textDecoration: "none",
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          padding: 0,
-                          fontSize: "1.1rem",
-                          font: "inherit",
-                        }}
-                        className="hover:underline"
-                      >
-                        Our Physical Stores
-                      </button>
-                    </p>
-                    <p>
-                      • <strong>Date & Time:</strong> 31/August/2026, 0200PM
-                    </p>
-                    <p>
-                      • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
-                    </p>
-                  </div>
-
-                  <p
-                    className="text-slate-500 mt-4"
-                    style={{ fontSize: "0.8rem", fontStyle: "italic" }}
-                  >
-                    Winners are announced publicly on this website and contacted via the email used during ticket purchase.
-                  </p>
-                </div>
-              </section>
-            )}
-
-            <Home />
-            <br />
-            <RecentlyViewed onProductClick={openProduct} />
-            {showWinnersDetail && <WinnersDetail />}
-          </>
-        )}
-
-        {view === "detail" && selected && (
-          <Detail
-            product={selected}
-            remainingTickets={remainingTickets}
-            onBack={() => navigate("home")}
-            openImage={openImage}
+    <>
+      <Helmet>
+        <title>Home – Goodwillstores</title>
+        <meta name="description" Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />
+        
+      </Helmet>
+      <div
+        className={`min-h-screen flex flex-col ${
+          view === "image" ? "bg-black" : "bg-slate-50"
+        }`}
+      >
+        {/* HEADER */}
+        {view !== "image" && (
+          <Header
+            setView={navigate}
+            onMenuClick={() => setMenuOpen(true)}
+            onDonateClick={() => navigate("donations")}
           />
         )}
 
-        {view === "catalog" && <Catalog openProduct={openProduct} />}
-
-        {view === "address" && <Address />}
-        {view === "contact" && <Contact />}
-        {view === "about" && <About navigate={navigate} />}
-        {view === "donations" && <Donations />}
-        {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
-        {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
-        {(view === "tickets" || view === "myTickets") && (
-          <MyTickets openTicketProduct={openTicketProduct} />
+        {view !== "image" && (
+          <>
+            {remainingTickets !== null && remainingTickets > 0 && (
+              <HolidaySystem onNavigate={navigate} />
+            )}
+            <RecentWinners />
+          </>
         )}
-      </main>
 
-      <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />
+        {/* MAIN CONTENT */}
+        <main className="flex-grow">
+          {view === "home" && (
+            <>
+              <Hero remainingTickets={remainingTickets} ticketsSold={ticketsSold} />
 
-      {view === "image" && activeImage && (
-        <ImagePage
-          images={imageImages}
-          index={imageIndex}
-          setIndex={(i) => {
-            setImageIndex(i);
-            setActiveImage(imageImages[i]);
+              {ticketStateLoaded && Number(remainingTickets) > 0 && (
+                <section
+                  className="max-w-5xl mx-auto px-6 py-6"
+                  style={{ marginBottom: "2.5rem" }}
+                >
+                  <div
+                    className="bg-white rounded-xl p-6"
+                    style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
+                  >
+                    <h2
+                      className="font-semibold mb-4"
+                      style={{ fontSize: "1.25rem", color: "#64748b" }}
+                    >
+                      Raffle Event Details
+                    </h2>
+
+                    <div
+                      className="space-y-2 text-slate-700"
+                      style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0", paddingLeft: "10px" }}
+                    >
+                      <p>
+                        • <strong>Location:</strong>{" "}
+                        <button
+                          onClick={() => navigate("address")}
+                          style={{
+                            color: "#3b82f6",
+                            textDecoration: "none",
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            padding: 0,
+                            fontSize: "1.1rem",
+                            font: "inherit",
+                          }}
+                          className="hover:underline"
+                        >
+                          Our Physical Stores
+                        </button>
+                      </p>
+                      <p>
+                        • <strong>Date & Time:</strong> 31/August/2026, 0200PM
+                      </p>
+                      <p>
+                        • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
+                      </p>
+                    </div>
+
+                    <p
+                      className="text-slate-500 mt-4"
+                      style={{ fontSize: "0.8rem", fontStyle: "italic" }}
+                    >
+                      Winners are announced publicly on this website and contacted via the email used during ticket purchase.
+                    </p>
+                  </div>
+                </section>
+              )}
+
+              <Home />
+              <br />
+              <RecentlyViewed onProductClick={openProduct} />
+              {showWinnersDetail && <WinnersDetail />}
+            </>
+          )}
+
+          {view === "detail" && selected && (
+            <Detail
+              product={selected}
+              remainingTickets={remainingTickets}
+              onBack={() => navigate("home")}
+              openImage={openImage}
+            />
+          )}
+
+          {view === "catalog" && <Catalog openProduct={openProduct} />}
+
+          {view === "address" && <Address />}
+          {view === "contact" && <Contact />}
+          {view === "about" && <About navigate={navigate} />}
+          {view === "donations" && <Donations />}
+          {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
+          {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
+          {(view === "tickets" || view === "myTickets") && (
+            <MyTickets openTicketProduct={openTicketProduct} />
+          )}
+        </main>
+
+        <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />
+
+        {view === "image" && activeImage && (
+          <ImagePage
+            images={imageImages}
+            index={imageIndex}
+            setIndex={(i) => {
+              setImageIndex(i);
+              setActiveImage(imageImages[i]);
+            }}
+            onBack={closeImageViewer}
+          />
+        )}
+
+        <br />
+
+        <footer
+          className="w-full text-center py-6"
+          style={{
+            background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
+            color: "white",
           }}
-          onBack={closeImageViewer}
-        />
-      )}
-
-      <br />
-
-      <footer
-        className="w-full text-center py-6"
-        style={{
-          background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
-          color: "white",
-        }}
-      >
-        <div className="mb-4">
-          <button
-            onClick={() => navigate("terms")}
-            className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-            style={{ color: "white" }}
-          >
-            Terms of Use
-          </button>
-          <span className="mx-2 text-gray-400">|</span>
-          <button
-            onClick={() => navigate("privacy")}
-            className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-            style={{ color: "white" }}
-          >
-            Privacy Policy
-          </button>
-          <span className="mx-2 text-gray-400">|</span>
-          <a
-            href="mailto:goodwillstores.support@gmail.com"
-            className="text-white hover:text-gray-300 text-sm font-medium transition"
-            style={{ color: "white" }}
-          >
-            Contact
-          </a>
-        </div>
-        <div className="text-white text-sm">
-          © {new Date().getFullYear()} Goodwillstores. All rights reserved.
-        </div>
-      </footer>
-    </div>
+        >
+          <div className="mb-4">
+            <button
+              onClick={() => navigate("terms")}
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              style={{ color: "white" }}
+            >
+              Terms of Use
+            </button>
+            <span className="mx-2 text-gray-400">|</span>
+            <button
+              onClick={() => navigate("privacy")}
+              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+              style={{ color: "white" }}
+            >
+              Privacy Policy
+            </button>
+            <span className="mx-2 text-gray-400">|</span>
+            <a
+              href="mailto:goodwillstores.support@gmail.com"
+              className="text-white hover:text-gray-300 text-sm font-medium transition"
+              style={{ color: "white" }}
+            >
+              Contact
+            </a>
+          </div>
+          <div className="text-white text-sm">
+            © {new Date().getFullYear()} Goodwillstores. All rights reserved.
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }
