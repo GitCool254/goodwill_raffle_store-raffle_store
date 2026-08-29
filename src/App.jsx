@@ -769,7 +769,7 @@ export default function App() {
     <>
       <Helmet>
         <title>Home – Goodwillstores</title>
-        <meta name="description" Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />  
+        <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />  
       </Helmet>
       <div
         className={`min-h-screen flex flex-col ${
