@@ -78,6 +78,7 @@ export default function Catalog({ openProduct }) {
                   <img
                     src={item.image}
                     alt={item.title}
+                    loading="lazy"
                     style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain', borderRadius: '6px' }}
                     onError={(e) => (e.target.src = "https://via.placeholder.com/200x150")}
                   />

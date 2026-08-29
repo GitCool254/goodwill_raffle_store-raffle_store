@@ -1,23 +1,26 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 import "./App.css";
 
+// Components that are always needed (header, footer, etc.)
 import Header from "./components/Header";
 import Home from "./components/Home";
-import Detail from "./components/Detail";
-import Catalog from "./components/Catalog";
-import Address from "./components/Address";
-import Contact from "./components/Contact";
-import About from "./components/About";
 import Menu from "./components/Menu";
-import MyTickets from "./components/MyTickets";
 import HolidaySystem from "./components/HolidaySystem";
-import Donations from "./components/Donations";
-import TermsOfUse from "./components/TermsOfUse";
-import PrivacyPolicy from "./components/PrivacyPolicy";
 import RecentWinners from "./components/RecentWinners";
 import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
+
+// Lazy‑load page components
+const Detail = lazy(() => import("./components/Detail"));
+const Catalog = lazy(() => import("./components/Catalog"));
+const Address = lazy(() => import("./components/Address"));
+const Contact = lazy(() => import("./components/Contact"));
+const About = lazy(() => import("./components/About"));
+const MyTickets = lazy(() => import("./components/MyTickets"));
+const Donations = lazy(() => import("./components/Donations"));
+const TermsOfUse = lazy(() => import("./components/TermsOfUse"));
+const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 
 // Import product data from shared file
 import { sampleProducts, catalogItems } from "./data/products";
@@ -717,6 +720,7 @@ export default function App() {
                 <img
                   src={p.image}
                   alt={p.title}
+                  loading="lazy"
                   style={{
                     width: "100%",
                     height: "auto",
@@ -769,7 +773,7 @@ export default function App() {
     <>
       <Helmet>
         <title>Home – Goodwillstores</title>
-        <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />  
+        <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />
       </Helmet>
       <div
         className={`min-h-screen flex flex-col ${
@@ -864,26 +868,29 @@ export default function App() {
             </>
           )}
 
-          {view === "detail" && selected && (
-            <Detail
-              product={selected}
-              remainingTickets={remainingTickets}
-              onBack={() => navigate("home")}
-              openImage={openImage}
-            />
-          )}
+          {/* Lazy-loaded routes wrapped in Suspense */}
+          <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
+            {view === "detail" && selected && (
+              <Detail
+                product={selected}
+                remainingTickets={remainingTickets}
+                onBack={() => navigate("home")}
+                openImage={openImage}
+              />
+            )}
 
-          {view === "catalog" && <Catalog openProduct={openProduct} />}
+            {view === "catalog" && <Catalog openProduct={openProduct} />}
 
-          {view === "address" && <Address />}
-          {view === "contact" && <Contact />}
-          {view === "about" && <About navigate={navigate} />}
-          {view === "donations" && <Donations />}
-          {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
-          {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
-          {(view === "tickets" || view === "myTickets") && (
-            <MyTickets openTicketProduct={openTicketProduct} />
-          )}
+            {view === "address" && <Address />}
+            {view === "contact" && <Contact />}
+            {view === "about" && <About navigate={navigate} />}
+            {view === "donations" && <Donations />}
+            {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
+            {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
+            {(view === "tickets" || view === "myTickets") && (
+              <MyTickets openTicketProduct={openTicketProduct} />
+            )}
+          </Suspense>
         </main>
 
         <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />
