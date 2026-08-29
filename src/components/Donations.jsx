@@ -295,8 +295,8 @@ export default function Donations() {
                   style={{ backgroundColor: '#ffffff', marginLeft: '20px', marginRight: '20px', marginTop: '10px', marginBottom: '20px' }}
                 >
                   <h2
-                    className="font-semibold text-lg mb-2 text-slate-800"                  style={{ fontSize: "1.19rem" }}
-
+                    className="font-semibold text-lg mb-2 text-slate-800"
+                    style={{ fontSize: "1.19rem" }}
                   >
                     {program.title}
                   </h2>
@@ -320,6 +320,7 @@ export default function Donations() {
                     <img
                       src={program.images[currentImageIndex]}
                       alt={`${program.title} - ${currentImageIndex + 1}`}
+                      loading="lazy"
                       className="max-w-full h-auto object-contain rounded-md"
                     />
                   </div>
@@ -346,6 +347,7 @@ export default function Donations() {
                       <img
                         src={program.overlayImage || program.image}
                         alt="overlay"
+                        loading="lazy"
                         style={{
                           width: '98%',
                           height: '98%',
