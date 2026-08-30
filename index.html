@@ -11,8 +11,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <!-- Preconnect to backend API -->
-    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" />
+    <!-- Preconnect to backend API with crossorigin -->
+    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
     <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
     <!-- ⚡ CRITICAL CSS (inlined – keeps above‑the‑fold styles) -->
@@ -57,7 +57,7 @@
     </style>
 
     <!-- 🚀 Defer full CSS – loads without blocking rendering -->
-    <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" media="print" onload="this.media='all'" />
+    <link rel="preload" href="/assets/index-Jc9LRU1E.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" /></noscript>
 
     <link rel="manifest" href="/manifest.json" />

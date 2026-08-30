@@ -89,9 +89,26 @@ export default function App() {
     localStorage.setItem("gw_products", JSON.stringify(products));
   }, [products]);
 
-  // -------------------- COMBINED INITIAL FETCH (parallel) --------------------
+  // -------------------- DEFERRED INITIAL FETCH (after paint) --------------------
   useEffect(() => {
     let isMounted = true;
+    let intervalId;
+
+    // Use requestIdleCallback to fetch after main content is painted
+    const fetchAfterPaint = () => {
+      // If the browser supports requestIdleCallback, use it; otherwise fallback to setTimeout
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => {
+          if (!isMounted) return;
+          fetchInitialData();
+        });
+      } else {
+        setTimeout(() => {
+          if (!isMounted) return;
+          fetchInitialData();
+        }, 100);
+      }
+    };
 
     async function fetchInitialData() {
       try {
@@ -124,10 +141,11 @@ export default function App() {
       }
     }
 
-    fetchInitialData();
+    fetchAfterPaint();
 
-    // Auto-refresh ticket state every 30 seconds
-    const intervalId = setInterval(() => {
+    // Auto-refresh ticket state every 30 seconds (starts after initial fetch)
+    intervalId = setInterval(() => {
+      if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
         .then(res => res.json())
         .then(data => {
@@ -727,9 +745,7 @@ export default function App() {
                     alt={p.title}
                     width="800"
                     height="600"
-                    // Only the LCP image should not be lazy‑loaded; others lazy
                     loading={isLcp ? undefined : "lazy"}
-                    // LCP image gets high priority
                     fetchpriority={isLcp ? "high" : undefined}
                     decoding="async"
                     style={{
