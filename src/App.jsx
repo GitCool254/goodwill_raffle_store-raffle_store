@@ -89,44 +89,56 @@ export default function App() {
     localStorage.setItem("gw_products", JSON.stringify(products));
   }, [products]);
 
+  // -------------------- COMBINED INITIAL FETCH (parallel) --------------------
   useEffect(() => {
     let isMounted = true;
-    let intervalId;
 
-    async function fetchTicketState() {
+    async function fetchInitialData() {
       try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
+        // Fetch both endpoints in parallel
+        const [ticketStateRes, toggleRes] = await Promise.all([
+          fetch(`${backendUrl}/ticket_state`),
+          fetch(`${backendUrl}/winners_detail_toggle`),
+        ]);
 
-        const res = await fetch(`${backendUrl}/ticket_state`, {
-          signal: controller.signal,
-        });
-
-        clearTimeout(timeout);
-
-        const data = await res.json();
         if (!isMounted) return;
 
-        if (!isNaN(data.remaining)) {
-          setRemainingTickets(Number(data.remaining));
+        // Process ticket state
+        const ticketData = await ticketStateRes.json();
+        if (!isNaN(ticketData.remaining)) {
+          setRemainingTickets(Number(ticketData.remaining));
         }
-
-        if (!isNaN(data.tickets_sold)) {
-          setTicketsSold(Number(data.tickets_sold));
+        if (!isNaN(ticketData.tickets_sold)) {
+          setTicketsSold(Number(ticketData.tickets_sold));
         }
-
         setTicketStateLoaded(true);
+
+        // Process toggle
+        const toggleData = await toggleRes.json();
+        setShowWinnersDetail(toggleData.show ?? true);
       } catch (err) {
-        console.warn("Ticket state fetch failed — retrying...");
-        setTimeout(() => {
-          if (isMounted) fetchTicketState();
-        }, 2500);
+        console.error("Failed to fetch initial data:", err);
+        // Fallback values
+        setTicketStateLoaded(true);
+        setShowWinnersDetail(true);
       }
     }
 
-    fetchTicketState();
-    intervalId = setInterval(() => {
-      fetchTicketState();
+    fetchInitialData();
+
+    // Auto-refresh ticket state every 30 seconds
+    const intervalId = setInterval(() => {
+      fetch(`${backendUrl}/ticket_state`)
+        .then(res => res.json())
+        .then(data => {
+          if (isMounted && !isNaN(data.remaining)) {
+            setRemainingTickets(Number(data.remaining));
+          }
+          if (isMounted && !isNaN(data.tickets_sold)) {
+            setTicketsSold(Number(data.tickets_sold));
+          }
+        })
+        .catch(err => console.error("Ticket refresh failed:", err));
     }, 30000);
 
     return () => {
@@ -135,6 +147,7 @@ export default function App() {
     };
   }, [backendUrl]);
 
+  // -------------------- EVENT LISTENER FOR TICKET PURCHASE --------------------
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
@@ -165,17 +178,6 @@ export default function App() {
     window.addEventListener("goMyTickets", () => navigate("myTickets"));
     return () => window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
-
-  // -------------------- WinnersDetail toggle --------------------
-  useEffect(() => {
-    fetch(`${backendUrl}/winners_detail_toggle`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch toggle");
-        return res.json();
-      })
-      .then((data) => setShowWinnersDetail(data.show ?? true))
-      .catch(() => setShowWinnersDetail(true));
-  }, [backendUrl]);
 
   // -------------------- URL / ROUTING HELPERS --------------------
   const generateSlug = (title) => {

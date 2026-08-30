@@ -11,9 +11,57 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <script type="module" src="/src/main.jsx"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Jc9LRU1E.css" />
+    <!-- Preconnect to backend API -->
+    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" />
+    <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
+
+    <!-- ⚡ CRITICAL CSS (inlined to avoid render-blocking) -->
+    <style>
+      /* Reset & base layout – critical for above-the-fold content */
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+      }
+
+      #root {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Side margins for main content (header/footer stay full width) */
+      main.flex-grow {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      /* Ensure the impact paragraph is styled immediately */
+      .impact-paragraph {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+        color: #334155;
+        margin: 0;
+        position: relative;
+      }
+    </style>
+
+    <!-- 🚀 Defer non-critical CSS -->
+    <link rel="preload" href="/assets/index-Jc9LRU1E.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" /></noscript>
+
     <link rel="manifest" href="/manifest.json" />
+    <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
     <div id="root"></div>
