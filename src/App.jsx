@@ -707,64 +707,75 @@ export default function App() {
     return (
       <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p) => (
-            <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
-              <div
-                style={{
-                  width: "100%",
-                  marginBottom: "12px",
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  loading="lazy"
+          {products.map((p, idx) => {
+            // Determine if this is the LCP candidate (first image)
+            const isLcp = idx === 0;
+            return (
+              <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+                <div
                   style={{
                     width: "100%",
-                    height: "auto",
-                    borderRadius: "0.5rem",
-                    cursor: "zoom-in",
+                    marginBottom: "12px",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
-                  onClick={() => {
-                    addToRecentlyViewed(p);
-                    openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
+                >
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    width="800"
+                    height="600"
+                    // Only the LCP image should not be lazy‑loaded; others lazy
+                    loading={isLcp ? undefined : "lazy"}
+                    // LCP image gets high priority
+                    fetchpriority={isLcp ? "high" : undefined}
+                    decoding="async"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "0.5rem",
+                      cursor: "zoom-in",
+                      aspectRatio: "800/600",
+                    }}
+                    onClick={() => {
+                      addToRecentlyViewed(p);
+                      openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
+                    }}
+                  />
+                </div>
+                <h3 className="font-semibold">{p.title}</h3>
+                <div className="text-sm text-slate-600 mt-1">
+                  <span className="font-semibold">Product Details: </span>
+                  {p.description?.slice(0, 50)}…
+                </div>
+                <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
+                  <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
+                  <button
+                    className="bg-sky-600 text-white px-3 py-1 rounded-lg"
+                    onClick={() => openProduct(p)}
+                  >
+                    Enter
+                  </button>
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "1px",
+                    background:
+                      "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
+                    marginBottom: "16px",
                   }}
                 />
+                {p.winner && (
+                  <div className="mt-3 text-sm text-green-700">
+                    Winner: {p.winner.name} ({p.winner.ticketNo})
+                  </div>
+                )}
               </div>
-              <h3 className="font-semibold">{p.title}</h3>
-              <div className="text-sm text-slate-600 mt-1">
-                <span className="font-semibold">Product Details: </span>
-                {p.description?.slice(0, 50)}…
-              </div>
-              <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
-                <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
-                <button
-                  className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                  onClick={() => openProduct(p)}
-                >
-                  Enter
-                </button>
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  height: "1px",
-                  background:
-                    "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
-                  marginBottom: "16px",
-                }}
-              />
-              {p.winner && (
-                <div className="mt-3 text-sm text-green-700">
-                  Winner: {p.winner.name} ({p.winner.ticketNo})
-                </div>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
     );

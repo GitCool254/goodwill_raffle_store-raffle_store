@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" />
     <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
-    <!-- ⚡ CRITICAL CSS (inlined to avoid render-blocking) -->
+    <!-- ⚡ CRITICAL CSS (inlined – keeps above‑the‑fold styles) -->
     <style>
       /* Reset & base layout – critical for above-the-fold content */
       * {
@@ -56,8 +56,8 @@
       }
     </style>
 
-    <!-- 🚀 Defer non-critical CSS -->
-    <link rel="preload" href="/assets/index-Jc9LRU1E.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <!-- 🚀 Defer full CSS – loads without blocking rendering -->
+    <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" /></noscript>
 
     <link rel="manifest" href="/manifest.json" />
