@@ -11,11 +11,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <!-- Preconnect to backend API with crossorigin -->
+    <!-- Preconnect to backend API (crossorigin is correct) -->
     <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
     <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
-    <!-- ⚡ CRITICAL CSS (inlined – keeps above‑the‑fold styles) -->
+    <!-- ⚡ CRITICAL CSS (inlined – ensures above‑the‑fold styles are applied immediately) -->
     <style>
       /* Reset & base layout – critical for above-the-fold content */
       * {
@@ -56,9 +56,21 @@
       }
     </style>
 
-    <!-- 🚀 Defer full CSS – loads without blocking rendering -->
-    <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" /></noscript>
+    <!-- 🚀 Deferred full CSS – loads after paint, never blocks rendering -->
+    <script>
+      // Load the main CSS after the page has finished painting
+      window.addEventListener('load', function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        // The path is static; Vite will replace it with the correct hashed name during build
+        link.href = '/assets/index-Jc9LRU1E.css';
+        document.head.appendChild(link);
+      });
+    </script>
+    <noscript>
+      <!-- Fallback for users with JavaScript disabled (rare) -->
+      <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" />
+    </noscript>
 
     <link rel="manifest" href="/manifest.json" />
     <script type="module" src="/src/main.jsx"></script>
