@@ -18,6 +18,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isTicketGenerating, setIsTicketGenerating] = useState(false);
 
+  // --- SKU state ---
+  const [sku, setSku] = useState("");
+  const [skuLoading, setSkuLoading] = useState(true);
+
   // --- Referral states ---
   const [referralCode, setReferralCode] = useState("");
   const [useFreeTicket, setUseFreeTicket] = useState(false);
@@ -31,6 +35,25 @@ export default function Detail({ product, openImage, remainingTickets }) {
       setReferralCode(refCode);
     }
   }, []);
+
+  // Fetch SKU from backend when product loads
+  useEffect(() => {
+    if (!product || !product.title) return;
+    setSkuLoading(true);
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/get_sku`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_title: product.title }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.sku) {
+          setSku(data.sku);
+        }
+        setSkuLoading(false);
+      })
+      .catch(() => setSkuLoading(false));
+  }, [product]);
 
   // Description toggle
   const DESCRIPTION_LIMIT = 70;
@@ -58,11 +81,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/rewards`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() })
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       })
-        .then(res => res.json())
-        .then(data => setReferralCredits(data.credits || 0))
-        .catch(err => console.error("Failed to fetch referral credits", err));
+        .then((res) => res.json())
+        .then((data) => setReferralCredits(data.credits || 0))
+        .catch((err) => console.error("Failed to fetch referral credits", err));
     } else {
       setReferralCredits(0);
     }
@@ -166,7 +189,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
     <>
       <Helmet>
         <title>{product.title} – Goodwillstores</title>
-        <meta name="description" content={`Win ${product.title} through a fair, affordable raffle. Quality second‑hand ${product.category || 'item'} at low ticket prices. Join the draw today!`} />
+        <meta
+          name="description"
+          content={`Win ${product.title} through a fair, affordable raffle. Quality second‑hand ${product.category || "item"} at low ticket prices. Join the draw today!`}
+        />
       </Helmet>
       <div
         className="p-6 text-center"
@@ -195,20 +221,27 @@ export default function Detail({ product, openImage, remainingTickets }) {
         />
 
         {/* White shadow line above price */}
-        <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '10px' }} />
+        <div
+          style={{
+            height: "6px",
+            backgroundColor: "white",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            marginBottom: "10px",
+          }}
+        />
 
         <p
           className="text-lg mb-2"
-          style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
+          style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}
         >
           Price per ticket: ${product.ticketPrice}
         </p>
 
-        {/* Market price display – new */}
+        {/* Market price display */}
         {product.marketPrice && (
           <p
-          className="text-sm text-slate-500 mb-2"
-          style={{ color: '#334155', fontSize: "16px", fontWeight: 600 }}
+            className="text-sm text-slate-500 mb-2"
+            style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}
           >
             Market value: ${product.marketPrice}
           </p>
@@ -225,7 +258,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
           <div className="text-left max-w-md mx-auto">
             <div
               className="text-sm font-semibold text-slate-700 mb-1"
-              style={{ marginBottom: "20px", fontWeight: 600, color: '#334155', fontSize: "16px" }}
+              style={{
+                marginBottom: "20px",
+                fontWeight: 600,
+                color: "#334155",
+                fontSize: "16px",
+              }}
             >
               Product Details
             </div>
@@ -244,8 +282,38 @@ export default function Detail({ product, openImage, remainingTickets }) {
             </button>
           )}
           {/* White shadow line below the toggle button */}
-          <div style={{ height: '6px', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '10px' }} />
+          <div
+            style={{
+              height: "6px",
+              backgroundColor: "white",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              marginTop: "10px",
+            }}
+          />
         </div>
+
+        {/* SKU display – below description with margin-top: 20px */}
+        {sku && (
+          <div
+            className="text-left max-w-md mx-auto"
+            style={{ marginTop: "20px" }}
+          >
+            <span style={{ fontWeight: "bold", color: "#1e293b" }}>
+              SKU:{" "}
+            </span>
+            <span style={{ color: "#334155", fontFamily: "monospace" }}>
+              {sku}
+            </span>
+          </div>
+        )}
+        {!sku && !skuLoading && (
+          <div
+            className="text-left max-w-md mx-auto text-sm text-slate-400"
+            style={{ marginTop: "20px" }}
+          >
+            SKU not available
+          </div>
+        )}
 
         <br />
 
@@ -345,7 +413,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
             {/* REFERRAL CODE INPUT (optional) */}
             <div className="mb-3 max-w-md mx-auto text-left">
-              <label className="block mb-1 text-sm font-medium">Referral code (if any)</label>
+              <label className="block mb-1 text-sm font-medium">
+                Referral code (if any)
+              </label>
               <input
                 type="text"
                 value={referralCode}
@@ -395,10 +465,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 setIsTicketGenerating(true);
 
                 // --- Get user's timezone offset in minutes ---
-                // Example: For EST (UTC-5) the offset is -300, for AEST (UTC+10) the offset is +600
                 const timezoneOffset = -new Date().getTimezoneOffset();
 
-                // --- Prepare payload (without user_local_time) ---
                 const payload = {
                   name,
                   email: email.trim().toLowerCase(),
