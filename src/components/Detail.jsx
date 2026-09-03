@@ -253,7 +253,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
           </p>
         )}
 
-        {/* DESCRIPTION SECTION – Product Details and description on separate rows */}
+        {/* DESCRIPTION SECTION – with SKU placed before the toggle */}
         <div className="mb-10">
           <div className="text-left max-w-md mx-auto">
             <div
@@ -272,15 +272,34 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
                 : product.description}
             </div>
+
+            {/* SKU display – just before the toggle, with 20px top and bottom margin */}
+            {sku && (
+              <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <span style={{ fontWeight: "bold", color: "#1e293b" }}>
+                  SKU:{" "}
+                </span>
+                <span style={{ color: "#334155", fontFamily: "monospace" }}>
+                  {sku}
+                </span>
+              </div>
+            )}
+            {!sku && !skuLoading && (
+              <div style={{ marginTop: "20px", marginBottom: "20px", color: "#94a3b8", fontSize: "0.875rem" }}>
+                SKU not available
+              </div>
+            )}
+
+            {/* Toggle button */}
+            {product.description.length > DESCRIPTION_LIMIT && (
+              <button
+                className="text-sm text-sky-600 hover:underline"
+                onClick={toggleDescription}
+              >
+                {expandedDesc ? "See less" : "See more"}
+              </button>
+            )}
           </div>
-          {product.description.length > DESCRIPTION_LIMIT && (
-            <button
-              className="text-sm text-sky-600 hover:underline"
-              onClick={toggleDescription}
-            >
-              {expandedDesc ? "See less" : "See more"}
-            </button>
-          )}
           {/* White shadow line below the toggle button */}
           <div
             style={{
@@ -291,29 +310,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
             }}
           />
         </div>
-
-        {/* SKU display – below description with margin-top: 20px */}
-        {sku && (
-          <div
-            className="text-left max-w-md mx-auto"
-            style={{ marginTop: "20px" }}
-          >
-            <span style={{ fontWeight: "bold", color: "#1e293b" }}>
-              SKU:{" "}
-            </span>
-            <span style={{ color: "#334155", fontFamily: "monospace" }}>
-              {sku}
-            </span>
-          </div>
-        )}
-        {!sku && !skuLoading && (
-          <div
-            className="text-left max-w-md mx-auto text-sm text-slate-400"
-            style={{ marginTop: "20px" }}
-          >
-            SKU not available
-          </div>
-        )}
 
         <br />
 
