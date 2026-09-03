@@ -6,21 +6,18 @@
     <title>Goodwillstores</title>
     <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores. Second Hand, First Choice" />
 
-    <!-- Custom favicon – replace /logo.png with your own logo image -->
-    <link rel="icon" type="image/png" href="/Logo1.png?v=2" />
-    <!-- If you have a logo in SVG format, uncomment the line below and comment out the PNG ones -->
-    <!-- <link rel="icon" type="image/svg+xml" href="/logo.svg" /> -->
-    <!-- For backward compatibility, keep the 32x32 and 16x16 versions if you have them -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/Logo1.png?v=2" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/Logo1.png?v=2" />
+    <!-- Custom favicon – all point to Logo1.png -->
+    <link rel="icon" type="image/png" href="/Logo1.png?v=3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/Logo1.png?v=3" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/Logo1.png?v=3" />
+    <link rel="shortcut icon" href="/Logo1.png?v=3" type="image/png" />
 
-    <!-- Preconnect to backend API (crossorigin is correct) -->
+    <!-- Preconnect to backend API -->
     <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
     <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
-    <!-- ⚡ CRITICAL CSS (inlined – ensures above‑the‑fold styles are applied immediately) -->
+    <!-- ⚡ CRITICAL CSS (inlined) -->
     <style>
-      /* Reset & base layout – critical for above-the-fold content */
       * {
         box-sizing: border-box;
       }
@@ -40,13 +37,11 @@
         text-align: center;
       }
 
-      /* Side margins for main content (header/footer stay full width) */
       main.flex-grow {
         padding-left: 1rem;
         padding-right: 1rem;
       }
 
-      /* Ensure the impact paragraph is styled immediately */
       .impact-paragraph {
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         font-weight: 600;
@@ -59,29 +54,24 @@
       }
     </style>
 
-    <!-- 🚀 Deferred full CSS – loads after paint, never blocks rendering -->
+    <!-- 🚀 Deferred full CSS -->
     <script>
-      // Load the main CSS after the page has finished painting
       window.addEventListener('load', function() {
         var link = document.createElement('link');
         link.rel = 'stylesheet';
-        // The path is static; Vite will replace it with the correct hashed name during build
         link.href = '/assets/index-Jc9LRU1E.css';
         document.head.appendChild(link);
       });
     </script>
     <noscript>
-      <!-- Fallback for users with JavaScript disabled (rare) -->
       <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" />
     </noscript>
 
-    <link rel="manifest" href="/manifest.json" />
+    <!-- manifest removed – this is a website, not an app -->
     <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
     <div id="root"></div>
-
-    <!-- PayPal renders here OUTSIDE React -->
     <div id="paypal-root"></div>
   </body>
 </html>
