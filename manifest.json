@@ -15,6 +15,11 @@
       "src": "/icon-goodwill.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/icon-goodwill.png",
+      "sizes": "196x196",
+      "type": "image/png"
     }
   ]
 }
