@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 import "./App.css";
 
-// Components that are always needed (header, footer, etc.)
+// Components
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Menu from "./components/Menu";
@@ -10,6 +10,7 @@ import HolidaySystem from "./components/HolidaySystem";
 import RecentWinners from "./components/RecentWinners";
 import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
+import SearchBar from "./components/SearchBar";  // 👈 NEW
 
 // Lazy‑load page components
 const Detail = lazy(() => import("./components/Detail"));
@@ -22,20 +23,11 @@ const Donations = lazy(() => import("./components/Donations"));
 const TermsOfUse = lazy(() => import("./components/TermsOfUse"));
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 
-// Import product data from shared file
+// Import product data
 import { sampleProducts, catalogItems } from "./data/products";
 
-/**
- * Goodwill Raffle Store - Upgraded UI
- * Place logo at: public/logo.png
- * Remove banner
- *
- * Minimal client-only app (localStorage) for testing.
- * Later we'll wire payments and Google Sheets via server endpoints.
- */
-
 export default function App() {
-  const DATA_VERSION = "v3"; // bump this when products change
+  const DATA_VERSION = "v3";
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (!backendUrl) console.error("VITE_BACKEND_URL is not set!");
@@ -52,21 +44,15 @@ export default function App() {
   // -------------------- STATE --------------------
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem("gw_products");
-
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-
-        // 🔍 compare images
-        // 🔍 compare full product content
         const changed =
           parsed.length !== sampleProducts.length ||
           parsed.some((p, i) => JSON.stringify(p) !== JSON.stringify(sampleProducts[i]));
-
         if (!changed) return parsed;
       } catch {}
     }
-
     localStorage.setItem("gw_products", JSON.stringify(sampleProducts));
     return sampleProducts;
   });
@@ -89,14 +75,12 @@ export default function App() {
     localStorage.setItem("gw_products", JSON.stringify(products));
   }, [products]);
 
-  // -------------------- DEFERRED INITIAL FETCH (after paint) --------------------
+  // -------------------- DEFERRED INITIAL FETCH --------------------
   useEffect(() => {
     let isMounted = true;
     let intervalId;
 
-    // Use requestIdleCallback to fetch after main content is painted
     const fetchAfterPaint = () => {
-      // If the browser supports requestIdleCallback, use it; otherwise fallback to setTimeout
       if ('requestIdleCallback' in window) {
         window.requestIdleCallback(() => {
           if (!isMounted) return;
@@ -112,7 +96,6 @@ export default function App() {
 
     async function fetchInitialData() {
       try {
-        // Fetch both endpoints in parallel
         const [ticketStateRes, toggleRes] = await Promise.all([
           fetch(`${backendUrl}/ticket_state`),
           fetch(`${backendUrl}/winners_detail_toggle`),
@@ -120,7 +103,6 @@ export default function App() {
 
         if (!isMounted) return;
 
-        // Process ticket state
         const ticketData = await ticketStateRes.json();
         if (!isNaN(ticketData.remaining)) {
           setRemainingTickets(Number(ticketData.remaining));
@@ -130,12 +112,10 @@ export default function App() {
         }
         setTicketStateLoaded(true);
 
-        // Process toggle
         const toggleData = await toggleRes.json();
         setShowWinnersDetail(toggleData.show ?? true);
       } catch (err) {
         console.error("Failed to fetch initial data:", err);
-        // Fallback values
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
       }
@@ -143,7 +123,6 @@ export default function App() {
 
     fetchAfterPaint();
 
-    // Auto-refresh ticket state every 30 seconds (starts after initial fetch)
     intervalId = setInterval(() => {
       if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
@@ -165,17 +144,15 @@ export default function App() {
     };
   }, [backendUrl]);
 
-  // -------------------- EVENT LISTENER FOR TICKET PURCHASE --------------------
+  // -------------------- EVENT LISTENER --------------------
   useEffect(() => {
     async function handleTicketsPurchased() {
       try {
         const res = await fetch(`${backendUrl}/ticket_state`);
         const data = await res.json();
-
         if (!isNaN(data.remaining)) {
           setRemainingTickets(Number(data.remaining));
         }
-
         if (!isNaN(data.tickets_sold)) {
           setTicketsSold(Number(data.tickets_sold));
         }
@@ -183,7 +160,6 @@ export default function App() {
         console.error("Ticket sync failed:", err);
       }
     }
-
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
     return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
@@ -197,7 +173,7 @@ export default function App() {
     return () => window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
 
-  // -------------------- URL / ROUTING HELPERS --------------------
+  // -------------------- URL / ROUTING --------------------
   const generateSlug = (title) => {
     return title
       .toLowerCase()
@@ -205,7 +181,6 @@ export default function App() {
       .replace(/^-+|-+$/g, "");
   };
 
-  // Mapping view name -> URL path
   const viewToPath = {
     home: "/",
     catalog: "/catalog",
@@ -219,22 +194,17 @@ export default function App() {
     tickets: "/tickets",
   };
 
-  // Reverse mapping: path -> view name (excluding detail and image)
   const pathToView = Object.fromEntries(
     Object.entries(viewToPath).map(([view, path]) => [path, view])
   );
 
-  // Determine if a path is a product slug (and return the product if found)
   function findProductBySlug(slug) {
-    // 1️⃣ Check main products (featured)
     let product = products.find((p) => generateSlug(p.title) === slug);
     if (product) return product;
-    // 2️⃣ Check catalog items
     product = catalogItems.find((p) => generateSlug(p.title) === slug);
     return product || null;
   }
 
-  // Core navigation: update view and URL (push state)
   function navigate(nextView, product = null) {
     let path;
     let newView = nextView;
@@ -255,7 +225,6 @@ export default function App() {
     window.history.pushState({ view: newView, product: product || null }, "", path);
   }
 
-  // Restore view from a given path (used on initial load and popstate)
   function restoreViewFromPath(path) {
     if (path === "/") {
       setView("home");
@@ -281,12 +250,11 @@ export default function App() {
     setSelected(null);
   }
 
-  // -------------------- INITIAL LOAD & POPSTATE --------------------
   useEffect(() => {
     const path = window.location.pathname;
     restoreViewFromPath(path);
 
-    const handlePopState = (event) => {
+    const handlePopState = () => {
       const currentPath = window.location.pathname;
       restoreViewFromPath(currentPath);
     };
@@ -297,7 +265,7 @@ export default function App() {
     };
   }, [products]);
 
-  // -------------------- PRODUCT & IMAGE INTERACTIONS --------------------
+  // -------------------- PRODUCT INTERACTIONS --------------------
   function addToRecentlyViewed(product) {
     if (!product || !product.id) return;
     const stored = localStorage.getItem("gw_recently_viewed");
@@ -316,10 +284,7 @@ export default function App() {
   function openTicketProduct(ticket) {
     const product = products.find((p) => p.id === ticket.productId);
     if (!product) return;
-    setSelected({
-      ...product,
-      _ticket: ticket,
-    });
+    setSelected({ ...product, _ticket: ticket });
     navigate("detail", product);
   }
 
@@ -343,10 +308,9 @@ export default function App() {
     window.history.back();
   }
 
-  // -------------------- HERO COMPONENT --------------------
+  // -------------------- HERO --------------------
   function Hero({ remainingTickets, ticketsSold }) {
     const [scale, setScale] = useState(1);
-
     const ticketStateReady = remainingTickets !== null && ticketStateLoaded;
 
     useEffect(() => {
@@ -431,7 +395,7 @@ export default function App() {
     );
   }
 
-  // -------------------- IMAGE PAGE (overlay) --------------------
+  // -------------------- IMAGE PAGE --------------------
   function ImagePage({ images, index, setIndex, onBack }) {
     const [touchStartX, setTouchStartX] = useState(null);
     const [scale, setScale] = useState(1);
@@ -449,10 +413,8 @@ export default function App() {
     useEffect(() => {
       const originalOverflow = document.body.style.overflow;
       const originalBg = document.body.style.backgroundColor;
-
       document.body.style.overflow = "hidden";
       document.body.style.backgroundColor = "#000";
-
       return () => {
         document.body.style.overflow = originalOverflow;
         document.body.style.backgroundColor = originalBg;
@@ -461,11 +423,7 @@ export default function App() {
 
     useEffect(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "auto",
-        });
+        containerRef.current.scrollTo({ top: 0, left: 0, behavior: "auto" });
       }
     }, [index]);
 
@@ -590,7 +548,7 @@ export default function App() {
           {isLoading && (
             <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10001 }}>
               <svg className="spinner" viewBox="0 0 50 50">
-                <circle className="ring" cx="25" cy="25" r="20"></circle>
+                <circle className="ring" cx="25" cy="25" r="20" />
                 <path className="star" d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z" />
               </svg>
             </div>
@@ -720,80 +678,97 @@ export default function App() {
     );
   }
 
-  // -------------------- HOME COMPONENT (featured products) --------------------
+  // -------------------- HOME COMPONENT (with search) --------------------
   function Home() {
+    const [searchQuery, setSearchQuery] = useState(""); // 👈 NEW
+
+    // Filter products based on search query
+    const filteredProducts = products.filter((p) => {
+      const q = searchQuery.toLowerCase().trim();
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+      );
+    });
+
     return (
-      <main className="max-w-6xl mx-auto p-6">
-        <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p, idx) => {
-            // Determine if this is the LCP candidate (first image)
-            const isLcp = idx === 0;
-            return (
-              <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
-                <div
-                  style={{
-                    width: "100%",
-                    marginBottom: "12px",
-                    overflow: "hidden",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    width="800"
-                    height="600"
-                    loading={isLcp ? undefined : "lazy"}
-                    fetchpriority={isLcp ? "high" : undefined}
-                    decoding="async"
+      <>
+        {/* 👇 Search bar placed above the product grid */}
+        <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
+
+        <main className="max-w-6xl mx-auto p-6">
+          <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {filteredProducts.map((p, idx) => {
+              const isLcp = idx === 0;
+              return (
+                <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+                  <div
                     style={{
                       width: "100%",
-                      height: "auto",
-                      borderRadius: "0.5rem",
-                      cursor: "zoom-in",
-                      aspectRatio: "800/600",
+                      marginBottom: "12px",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
-                    onClick={() => {
-                      addToRecentlyViewed(p);
-                      openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      width="800"
+                      height="600"
+                      loading={isLcp ? undefined : "lazy"}
+                      fetchpriority={isLcp ? "high" : undefined}
+                      decoding="async"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "0.5rem",
+                        cursor: "zoom-in",
+                        aspectRatio: "800/600",
+                      }}
+                      onClick={() => {
+                        addToRecentlyViewed(p);
+                        openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
+                      }}
+                    />
+                  </div>
+                  <h3 className="font-semibold">{p.title}</h3>
+                  <div className="text-sm text-slate-600 mt-1">
+                    <span className="font-semibold">Product Details: </span>
+                    {p.description?.slice(0, 50)}…
+                  </div>
+                  <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
+                    <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
+                    <button
+                      className="bg-sky-600 text-white px-3 py-1 rounded-lg"
+                      onClick={() => openProduct(p)}
+                    >
+                      Enter
+                    </button>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "1px",
+                      background:
+                        "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
+                      marginBottom: "16px",
                     }}
                   />
+                  {p.winner && (
+                    <div className="mt-3 text-sm text-green-700">
+                      Winner: {p.winner.name} ({p.winner.ticketNo})
+                    </div>
+                  )}
                 </div>
-                <h3 className="font-semibold">{p.title}</h3>
-                <div className="text-sm text-slate-600 mt-1">
-                  <span className="font-semibold">Product Details: </span>
-                  {p.description?.slice(0, 50)}…
-                </div>
-                <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
-                  <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
-                  <button
-                    className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                    onClick={() => openProduct(p)}
-                  >
-                    Enter
-                  </button>
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "1px",
-                    background:
-                      "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
-                    marginBottom: "16px",
-                  }}
-                />
-                {p.winner && (
-                  <div className="mt-3 text-sm text-green-700">
-                    Winner: {p.winner.name} ({p.winner.ticketNo})
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </main>
+              );
+            })}
+          </div>
+        </main>
+      </>
     );
   }
 
@@ -897,7 +872,7 @@ export default function App() {
             </>
           )}
 
-          {/* Lazy-loaded routes wrapped in Suspense */}
+          {/* Lazy-loaded routes */}
           <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
             {view === "detail" && selected && (
               <Detail
