@@ -21,6 +21,10 @@
     <meta name="msapplication-TileImage" content="/icon-tab.png?v=2026" />
     <meta name="msapplication-TileColor" content="#1E3A8A" />
 
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#1E3A8A" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
     <!-- Preconnect to backend API -->
     <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
     <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
@@ -76,7 +80,8 @@
       <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" />
     </noscript>
 
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Manifest with version query to force refresh -->
+    <link rel="manifest" href="/manifest.json?v=2026" />
     <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
