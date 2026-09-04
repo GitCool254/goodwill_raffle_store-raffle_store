@@ -408,16 +408,6 @@ function HolidayBanner({ holiday, onNavigate }) {
             <strong>Buy 5 tickets. Get 2 on Us.</strong>
           </div>
         </div>
-
-        <br />
-
-        <button
-          onClick={() => onNavigate("catalog")}
-          className="mt-3 md:mt-0 px-4 py-2 rounded-lg text-sm font-medium transition bg-black text-white"
-          style={{ marginBottom: "10px" }}
-        >
-          Explore Raffles
-        </button>
       </div>
     </section>
   );

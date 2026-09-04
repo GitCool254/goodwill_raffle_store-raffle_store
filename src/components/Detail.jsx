@@ -279,7 +279,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 <span style={{ fontWeight: "bold", color: "#1e293b" }}>
                   SKU:{" "}
                 </span>
-                <span style={{ color: "#334155", fontFamily: "Roboto Mono", fontWeight: 300, fontSize: "0.875rem" }}>
+                <span style={{ color: "#334155", fontFamily: "Roboto Mono", fontWeight: 400, fontSize: "0.875rem" }}>
                   {sku}
                 </span>
               </div>
