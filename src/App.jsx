@@ -398,25 +398,29 @@ export default function App() {
     );
   }
 
-  // -------------------- IMAGE PAGE --------------------
+  // -------------------- IMAGE PAGE (overlay) --------------------
   function ImagePage({ images, index, setIndex, onBack }) {
-    // ... (unchanged – same as before)
-    // (I'm not including the full ImagePage for brevity; keep your existing one)
-    // In practice, you would paste your full ImagePage code here.
+    // (Keep your existing ImagePage implementation exactly as before)
+    // For brevity, I'm not pasting it here – it remains unchanged.
   }
 
-  // -------------------- HOME COMPONENT (receives searchQuery) --------------------
+  // -------------------- HOME COMPONENT (with search) --------------------
   function Home({ searchQuery }) {
-    // Filter products based on search query
-    const filteredProducts = products.filter((p) => {
-      const q = searchQuery.toLowerCase().trim();
-      if (!q) return true;
-      return (
-        p.title.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q) ||
-        p.category?.toLowerCase().includes(q)
-      );
-    });
+    // Determine which products to display:
+    // - If searchQuery is empty, show only the sample products (products state)
+    // - If searchQuery is not empty, show all products (sample + catalog) that match the query
+    const allProducts = [...products, ...catalogItems];
+
+    const filteredProducts = searchQuery.trim() === "" 
+      ? products  // show only sample products by default
+      : allProducts.filter((p) => {
+          const q = searchQuery.toLowerCase().trim();
+          return (
+            p.title.toLowerCase().includes(q) ||
+            p.description?.toLowerCase().includes(q) ||
+            p.category?.toLowerCase().includes(q)
+          );
+        });
 
     return (
       <main className="max-w-6xl mx-auto p-6">
@@ -524,7 +528,7 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Search bar – visible on home and catalog (and any other view) */}
+          {/* 👇 Search bar – visible on home and catalog */}
           {view !== "image" && (view === "home" || view === "catalog") && (
             <div className="max-w-6xl mx-auto px-6">
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
@@ -610,7 +614,8 @@ export default function App() {
               />
             )}
 
-            {view === "catalog" && <Catalog openProduct={openProduct} searchQuery={searchQuery} />}
+            {/* Catalog component – does NOT receive searchQuery prop */}
+            {view === "catalog" && <Catalog openProduct={openProduct} />}
 
             {view === "address" && <Address />}
             {view === "contact" && <Contact />}
