@@ -49,7 +49,7 @@ export default function SearchBar({ placeholder = "Search products", onSearch })
         <button
           type="button"
           style={{
-            background: "#f68b1e",
+            background: "#3b82f6", // light blue
             color: "white",
             border: "none",
             borderRadius: "20px",
