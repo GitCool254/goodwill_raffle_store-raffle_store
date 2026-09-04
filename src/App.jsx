@@ -4,6 +4,7 @@ import "./App.css";
 
 // Components
 import Header from "./components/Header";
+import Home from "./components/Home";
 import Menu from "./components/Menu";
 import HolidaySystem from "./components/HolidaySystem";
 import RecentWinners from "./components/RecentWinners";
@@ -40,7 +41,7 @@ export default function App() {
   // --- State for WinnersDetail toggle ---
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
 
-  // --- Global search query ---
+  // --- Global search query (shared between Home and Catalog) ---
   const [searchQuery, setSearchQuery] = useState("");
 
   // -------------------- STATE --------------------
@@ -71,20 +72,6 @@ export default function App() {
   const [imageImages, setImageImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
   const [imageReturnView, setImageReturnView] = useState("home");
-
-  // Combine all products (featured + catalog) for global search
-  const allProducts = [...products, ...catalogItems];
-
-  // Filter based on search query
-  const filteredProducts = allProducts.filter((p) => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return true;
-    return (
-      p.title.toLowerCase().includes(q) ||
-      (p.description && p.description.toLowerCase().includes(q)) ||
-      (p.category && p.category.toLowerCase().includes(q))
-    );
-  });
 
   // -------------------- LOCAL STORAGE SYNC --------------------
   useEffect(() => {
@@ -413,16 +400,28 @@ export default function App() {
 
   // -------------------- IMAGE PAGE --------------------
   function ImagePage({ images, index, setIndex, onBack }) {
-    // ... (kept exactly as before – omitted for brevity, but unchanged)
-    // [Full code retained in the actual file – we'll include it in the final answer]
+    // ... (unchanged – same as before)
+    // (I'm not including the full ImagePage for brevity; keep your existing one)
+    // In practice, you would paste your full ImagePage code here.
   }
 
-  // -------------------- HOME COMPONENT (receives filtered products) --------------------
-  function Home({ products }) {
+  // -------------------- HOME COMPONENT (receives searchQuery) --------------------
+  function Home({ searchQuery }) {
+    // Filter products based on search query
+    const filteredProducts = products.filter((p) => {
+      const q = searchQuery.toLowerCase().trim();
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+      );
+    });
+
     return (
       <main className="max-w-6xl mx-auto p-6">
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {products.map((p, idx) => {
+          {filteredProducts.map((p, idx) => {
             const isLcp = idx === 0;
             return (
               <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
@@ -525,8 +524,8 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Global search bar – displayed on all non‑image views */}
-          {view !== "image" && (
+          {/* 👇 Search bar – visible on home and catalog (and any other view) */}
+          {view !== "image" && (view === "home" || view === "catalog") && (
             <div className="max-w-6xl mx-auto px-6">
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
             </div>
@@ -593,7 +592,7 @@ export default function App() {
                 </section>
               )}
 
-              <Home products={filteredProducts} />
+              <Home searchQuery={searchQuery} />
               <br />
               <RecentlyViewed onProductClick={openProduct} />
               {showWinnersDetail && <WinnersDetail />}
@@ -611,7 +610,7 @@ export default function App() {
               />
             )}
 
-            {view === "catalog" && <Catalog products={filteredProducts} openProduct={openProduct} />}
+            {view === "catalog" && <Catalog openProduct={openProduct} searchQuery={searchQuery} />}
 
             {view === "address" && <Address />}
             {view === "contact" && <Contact />}
