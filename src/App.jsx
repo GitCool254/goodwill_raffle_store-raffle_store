@@ -84,32 +84,27 @@ export default function App() {
     let intervalId;
 
     const fetchAfterPaint = () => {
-      // Use requestIdleCallback to run after main content is painted
       const scheduleFetch = () => {
         if ('requestIdleCallback' in window) {
           window.requestIdleCallback(() => {
             if (!isMounted) return;
-            // Add a small delay to ensure the main thread is free
             setTimeout(() => {
               if (!isMounted) return;
               fetchInitialData();
             }, 200);
           });
         } else {
-          // Fallback for browsers without requestIdleCallback
           setTimeout(() => {
             if (!isMounted) return;
             fetchInitialData();
           }, 300);
         }
       };
-
       scheduleFetch();
     };
 
     async function fetchInitialData() {
       try {
-        // Fetch both endpoints in parallel
         const [ticketStateRes, toggleRes] = await Promise.all([
           fetch(`${backendUrl}/ticket_state`),
           fetch(`${backendUrl}/winners_detail_toggle`),
@@ -117,7 +112,6 @@ export default function App() {
 
         if (!isMounted) return;
 
-        // Process ticket state
         const ticketData = await ticketStateRes.json();
         if (!isNaN(ticketData.remaining)) {
           setRemainingTickets(Number(ticketData.remaining));
@@ -127,12 +121,10 @@ export default function App() {
         }
         setTicketStateLoaded(true);
 
-        // Process toggle
         const toggleData = await toggleRes.json();
         setShowWinnersDetail(toggleData.show ?? true);
       } catch (err) {
         console.error("Failed to fetch initial data:", err);
-        // Fallback values
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
       }
@@ -140,7 +132,6 @@ export default function App() {
 
     fetchAfterPaint();
 
-    // Auto-refresh ticket state every 30 seconds (starts after initial fetch)
     intervalId = setInterval(() => {
       if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
@@ -697,44 +688,27 @@ export default function App() {
     );
   }
 
-  // -------------------- HOME COMPONENT (with search and "Top Selling Items") --------------------
+  // ============================================================
+  //   NEW: Home component with horizontal carousels (Jumia style)
+  // ============================================================
   function Home({ searchQuery }) {
-    // Determine which products to display:
-    // - If searchQuery is empty, show only the sample products (products state)
-    // - If searchQuery is not empty, show all products (sample + catalog) that match the query
-    const allProducts = [...products, ...catalogItems];
+    // If search query is active, show filtered products in grid (unchanged)
+    if (searchQuery.trim() !== "") {
+      const allProducts = [...products, ...catalogItems];
+      const filtered = allProducts.filter((p) => {
+        const q = searchQuery.toLowerCase().trim();
+        return (
+          p.title.toLowerCase().includes(q) ||
+          p.description?.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q)
+        );
+      });
 
-    const filteredProducts = searchQuery.trim() === ""
-      ? products  // show only sample products by default
-      : allProducts.filter((p) => {
-          const q = searchQuery.toLowerCase().trim();
-          return (
-            p.title.toLowerCase().includes(q) ||
-            p.description?.toLowerCase().includes(q) ||
-            p.category?.toLowerCase().includes(q)
-          );
-        });
-
-    return (
-      <main className="max-w-6xl mx-auto p-6">
-        {/* 👇 "Top Selling Items" heading */}
-        <h2
-          style={{
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            fontSize: "1.5rem",
-            fontWeight: 700,
-            color: "#0f172a",
-            marginTop: "20px",
-            marginBottom: "20px",
-            textAlign: "left",
-          }}
-        >
-          Top Selling Items
-        </h2>
-        <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredProducts.map((p, idx) => {
-            const isLcp = idx === 0;
-            return (
+      return (
+        <main className="max-w-6xl mx-auto p-6">
+          <h2 className="text-xl font-bold text-slate-800 mb-4">Search Results</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {filtered.map((p) => (
               <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
                 <div
                   style={{
@@ -749,11 +723,7 @@ export default function App() {
                   <img
                     src={p.image}
                     alt={p.title}
-                    width="800"
-                    height="600"
-                    loading={isLcp ? undefined : "lazy"}
-                    fetchpriority={isLcp ? "high" : undefined}
-                    decoding="async"
+                    loading="lazy"
                     style={{
                       width: "100%",
                       height: "auto",
@@ -796,12 +766,93 @@ export default function App() {
                   </div>
                 )}
               </div>
-            );
-          })}
+            ))}
+          </div>
+        </main>
+      );
+    }
+
+    // ----- Default: horizontal carousels (Jumia style) -----
+    // Helper: ProductCard component for carousel items
+    const ProductCard = ({ product }) => (
+      <div
+        className="flex-shrink-0 w-40 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
+        onClick={() => openProduct(product)}
+        style={{ marginRight: "8px" }}
+      >
+        <div className="p-2">
+          <img
+            src={product.image}
+            alt={product.title}
+            loading="lazy"
+            className="w-full h-32 object-cover rounded"
+            onClick={(e) => {
+              e.stopPropagation();
+              addToRecentlyViewed(product);
+              openImage(product.images?.length ? product.images : [product.image], 0, "home", product);
+            }}
+          />
+          <div className="mt-1 text-xs font-medium text-slate-800 truncate">{product.title}</div>
+          <div className="text-xs text-slate-600">${product.ticketPrice}</div>
         </div>
+      </div>
+    );
+
+    // Helper: Carousel row with title and "See All"
+    const ProductCarousel = ({ title, products, seeAllLink }) => {
+      if (!products || products.length === 0) return null;
+      return (
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-base font-semibold text-slate-800">{title}</h3>
+            <button
+              onClick={() => navigate("catalog")} // simple navigation; could add filter later
+              className="text-sm text-sky-600 hover:underline"
+            >
+              See All
+            </button>
+          </div>
+          <div
+            className="flex overflow-x-auto scrollbar-hide gap-2 pb-2"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Build category sections
+    const categories = [...new Set(catalogItems.map((p) => p.category))];
+    const topSelling = catalogItems.slice(0, 6); // first 6 as "Top Selling"
+
+    return (
+      <main className="max-w-6xl mx-auto p-6">
+        {/* Top Selling Items */}
+        <ProductCarousel title="Top Selling Items" products={topSelling} seeAllLink="/catalog" />
+
+        {/* Category sections */}
+        {categories.map((cat) => {
+          const catProducts = catalogItems.filter((p) => p.category === cat);
+          if (catProducts.length === 0) return null;
+          return (
+            <ProductCarousel
+              key={cat}
+              title={`${cat} deals`}
+              products={catProducts}
+              seeAllLink={`/catalog?category=${encodeURIComponent(cat)}`}
+            />
+          );
+        })}
       </main>
     );
   }
+
+  // ============================================================
+  //   END of new Home component
+  // ============================================================
 
   // -------------------- MAIN RETURN --------------------
   return (
@@ -835,7 +886,7 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Search bar – visible ONLY on home page */}
+          {/* Search bar – visible ONLY on home page */}
           {view === "home" && (
             <div className="max-w-6xl mx-auto px-6">
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
@@ -921,7 +972,6 @@ export default function App() {
               />
             )}
 
-            {/* Catalog component – unchanged, does NOT receive searchQuery */}
             {view === "catalog" && <Catalog openProduct={openProduct} />}
 
             {view === "address" && <Address />}
