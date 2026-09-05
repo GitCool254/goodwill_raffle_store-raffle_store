@@ -41,7 +41,7 @@ export default function App() {
   // --- State for WinnersDetail toggle ---
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
 
-  // --- Global search query (shared between Home and Catalog) ---
+  // --- Global search query (used only on home page) ---
   const [searchQuery, setSearchQuery] = useState("");
 
   // -------------------- STATE --------------------
@@ -528,8 +528,8 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Search bar – visible on home and catalog */}
-          {view !== "image" && (view === "home" || view === "catalog") && (
+          {/* 👇 Search bar – visible ONLY on home page */}
+          {view === "home" && (
             <div className="max-w-6xl mx-auto px-6">
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
             </div>
@@ -614,7 +614,7 @@ export default function App() {
               />
             )}
 
-            {/* Catalog component – does NOT receive searchQuery prop */}
+            {/* Catalog component – unchanged, does NOT receive searchQuery */}
             {view === "catalog" && <Catalog openProduct={openProduct} />}
 
             {view === "address" && <Address />}
