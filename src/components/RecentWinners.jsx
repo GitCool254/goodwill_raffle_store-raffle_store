@@ -23,7 +23,19 @@ export default function RecentWinners() {
         setLoading(false);
       }
     };
-    fetchWinners();
+
+    // Defer the fetch to avoid blocking initial render
+    const deferFetch = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => {
+          setTimeout(fetchWinners, 300);
+        });
+      } else {
+        setTimeout(fetchWinners, 500);
+      }
+    };
+
+    deferFetch();
   }, []);
 
   const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";

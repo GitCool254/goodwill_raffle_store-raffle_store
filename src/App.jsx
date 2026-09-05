@@ -84,21 +84,32 @@ export default function App() {
     let intervalId;
 
     const fetchAfterPaint = () => {
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => {
-          if (!isMounted) return;
-          fetchInitialData();
-        });
-      } else {
-        setTimeout(() => {
-          if (!isMounted) return;
-          fetchInitialData();
-        }, 100);
-      }
+      // Use requestIdleCallback to run after main content is painted
+      const scheduleFetch = () => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            if (!isMounted) return;
+            // Add a small delay to ensure the main thread is free
+            setTimeout(() => {
+              if (!isMounted) return;
+              fetchInitialData();
+            }, 200);
+          });
+        } else {
+          // Fallback for browsers without requestIdleCallback
+          setTimeout(() => {
+            if (!isMounted) return;
+            fetchInitialData();
+          }, 300);
+        }
+      };
+
+      scheduleFetch();
     };
 
     async function fetchInitialData() {
       try {
+        // Fetch both endpoints in parallel
         const [ticketStateRes, toggleRes] = await Promise.all([
           fetch(`${backendUrl}/ticket_state`),
           fetch(`${backendUrl}/winners_detail_toggle`),
@@ -106,6 +117,7 @@ export default function App() {
 
         if (!isMounted) return;
 
+        // Process ticket state
         const ticketData = await ticketStateRes.json();
         if (!isNaN(ticketData.remaining)) {
           setRemainingTickets(Number(ticketData.remaining));
@@ -115,10 +127,12 @@ export default function App() {
         }
         setTicketStateLoaded(true);
 
+        // Process toggle
         const toggleData = await toggleRes.json();
         setShowWinnersDetail(toggleData.show ?? true);
       } catch (err) {
         console.error("Failed to fetch initial data:", err);
+        // Fallback values
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
       }
@@ -126,6 +140,7 @@ export default function App() {
 
     fetchAfterPaint();
 
+    // Auto-refresh ticket state every 30 seconds (starts after initial fetch)
     intervalId = setInterval(() => {
       if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
@@ -163,6 +178,7 @@ export default function App() {
         console.error("Ticket sync failed:", err);
       }
     }
+
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
     return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
