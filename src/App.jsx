@@ -697,7 +697,7 @@ export default function App() {
     );
   }
 
-  // -------------------- HOME COMPONENT (with search) --------------------
+  // -------------------- HOME COMPONENT (with search and "Top Selling Items" heading) --------------------
   function Home({ searchQuery }) {
     // Determine which products to display:
     // - If searchQuery is empty, show only the sample products (products state)
@@ -717,6 +717,21 @@ export default function App() {
 
     return (
       <main className="max-w-6xl mx-auto p-6">
+        {/* 👇 "Top Selling Items" heading */}
+        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+          <h2
+            style={{
+              fontFamily: "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif",
+              fontSize: "1.5rem",
+              fontWeight: 700,
+              color: "#1e293b",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Top Selling Items
+          </h2>
+        </div>
+
         <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {filteredProducts.map((p, idx) => {
             const isLcp = idx === 0;
