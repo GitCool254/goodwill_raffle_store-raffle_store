@@ -400,8 +400,285 @@ export default function App() {
 
   // -------------------- IMAGE PAGE (overlay) --------------------
   function ImagePage({ images, index, setIndex, onBack }) {
-    // (Keep your existing ImagePage implementation exactly as before)
-    // For brevity, I'm not pasting it here – it remains unchanged.
+    const [touchStartX, setTouchStartX] = useState(null);
+    const [scale, setScale] = useState(1);
+    const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
+    const [isLoading, setIsLoading] = useState(true);
+    const lastDistanceRef = useRef(null);
+    const lastTapRef = useRef(0);
+    const containerRef = useRef(null);
+    const imgRef = useRef(null);
+
+    useEffect(() => {
+      setIsLoading(true);
+    }, [index]);
+
+    useEffect(() => {
+      const originalOverflow = document.body.style.overflow;
+      const originalBg = document.body.style.backgroundColor;
+      document.body.style.overflow = "hidden";
+      document.body.style.backgroundColor = "#000";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.backgroundColor = originalBg;
+      };
+    }, []);
+
+    useEffect(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    }, [index]);
+
+    useEffect(() => {
+      if (imgRef.current && imgRef.current.complete) {
+        setNaturalSize({
+          width: imgRef.current.naturalWidth,
+          height: imgRef.current.naturalHeight,
+        });
+        setIsLoading(false);
+      }
+    }, [index]);
+
+    useEffect(() => {
+      if (scale > 1 && naturalSize.width && containerRef.current) {
+        const scaledWidth = naturalSize.width * scale;
+        const scaledHeight = naturalSize.height * scale;
+        containerRef.current.scrollLeft = (scaledWidth - containerRef.current.clientWidth) / 2;
+        containerRef.current.scrollTop = (scaledHeight - containerRef.current.clientHeight) / 2;
+      }
+    }, [scale, naturalSize]);
+
+    function handleImageLoad(e) {
+      const img = e.target;
+      setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
+      setIsLoading(false);
+    }
+
+    function handleImageError() {
+      setIsLoading(false);
+    }
+
+    function next() {
+      if (index < images.length - 1) setIndex(index + 1);
+    }
+
+    function prev() {
+      if (index > 0) setIndex(index - 1);
+    }
+
+    function handleTouchStart(e) {
+      if (scale > 1) return;
+      setTouchStartX(e.touches[0].clientX);
+    }
+
+    function handleTouchEnd(e) {
+      if (touchStartX === null) return;
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (scale === 1) {
+        if (diff > 50) next();
+        if (diff < -50) prev();
+      }
+      setTouchStartX(null);
+    }
+
+    function handleDoubleTap() {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        setScale((s) => (s > 1 ? 1 : 2));
+      }
+      lastTapRef.current = now;
+    }
+
+    function getDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function handleTouchMove(e) {
+      if (e.touches.length === 2) {
+        const dist = getDistance(e.touches);
+        if (lastDistanceRef.current) {
+          const delta = dist - lastDistanceRef.current;
+          setScale((s) => Math.min(3, Math.max(1, s + delta * 0.005)));
+        }
+        lastDistanceRef.current = dist;
+      }
+    }
+
+    function handleTouchEndZoom() {
+      lastDistanceRef.current = null;
+    }
+
+    return (
+      <>
+        <style>{`
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .spinner {
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+          }
+          .ring {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 4;
+          }
+          .star {
+            fill: #3b82f6;
+          }
+        `}</style>
+        <div
+          ref={containerRef}
+          className="fixed inset-0 bg-black z-50"
+          style={{
+            overflow: scale > 1 ? "auto" : "hidden",
+            width: "100vw",
+            height: "100vh",
+            WebkitOverflowScrolling: "touch",
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={(e) => {
+            handleTouchEnd(e);
+            handleTouchEndZoom();
+          }}
+        >
+          {isLoading && (
+            <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10001 }}>
+              <svg className="spinner" viewBox="0 0 50 50">
+                <circle className="ring" cx="25" cy="25" r="20" />
+                <path className="star" d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z" />
+              </svg>
+            </div>
+          )}
+
+          <button
+            onClick={onBack}
+            style={{
+              position: "fixed",
+              top: "16px",
+              right: "16px",
+              zIndex: 10000,
+              fontWeight: 800,
+            }}
+            className="text-white font-extrabold bg-black/70 w-12 h-12 flex items-center justify-center text-4xl"
+          >
+            ✕
+          </button>
+
+          {images.length > 1 && index > 0 && (
+            <button
+              onClick={prev}
+              style={{
+                position: "fixed",
+                left: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10001,
+                fontSize: "64px",
+                color: "white",
+                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+              aria-label="Previous image"
+            >
+              ‹
+            </button>
+          )}
+
+          {images.length > 1 && index < images.length - 1 && (
+            <button
+              onClick={next}
+              style={{
+                position: "fixed",
+                right: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10001,
+                fontSize: "64px",
+                color: "white",
+                textShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+              aria-label="Next image"
+            >
+              ›
+            </button>
+          )}
+
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                maxWidth: "90vw",
+                maxHeight: "45vh",
+                width: "auto",
+                height: "auto",
+              }}
+            >
+              <img
+                ref={imgRef}
+                key={index}
+                src={images[index]}
+                alt="Full view"
+                onClick={handleDoubleTap}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                draggable={false}
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: `translate(-50%, -50%) scale(${scale})`,
+                  maxWidth: "80vw",
+                  maxHeight: "45vh",
+                  objectFit: "contain",
+                  cursor: scale > 1 ? "zoom-out" : "zoom-in",
+                  userSelect: "none",
+                  transition: "transform 0.25s ease",
+                  zIndex: 1,
+                }}
+              />
+
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: "48px",
+                  right: "24px",
+                  zIndex: 9999,
+                  color: "#fff",
+                  background: "rgba(0,0,0,0.7)",
+                  padding: "6px 12px",
+                  borderRadius: "999px",
+                  fontSize: "14px",
+                  pointerEvents: "none",
+                }}
+              >
+                {index + 1} / {images.length}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   // -------------------- HOME COMPONENT (with search) --------------------
@@ -411,7 +688,7 @@ export default function App() {
     // - If searchQuery is not empty, show all products (sample + catalog) that match the query
     const allProducts = [...products, ...catalogItems];
 
-    const filteredProducts = searchQuery.trim() === "" 
+    const filteredProducts = searchQuery.trim() === ""
       ? products  // show only sample products by default
       : allProducts.filter((p) => {
           const q = searchQuery.toLowerCase().trim();
