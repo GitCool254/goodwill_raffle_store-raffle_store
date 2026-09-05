@@ -691,6 +691,18 @@ export default function App() {
 
   // -------------------- HOME COMPONENT (restructured with Jumia-style rows) --------------------
   function Home({ searchQuery }) {
+    // CSS for hover effect – pop-out (scale + shadow)
+    const hoverStyles = `
+      .product-card-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        will-change: transform;
+      }
+      .product-card-hover:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      }
+    `;
+
     // Group catalog items by category
     const groupedItems = {};
     catalogItems.forEach(item => {
@@ -743,6 +755,7 @@ export default function App() {
             {products.map((item) => (
               <div
                 key={item.id}
+                className="product-card-hover"
                 style={{
                   flex: "0 0 160px",
                   backgroundColor: "#e6f3ff",
@@ -825,11 +838,12 @@ export default function App() {
       // Show search results as a grid (like before)
       return (
         <main className="max-w-6xl mx-auto p-6">
+          <style>{hoverStyles}</style>
           <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredProducts.map((p, idx) => {
               const isLcp = idx === 0;
               return (
-                <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+                <div key={p.id} className="product-card-hover bg-white rounded-2xl shadow p-4 flex flex-col">
                   <div
                     style={{
                       width: "100%",
@@ -900,6 +914,7 @@ export default function App() {
     // No search: show Jumia-style rows
     return (
       <main className="max-w-6xl mx-auto p-6">
+        <style>{hoverStyles}</style>
         {/* Top Selling Items (sample products) */}
         {renderProductRow("Top Selling Items", products, "/catalog")}
 
