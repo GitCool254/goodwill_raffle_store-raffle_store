@@ -100,6 +100,7 @@ export default function App() {
           }, 300);
         }
       };
+
       scheduleFetch();
     };
 
@@ -688,171 +689,229 @@ export default function App() {
     );
   }
 
-  // ============================================================
-  //   NEW: Home component with horizontal carousels (Jumia style)
-  // ============================================================
+  // -------------------- HOME COMPONENT (restructured with Jumia-style rows) --------------------
   function Home({ searchQuery }) {
-    // If search query is active, show filtered products in grid (unchanged)
-    if (searchQuery.trim() !== "") {
-      const allProducts = [...products, ...catalogItems];
-      const filtered = allProducts.filter((p) => {
-        const q = searchQuery.toLowerCase().trim();
-        return (
-          p.title.toLowerCase().includes(q) ||
-          p.description?.toLowerCase().includes(q) ||
-          p.category?.toLowerCase().includes(q)
-        );
-      });
+    // Group catalog items by category
+    const groupedItems = {};
+    catalogItems.forEach(item => {
+      if (!groupedItems[item.category]) {
+        groupedItems[item.category] = [];
+      }
+      groupedItems[item.category].push(item);
+    });
 
+    // Define category display order
+    const categoryOrder = ["Casual & Outdoor Wear", "Sports", "Electronics", "Furniture", "Household"];
+
+    // Helper: render a horizontal scrollable row of product cards
+    const renderProductRow = (title, products, seeAllLink = "/catalog") => {
+      if (!products || products.length === 0) return null;
       return (
-        <main className="max-w-6xl mx-auto p-6">
-          <h2 className="text-xl font-bold text-slate-800 mb-4">Search Results</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {filtered.map((p) => (
-              <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+        <div style={{ marginBottom: "2rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0f172a" }}>{title}</h2>
+            <button
+              onClick={() => navigate("catalog")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#2563eb",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              See All
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M9.5 18l6-6-6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              overflowX: "auto",
+              gap: "16px",
+              padding: "8px 0",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {products.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  flex: "0 0 160px",
+                  backgroundColor: "#e6f3ff",
+                  borderRadius: "0",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  padding: "12px",
+                  cursor: "pointer",
+                  scrollSnapAlign: "start",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                onClick={() => openProduct(item)}
+              >
                 <div
                   style={{
                     width: "100%",
-                    marginBottom: "12px",
-                    overflow: "hidden",
+                    height: "120px",
+                    backgroundColor: "#ffffff",
+                    padding: "6px",
+                    borderRadius: "0",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    marginBottom: "8px",
                   }}
                 >
                   <img
-                    src={p.image}
-                    alt={p.title}
+                    src={item.image}
+                    alt={item.title}
                     loading="lazy"
                     style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "0.5rem",
-                      cursor: "zoom-in",
-                      aspectRatio: "800/600",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain",
                     }}
-                    onClick={() => {
-                      addToRecentlyViewed(p);
-                      openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
-                    }}
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/200x150")}
                   />
                 </div>
-                <h3 className="font-semibold">{p.title}</h3>
-                <div className="text-sm text-slate-600 mt-1">
-                  <span className="font-semibold">Product Details: </span>
-                  {p.description?.slice(0, 50)}…
-                </div>
-                <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
-                  <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
+                <div style={{ width: "100%", textAlign: "left" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "#1e293b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {item.title}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#475569", marginTop: "2px" }}>{item.category}</div>
+                  <div style={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155", marginTop: "4px" }}>
+                    $ {item.ticketPrice} <span style={{ fontSize: "0.65rem" }}>/ticket</span>
+                  </div>
                   <button
                     className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                    onClick={() => openProduct(p)}
+                    style={{ marginTop: "8px", fontSize: "0.75rem", padding: "4px 10px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openProduct(item);
+                    }}
                   >
                     Enter
                   </button>
                 </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "1px",
-                    background:
-                      "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
-                    marginBottom: "16px",
-                  }}
-                />
-                {p.winner && (
-                  <div className="mt-3 text-sm text-green-700">
-                    Winner: {p.winner.name} ({p.winner.ticketNo})
-                  </div>
-                )}
               </div>
-            ))}
-          </div>
-        </main>
-      );
-    }
-
-    // ----- Default: horizontal carousels (Jumia style) -----
-    // Helper: ProductCard component for carousel items
-    const ProductCard = ({ product }) => (
-      <div
-        className="flex-shrink-0 w-40 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
-        onClick={() => openProduct(product)}
-        style={{ marginRight: "8px" }}
-      >
-        <div className="p-2">
-          <img
-            src={product.image}
-            alt={product.title}
-            loading="lazy"
-            className="w-full h-32 object-cover rounded"
-            onClick={(e) => {
-              e.stopPropagation();
-              addToRecentlyViewed(product);
-              openImage(product.images?.length ? product.images : [product.image], 0, "home", product);
-            }}
-          />
-          <div className="mt-1 text-xs font-medium text-slate-800 truncate">{product.title}</div>
-          <div className="text-xs text-slate-600">${product.ticketPrice}</div>
-        </div>
-      </div>
-    );
-
-    // Helper: Carousel row with title and "See All"
-    const ProductCarousel = ({ title, products, seeAllLink }) => {
-      if (!products || products.length === 0) return null;
-      return (
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-base font-semibold text-slate-800">{title}</h3>
-            <button
-              onClick={() => navigate("catalog")} // simple navigation; could add filter later
-              className="text-sm text-sky-600 hover:underline"
-            >
-              See All
-            </button>
-          </div>
-          <div
-            className="flex overflow-x-auto scrollbar-hide gap-2 pb-2"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </div>
       );
     };
 
-    // Build category sections
-    const categories = [...new Set(catalogItems.map((p) => p.category))];
-    const topSelling = catalogItems.slice(0, 6); // first 6 as "Top Selling"
+    // If search query is present, show grid results (existing behavior)
+    const allProducts = [...products, ...catalogItems];
+    const filteredProducts = searchQuery.trim() === ""
+      ? null // we'll show rows
+      : allProducts.filter((p) => {
+          const q = searchQuery.toLowerCase().trim();
+          return (
+            p.title.toLowerCase().includes(q) ||
+            p.description?.toLowerCase().includes(q) ||
+            p.category?.toLowerCase().includes(q)
+          );
+        });
 
+    if (filteredProducts !== null) {
+      // Show search results as a grid (like before)
+      return (
+        <main className="max-w-6xl mx-auto p-6">
+          <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {filteredProducts.map((p, idx) => {
+              const isLcp = idx === 0;
+              return (
+                <div key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+                  <div
+                    style={{
+                      width: "100%",
+                      marginBottom: "12px",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      width="800"
+                      height="600"
+                      loading={isLcp ? undefined : "lazy"}
+                      fetchpriority={isLcp ? "high" : undefined}
+                      decoding="async"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "0.5rem",
+                        cursor: "zoom-in",
+                        aspectRatio: "800/600",
+                      }}
+                      onClick={() => {
+                        addToRecentlyViewed(p);
+                        openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
+                      }}
+                    />
+                  </div>
+                  <h3 className="font-semibold">{p.title}</h3>
+                  <div className="text-sm text-slate-600 mt-1">
+                    <span className="font-semibold">Product Details: </span>
+                    {p.description?.slice(0, 50)}…
+                  </div>
+                  <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
+                    <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
+                    <button
+                      className="bg-sky-600 text-white px-3 py-1 rounded-lg"
+                      onClick={() => openProduct(p)}
+                    >
+                      Enter
+                    </button>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "1px",
+                      background:
+                        "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
+                      marginBottom: "16px",
+                    }}
+                  />
+                  {p.winner && (
+                    <div className="mt-3 text-sm text-green-700">
+                      Winner: {p.winner.name} ({p.winner.ticketNo})
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </main>
+      );
+    }
+
+    // No search: show Jumia-style rows
     return (
       <main className="max-w-6xl mx-auto p-6">
-        {/* Top Selling Items */}
-        <ProductCarousel title="Top Selling Items" products={topSelling} seeAllLink="/catalog" />
+        {/* Top Selling Items (sample products) */}
+        {renderProductRow("Top Selling Items", products, "/catalog")}
 
-        {/* Category sections */}
-        {categories.map((cat) => {
-          const catProducts = catalogItems.filter((p) => p.category === cat);
-          if (catProducts.length === 0) return null;
-          return (
-            <ProductCarousel
-              key={cat}
-              title={`${cat} deals`}
-              products={catProducts}
-              seeAllLink={`/catalog?category=${encodeURIComponent(cat)}`}
-            />
-          );
+        {/* Category rows */}
+        {categoryOrder.map((category) => {
+          const items = groupedItems[category] || [];
+          if (items.length === 0) return null;
+          return renderProductRow(category, items, "/catalog");
         })}
       </main>
     );
   }
-
-  // ============================================================
-  //   END of new Home component
-  // ============================================================
 
   // -------------------- MAIN RETURN --------------------
   return (
@@ -886,7 +945,7 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* Search bar – visible ONLY on home page */}
+          {/* 👇 Search bar – visible ONLY on home page */}
           {view === "home" && (
             <div className="max-w-6xl mx-auto px-6">
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
