@@ -14,7 +14,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  text-align: center; /* restores default alignment; override in components if needed */
+  text-align: center;
 }
 
 .logo {
@@ -31,12 +31,8 @@ html, body {
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -57,62 +53,37 @@ html, body {
    MOBILE MENU ANIMATIONS
 --------------------------- */
 
-/* Overlay fades in */
 .overlay-fade {
   animation: overlayFade 0.25s ease-in-out forwards;
 }
-
 @keyframes overlayFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Overlay fades out */
 .overlay-fade-out {
   animation: overlayFadeOut 0.25s ease-in-out forwards;
 }
-
 @keyframes overlayFadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
-/* Slide-in mobile menu drawer */
 .menu-slide-in {
   animation: menuSlideIn 0.25s ease-out forwards;
 }
-
 @keyframes menuSlideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
-/* Slide-out menu drawer */
 .menu-slide-out {
   animation: menuSlideOut 0.25s ease-in forwards;
 }
-
 @keyframes menuSlideOut {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
 }
-
 
 @keyframes shake {
   0% { transform: translateX(0); }
@@ -124,53 +95,35 @@ html, body {
 }
 
 @keyframes subtle-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .subtle-spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid #cbd5e1;      /* slate-300 */
-  border-top-color: #64748b;      /* slate-500 */
+  border: 2px solid #cbd5e1;
+  border-top-color: #64748b;
   border-radius: 50%;
   animation: subtle-spin 0.8s linear infinite;
 }
 
 @keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
-
 .animate-marquee {
   animation: marquee 6s linear infinite;
 }
 
-/* SLIDE DOWN ANIMATION */
 .holiday-slide {
   animation: slideDown 0.6s ease forwards;
 }
-
 @keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-/* SNOW SYSTEM */
 .snow-container {
   position: fixed;
   top: 0;
@@ -181,33 +134,21 @@ html, body {
   z-index: 30;
   overflow: hidden;
 }
-
 .snowflake {
   position: absolute;
   top: -10px;
   color: white;
   animation: snowfall linear infinite;
 }
-
 @keyframes snowfall {
-  to {
-    transform: translateY(110vh);
-  }
+  to { transform: translateY(110vh); }
 }
 
 @keyframes luxFadeUp {
-  from {
-    transform: translateY(8px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-
-/* Force menu panel to full viewport height */
 .menu-panel {
   height: 100vh !important;
   max-height: 100vh !important;
@@ -216,60 +157,34 @@ html, body {
   bottom: 0 !important;
 }
 
-/* Add side margins to main content only, keeping header/footer full width */
 main.flex-grow {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-/* Pulse animation for donation button heart */
 @keyframes pulseHeart {
-  0% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
+  0% { transform: scale(0); opacity: 0.5; }
+  50% { transform: scale(1); opacity: 0.2; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
-
 .pulse-ripple {
   animation: pulseHeart 1.5s infinite ease-out;
 }
 
-/* Heart icon pulse animation - makes the heart beat */
 @keyframes heartbeat {
-  0% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(1.2);
-  }
-  40% {
-    transform: scale(1);
-  }
-  60% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
-
 .pulse-heart {
   animation: heartbeat 1.2s ease-in-out infinite;
 }
 
-/* Product card hover effect (Jumia style) */
 .product-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .product-card:hover {
   transform: scale(1.02);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -300,7 +215,6 @@ main.flex-grow {
   min-width: 0;
 }
 
-/* Ensure the gallery inside the column uses the same styles */
 .detail-gallery-column .detail-gallery-desktop {
   max-width: 100%;
   margin: 0;
@@ -339,7 +253,6 @@ main.flex-grow {
 .detail-gallery-column .thumbnail-strip::-webkit-scrollbar {
   height: 4px;
 }
-
 .detail-gallery-column .thumbnail-strip::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
@@ -387,17 +300,19 @@ main.flex-grow {
   cursor: not-allowed;
 }
 
-/* Product info card */
+/* Product info card – title flush with top */
 .product-info-card {
   background: white;
   border-radius: 8px;
-  padding: 20px;
+  padding: 0 20px 20px 20px; /* top padding removed */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.product-info-card .text-2xl {
+.product-info-card .product-title {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0; /* no top margin */
+  padding-top: 0;
 }
 
 .product-info-card .text-lg {
@@ -413,12 +328,11 @@ main.flex-grow {
   margin-bottom: 1rem;
 }
 
-/* Ensure form fields inside the card are left-aligned */
 .product-info-card .max-w-md {
   max-width: 100%;
 }
 
-/* Mobile: hide desktop layout and use existing styles */
+/* Mobile: hide desktop layout */
 @media (max-width: 1023px) {
   .detail-desktop-wrapper {
     display: none;

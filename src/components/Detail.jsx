@@ -612,7 +612,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
         {/* Right column: product info card */}
         <div className="detail-info-column">
           <div className="product-info-card">
-            <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
+            <h2 className="product-title">{product.title}</h2>
 
             <p className="text-lg mb-2" style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}>
               Price per ticket: ${product.ticketPrice}
