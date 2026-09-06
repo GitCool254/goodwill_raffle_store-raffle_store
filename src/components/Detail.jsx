@@ -32,29 +32,33 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [isDesktop, setIsDesktop] = useState(false);
   const thumbnailContainerRef = useRef(null);
 
-  // Check if layout viewport is desktop width
-  const checkIsDesktop = () => {
-    // Use layout viewport width, not physical screen width
-    const width = window.innerWidth;
-    return width >= 1024;
-  };
-
-  // Update isDesktop on mount and resize
+  // Detect desktop layout using matchMedia (respects "Desktop Site" mode)
   useEffect(() => {
-    const updateDesktop = () => {
-      setIsDesktop(checkIsDesktop());
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (e) => {
+      setIsDesktop(e.matches);
     };
 
-    updateDesktop(); // initial check
-    window.addEventListener("resize", updateDesktop);
-    // Also listen for orientation change
-    window.addEventListener("orientationchange", () => {
-      setTimeout(updateDesktop, 200);
-    });
+    // Initial check
+    setIsDesktop(mediaQuery.matches);
 
+    // Listen for changes
+    mediaQuery.addEventListener('change', handleChange);
     return () => {
-      window.removeEventListener("resize", updateDesktop);
-      window.removeEventListener("orientationchange", updateDesktop);
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  // Also re-check on orientation change (with a small delay to let the browser adjust)
+  useEffect(() => {
+    const handleOrientation = () => {
+      setTimeout(() => {
+        setIsDesktop(window.matchMedia('(min-width: 1024px)').matches);
+      }, 200);
+    };
+    window.addEventListener('orientationchange', handleOrientation);
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientation);
     };
   }, []);
 
@@ -229,74 +233,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
       const newScrollLeft = container.scrollLeft + direction * scrollAmount;
       container.scrollTo({ left: newScrollLeft, behavior: "smooth" });
     }
-  };
-
-  // Desktop gallery render
-  const renderDesktopGallery = () => {
-    const images = product.images && product.images.length ? product.images : [product.image];
-    return (
-      <div className="detail-gallery-desktop">
-        <div className="main-image">
-          <img
-            src={images[activeIndex]}
-            alt={`${product.title} - ${activeIndex + 1}`}
-            className="cursor-zoom-in"
-            onClick={() =>
-              openImage(
-                images,
-                activeIndex,
-                "detail"
-              )
-            }
-          />
-        </div>
-        <div className="thumbnail-strip-wrapper">
-          <button
-            className="thumb-nav prev"
-            onClick={() => scrollThumbnails(-1)}
-            aria-label="Previous thumbnails"
-          >
-            ‹
-          </button>
-          <div className="thumbnail-strip" ref={thumbnailContainerRef}>
-            {images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`Thumbnail ${idx + 1}`}
-                className={idx === activeIndex ? "active" : ""}
-                onClick={() => setActiveIndex(idx)}
-              />
-            ))}
-          </div>
-          <button
-            className="thumb-nav next"
-            onClick={() => scrollThumbnails(1)}
-            aria-label="Next thumbnails"
-          >
-            ›
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  // Mobile simple image render
-  const renderMobileImage = () => {
-    const images = product.images && product.images.length ? product.images : [product.image];
-    return (
-      <img
-        src={product.image}
-        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
-        onClick={() =>
-          openImage(
-            images,
-            0,
-            "detail"
-          )
-        }
-      />
-    );
   };
 
   // ----- Shared UI elements (used in both desktop and mobile) -----
@@ -693,7 +629,17 @@ export default function Detail({ product, openImage, remainingTickets }) {
         </div>
       )}
 
-      {renderMobileImage()}
+      <img
+        src={product.image}
+        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
+        onClick={() =>
+          openImage(
+            product.images && product.images.length ? product.images : [product.image],
+            0,
+            "detail"
+          )
+        }
+      />
 
       {/* White shadow line above price */}
       <div
