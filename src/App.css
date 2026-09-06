@@ -304,14 +304,14 @@ main.flex-grow {
 .product-info-card {
   background: white;
   border-radius: 8px;
-  padding: 0 20px 20px 20px; /* top padding removed */
+  padding: 0 20px 20px 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .product-info-card .product-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0; /* no top margin */
+  margin: 0 0 0.5rem 0;
   padding-top: 0;
 }
 
@@ -330,11 +330,4 @@ main.flex-grow {
 
 .product-info-card .max-w-md {
   max-width: 100%;
-}
-
-/* Mobile: hide desktop layout */
-@media (max-width: 1023px) {
-  .detail-desktop-wrapper {
-    display: none;
-  }
 }

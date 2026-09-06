@@ -6,39 +6,6 @@ const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
 
-// Custom hook to detect desktop mode (viewport ≥1024px OR desktop site override)
-function useDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      const isMediaMatch = window.matchMedia("(min-width: 1024px)").matches;
-      const isInnerWidth = window.innerWidth >= 1024;
-      const isOuterWidth = window.outerWidth >= 1024;
-      return isMediaMatch || isInnerWidth || isOuterWidth;
-    };
-
-    const update = () => {
-      setIsDesktop(checkDesktop());
-    };
-
-    // Initial check
-    update();
-
-    // Listen to resize events
-    window.addEventListener("resize", update);
-    // Also listen to orientation change (for mobile)
-    window.addEventListener("orientationchange", update);
-
-    return () => {
-      window.removeEventListener("resize", update);
-      window.removeEventListener("orientationchange", update);
-    };
-  }, []);
-
-  return isDesktop;
-}
-
 export default function Detail({ product, openImage, remainingTickets }) {
   const ticket = product?._ticket || null;
   const [name, setName] = useState("");
@@ -62,8 +29,34 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   // --- Gallery state ---
   const [activeIndex, setActiveIndex] = useState(0);
-  const isDesktop = useDesktop();
+  const [isDesktop, setIsDesktop] = useState(false);
   const thumbnailContainerRef = useRef(null);
+
+  // Check if layout viewport is desktop width
+  const checkIsDesktop = () => {
+    // Use layout viewport width, not physical screen width
+    const width = window.innerWidth;
+    return width >= 1024;
+  };
+
+  // Update isDesktop on mount and resize
+  useEffect(() => {
+    const updateDesktop = () => {
+      setIsDesktop(checkIsDesktop());
+    };
+
+    updateDesktop(); // initial check
+    window.addEventListener("resize", updateDesktop);
+    // Also listen for orientation change
+    window.addEventListener("orientationchange", () => {
+      setTimeout(updateDesktop, 200);
+    });
+
+    return () => {
+      window.removeEventListener("resize", updateDesktop);
+      window.removeEventListener("orientationchange", updateDesktop);
+    };
+  }, []);
 
   // Auto‑read referral code from URL (?ref=CODE)
   useEffect(() => {
