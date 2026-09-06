@@ -8,21 +8,21 @@ export default defineConfig({
   plugins: [
     react(),
     ViteImageOptimizer({
-      // Lossless compression – adjust quality for better size reduction
+      // Lossy compression – lower quality = smaller file
       png: {
-        quality: 80, // 0-100, lower = smaller file
+        quality: 65,
       },
       jpeg: {
-        quality: 80,
+        quality: 70,
       },
       jpg: {
-        quality: 80,
+        quality: 70,
       },
       webp: {
-        quality: 80,
+        quality: 70,
       },
       avif: {
-        quality: 70,
+        quality: 60,
       },
       svg: {
         multipass: true,
@@ -46,14 +46,21 @@ export default defineConfig({
           },
         ],
       },
-      logStats: true, // shows before/after sizes in build output
+      // 🔥 Convert images to modern formats
+      convert: {
+        webp: true,
+        avif: true,
+      },
+      // Process all images in the build output
+      include: ['**/*.{jpg,jpeg,png,svg,gif,webp,avif}'],
+      logStats: true,
     }),
     // Bundle visualizer – generates a report after build
     visualizer({
-      open: true, // automatically open report in browser
+      open: true,
       gzipSize: true,
       brotliSize: true,
-      filename: 'dist/stats.html', // output file
+      filename: 'dist/stats.html',
     }),
   ],
 
@@ -62,14 +69,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split vendor libraries into separate chunks
           vendor: ['react', 'react-dom', 'react-helmet-async'],
-          // You can add more specific chunks if needed, e.g.:
-          // ui: ['some-ui-library'],
         },
       },
     },
-    chunkSizeWarningLimit: 500, // increase warning limit if needed
+    chunkSizeWarningLimit: 500,
   },
 
   server: {
