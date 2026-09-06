@@ -8,6 +8,7 @@ const shakeStyle = {
 
 export default function Detail({ product, openImage, remainingTickets }) {
   const ticket = product?._ticket || null;
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("1");
@@ -18,54 +19,140 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isTicketGenerating, setIsTicketGenerating] = useState(false);
 
-  // --- SKU state ---
+  // SKU state
   const [sku, setSku] = useState("");
   const [skuLoading, setSkuLoading] = useState(true);
 
-  // --- Referral states ---
+  // Referral states
   const [referralCode, setReferralCode] = useState("");
   const [useFreeTicket, setUseFreeTicket] = useState(false);
   const [referralCredits, setReferralCredits] = useState(0);
 
-  // --- Gallery state ---
+  // Gallery state
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const thumbnailContainerRef = useRef(null);
 
-  // Detect desktop layout using matchMedia (respects "Desktop Site" mode)
+  /*
+   * ============================================================
+   * DESKTOP PRESENTATION DETECTION
+   * ============================================================
+   *
+   * We deliberately DO NOT use screen.width or screen.height.
+   *
+   * The important distinction is:
+   *
+   * 1. Normal mobile browser:
+   *      mobile viewport + mobile browser identity
+   *
+   * 2. Mobile browser with "Desktop site" enabled:
+   *      browser presents itself as a desktop browser
+   *
+   * 3. Laptop / desktop:
+   *      desktop viewport and/or desktop browser identity
+   *
+   * This means a phone does NOT need to physically be 1024px wide
+   * to receive the desktop gallery.
+   */
+  const detectDesktopPresentation = () => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const width = window.innerWidth;
+
+    const userAgent = navigator.userAgent || "";
+
+    /*
+     * navigator.userAgentData.mobile is the preferred modern signal
+     * where supported.
+     *
+     * If it reports false, the browser is presenting itself as a
+     * non-mobile/desktop browser.
+     */
+    const uaData =
+      navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean"
+        ? navigator.userAgentData.mobile
+        : null;
+
+    /*
+     * Traditional mobile UA detection fallback.
+     */
+    const mobileUserAgent =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(
+        userAgent
+      );
+
+    /*
+     * Desktop-site browsers commonly remove the mobile UA token
+     * when requesting the desktop version.
+     */
+    const browserPresentingAsDesktop =
+      uaData === false || (uaData === null && !mobileUserAgent);
+
+    /*
+     * Normal desktop/laptop/tablet-sized layout.
+     */
+    const desktopViewport = width >= 768;
+
+    /*
+     * Final decision:
+     *
+     * - Desktop viewport => desktop layout
+     * - Browser presenting itself as desktop => desktop layout
+     *
+     * Therefore Desktop Site can activate the desktop gallery even
+     * when the physical phone screen is narrow.
+     */
+    return desktopViewport || browserPresentingAsDesktop;
+  };
+
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 1024px)');
-    const handleChange = (e) => {
-      setIsDesktop(e.matches);
+    let timeoutId;
+
+    const updateDesktopPresentation = () => {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        setIsDesktop(detectDesktopPresentation());
+      }, 50);
     };
 
-    // Initial check
-    setIsDesktop(mediaQuery.matches);
+    updateDesktopPresentation();
 
-    // Listen for changes
-    mediaQuery.addEventListener('change', handleChange);
+    window.addEventListener("resize", updateDesktopPresentation);
+    window.addEventListener("orientationchange", updateDesktopPresentation);
+
+    /*
+     * Some mobile browsers update their layout/user-agent presentation
+     * after the page has already loaded.
+     */
+    window.visualViewport?.addEventListener(
+      "resize",
+      updateDesktopPresentation
+    );
+
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      clearTimeout(timeoutId);
+
+      window.removeEventListener("resize", updateDesktopPresentation);
+      window.removeEventListener(
+        "orientationchange",
+        updateDesktopPresentation
+      );
+
+      window.visualViewport?.removeEventListener(
+        "resize",
+        updateDesktopPresentation
+      );
     };
   }, []);
 
-  // Also re-check on orientation change (with a small delay to let the browser adjust)
-  useEffect(() => {
-    const handleOrientation = () => {
-      setTimeout(() => {
-        setIsDesktop(window.matchMedia('(min-width: 1024px)').matches);
-      }, 200);
-    };
-    window.addEventListener('orientationchange', handleOrientation);
-    return () => {
-      window.removeEventListener('orientationchange', handleOrientation);
-    };
-  }, []);
-
-  // Auto‑read referral code from URL (?ref=CODE)
+  // Auto-read referral code from URL (?ref=CODE)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get("ref");
+
     if (refCode) {
       setReferralCode(refCode);
     }
@@ -74,30 +161,43 @@ export default function Detail({ product, openImage, remainingTickets }) {
   // Fetch SKU from backend when product loads
   useEffect(() => {
     if (!product || !product.title) return;
+
     setSkuLoading(true);
+
     fetch(`${import.meta.env.VITE_BACKEND_URL}/get_sku`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ product_title: product.title }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_title: product.title,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.sku) {
           setSku(data.sku);
         }
+
         setSkuLoading(false);
       })
-      .catch(() => setSkuLoading(false));
+      .catch(() => {
+        setSkuLoading(false);
+      });
   }, [product]);
 
-  // Reset active index when product changes
+  // Reset active image when product changes
   useEffect(() => {
     setActiveIndex(0);
+
+    if (thumbnailContainerRef.current) {
+      thumbnailContainerRef.current.scrollLeft = 0;
+    }
   }, [product]);
 
-  // Description toggle
   const DESCRIPTION_LIMIT = 70;
   const MAX_TICKETS_PER_ORDER = 10;
+
   const [expandedDesc, setExpandedDesc] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
 
@@ -112,20 +212,28 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const price =
     parseFloat(String(product.ticketPrice).replace(/[^0-9.]/g, "")) || 0;
+
   const safeQty = Number(quantity) || 0;
+
   const amount = Number((price * safeQty).toFixed(2));
 
-  // Fetch referral credits when email changes
+  // Fetch referral credits
   useEffect(() => {
     if (email && /^\S+@\S+\.\S+$/.test(email)) {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/rewards`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+        }),
       })
         .then((res) => res.json())
         .then((data) => setReferralCredits(data.credits || 0))
-        .catch((err) => console.error("Failed to fetch referral credits", err));
+        .catch((err) =>
+          console.error("Failed to fetch referral credits", err)
+        );
     } else {
       setReferralCredits(0);
     }
@@ -133,23 +241,34 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   function validateForm() {
     const newErrors = {};
-    if (!name.trim()) newErrors.name = "Please enter your full name.";
-    if (!email.trim()) newErrors.email = "Enter your email.";
-    else if (!/^\S+@\S+\.\S+$/.test(email))
+
+    if (!name.trim()) {
+      newErrors.name = "Please enter your full name.";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Enter your email.";
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       newErrors.email = "Enter a valid email.";
+    }
+
     const qtyNum = Number(quantity);
 
     if (!quantity || !Number.isInteger(qtyNum) || qtyNum < 1) {
-      newErrors.quantity = "Quantity must be at least 1 and a whole number.";
+      newErrors.quantity =
+        "Quantity must be at least 1 and a whole number.";
     }
+
     if (qtyNum > MAX_TICKETS_PER_ORDER) {
       newErrors.quantity = `Maximum ${MAX_TICKETS_PER_ORDER} tickets allowed per order.`;
     }
+
     if (qtyNum > remainingTickets) {
       newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   }
 
@@ -158,12 +277,23 @@ export default function Detail({ product, openImage, remainingTickets }) {
       alert("No completed payment found.");
       return;
     }
+
     if (hasDownloaded || isGenerating) return;
+
     setIsGenerating(true);
+
     try {
-      const payload = { order_id: lastOrder.orderId };
+      const payload = {
+        order_id: lastOrder.orderId,
+      };
+
       const nonce = crypto.randomUUID();
-      const payloadWithNonce = { ...payload, nonce };
+
+      const payloadWithNonce = {
+        ...payload,
+        nonce,
+      };
+
       const timestamp = Math.floor(Date.now() / 1000);
 
       const res = await fetch(
@@ -181,17 +311,26 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
       if (!res.ok) {
         let errorMessage = "Download failed.";
+
         try {
           const errJson = await res.json();
-          if (res.status === 410 && errJson.error === "TICKET_EXPIRED") {
+
+          if (
+            res.status === 410 &&
+            errJson.error === "TICKET_EXPIRED"
+          ) {
             errorMessage =
               "This ticket has expired and can no longer be downloaded.";
           } else if (
             res.status === 403 &&
             errJson.error === "MAX_REDOWNLOADS_REACHED"
           ) {
-            errorMessage = "Maximum download limit reached for this ticket.";
-          } else if (res.status === 403 && errJson.error === "Replay detected") {
+            errorMessage =
+              "Maximum download limit reached for this ticket.";
+          } else if (
+            res.status === 403 &&
+            errJson.error === "Replay detected"
+          ) {
             errorMessage =
               "Security validation failed. Please refresh and try again.";
           } else {
@@ -200,22 +339,34 @@ export default function Detail({ product, openImage, remainingTickets }) {
         } catch {
           errorMessage = "Unexpected error occurred during download.";
         }
+
         alert(errorMessage);
         setIsGenerating(false);
         return;
       }
 
       const blob = await res.blob();
+
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement("a");
+
       a.href = url;
+
       const disposition = res.headers.get("Content-Disposition");
+
       const match = disposition?.match(/filename="?(.+)"?/);
+
       a.download = match ? match[1] : "raffle_ticket";
+
       document.body.appendChild(a);
+
       a.click();
+
       a.remove();
+
       window.URL.revokeObjectURL(url);
+
       setHasDownloaded(true);
     } catch (err) {
       console.error("Download error:", err);
@@ -225,22 +376,143 @@ export default function Detail({ product, openImage, remainingTickets }) {
     }
   }
 
-  // Scroll thumbnails left/right
+  // Scroll thumbnails
   const scrollThumbnails = (direction) => {
-    if (thumbnailContainerRef.current) {
-      const container = thumbnailContainerRef.current;
-      const scrollAmount = 120;
-      const newScrollLeft = container.scrollLeft + direction * scrollAmount;
-      container.scrollTo({ left: newScrollLeft, behavior: "smooth" });
-    }
+    if (!thumbnailContainerRef.current) return;
+
+    const container = thumbnailContainerRef.current;
+
+    const scrollAmount = 180;
+
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: "smooth",
+    });
   };
 
-  // ----- Shared UI elements (used in both desktop and mobile) -----
+  // ============================================================
+  // DESKTOP GALLERY
+  // ============================================================
+
+  const renderDesktopGallery = () => {
+    const images =
+      product.images && product.images.length
+        ? product.images
+        : [product.image];
+
+    return (
+      <div className="detail-gallery-desktop">
+        <div className="desktop-gallery-main">
+          <button
+            type="button"
+            className="desktop-gallery-image-button"
+            onClick={() =>
+              openImage(
+                images,
+                activeIndex,
+                "detail"
+              )
+            }
+            aria-label={`Open image ${activeIndex + 1}`}
+          >
+            <img
+              src={images[activeIndex]}
+              alt={`${product.title} - image ${activeIndex + 1}`}
+              className="desktop-gallery-main-image"
+            />
+          </button>
+        </div>
+
+        <div className="thumbnail-strip-wrapper">
+          <button
+            type="button"
+            className="thumb-nav prev"
+            onClick={() => scrollThumbnails(-1)}
+            aria-label="Previous thumbnails"
+          >
+            ‹
+          </button>
+
+          <div
+            className="thumbnail-strip"
+            ref={thumbnailContainerRef}
+          >
+            {images.map((img, idx) => (
+              <button
+                type="button"
+                key={`${img}-${idx}`}
+                className={`desktop-thumbnail ${
+                  idx === activeIndex ? "active" : ""
+                }`}
+                onClick={() => setActiveIndex(idx)}
+                aria-label={`View image ${idx + 1}`}
+                aria-current={
+                  idx === activeIndex ? "true" : undefined
+                }
+              >
+                <img
+                  src={img}
+                  alt={`Thumbnail ${idx + 1}`}
+                />
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="thumb-nav next"
+            onClick={() => scrollThumbnails(1)}
+            aria-label="Next thumbnails"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // ============================================================
+  // MOBILE IMAGE
+  // ============================================================
+
+  const renderMobileImage = () => {
+    const images =
+      product.images && product.images.length
+        ? product.images
+        : [product.image];
+
+    return (
+      <button
+        type="button"
+        className="mobile-detail-image-button"
+        onClick={() =>
+          openImage(
+            images,
+            0,
+            "detail"
+          )
+        }
+        aria-label="Open product image"
+      >
+        <img
+          src={product.image}
+          alt={product.title}
+          className="mobile-detail-image"
+        />
+      </button>
+    );
+  };
+
+  // ============================================================
+  // FORM FIELDS
+  // ============================================================
+
   const renderFormFields = () => (
     <>
       {/* NAME */}
       <div className="mb-3 max-w-md mx-auto text-left">
         <label>Full Name</label>
+
         <input
           value={name}
           placeholder="Enter your full name"
@@ -264,12 +536,16 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-full rounded"
         />
-        {errors.name && <p className="text-red-500">{errors.name}</p>}
+
+        {errors.name && (
+          <p className="text-red-500">{errors.name}</p>
+        )}
       </div>
 
       {/* EMAIL */}
       <div className="mb-3 max-w-md mx-auto text-left">
         <label>Email</label>
+
         <input
           value={email}
           type="email"
@@ -294,12 +570,16 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-full rounded"
         />
-        {errors.email && <p className="text-red-500">{errors.email}</p>}
+
+        {errors.email && (
+          <p className="text-red-500">{errors.email}</p>
+        )}
       </div>
 
       {/* QUANTITY */}
       <div className="mb-5 max-w-md mx-auto text-left">
         <label className="block mb-1">Quantity</label>
+
         <input
           type="number"
           value={quantity}
@@ -325,14 +605,20 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-28 rounded mb-4"
         />
+
         {errors.quantity && (
-          <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>
+          <p className="text-red-500 text-sm mt-1">
+            {errors.quantity}
+          </p>
         )}
       </div>
 
-      {/* REFERRAL CODE INPUT (optional) */}
+      {/* REFERRAL CODE */}
       <div className="mb-3 max-w-md mx-auto text-left">
-        <label className="block mb-1 text-sm font-medium">Referral code (if any)</label>
+        <label className="block mb-1 text-sm font-medium">
+          Referral code (if any)
+        </label>
+
         <input
           type="text"
           value={referralCode}
@@ -342,16 +628,20 @@ export default function Detail({ product, openImage, remainingTickets }) {
         />
       </div>
 
-      {/* FREE TICKET CREDIT CHECKBOX */}
+      {/* FREE TICKET */}
       {referralCredits > 0 && (
         <div className="mb-3 max-w-md mx-auto text-left">
           <label className="flex items-center gap-2 text-sm text-slate-700">
             <input
               type="checkbox"
               checked={useFreeTicket}
-              onChange={(e) => setUseFreeTicket(e.target.checked)}
+              onChange={(e) =>
+                setUseFreeTicket(e.target.checked)
+              }
             />
-            Use 1 free ticket credit (you have {referralCredits})
+
+            Use 1 free ticket credit (you have{" "}
+            {referralCredits})
           </label>
         </div>
       )}
@@ -362,10 +652,12 @@ export default function Detail({ product, openImage, remainingTickets }) {
         <div className="text-xl font-semibold text-blue-700">
           💵 Total: <b>${amount}</b> USD
         </div>
+
         <p className="text-sm text-gray-600 italic mt-1">
           (This will be charged securely via PayPal)
         </p>
       </div>
+
       <hr className="my-4" />
 
       <PayPalButton
@@ -380,7 +672,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
           setLastOrder(orderObj);
           setIsTicketGenerating(true);
 
-          const timezoneOffset = -new Date().getTimezoneOffset();
+          const timezoneOffset =
+            -new Date().getTimezoneOffset();
+
           const payload = {
             name,
             email: email.trim().toLowerCase(),
@@ -391,8 +685,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
             referral_code: referralCode,
             use_free_ticket: useFreeTicket,
           };
+
           const nonce = crypto.randomUUID();
-          const payloadWithNonce = { ...payload, nonce };
+
+          const payloadWithNonce = {
+            ...payload,
+            nonce,
+          };
+
           const timestamp = Math.floor(Date.now() / 1000);
 
           const res = await fetch(
@@ -403,32 +703,45 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 "Content-Type": "application/json",
                 "X-Nonce": nonce,
                 "X-Timestamp": timestamp.toString(),
-                "X-Timezone-Offset": timezoneOffset.toString(),
+                "X-Timezone-Offset":
+                  timezoneOffset.toString(),
               },
               body: JSON.stringify(payloadWithNonce),
             }
           );
 
           if (!res.ok) {
-            let errorMessage = "Ticket generation failed.";
+            let errorMessage =
+              "Ticket generation failed.";
+
             try {
               const errJson = await res.json();
+
               if (res.status === 409) {
-                errorMessage = "Tickets sold out before your purchase completed.";
-              } else if (res.status === 403 && errJson.error === "Replay detected") {
-                errorMessage = "Security validation failed. Please refresh and try again.";
+                errorMessage =
+                  "Tickets sold out before your purchase completed.";
+              } else if (
+                res.status === 403 &&
+                errJson.error === "Replay detected"
+              ) {
+                errorMessage =
+                  "Security validation failed. Please refresh and try again.";
               } else {
-                errorMessage = errJson.error || errorMessage;
+                errorMessage =
+                  errJson.error || errorMessage;
               }
             } catch {
-              errorMessage = "Unexpected generation error.";
+              errorMessage =
+                "Unexpected generation error.";
             }
+
             alert(errorMessage);
             setIsTicketGenerating(false);
             return;
           }
 
           const data = await res.json();
+
           if (data.status !== "tickets_generated") {
             alert("Ticket generation incomplete.");
             setIsTicketGenerating(false);
@@ -441,13 +754,18 @@ export default function Detail({ product, openImage, remainingTickets }) {
           const ticketstateRes = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
           );
-          const ticketstateData = await ticketstateRes.json();
+
+          const ticketstateData =
+            await ticketstateRes.json();
+
           window.dispatchEvent(
             new CustomEvent("ticketsPurchased", {
               detail: {
                 quantity: Number(quantity),
-                total_sold: ticketstateData.total_sold,
-                remaining: ticketstateData.remaining,
+                total_sold:
+                  ticketstateData.total_sold,
+                remaining:
+                  ticketstateData.remaining,
                 authoritative: true,
               },
             })
@@ -457,28 +775,46 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
       <br />
 
-      {/* DOWNLOAD PLACEHOLDER / STATUS */}
       {!lastOrder && !downloadReady && (
         <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
           <div className="flex items-center gap-3 mb-1">
-            <span className="subtle-spinner" style={{ marginRight: "10px" }} />
-            <span>Waiting for payment confirmation</span>
+            <span
+              className="subtle-spinner"
+              style={{ marginRight: "10px" }}
+            />
+
+            <span>
+              Waiting for payment confirmation
+            </span>
           </div>
+
           <div className="text-xs text-slate-400">
-            Your ticket download will appear here after successful payment
+            Your ticket download will appear here
+            after successful payment
           </div>
         </div>
       )}
 
-      {lastOrder && isTicketGenerating && !downloadReady && (
-        <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="subtle-spinner" style={{ marginRight: "10px" }} />
-            <span className="font-medium">Generating your ticket…</span>
+      {lastOrder &&
+        isTicketGenerating &&
+        !downloadReady && (
+          <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
+            <div className="flex items-center gap-2 mb-1">
+              <span
+                className="subtle-spinner"
+                style={{ marginRight: "10px" }}
+              />
+
+              <span className="font-medium">
+                Generating your ticket…
+              </span>
+            </div>
+
+            <div className="text-xs text-slate-400">
+              This will only take a moment
+            </div>
           </div>
-          <div className="text-xs text-slate-400">This will only take a moment</div>
-        </div>
-      )}
+        )}
 
       {downloadReady && (
         <button
@@ -502,126 +838,157 @@ export default function Detail({ product, openImage, remainingTickets }) {
     </>
   );
 
-  // ----- Desktop layout (two columns) -----
-  const renderDesktopLayout = () => {
-    const images = product.images && product.images.length ? product.images : [product.image];
-    return (
-      <div className="detail-desktop-wrapper">
-        {/* Left column: gallery */}
-        <div className="detail-gallery-column">
-          <div className="detail-gallery-desktop">
-            <div className="main-image">
-              <img
-                src={images[activeIndex]}
-                alt={`${product.title} - ${activeIndex + 1}`}
-                className="cursor-zoom-in"
-                onClick={() =>
-                  openImage(
-                    images,
-                    activeIndex,
-                    "detail"
-                  )
-                }
-              />
-            </div>
-            <div className="thumbnail-strip-wrapper">
-              <button
-                className="thumb-nav prev"
-                onClick={() => scrollThumbnails(-1)}
-                aria-label="Previous thumbnails"
-              >
-                ‹
-              </button>
-              <div className="thumbnail-strip" ref={thumbnailContainerRef}>
-                {images.map((img, idx) => (
-                  <img
-                    key={idx}
-                    src={img}
-                    alt={`Thumbnail ${idx + 1}`}
-                    className={idx === activeIndex ? "active" : ""}
-                    onClick={() => setActiveIndex(idx)}
-                  />
-                ))}
-              </div>
-              <button
-                className="thumb-nav next"
-                onClick={() => scrollThumbnails(1)}
-                aria-label="Next thumbnails"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-        </div>
+  // ============================================================
+  // DESKTOP LAYOUT
+  // ============================================================
 
-        {/* Right column: product info card */}
-        <div className="detail-info-column">
-          <div className="product-info-card">
-            <h2 className="product-title">{product.title}</h2>
+  const renderDesktopLayout = () => (
+    <div className="detail-desktop-wrapper">
 
-            <p className="text-lg mb-2" style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}>
-              Price per ticket: ${product.ticketPrice}
+      {/* LEFT: JUMIA-STYLE GALLERY */}
+      <div className="detail-gallery-column">
+        {renderDesktopGallery()}
+      </div>
+
+      {/* RIGHT: PRODUCT INFORMATION */}
+      <div className="detail-info-column">
+        <div className="product-info-card">
+
+          <h2 className="product-title">
+            {product.title}
+          </h2>
+
+          <p
+            className="text-lg mb-2"
+            style={{
+              color: "#334155",
+              fontSize: "16px",
+              fontWeight: 600,
+            }}
+          >
+            Price per ticket: ${product.ticketPrice}
+          </p>
+
+          {product.marketPrice && (
+            <p
+              className="text-sm text-slate-500 mb-2"
+              style={{
+                color: "#334155",
+                fontSize: "16px",
+                fontWeight: 600,
+              }}
+            >
+              Market value: ${product.marketPrice}
             </p>
+          )}
 
-            {product.marketPrice && (
-              <p className="text-sm text-slate-500 mb-2" style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}>
-                Market value: ${product.marketPrice}
-              </p>
-            )}
+          <div className="mb-4">
 
-            <div className="mb-4">
-              <div className="text-sm font-semibold text-slate-700 mb-1" style={{ fontWeight: 600, color: "#334155", fontSize: "16px" }}>
-                Product Details
-              </div>
-              <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-                {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
-                  ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
-                  : product.description}
-              </div>
-              {sku && (
-                <div style={{ marginTop: "12px", marginBottom: "8px" }}>
-                  <span style={{ fontWeight: "bold", color: "#1e293b" }}>SKU: </span>
-                  <span style={{ color: "#334155", fontFamily: "Roboto Mono", fontWeight: 400, fontSize: "0.875rem" }}>
-                    {sku}
-                  </span>
-                </div>
-              )}
-              {!sku && !skuLoading && (
-                <div style={{ marginTop: "12px", marginBottom: "8px", color: "#94a3b8", fontSize: "0.875rem" }}>
-                  SKU not available
-                </div>
-              )}
-              {product.description.length > DESCRIPTION_LIMIT && (
-                <button
-                  className="text-sm text-sky-600 hover:underline"
-                  onClick={toggleDescription}
-                >
-                  {expandedDesc ? "See less" : "See more"}
-                </button>
-              )}
+            <div
+              className="text-sm font-semibold text-slate-700 mb-1"
+              style={{
+                fontWeight: 600,
+                color: "#334155",
+                fontSize: "16px",
+              }}
+            >
+              Product Details
             </div>
 
-            {/* Form fields and PayPal */}
-            {!ticket ? (
-              renderFormFields()
-            ) : (
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
-                className="mt-6 text-sky-600 font-semibold"
+            <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+              {product.description.length >
+                DESCRIPTION_LIMIT &&
+              !expandedDesc
+                ? product.description.slice(
+                    0,
+                    DESCRIPTION_LIMIT
+                  ) + "…"
+                : product.description}
+            </div>
+
+            {sku && (
+              <div
+                style={{
+                  marginTop: "12px",
+                  marginBottom: "8px",
+                }}
               >
-                ← Back to My Tickets
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color: "#1e293b",
+                  }}
+                >
+                  SKU:{" "}
+                </span>
+
+                <span
+                  style={{
+                    color: "#334155",
+                    fontFamily: "Roboto Mono",
+                    fontWeight: 400,
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  {sku}
+                </span>
+              </div>
+            )}
+
+            {!sku && !skuLoading && (
+              <div
+                style={{
+                  marginTop: "12px",
+                  marginBottom: "8px",
+                  color: "#94a3b8",
+                  fontSize: "0.875rem",
+                }}
+              >
+                SKU not available
+              </div>
+            )}
+
+            {product.description.length >
+              DESCRIPTION_LIMIT && (
+              <button
+                className="text-sm text-sky-600 hover:underline"
+                onClick={toggleDescription}
+              >
+                {expandedDesc
+                  ? "See less"
+                  : "See more"}
               </button>
             )}
           </div>
+
+          {!ticket ? (
+            renderFormFields()
+          ) : (
+            <button
+              onClick={() =>
+                window.dispatchEvent(
+                  new CustomEvent("goMyTickets")
+                )
+              }
+              className="mt-6 text-sky-600 font-semibold"
+            >
+              ← Back to My Tickets
+            </button>
+          )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
-  // ----- Mobile layout (existing) -----
+  // ============================================================
+  // MOBILE LAYOUT
+  // ============================================================
+
   const renderMobileLayout = () => (
     <>
-      <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        {product.title}
+      </h2>
 
       {ticket && (
         <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
@@ -629,79 +996,136 @@ export default function Detail({ product, openImage, remainingTickets }) {
         </div>
       )}
 
-      <img
-        src={product.image}
-        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
-        onClick={() =>
-          openImage(
-            product.images && product.images.length ? product.images : [product.image],
-            0,
-            "detail"
-          )
-        }
-      />
+      {renderMobileImage()}
 
-      {/* White shadow line above price */}
       <div
         style={{
           height: "6px",
           backgroundColor: "white",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          boxShadow:
+            "0 2px 4px rgba(0,0,0,0.1)",
           marginBottom: "10px",
         }}
       />
 
-      <p className="text-lg mb-2" style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}>
+      <p
+        className="text-lg mb-2"
+        style={{
+          color: "#334155",
+          fontSize: "16px",
+          fontWeight: 600,
+        }}
+      >
         Price per ticket: ${product.ticketPrice}
       </p>
 
       {product.marketPrice && (
-        <p className="text-sm text-slate-500 mb-2" style={{ color: "#334155", fontSize: "16px", fontWeight: 600 }}>
+        <p
+          className="text-sm text-slate-500 mb-2"
+          style={{
+            color: "#334155",
+            fontSize: "16px",
+            fontWeight: 600,
+          }}
+        >
           Market value: ${product.marketPrice}
         </p>
       )}
 
       {ticket && (
         <p className="text-sm text-slate-700 mb-4">
-          Ticket No: <strong>{ticket.ticketNo}</strong>
+          Ticket No:{" "}
+          <strong>{ticket.ticketNo}</strong>
         </p>
       )}
 
-      {/* DESCRIPTION SECTION */}
       <div className="mb-10">
         <div className="text-left max-w-md mx-auto">
-          <div className="text-sm font-semibold text-slate-700 mb-1" style={{ marginBottom: "20px", fontWeight: 600, color: "#334155", fontSize: "16px" }}>
+
+          <div
+            className="text-sm font-semibold text-slate-700 mb-1"
+            style={{
+              marginBottom: "20px",
+              fontWeight: 600,
+              color: "#334155",
+              fontSize: "16px",
+            }}
+          >
             Product Details
           </div>
+
           <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-            {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
-              ? product.description.slice(0, DESCRIPTION_LIMIT) + "…"
+            {product.description.length >
+              DESCRIPTION_LIMIT &&
+            !expandedDesc
+              ? product.description.slice(
+                  0,
+                  DESCRIPTION_LIMIT
+                ) + "…"
               : product.description}
           </div>
+
           {sku && (
-            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-              <span style={{ fontWeight: "bold", color: "#1e293b" }}>SKU: </span>
-              <span style={{ color: "#334155", fontFamily: "Roboto Mono", fontWeight: 400, fontSize: "0.875rem" }}>
+            <div
+              style={{
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: "bold",
+                  color: "#1e293b",
+                }}
+              >
+                SKU:{" "}
+              </span>
+
+              <span
+                style={{
+                  color: "#334155",
+                  fontFamily: "Roboto Mono",
+                  fontWeight: 400,
+                  fontSize: "0.875rem",
+                }}
+              >
                 {sku}
               </span>
             </div>
           )}
+
           {!sku && !skuLoading && (
-            <div style={{ marginTop: "20px", marginBottom: "20px", color: "#94a3b8", fontSize: "0.875rem" }}>
+            <div
+              style={{
+                marginTop: "20px",
+                marginBottom: "20px",
+                color: "#94a3b8",
+                fontSize: "0.875rem",
+              }}
+            >
               SKU not available
             </div>
           )}
-          {product.description.length > DESCRIPTION_LIMIT && (
-            <button className="text-sm text-sky-600 hover:underline" onClick={toggleDescription}>
-              {expandedDesc ? "See less" : "See more"}
+
+          {product.description.length >
+            DESCRIPTION_LIMIT && (
+            <button
+              className="text-sm text-sky-600 hover:underline"
+              onClick={toggleDescription}
+            >
+              {expandedDesc
+                ? "See less"
+                : "See more"}
             </button>
           )}
         </div>
+
         <div
           style={{
             height: "6px",
             backgroundColor: "white",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            boxShadow:
+              "0 2px 4px rgba(0,0,0,0.1)",
             marginTop: "10px",
           }}
         />
@@ -713,7 +1137,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
         renderFormFields()
       ) : (
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent("goMyTickets"))}
+          onClick={() =>
+            window.dispatchEvent(
+              new CustomEvent("goMyTickets")
+            )
+          }
           className="mt-6 text-sky-600 font-semibold"
         >
           ← Back to My Tickets
@@ -725,14 +1153,28 @@ export default function Detail({ product, openImage, remainingTickets }) {
   return (
     <>
       <Helmet>
-        <title>{product.title} – Goodwillstores</title>
+        <title>
+          {product.title} – Goodwillstores
+        </title>
+
         <meta
           name="description"
-          content={`Win ${product.title} through a fair, affordable raffle. Quality second‑hand ${product.category || "item"} at low ticket prices. Join the draw today!`}
+          content={`Win ${product.title} through a fair, affordable raffle. Quality second-hand ${
+            product.category || "item"
+          } at low ticket prices. Join the draw today!`}
         />
       </Helmet>
-      <div className="p-6" style={{ backgroundColor: "#f8fafc" }}>
-        {isDesktop ? renderDesktopLayout() : renderMobileLayout()}
+
+      <div
+        className={`detail-page-container ${
+          isDesktop
+            ? "detail-mode-desktop"
+            : "detail-mode-mobile"
+        }`}
+      >
+        {isDesktop
+          ? renderDesktopLayout()
+          : renderMobileLayout()}
       </div>
     </>
   );

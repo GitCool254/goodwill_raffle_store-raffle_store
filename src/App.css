@@ -2,7 +2,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -23,21 +24,28 @@ html, body {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+    animation: logo-spin infinite linear 20s;
   }
 }
 
@@ -49,54 +57,100 @@ html, body {
   color: #888;
 }
 
-/* --------------------------
+/* =========================================================
    MOBILE MENU ANIMATIONS
---------------------------- */
+   ========================================================= */
 
 .overlay-fade {
   animation: overlayFade 0.25s ease-in-out forwards;
 }
+
 @keyframes overlayFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .overlay-fade-out {
   animation: overlayFadeOut 0.25s ease-in-out forwards;
 }
+
 @keyframes overlayFadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 .menu-slide-in {
   animation: menuSlideIn 0.25s ease-out forwards;
 }
+
 @keyframes menuSlideIn {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .menu-slide-out {
   animation: menuSlideOut 0.25s ease-in forwards;
 }
+
 @keyframes menuSlideOut {
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-4px);
+  }
+
+  40% {
+    transform: translateX(4px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes subtle-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .subtle-spinner {
@@ -109,9 +163,15 @@ html, body {
 }
 
 @keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
+
 .animate-marquee {
   animation: marquee 6s linear infinite;
 }
@@ -119,9 +179,17 @@ html, body {
 .holiday-slide {
   animation: slideDown 0.6s ease forwards;
 }
+
 @keyframes slideDown {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .snow-container {
@@ -134,19 +202,30 @@ html, body {
   z-index: 30;
   overflow: hidden;
 }
+
 .snowflake {
   position: absolute;
   top: -10px;
   color: white;
   animation: snowfall linear infinite;
 }
+
 @keyframes snowfall {
-  to { transform: translateY(110vh); }
+  to {
+    transform: translateY(110vh);
+  }
 }
 
 @keyframes luxFadeUp {
-  from { transform: translateY(8px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .menu-panel {
@@ -163,155 +242,358 @@ main.flex-grow {
 }
 
 @keyframes pulseHeart {
-  0% { transform: scale(0); opacity: 0.5; }
-  50% { transform: scale(1); opacity: 0.2; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
+
 .pulse-ripple {
   animation: pulseHeart 1.5s infinite ease-out;
 }
 
 @keyframes heartbeat {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.2); }
-  40% { transform: scale(1); }
-  60% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+
+  60% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
+
 .pulse-heart {
   animation: heartbeat 1.2s ease-in-out infinite;
 }
 
 .product-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
 .product-card:hover {
   transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
 
-/* ============================================
-   Detail Page – Desktop Two‑Column Layout
-   ============================================ */
+/* =========================================================
+   DETAIL PAGE BASE
+   ========================================================= */
+
+.detail-page-container {
+  width: 100%;
+  min-height: 100%;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+}
+
+/* =========================================================
+   DESKTOP TWO-COLUMN LAYOUT
+   ========================================================= */
 
 .detail-desktop-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+
+  display: flex;
+  flex-direction: row;
+
+  gap: clamp(1rem, 2vw, 2rem);
+
   align-items: flex-start;
+
   text-align: left;
 }
 
+/* =========================================================
+   LEFT GALLERY COLUMN
+   ========================================================= */
+
 .detail-gallery-column {
-  flex: 0 0 50%;
-  max-width: 600px;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 50%;
 }
 
-.detail-info-column {
-  flex: 1;
+/*
+ * Important:
+ * The gallery is sized relative to its COLUMN,
+ * not to a hard-coded 1024px screen breakpoint.
+ */
+.detail-gallery-desktop {
+  width: 100%;
   min-width: 0;
 }
 
-.detail-gallery-column .detail-gallery-desktop {
-  max-width: 100%;
-  margin: 0;
-}
+/* =========================================================
+   MAIN IMAGE
+   ========================================================= */
 
-.detail-gallery-column .detail-gallery-desktop .main-image {
-  margin-bottom: 12px;
-}
-
-.detail-gallery-column .detail-gallery-desktop .main-image img {
+.desktop-gallery-main {
   width: 100%;
-  height: auto;
-  max-height: 500px;
-  object-fit: contain;
-  border-radius: 4px;
-  background: white;
-}
 
-.detail-gallery-column .thumbnail-strip-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 8px;
-}
-
-.detail-gallery-column .thumbnail-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 4px 0;
-  scroll-behavior: smooth;
-  flex: 1;
-  -webkit-overflow-scrolling: touch;
-}
-
-.detail-gallery-column .thumbnail-strip::-webkit-scrollbar {
-  height: 4px;
-}
-.detail-gallery-column .thumbnail-strip::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.detail-gallery-column .thumbnail-strip img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  cursor: pointer;
-  flex-shrink: 0;
-  background: white;
-  transition: border-color 0.2s;
-}
-
-.detail-gallery-column .thumbnail-strip img.active {
-  border-color: #2563eb;
-}
-
-.detail-gallery-column .thumb-nav {
-  background: rgba(226, 232, 240, 0.8);
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  color: #475569;
-  width: 28px;
-  height: 60px;
-  border-radius: 4px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
-  flex-shrink: 0;
+
+  margin-bottom: 12px;
+
+  background: #ffffff;
+
+  border-radius: 4px;
+
+  overflow: hidden;
 }
 
-.detail-gallery-column .thumb-nav:hover {
+/*
+ * Button is deliberately borderless so the entire image
+ * remains clickable for your existing openImage() viewer.
+ */
+.desktop-gallery-image-button {
+  display: flex;
+
+  width: 100%;
+  min-width: 0;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  outline: 0;
+
+  background: #ffffff;
+
+  cursor: zoom-in;
+}
+
+.desktop-gallery-image-button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
+.desktop-gallery-main-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  /*
+   * This prevents the image from becoming excessively tall
+   * while preserving its aspect ratio.
+   */
+  max-height: 560px;
+
+  object-fit: contain;
+
+  background: #ffffff;
+}
+
+/* =========================================================
+   THUMBNAIL STRIP
+   ========================================================= */
+
+.thumbnail-strip-wrapper {
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+
+  gap: 8px;
+}
+
+.thumbnail-strip {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 4px 0;
+
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.thumbnail-strip::-webkit-scrollbar {
+  height: 4px;
+}
+
+.thumbnail-strip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thumbnail-strip::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* =========================================================
+   THUMBNAILS
+   ========================================================= */
+
+.desktop-thumbnail {
+  display: block;
+
+  width: 60px;
+  height: 60px;
+
+  min-width: 60px;
+  min-height: 60px;
+
+  padding: 0;
+
+  border: 2px solid transparent;
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.desktop-thumbnail:hover {
+  opacity: 0.85;
+}
+
+.desktop-thumbnail.active {
+  border-color: #2563eb;
+}
+
+.desktop-thumbnail img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   THUMBNAIL NAVIGATION
+   ========================================================= */
+
+.thumb-nav {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 60px;
+
+  min-width: 28px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 4px;
+
+  background: rgba(226, 232, 240, 0.85);
+
+  color: #475569;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.thumb-nav:hover {
   background: #cbd5e1;
 }
 
-.detail-gallery-column .thumb-nav:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+/* =========================================================
+   RIGHT PRODUCT INFORMATION COLUMN
+   ========================================================= */
+
+.detail-info-column {
+  flex: 1 1 0;
+
+  min-width: 0;
+
+  width: 50%;
 }
 
-/* Product info card – title flush with top */
 .product-info-card {
-  background: white;
+  width: 100%;
+
+  background: #ffffff;
+
   border-radius: 8px;
+
   padding: 0 20px 20px 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06);
+
+  overflow: hidden;
 }
 
 .product-info-card .product-title {
   font-size: 1.5rem;
   font-weight: 700;
+
+  line-height: 1.35;
+
   margin: 0 0 0.5rem 0;
+
   padding-top: 0;
 }
 
@@ -330,4 +612,212 @@ main.flex-grow {
 
 .product-info-card .max-w-md {
   max-width: 100%;
+}
+
+/* =========================================================
+   MOBILE IMAGE
+   ========================================================= */
+
+.mobile-detail-image-button {
+  display: block;
+
+  width: 100%;
+
+  max-width: 384px;
+
+  margin: 0 auto 1rem auto;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: zoom-in;
+}
+
+.mobile-detail-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-height: 16rem;
+
+  object-fit: contain;
+
+  border-radius: 0.75rem;
+}
+
+/* =========================================================
+   DESKTOP MODE ON NARROW DEVICES
+   =========================================================
+ *
+ * IMPORTANT:
+ *
+ * These rules are NOT what determines whether desktop mode is
+ * enabled. React determines that using browser presentation.
+ *
+ * These rules simply make the DESKTOP LAYOUT resize gracefully
+ * when the desktop presentation is being rendered inside a
+ * narrow layout viewport.
+ *
+ * This is the part that allows:
+ *
+ *      Desktop Site + 485px CSS viewport
+ *
+ * to still use the desktop gallery instead of falling back
+ * to the mobile gallery.
+ */
+
+.detail-mode-desktop .detail-desktop-wrapper {
+  width: 100%;
+}
+
+.detail-mode-desktop .detail-gallery-column,
+.detail-mode-desktop .detail-info-column {
+  min-width: 0;
+}
+
+/*
+ * When the desktop presentation is displayed inside a
+ * relatively narrow viewport, reduce the gallery controls.
+ */
+@media (max-width: 900px) {
+  .detail-mode-desktop .detail-desktop-wrapper {
+    gap: 1rem;
+  }
+
+  .detail-mode-desktop .desktop-gallery-main-image {
+    max-height: 420px;
+  }
+
+  .detail-mode-desktop .desktop-thumbnail {
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+  .detail-mode-desktop .thumb-nav {
+    width: 24px;
+    min-width: 24px;
+    height: 50px;
+  }
+
+  .detail-mode-desktop .product-info-card {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .detail-mode-desktop
+    .product-info-card
+    .product-title {
+    font-size: 1.2rem;
+  }
+}
+
+/*
+ * Very narrow desktop-presentation viewport.
+ *
+ * Still TWO COLUMNS.
+ *
+ * We intentionally do NOT switch this to the mobile gallery.
+ */
+@media (max-width: 600px) {
+  .detail-mode-desktop {
+    padding: 0.75rem;
+  }
+
+  .detail-mode-desktop .detail-desktop-wrapper {
+    gap: 0.6rem;
+  }
+
+  .detail-mode-desktop .desktop-gallery-main-image {
+    max-height: 300px;
+  }
+
+  .detail-mode-desktop .desktop-thumbnail {
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .detail-mode-desktop .thumb-nav {
+    width: 22px;
+    min-width: 22px;
+    height: 44px;
+
+    font-size: 18px;
+  }
+
+  .detail-mode-desktop .product-info-card {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
+  }
+
+  .detail-mode-desktop
+    .product-info-card
+    .product-title {
+    font-size: 1rem;
+  }
+
+  .detail-mode-desktop
+    .product-info-card
+    .text-lg {
+    font-size: 0.85rem !important;
+  }
+
+  .detail-mode-desktop
+    .product-info-card
+    .text-sm {
+    font-size: 0.75rem;
+  }
+}
+
+/* =========================================================
+   NORMAL MOBILE PRESENTATION
+   ========================================================= */
+
+.detail-mode-mobile {
+  width: 100%;
+}
+
+/*
+ * The desktop gallery should NEVER appear in normal mobile
+ * presentation because React does not render it there.
+ *
+ * The mobile image remains the existing simple gallery.
+ */
+
+/* =========================================================
+   LARGE LAPTOP / DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+  .detail-desktop-wrapper {
+    gap: 2rem;
+  }
+
+  .desktop-gallery-main-image {
+    max-height: 600px;
+  }
+
+  .desktop-thumbnail {
+    width: 64px;
+    height: 64px;
+
+    min-width: 64px;
+    min-height: 64px;
+  }
+
+  .thumb-nav {
+    width: 30px;
+    min-width: 30px;
+    height: 64px;
+  }
 }
