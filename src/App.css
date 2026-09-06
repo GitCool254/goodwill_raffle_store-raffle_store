@@ -277,24 +277,40 @@ main.flex-grow {
 }
 
 /* ============================================
-   Detail Page – Jumia‑style Gallery (Desktop)
+   Detail Page – Desktop Two‑Column Layout
    ============================================ */
 
-.detail-gallery-desktop {
+.detail-desktop-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto 1rem;
+  flex-direction: row;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.detail-gallery-desktop .main-image {
-  width: 100%;
+.detail-gallery-column {
+  flex: 0 0 50%;
+  max-width: 600px;
+}
+
+.detail-info-column {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ensure the gallery inside the column uses the same styles */
+.detail-gallery-column .detail-gallery-desktop {
+  max-width: 100%;
+  margin: 0;
+}
+
+.detail-gallery-column .detail-gallery-desktop .main-image {
   margin-bottom: 12px;
 }
 
-.detail-gallery-desktop .main-image img {
+.detail-gallery-column .detail-gallery-desktop .main-image img {
   width: 100%;
   height: auto;
   max-height: 500px;
@@ -303,15 +319,14 @@ main.flex-grow {
   background: white;
 }
 
-.detail-gallery-desktop .thumbnail-strip-wrapper {
+.detail-gallery-column .thumbnail-strip-wrapper {
   display: flex;
   align-items: center;
   width: 100%;
   gap: 8px;
-  position: relative;
 }
 
-.detail-gallery-desktop .thumbnail-strip {
+.detail-gallery-column .thumbnail-strip {
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -321,16 +336,16 @@ main.flex-grow {
   -webkit-overflow-scrolling: touch;
 }
 
-.detail-gallery-desktop .thumbnail-strip::-webkit-scrollbar {
+.detail-gallery-column .thumbnail-strip::-webkit-scrollbar {
   height: 4px;
 }
 
-.detail-gallery-desktop .thumbnail-strip::-webkit-scrollbar-thumb {
+.detail-gallery-column .thumbnail-strip::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
 
-.detail-gallery-desktop .thumbnail-strip img {
+.detail-gallery-column .thumbnail-strip img {
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -342,11 +357,11 @@ main.flex-grow {
   transition: border-color 0.2s;
 }
 
-.detail-gallery-desktop .thumbnail-strip img.active {
-  border-color: #2563eb; /* sky-600 */
+.detail-gallery-column .thumbnail-strip img.active {
+  border-color: #2563eb;
 }
 
-.detail-gallery-desktop .thumb-nav {
+.detail-gallery-column .thumb-nav {
   background: rgba(226, 232, 240, 0.8);
   border: none;
   font-size: 20px;
@@ -363,18 +378,49 @@ main.flex-grow {
   flex-shrink: 0;
 }
 
-.detail-gallery-desktop .thumb-nav:hover {
+.detail-gallery-column .thumb-nav:hover {
   background: #cbd5e1;
 }
 
-.detail-gallery-desktop .thumb-nav:disabled {
+.detail-gallery-column .thumb-nav:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-/* Mobile: ensure simple image stays centered */
+/* Product info card */
+.product-info-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.product-info-card .text-2xl {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-info-card .text-lg {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-info-card .mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.product-info-card .mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Ensure form fields inside the card are left-aligned */
+.product-info-card .max-w-md {
+  max-width: 100%;
+}
+
+/* Mobile: hide desktop layout and use existing styles */
 @media (max-width: 1023px) {
-  .detail-gallery-desktop {
+  .detail-desktop-wrapper {
     display: none;
   }
 }
