@@ -275,3 +275,106 @@ main.flex-grow {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
+
+/* ============================================
+   Detail Page – Jumia‑style Gallery (Desktop)
+   ============================================ */
+
+.detail-gallery-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 1rem;
+}
+
+.detail-gallery-desktop .main-image {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.detail-gallery-desktop .main-image img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: white;
+}
+
+.detail-gallery-desktop .thumbnail-strip-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  position: relative;
+}
+
+.detail-gallery-desktop .thumbnail-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+  scroll-behavior: smooth;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.detail-gallery-desktop .thumbnail-strip::-webkit-scrollbar {
+  height: 4px;
+}
+
+.detail-gallery-desktop .thumbnail-strip::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.detail-gallery-desktop .thumbnail-strip img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.detail-gallery-desktop .thumbnail-strip img.active {
+  border-color: #2563eb; /* sky-600 */
+}
+
+.detail-gallery-desktop .thumb-nav {
+  background: rgba(226, 232, 240, 0.8);
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #475569;
+  width: 28px;
+  height: 60px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.detail-gallery-desktop .thumb-nav:hover {
+  background: #cbd5e1;
+}
+
+.detail-gallery-desktop .thumb-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Mobile: ensure simple image stays centered */
+@media (max-width: 1023px) {
+  .detail-gallery-desktop {
+    display: none;
+  }
+}

@@ -1,10 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import PayPalButton from "./PayPalButton";
 
 const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
+
+// Custom hook for media query
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(
+    typeof window !== "undefined" ? window.matchMedia(query).matches : false
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia(query);
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 
 export default function Detail({ product, openImage, remainingTickets }) {
   const ticket = product?._ticket || null;
@@ -26,6 +43,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const [referralCode, setReferralCode] = useState("");
   const [useFreeTicket, setUseFreeTicket] = useState(false);
   const [referralCredits, setReferralCredits] = useState(0);
+
+  // --- Gallery state ---
+  const [activeIndex, setActiveIndex] = useState(0);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const thumbnailContainerRef = useRef(null);
 
   // Auto‑read referral code from URL (?ref=CODE)
   useEffect(() => {
@@ -53,6 +75,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
         setSkuLoading(false);
       })
       .catch(() => setSkuLoading(false));
+  }, [product]);
+
+  // Reset active index when product changes
+  useEffect(() => {
+    setActiveIndex(0);
   }, [product]);
 
   // Description toggle
@@ -185,6 +212,84 @@ export default function Detail({ product, openImage, remainingTickets }) {
     }
   }
 
+  // Scroll thumbnails left/right
+  const scrollThumbnails = (direction) => {
+    if (thumbnailContainerRef.current) {
+      const container = thumbnailContainerRef.current;
+      const scrollAmount = 120; // pixels
+      const newScrollLeft = container.scrollLeft + direction * scrollAmount;
+      container.scrollTo({ left: newScrollLeft, behavior: "smooth" });
+    }
+  };
+
+  // Desktop gallery render
+  const renderDesktopGallery = () => {
+    const images = product.images && product.images.length ? product.images : [product.image];
+    return (
+      <div className="detail-gallery-desktop">
+        <div className="main-image">
+          <img
+            src={images[activeIndex]}
+            alt={`${product.title} - ${activeIndex + 1}`}
+            className="cursor-zoom-in"
+            onClick={() =>
+              openImage(
+                images,
+                activeIndex,
+                "detail"
+              )
+            }
+          />
+        </div>
+        <div className="thumbnail-strip-wrapper">
+          <button
+            className="thumb-nav prev"
+            onClick={() => scrollThumbnails(-1)}
+            aria-label="Previous thumbnails"
+          >
+            ‹
+          </button>
+          <div className="thumbnail-strip" ref={thumbnailContainerRef}>
+            {images.map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`Thumbnail ${idx + 1}`}
+                className={idx === activeIndex ? "active" : ""}
+                onClick={() => setActiveIndex(idx)}
+              />
+            ))}
+          </div>
+          <button
+            className="thumb-nav next"
+            onClick={() => scrollThumbnails(1)}
+            aria-label="Next thumbnails"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Mobile simple image render
+  const renderMobileImage = () => {
+    const images = product.images && product.images.length ? product.images : [product.image];
+    return (
+      <img
+        src={product.image}
+        className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
+        onClick={() =>
+          openImage(
+            images,
+            0,
+            "detail"
+          )
+        }
+      />
+    );
+  };
+
   return (
     <>
       <Helmet>
@@ -206,19 +311,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
           </div>
         )}
 
-        <img
-          src={product.image}
-          className="mx-auto w-full max-w-xs h-auto max-h-64 rounded-xl object-contain mb-4 cursor-zoom-in"
-          onClick={() =>
-            openImage(
-              product.images && product.images.length
-                ? product.images
-                : [product.image],
-              0,
-              "detail"
-            )
-          }
-        />
+        {/* Conditional Gallery */}
+        {isDesktop ? renderDesktopGallery() : renderMobileImage()}
 
         {/* White shadow line above price */}
         <div
