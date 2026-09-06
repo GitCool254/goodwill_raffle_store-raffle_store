@@ -333,7 +333,7 @@ main.flex-grow {
 }
 
 /* Mobile: hide desktop layout */
-@media (max-width: 480px) {
+@media (max-width: 1023px) {
   .detail-desktop-wrapper {
     display: none;
   }

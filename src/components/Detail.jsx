@@ -6,21 +6,37 @@ const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
 
-// Custom hook for media query (desktop = ≥1024px)
-function useMediaQuery(query) {
-  const [matches, setMatches] = useState(
-    typeof window !== "undefined" ? window.matchMedia(query).matches : false
-  );
+// Custom hook to detect desktop mode (viewport ≥1024px OR desktop site override)
+function useDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const media = window.matchMedia(query);
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
+    const checkDesktop = () => {
+      const isMediaMatch = window.matchMedia("(min-width: 1024px)").matches;
+      const isInnerWidth = window.innerWidth >= 1024;
+      const isOuterWidth = window.outerWidth >= 1024;
+      return isMediaMatch || isInnerWidth || isOuterWidth;
+    };
 
-  return matches;
+    const update = () => {
+      setIsDesktop(checkDesktop());
+    };
+
+    // Initial check
+    update();
+
+    // Listen to resize events
+    window.addEventListener("resize", update);
+    // Also listen to orientation change (for mobile)
+    window.addEventListener("orientationchange", update);
+
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
+  }, []);
+
+  return isDesktop;
 }
 
 export default function Detail({ product, openImage, remainingTickets }) {
@@ -46,7 +62,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   // --- Gallery state ---
   const [activeIndex, setActiveIndex] = useState(0);
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useDesktop();
   const thumbnailContainerRef = useRef(null);
 
   // Auto‑read referral code from URL (?ref=CODE)
