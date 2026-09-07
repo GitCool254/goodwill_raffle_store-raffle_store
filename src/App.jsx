@@ -809,7 +809,7 @@ export default function App() {
       );
     };
 
-    // If search query is present, show grid results (existing behavior)
+    // If search query is present, show grid results as normal product cards
     const allProducts = [...products, ...catalogItems];
     const filteredProducts = searchQuery.trim() === ""
       ? null // we'll show rows
@@ -823,10 +823,10 @@ export default function App() {
         });
 
     if (filteredProducts !== null) {
-      // Show search results as a grid (like before)
+      // Show search results as a 2‑column grid (normal product card size)
       return (
         <main className="max-w-6xl mx-auto p-6">
-          <div id="products" className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             {filteredProducts.map((p, idx) => {
               const isLcp = idx === 0;
               return (
@@ -946,9 +946,16 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Search bar – visible ONLY on home page */}
+          {/* 👇 Search bar – visible ONLY on home page, centered with margin 30px */}
           {view === "home" && (
-            <div className="max-w-6xl mx-auto px-6">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginLeft: "30px",
+                marginRight: "30px",
+              }}
+            >
               <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
             </div>
           )}
