@@ -872,13 +872,13 @@ export default function Detail({ product, openImage, remainingTickets }) {
   );
 
   // ============================================================
-  // MOBILE LAYOUT
+  // MOBILE LAYOUT (slogan moved above title)
   // ============================================================
 
   const renderMobileLayout = () => (
     <>
-      <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
       <div className="brand-slogan">Save Smart with Second Chance 🛒</div>
+      <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
       {ticket && (
         <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
           🎟️ Viewing your ticket
