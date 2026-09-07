@@ -147,7 +147,7 @@ export default function Header({ setView, onMenuClick }) {
                 position: 'relative'
               }}
             >
-              Curated raffles featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.<br />
+              Curated tickets featuring quality pre-owned finds, fashion, home, and electronics — giving you access to exceptional value, responsibly.<br />
               Every ticket supports academic sponsorships, palliative care for the vulnerable, and emergency relief. The more you participate, the greater the impact you help create.
             </p>
           </div>
