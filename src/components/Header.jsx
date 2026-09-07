@@ -111,9 +111,9 @@ export default function Header({ setView, onMenuClick }) {
           <div style={{ marginTop: "35px" }}>
             <h2
               className="font-semibold tracking-tight"
-              style={{ fontSize: "16px", lineHeight: "1.3", color: "#1E3A8A" }}
+              style={{ fontSize: "18px", lineHeight: "1.3", color: "#1E3A8A" }}
             >
-              Smart Finds • Discover Value • Win Quality
+              Save Smart with Second Chance 🛒
             </h2>
           </div>
 
