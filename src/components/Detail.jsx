@@ -51,7 +51,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
    * 3. Laptop / desktop:
    *      desktop viewport and/or desktop browser identity
    *
-   * This means a phone does NOT need to physically be 1024px wide
+   * This means a phone does NOT need to be physically 1024px wide
    * to receive the desktop gallery.
    */
   const detectDesktopPresentation = () => {
@@ -71,7 +71,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
      * non-mobile/desktop browser.
      */
     const uaData =
-      navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean"
+      navigator.userAgentData &&
+      typeof navigator.userAgentData.mobile === "boolean"
         ? navigator.userAgentData.mobile
         : null;
 
@@ -121,7 +122,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
     updateDesktopPresentation();
 
     window.addEventListener("resize", updateDesktopPresentation);
-    window.addEventListener("orientationchange", updateDesktopPresentation);
+    window.addEventListener(
+      "orientationchange",
+      updateDesktopPresentation
+    );
 
     /*
      * Some mobile browsers update their layout/user-agent presentation
@@ -135,7 +139,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
     return () => {
       clearTimeout(timeoutId);
 
-      window.removeEventListener("resize", updateDesktopPresentation);
+      window.removeEventListener(
+        "resize",
+        updateDesktopPresentation
+      );
+
       window.removeEventListener(
         "orientationchange",
         updateDesktopPresentation
@@ -391,6 +399,18 @@ export default function Detail({ product, openImage, remainingTickets }) {
   };
 
   // ============================================================
+  // BUSINESS MANTLE / SLOGAN
+  // ============================================================
+
+  const renderBusinessMantle = () => (
+    <div className="detail-business-mantle">
+      <span className="detail-business-mantle-text">
+        Save Smart with Second Chance 🛒
+      </span>
+    </div>
+  );
+
+  // ============================================================
   // DESKTOP GALLERY
   // ============================================================
 
@@ -467,6 +487,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
             ›
           </button>
         </div>
+
+        {/* DESKTOP MANTLE — DIRECTLY BELOW THUMBNAILS */}
+        {renderBusinessMantle()}
       </div>
     );
   };
@@ -989,6 +1012,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
       <h2 className="text-2xl font-bold mb-4">
         {product.title}
       </h2>
+
+      {/* MOBILE MANTLE — DIRECTLY BELOW PRODUCT TITLE */}
+      {renderBusinessMantle()}
 
       {ticket && (
         <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">

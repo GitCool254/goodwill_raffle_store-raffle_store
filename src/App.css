@@ -821,3 +821,36 @@ main.flex-grow {
     height: 64px;
   }
 }
+
+/* =========================================================
+   BUSINESS MANTLE / SLOGAN
+   ========================================================= */
+
+.detail-business-mantle {
+  width: 100%;
+  margin: 14px auto 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 6px 10px;
+}
+
+.detail-business-mantle-text {
+  display: inline-block;
+
+  color: #475569;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+
+  text-align: center;
+
+  white-space: normal;
+}
