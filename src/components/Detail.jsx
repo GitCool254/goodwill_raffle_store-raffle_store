@@ -34,33 +34,31 @@ export default function Detail({ product, openImage, remainingTickets }) {
   const thumbnailContainerRef = useRef(null);
 
   /*
-   * ============================================================
-   * DESKTOP PRESENTATION DETECTION
-   * ============================================================
-   *
-   * We deliberately DO NOT use screen.width or screen.height.
-   *
-   * The important distinction is:
-   *
-   * 1. Normal mobile browser:
-   *      mobile viewport + mobile browser identity
-   *
-   * 2. Mobile browser with "Desktop site" enabled:
-   *      browser presents itself as a desktop browser
-   *
-   * 3. Laptop / desktop:
-   *      desktop viewport and/or desktop browser identity
-   *
-   * This means a phone does NOT need to be physically 1024px wide
-   * to receive the desktop gallery.
-   */
+    ============================================================
+    DESKTOP PRESENTATION DETECTION
+    ============================================================
+    We deliberately DO NOT use screen.width or screen.height.
+
+    The important distinction is:
+
+    Normal mobile browser:
+      mobile viewport + mobile browser identity
+
+    Mobile browser with "Desktop site" enabled:
+      browser presents itself as a desktop browser
+
+    Laptop / desktop:
+      desktop viewport and/or desktop browser identity
+
+    This means a phone does NOT need to physically be 1024px wide
+    to receive the desktop gallery.
+  */
   const detectDesktopPresentation = () => {
     if (typeof window === "undefined") {
       return false;
     }
 
     const width = window.innerWidth;
-
     const userAgent = navigator.userAgent || "";
 
     /*
@@ -79,10 +77,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
     /*
      * Traditional mobile UA detection fallback.
      */
-    const mobileUserAgent =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(
-        userAgent
-      );
+    const mobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(
+      userAgent
+    );
 
     /*
      * Desktop-site browsers commonly remove the mobile UA token
@@ -113,19 +110,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
     const updateDesktopPresentation = () => {
       clearTimeout(timeoutId);
-
       timeoutId = setTimeout(() => {
         setIsDesktop(detectDesktopPresentation());
       }, 50);
     };
 
     updateDesktopPresentation();
-
     window.addEventListener("resize", updateDesktopPresentation);
-    window.addEventListener(
-      "orientationchange",
-      updateDesktopPresentation
-    );
+    window.addEventListener("orientationchange", updateDesktopPresentation);
 
     /*
      * Some mobile browsers update their layout/user-agent presentation
@@ -138,17 +130,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
     return () => {
       clearTimeout(timeoutId);
-
-      window.removeEventListener(
-        "resize",
-        updateDesktopPresentation
-      );
-
+      window.removeEventListener("resize", updateDesktopPresentation);
       window.removeEventListener(
         "orientationchange",
         updateDesktopPresentation
       );
-
       window.visualViewport?.removeEventListener(
         "resize",
         updateDesktopPresentation
@@ -160,7 +146,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get("ref");
-
     if (refCode) {
       setReferralCode(refCode);
     }
@@ -171,7 +156,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
     if (!product || !product.title) return;
 
     setSkuLoading(true);
-
     fetch(`${import.meta.env.VITE_BACKEND_URL}/get_sku`, {
       method: "POST",
       headers: {
@@ -186,7 +170,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
         if (data.sku) {
           setSku(data.sku);
         }
-
         setSkuLoading(false);
       })
       .catch(() => {
@@ -197,7 +180,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
   // Reset active image when product changes
   useEffect(() => {
     setActiveIndex(0);
-
     if (thumbnailContainerRef.current) {
       thumbnailContainerRef.current.scrollLeft = 0;
     }
@@ -249,34 +231,25 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   function validateForm() {
     const newErrors = {};
-
     if (!name.trim()) {
       newErrors.name = "Please enter your full name.";
     }
-
     if (!email.trim()) {
       newErrors.email = "Enter your email.";
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       newErrors.email = "Enter a valid email.";
     }
-
     const qtyNum = Number(quantity);
-
     if (!quantity || !Number.isInteger(qtyNum) || qtyNum < 1) {
-      newErrors.quantity =
-        "Quantity must be at least 1 and a whole number.";
+      newErrors.quantity = "Quantity must be at least 1 and a whole number.";
     }
-
     if (qtyNum > MAX_TICKETS_PER_ORDER) {
       newErrors.quantity = `Maximum ${MAX_TICKETS_PER_ORDER} tickets allowed per order.`;
     }
-
     if (qtyNum > remainingTickets) {
       newErrors.quantity = `Only ${remainingTickets} ticket(s) remaining.`;
     }
-
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   }
 
@@ -287,21 +260,13 @@ export default function Detail({ product, openImage, remainingTickets }) {
     }
 
     if (hasDownloaded || isGenerating) return;
-
     setIsGenerating(true);
-
     try {
       const payload = {
         order_id: lastOrder.orderId,
       };
-
       const nonce = crypto.randomUUID();
-
-      const payloadWithNonce = {
-        ...payload,
-        nonce,
-      };
-
+      const payloadWithNonce = { ...payload, nonce };
       const timestamp = Math.floor(Date.now() / 1000);
 
       const res = await fetch(
@@ -319,10 +284,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
       if (!res.ok) {
         let errorMessage = "Download failed.";
-
         try {
           const errJson = await res.json();
-
           if (
             res.status === 410 &&
             errJson.error === "TICKET_EXPIRED"
@@ -333,8 +296,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
             res.status === 403 &&
             errJson.error === "MAX_REDOWNLOADS_REACHED"
           ) {
-            errorMessage =
-              "Maximum download limit reached for this ticket.";
+            errorMessage = "Maximum download limit reached for this ticket.";
           } else if (
             res.status === 403 &&
             errJson.error === "Replay detected"
@@ -347,34 +309,22 @@ export default function Detail({ product, openImage, remainingTickets }) {
         } catch {
           errorMessage = "Unexpected error occurred during download.";
         }
-
         alert(errorMessage);
         setIsGenerating(false);
         return;
       }
 
       const blob = await res.blob();
-
       const url = window.URL.createObjectURL(blob);
-
       const a = document.createElement("a");
-
       a.href = url;
-
       const disposition = res.headers.get("Content-Disposition");
-
       const match = disposition?.match(/filename="?(.+)"?/);
-
       a.download = match ? match[1] : "raffle_ticket";
-
       document.body.appendChild(a);
-
       a.click();
-
       a.remove();
-
       window.URL.revokeObjectURL(url);
-
       setHasDownloaded(true);
     } catch (err) {
       console.error("Download error:", err);
@@ -387,28 +337,13 @@ export default function Detail({ product, openImage, remainingTickets }) {
   // Scroll thumbnails
   const scrollThumbnails = (direction) => {
     if (!thumbnailContainerRef.current) return;
-
     const container = thumbnailContainerRef.current;
-
     const scrollAmount = 180;
-
     container.scrollBy({
       left: direction * scrollAmount,
       behavior: "smooth",
     });
   };
-
-  // ============================================================
-  // BUSINESS MANTLE / SLOGAN
-  // ============================================================
-
-  const renderBusinessMantle = () => (
-    <div className="detail-business-mantle">
-      <span className="detail-business-mantle-text">
-        Save Smart with Second Chance 🛒
-      </span>
-    </div>
-  );
 
   // ============================================================
   // DESKTOP GALLERY
@@ -442,7 +377,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
             />
           </button>
         </div>
-
         <div className="thumbnail-strip-wrapper">
           <button
             type="button"
@@ -452,7 +386,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           >
             ‹
           </button>
-
           <div
             className="thumbnail-strip"
             ref={thumbnailContainerRef}
@@ -470,14 +403,10 @@ export default function Detail({ product, openImage, remainingTickets }) {
                   idx === activeIndex ? "true" : undefined
                 }
               >
-                <img
-                  src={img}
-                  alt={`Thumbnail ${idx + 1}`}
-                />
+                <img src={img} alt={`Thumbnail ${idx + 1}`} />
               </button>
             ))}
           </div>
-
           <button
             type="button"
             className="thumb-nav next"
@@ -487,9 +416,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
             ›
           </button>
         </div>
-
-        {/* DESKTOP MANTLE — DIRECTLY BELOW THUMBNAILS */}
-        {renderBusinessMantle()}
       </div>
     );
   };
@@ -535,7 +461,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* NAME */}
       <div className="mb-3 max-w-md mx-auto text-left">
         <label>Full Name</label>
-
         <input
           value={name}
           placeholder="Enter your full name"
@@ -559,7 +484,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-full rounded"
         />
-
         {errors.name && (
           <p className="text-red-500">{errors.name}</p>
         )}
@@ -568,7 +492,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* EMAIL */}
       <div className="mb-3 max-w-md mx-auto text-left">
         <label>Email</label>
-
         <input
           value={email}
           type="email"
@@ -593,7 +516,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-full rounded"
         />
-
         {errors.email && (
           <p className="text-red-500">{errors.email}</p>
         )}
@@ -602,7 +524,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* QUANTITY */}
       <div className="mb-5 max-w-md mx-auto text-left">
         <label className="block mb-1">Quantity</label>
-
         <input
           type="number"
           value={quantity}
@@ -628,7 +549,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           }}
           className="p-2 w-28 rounded mb-4"
         />
-
         {errors.quantity && (
           <p className="text-red-500 text-sm mt-1">
             {errors.quantity}
@@ -641,7 +561,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
         <label className="block mb-1 text-sm font-medium">
           Referral code (if any)
         </label>
-
         <input
           type="text"
           value={referralCode}
@@ -658,11 +577,8 @@ export default function Detail({ product, openImage, remainingTickets }) {
             <input
               type="checkbox"
               checked={useFreeTicket}
-              onChange={(e) =>
-                setUseFreeTicket(e.target.checked)
-              }
+              onChange={(e) => setUseFreeTicket(e.target.checked)}
             />
-
             Use 1 free ticket credit (you have{" "}
             {referralCredits})
           </label>
@@ -675,7 +591,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
         <div className="text-xl font-semibold text-blue-700">
           💵 Total: <b>${amount}</b> USD
         </div>
-
         <p className="text-sm text-gray-600 italic mt-1">
           (This will be charged securely via PayPal)
         </p>
@@ -695,8 +610,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
           setLastOrder(orderObj);
           setIsTicketGenerating(true);
 
-          const timezoneOffset =
-            -new Date().getTimezoneOffset();
+          const timezoneOffset = -new Date().getTimezoneOffset();
 
           const payload = {
             name,
@@ -710,12 +624,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
           };
 
           const nonce = crypto.randomUUID();
-
-          const payloadWithNonce = {
-            ...payload,
-            nonce,
-          };
-
+          const payloadWithNonce = { ...payload, nonce };
           const timestamp = Math.floor(Date.now() / 1000);
 
           const res = await fetch(
@@ -726,20 +635,16 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 "Content-Type": "application/json",
                 "X-Nonce": nonce,
                 "X-Timestamp": timestamp.toString(),
-                "X-Timezone-Offset":
-                  timezoneOffset.toString(),
+                "X-Timezone-Offset": timezoneOffset.toString(),
               },
               body: JSON.stringify(payloadWithNonce),
             }
           );
 
           if (!res.ok) {
-            let errorMessage =
-              "Ticket generation failed.";
-
+            let errorMessage = "Ticket generation failed.";
             try {
               const errJson = await res.json();
-
               if (res.status === 409) {
                 errorMessage =
                   "Tickets sold out before your purchase completed.";
@@ -750,21 +655,17 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 errorMessage =
                   "Security validation failed. Please refresh and try again.";
               } else {
-                errorMessage =
-                  errJson.error || errorMessage;
+                errorMessage = errJson.error || errorMessage;
               }
             } catch {
-              errorMessage =
-                "Unexpected generation error.";
+              errorMessage = "Unexpected generation error.";
             }
-
             alert(errorMessage);
             setIsTicketGenerating(false);
             return;
           }
 
           const data = await res.json();
-
           if (data.status !== "tickets_generated") {
             alert("Ticket generation incomplete.");
             setIsTicketGenerating(false);
@@ -777,18 +678,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
           const ticketstateRes = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/ticket_state`
           );
-
-          const ticketstateData =
-            await ticketstateRes.json();
+          const ticketstateData = await ticketstateRes.json();
 
           window.dispatchEvent(
             new CustomEvent("ticketsPurchased", {
               detail: {
                 quantity: Number(quantity),
-                total_sold:
-                  ticketstateData.total_sold,
-                remaining:
-                  ticketstateData.remaining,
+                total_sold: ticketstateData.total_sold,
+                remaining: ticketstateData.remaining,
                 authoritative: true,
               },
             })
@@ -801,43 +698,30 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {!lastOrder && !downloadReady && (
         <div className="mt-4 flex flex-col items-center text-slate-500 text-sm italic">
           <div className="flex items-center gap-3 mb-1">
-            <span
-              className="subtle-spinner"
-              style={{ marginRight: "10px" }}
-            />
-
+            <span className="subtle-spinner" style={{ marginRight: "10px" }} />
             <span>
               Waiting for payment confirmation
             </span>
           </div>
-
           <div className="text-xs text-slate-400">
-            Your ticket download will appear here
-            after successful payment
+            Your ticket download will appear here after successful payment
           </div>
         </div>
       )}
 
-      {lastOrder &&
-        isTicketGenerating &&
-        !downloadReady && (
-          <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
-            <div className="flex items-center gap-2 mb-1">
-              <span
-                className="subtle-spinner"
-                style={{ marginRight: "10px" }}
-              />
-
-              <span className="font-medium">
-                Generating your ticket…
-              </span>
-            </div>
-
-            <div className="text-xs text-slate-400">
-              This will only take a moment
-            </div>
+      {lastOrder && isTicketGenerating && !downloadReady && (
+        <div className="mt-4 flex flex-col items-center text-slate-600 text-sm italic">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="subtle-spinner" style={{ marginRight: "10px" }} />
+            <span className="font-medium">
+              Generating your ticket…
+            </span>
           </div>
-        )}
+          <div className="text-xs text-slate-400">
+            This will only take a moment
+          </div>
+        </div>
+      )}
 
       {downloadReady && (
         <button
@@ -867,20 +751,18 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const renderDesktopLayout = () => (
     <div className="detail-desktop-wrapper">
-
       {/* LEFT: JUMIA-STYLE GALLERY */}
       <div className="detail-gallery-column">
         {renderDesktopGallery()}
+        <div className="brand-slogan">Save Smart with Second Chance 🛒</div>
       </div>
 
       {/* RIGHT: PRODUCT INFORMATION */}
       <div className="detail-info-column">
         <div className="product-info-card">
-
           <h2 className="product-title">
             {product.title}
           </h2>
-
           <p
             className="text-lg mb-2"
             style={{
@@ -891,7 +773,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           >
             Price per ticket: ${product.ticketPrice}
           </p>
-
           {product.marketPrice && (
             <p
               className="text-sm text-slate-500 mb-2"
@@ -904,9 +785,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               Market value: ${product.marketPrice}
             </p>
           )}
-
           <div className="mb-4">
-
             <div
               className="text-sm font-semibold text-slate-700 mb-1"
               style={{
@@ -917,18 +796,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
             >
               Product Details
             </div>
-
             <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-              {product.description.length >
-                DESCRIPTION_LIMIT &&
-              !expandedDesc
+              {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
                 ? product.description.slice(
                     0,
                     DESCRIPTION_LIMIT
                   ) + "…"
                 : product.description}
             </div>
-
             {sku && (
               <div
                 style={{
@@ -944,7 +819,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 >
                   SKU:{" "}
                 </span>
-
                 <span
                   style={{
                     color: "#334155",
@@ -957,7 +831,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 </span>
               </div>
             )}
-
             {!sku && !skuLoading && (
               <div
                 style={{
@@ -970,20 +843,15 @@ export default function Detail({ product, openImage, remainingTickets }) {
                 SKU not available
               </div>
             )}
-
-            {product.description.length >
-              DESCRIPTION_LIMIT && (
+            {product.description.length > DESCRIPTION_LIMIT && (
               <button
                 className="text-sm text-sky-600 hover:underline"
                 onClick={toggleDescription}
               >
-                {expandedDesc
-                  ? "See less"
-                  : "See more"}
+                {expandedDesc ? "See less" : "See more"}
               </button>
             )}
           </div>
-
           {!ticket ? (
             renderFormFields()
           ) : (
@@ -1009,31 +877,22 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const renderMobileLayout = () => (
     <>
-      <h2 className="text-2xl font-bold mb-4">
-        {product.title}
-      </h2>
-
-      {/* MOBILE MANTLE — DIRECTLY BELOW PRODUCT TITLE */}
-      {renderBusinessMantle()}
-
+      <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
+      <div className="brand-slogan">Save Smart with Second Chance 🛒</div>
       {ticket && (
         <div className="inline-block mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-sky-100 text-sky-700">
           🎟️ Viewing your ticket
         </div>
       )}
-
       {renderMobileImage()}
-
       <div
         style={{
           height: "6px",
           backgroundColor: "white",
-          boxShadow:
-            "0 2px 4px rgba(0,0,0,0.1)",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           marginBottom: "10px",
         }}
       />
-
       <p
         className="text-lg mb-2"
         style={{
@@ -1044,7 +903,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
       >
         Price per ticket: ${product.ticketPrice}
       </p>
-
       {product.marketPrice && (
         <p
           className="text-sm text-slate-500 mb-2"
@@ -1057,17 +915,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
           Market value: ${product.marketPrice}
         </p>
       )}
-
       {ticket && (
         <p className="text-sm text-slate-700 mb-4">
           Ticket No:{" "}
           <strong>{ticket.ticketNo}</strong>
         </p>
       )}
-
       <div className="mb-10">
         <div className="text-left max-w-md mx-auto">
-
           <div
             className="text-sm font-semibold text-slate-700 mb-1"
             style={{
@@ -1079,18 +934,14 @@ export default function Detail({ product, openImage, remainingTickets }) {
           >
             Product Details
           </div>
-
           <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-            {product.description.length >
-              DESCRIPTION_LIMIT &&
-            !expandedDesc
+            {product.description.length > DESCRIPTION_LIMIT && !expandedDesc
               ? product.description.slice(
                   0,
                   DESCRIPTION_LIMIT
                 ) + "…"
               : product.description}
           </div>
-
           {sku && (
             <div
               style={{
@@ -1106,7 +957,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
               >
                 SKU:{" "}
               </span>
-
               <span
                 style={{
                   color: "#334155",
@@ -1119,7 +969,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
               </span>
             </div>
           )}
-
           {!sku && !skuLoading && (
             <div
               style={{
@@ -1132,33 +981,25 @@ export default function Detail({ product, openImage, remainingTickets }) {
               SKU not available
             </div>
           )}
-
-          {product.description.length >
-            DESCRIPTION_LIMIT && (
+          {product.description.length > DESCRIPTION_LIMIT && (
             <button
               className="text-sm text-sky-600 hover:underline"
               onClick={toggleDescription}
             >
-              {expandedDesc
-                ? "See less"
-                : "See more"}
+              {expandedDesc ? "See less" : "See more"}
             </button>
           )}
         </div>
-
         <div
           style={{
             height: "6px",
             backgroundColor: "white",
-            boxShadow:
-              "0 2px 4px rgba(0,0,0,0.1)",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
             marginTop: "10px",
           }}
         />
       </div>
-
       <br />
-
       {!ticket ? (
         renderFormFields()
       ) : (
@@ -1179,10 +1020,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
   return (
     <>
       <Helmet>
-        <title>
-          {product.title} – Goodwillstores
-        </title>
-
+        <title>{product.title} – Goodwillstores</title>
         <meta
           name="description"
           content={`Win ${product.title} through a fair, affordable raffle. Quality second-hand ${
@@ -1190,7 +1028,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
           } at low ticket prices. Join the draw today!`}
         />
       </Helmet>
-
       <div
         className={`detail-page-container ${
           isDesktop
@@ -1198,9 +1035,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
             : "detail-mode-mobile"
         }`}
       >
-        {isDesktop
-          ? renderDesktopLayout()
-          : renderMobileLayout()}
+        {isDesktop ? renderDesktopLayout() : renderMobileLayout()}
       </div>
     </>
   );

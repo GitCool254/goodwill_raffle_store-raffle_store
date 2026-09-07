@@ -37,7 +37,6 @@ body {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -69,7 +68,6 @@ body {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -83,7 +81,6 @@ body {
   from {
     opacity: 1;
   }
-
   to {
     opacity: 0;
   }
@@ -97,7 +94,6 @@ body {
   from {
     transform: translateX(100%);
   }
-
   to {
     transform: translateX(0);
   }
@@ -111,7 +107,6 @@ body {
   from {
     transform: translateX(0);
   }
-
   to {
     transform: translateX(100%);
   }
@@ -121,23 +116,18 @@ body {
   0% {
     transform: translateX(0);
   }
-
   20% {
     transform: translateX(-4px);
   }
-
   40% {
     transform: translateX(4px);
   }
-
   60% {
     transform: translateX(-4px);
   }
-
   80% {
     transform: translateX(4px);
   }
-
   100% {
     transform: translateX(0);
   }
@@ -147,7 +137,6 @@ body {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -166,7 +155,6 @@ body {
   0% {
     transform: translateX(100%);
   }
-
   100% {
     transform: translateX(-100%);
   }
@@ -185,7 +173,6 @@ body {
     transform: translateY(-20px);
     opacity: 0;
   }
-
   to {
     transform: translateY(0);
     opacity: 1;
@@ -221,7 +208,6 @@ body {
     transform: translateY(8px);
     opacity: 0;
   }
-
   to {
     transform: translateY(0);
     opacity: 1;
@@ -246,12 +232,10 @@ main.flex-grow {
     transform: scale(0);
     opacity: 0.5;
   }
-
   50% {
     transform: scale(1);
     opacity: 0.2;
   }
-
   100% {
     transform: scale(1.5);
     opacity: 0;
@@ -266,19 +250,15 @@ main.flex-grow {
   0% {
     transform: scale(1);
   }
-
   25% {
     transform: scale(1.2);
   }
-
   40% {
     transform: scale(1);
   }
-
   60% {
     transform: scale(1.1);
   }
-
   100% {
     transform: scale(1);
   }
@@ -323,9 +303,7 @@ main.flex-grow {
 
   display: flex;
   flex-direction: row;
-
   gap: clamp(1rem, 2vw, 2rem);
-
   align-items: flex-start;
 
   text-align: left;
@@ -823,34 +801,14 @@ main.flex-grow {
 }
 
 /* =========================================================
-   BUSINESS MANTLE / SLOGAN
+   BRAND SLOGAN
    ========================================================= */
-
-.detail-business-mantle {
-  width: 100%;
-  margin: 14px auto 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+.brand-slogan {
+  font-size: 0.85rem;
+  color: #64748b;          /* slate-500 */
+  font-style: italic;
+  letter-spacing: 0.02em;
   text-align: center;
-
-  padding: 6px 10px;
-}
-
-.detail-business-mantle-text {
-  display: inline-block;
-
-  color: #475569;
-
-  font-size: 0.9rem;
-  font-weight: 600;
-
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-
-  text-align: center;
-
-  white-space: normal;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0;
 }
