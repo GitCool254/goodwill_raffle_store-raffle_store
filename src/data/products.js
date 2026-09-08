@@ -28,7 +28,7 @@ export const sampleProducts = [
   },
   {
     id: "p3",
-    title: "Coolster 3125CX-2 125cc",
+    title: "Coolster 3125CX-2",
     description: `◆ Engine & Performance\n• Engine Type: 125cc Single-Cylinder, 4-stroke, Air-Cooled\n• Max Horsepower: ~7.4 HP (5.7 kW) @ 7,500 RPM\n• Max Torque: 8.0 N·m @ 5,500 RPM\n• Top Speed: Up to 25–35 mph\n\n◆ Drivetrain & Transmission\n• Starting System: Electric Push-Button Start\n• Transmission: Fully Automatic with Reverse (Forward-Neutral-Reverse)\n• Drive System: Chain Drive (Rear-Wheel Drive)\n\n◆ Chassis, Suspension & Brakes\nFront Brakes: Mechanical Drum / Hub\nRear Brakes: Hydraulic Disc\n• Front Suspension: Dual A-Arm with Shocks\n• Rear Suspension: Rear Swing Arm with Mono-Shock\n• Front Tires: 19 × 7.00 – 8\n​• Rear Tires: 18 × 9.50 – 8\n\n◆ Dimensions & Capacities\n• Overall Dimensions (L × W × H): 57" × 38" × 39" (1450 mm × 970 mm × 990 mm)\n​• Net Weight / Gross Weight: ~225 lbs / 260 lbs\n​• Max Weight Capacity: 165 lbs (75 kg)\n​• Fuel Capacity: ~0.63 Gallons (2.4 L)\n\n• Great working condition and performer for kids`,
     price: 10,
     image: "/coolsterM.png",
@@ -95,7 +95,7 @@ export const catalogItems = [
   {
     id: "p4",
     category: "Sports",
-    title: "G1 Virtual Reality Headset",
+    title: "G1 VR Headset",
     ticketPrice: 5,
     marketPrice: 250,
     description:
@@ -126,7 +126,7 @@ export const catalogItems = [
   {
     id: "p20",
     category: "Sports",
-    title: "4D-V15 Drone Zeros Mini Quadcopter",
+    title: "4D-V15 Drone",
     ticketPrice: 5,
     marketPrice: 75,
     description:
@@ -160,7 +160,7 @@ export const catalogItems = [
   {
     id: "p7",
     category: "Electronics",
-    title: "Treadmill Proform Carbon",
+    title: "Treadmill Proform",
     ticketPrice: 8,
     marketPrice: 600,
     description: `◆ Motor & Drive System\n• Motor: 2.6 CHP (Continuous Horsepower) Mach Z™ / Quiet Drive Motor\n• Speed Range: 0 – 10 MPH (0 – 16 km/h) with QuickSpeed® digital control buttons\n• Incline Range: 0% – 10% Powered Incline with QuickIncline® controls\n\n◆ Running Deck & Cushioning\n• Running Surface / Belt Size: 20" W × 55" L (46 cm × 140 cm)\n• Cushioning: ProShox™ Deck Cushioning (absorbs landing impact)\n• Rollers: 1.9" Precision-Balanced Non-Flex Rollers\n\n◆ Display, Audio & Connectivity\n• Display: 5-inch High-Contrast Backlit LCD Display\n• App Integration: iFIT Enabled (Bluetooth sync for trainer-led auto-adjusting workouts)\n• Audio: Dual 2-inch Bluetooth speakers\n• Heart Rate: Bluetooth Smart HR Monitor compatible (no pulse grips on console)\n• Convenience Extras: Integrated tablet/device ledge, dual water bottle holders\n\n◆ Frame & Dimensions\n• Design: SpaceSaver® Folding Design with EasyLift™ Assist hydraulic release mechanism\n• Assembled Footprint: 65" L × 35" W × 64" H (165 cm × 89 cm × 163 cm)\n• Maximum User Capacity: 300 lbs (136 kg)\n• Product Weight: ~186 lbs (84 kg)\n• More models available.`,
@@ -176,7 +176,7 @@ export const catalogItems = [
   {
     id: "p8",
     category: "Electronics",
-    title: "Mokwheel Mesa Lite e-bikes",
+    title: "Mesa Lite e-bikes",
     ticketPrice: 7,
     marketPrice: 500,
     description: `◆ Motor & Electronics\n• Motor: 350W Rear Hub Motor (Peak Power: 600W / 45+ Nm Torque)\n• Battery: 36V 14.7Ah LG Lithium-Ion (IPX7 Waterproof rating)\n• Top Speed: Up to 20 MPH (Throttle) / 25–28 MPH (Pedal Assist)\n• Estimated Range: 40 – 50 miles per charge\n• Pedal Assist / Drive: Cadence Sensor with 5 PAS Levels + Thumb Throttle\n• Charger: 36V 2.0A Smart Charger\n\n◆ Drivetrain, Suspension & Brakes\n• Gearing: Shimano 7-Speed Derailleur & Shifter\n• Crankset: Aluminum Alloy, 170 mm, 44T Chainring\n• Brakes: ZOOM Mechanical Dual-Pull Disc Brakes\n• Front Fork: 100 mm Suspension Fork\n• Tires: 27.5" × 2.4" City / Urban All-Terrain Tires\n\n◆ Frame & Dimensions\n• Frame Material: 6061 Aluminum Alloy Step-Thru Frame\n• Max Payload Capacity: 350 lbs (158 kg)\n• Rider Height Compatibility: 5'2" to 6'4"\n• Accessories Included: Front headlight, rear integrated brake light, front cargo basket with wooden base, rear rack with trunk bag, full-coverage fenders, and side mirrors.`,
@@ -193,7 +193,7 @@ export const catalogItems = [
   {
     id: "p9",
     category: "Electronics",
-    title: "Sightmark wraith night vision scope.",
+    title: "Sightmark wraith scope.",
     ticketPrice: 5,
     marketPrice: 350,
     description: `◆ Optics & Sensor\n• Sensor Type & Resolution: 1920 \\times 1080 CMOS Sensor\n• Display Type & Resolution: 1280 \\times 720 FLCOS Display\n• Optical Magnification: 4x\n• Digital Zoom: 1x - 8x (total magnification up to 32x)\n• Field of View: 21 ft @ 100 yards (7m @ 100 m)\n• Diopter Adjustment: -6 to +3\n\n◆ IR Illuminator & Night Range\n​• IR Wavelength: 850 nm (Removable IR Flashlight included)\n• Night Vision Detection Range: Up to 200 yards (183 meters)\n• IR Battery Type: 2× CR123A batteries\n\n◆ Video & Recording\n• Video Recording Resolution: 1080p HD / 720p HD (AVI format)\n• Photo Resolution: JPEG format\n• Storage Support: MicroSD card slot (supports up to 64GB)\n• Output Port: Micro-USB port for video export and external power\n\n◆ Power & Construction\n• Power Supply (Scope): 4× AA batteries\n• Battery Life (Scope): ~3.5 hours (recording mode) / ~4.5 hours (preview mode)\n• Water Resistance Rating: IP55 (water-resistant)\n• Dimensions (L × W × H): 10.5" × 1.875" × 3.0" (266 mm × 63 mm × 75 mm)\n• Weight: 36.3 oz / 1030 g (including batteries)`,
@@ -225,7 +225,7 @@ export const catalogItems = [
   {
     id: "p11",
     category: "Furniture",
-    title: "Stunning Brand Broyhill Patio Set",
+    title: "Broyhill Patio Set",
     ticketPrice: 5,
     marketPrice: 450,
     description:
@@ -240,7 +240,7 @@ export const catalogItems = [
   {
     id: "p12",
     category: "Furniture",
-    title: "Light Grey Sectional",
+    title: "Light Grey Set",
     ticketPrice: 6,
     marketPrice: 500,
     description:
@@ -275,7 +275,7 @@ export const catalogItems = [
   {
     id: "p14",
     category: "Furniture",
-    title: "Modern L - Shaped Sofa",
+    title: "Modern Sofa",
     ticketPrice: 4,
     marketPrice: 300,
     description: `• Comfy 3-seater with reversible storage ottoman\n• 78" D x 53" W x 32" H (seat depth 21", seat height 18.5")\n• Cold beige linen (light gray-ish), sturdy iron frame, soft cushions.\n• Modern, sleek, and super functional.\n• No pets, no smoking home.`,
@@ -337,7 +337,7 @@ export const catalogItems = [
   {
     id: "p18",
     category: "Household",
-    title: "Snoo Happiest Baby Bassinet",
+    title: "Baby Bassinet",
     ticketPrice: 6,
     marketPrice: 250,
     description: `◆ Core Functionality & Soothing\n• Motion & Sound Levels: 5 distinct levels of specially designed sound (white noise) and gentle rocking motion\n• Responsiveness: Advanced algorithm and microphones distinguish infant crying from background ambient noise to automatically scale soothing levels\n• Safety Mechanism: Built-in safety clips require the proprietary SNOO Sleep Sack wings to be attached before the motor activates (prevents rolling)\n\n◆ Dimensions & Weight\n• Assembled Dimensions: 35.75" L × 19" W × 31" H (90.8 cm × 48.3 cm × 78.7 cm)\n• Assembled Weight: 38 lbs (17.2 kg)\n\n◆ Connectivity & Electronics\n• Wi-Fi Connectivity: 802.11b/g/n @ 2.4GHz\n• App Control: iOS and Android compatible (features remote control, customizable motion/sound limits, weaning mode, and daily sleep logs)\n• Radiation Safeguard: Internal Wi-Fi shield to direct wireless radiation away from the infant\n• Power Supply: 12V DC power adapter (100–240V universal wall input)\n\n◆ Construction & Materials\n• Mesh Outer Wall: 100% breathable polyester mesh for max airflow and visibility\n• Base Finish: Dark faux-wood trim with white metal hairpin legs\n• Mattress & Sheet: Polyurethane foam mattress with a water-resistant cover and 100% GOTS-certified organic cotton fitted sheet`,
@@ -352,7 +352,7 @@ export const catalogItems = [
   {
     id: "p19",
     category: "Household",
-    title: "Irest massage chair",
+    title: "Irest massage seat",
     ticketPrice: 6,
     marketPrice: 250,
     description: `iRest SL-Track Full Body Zero Gravity Massage Chair\n\n◆ Massage & Track System\n• Track Type: Ergonomic 53–55 in (135 cm) SL-Track (follows the natural S-curve of the spine from head down to the glutes/hamstrings)\n• Massage Mechanism: 3D Quad-Roller Intelligent Mechanical Massage Hands (simulates human techniques: kneading, tapping, knocking, shiatsu, and flapping)\n• Auto Body Scanning: Smart sensor auto-detects spine curves and shoulder height for custom roller alignment\nAuto Programs: 8+ pre-programmed automatic massage routines\n• Manual Adjustments: 3 roller width levels, 3-level intensity adjustment, and speed controls\n\n◆ Comfort & Features\n• Zero Gravity: 3-stage Zero-Gravity reclining angles (aligns knees and heart to relieve spinal compression)\n• Air Compression: Full-body airbag compression system (shoulders, arms, hips, calves, and feet)\n• Heat Therapy: Carbon fiber lumbar/lower back heating (~122°F / 50°C)\n• Audio System: Integrated Bluetooth stereo speakers built into the headrest\n• Foot & Calf Massage: Under-foot reflexology rollers with surrounding calf compression airbags\n\n◆ Frame & Dimensions\n• Upholstery: Premium wear-resistant, easy-clean PU Faux Leather\n• Assembled Dimensions (Upright): ~60" L × 30" W × 45" H (152 cm × 76 cm × 114 cm)\n• Weight Capacity: Up to 300 lbs (136 kg)\n• Chair Weight: ~183 lbs / 83 kg (Net)\n• Power & Noise: 120W | Operating noise level ≤ 50 dB\n\n• Recline Clearance Needed: Forward-sliding base design (requires ~10 in / 25 cm clearance from the wall)`,
