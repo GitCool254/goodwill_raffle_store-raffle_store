@@ -809,7 +809,7 @@ export default function App() {
       );
     };
 
-    // If search query is present, show grid results as normal product cards
+    // If search query is present, show small product cards in a wrapped flex container
     const allProducts = [...products, ...catalogItems];
     const filteredProducts = searchQuery.trim() === ""
       ? null // we'll show rows
@@ -823,76 +823,73 @@ export default function App() {
         });
 
     if (filteredProducts !== null) {
-      // Show search results as a 2‑column grid (normal product card size)
+      // Show search results as small product cards (same as rows)
       return (
         <main className="max-w-6xl mx-auto p-6">
-          <div className="grid grid-cols-2 gap-6">
-            {filteredProducts.map((p, idx) => {
-              const isLcp = idx === 0;
-              return (
-                <div key={p.id} className="product-card bg-white rounded-2xl shadow p-4 flex flex-col">
-                  <div
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "flex-start" }}>
+            {filteredProducts.map((p) => (
+              <div
+                key={p.id}
+                className="product-card"
+                style={{
+                  flex: "0 0 160px",
+                  backgroundColor: "#e6f3ff",
+                  borderRadius: "0",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  padding: "12px",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                onClick={() => openProduct(p)}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "120px",
+                    backgroundColor: "#ffffff",
+                    padding: "6px",
+                    borderRadius: "0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    loading="lazy"
                     style={{
-                      width: "100%",
-                      marginBottom: "12px",
-                      overflow: "hidden",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain",
+                    }}
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/200x150")}
+                  />
+                </div>
+                <div style={{ width: "100%", textAlign: "left" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "#1e293b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {p.title}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#475569", marginTop: "2px" }}>{p.category}</div>
+                  <div style={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155", marginTop: "4px" }}>
+                    $ {p.ticketPrice} <span style={{ fontSize: "0.65rem" }}>/ticket</span>
+                  </div>
+                  <button
+                    className="bg-sky-600 text-white px-3 py-1 rounded-lg"
+                    style={{ marginTop: "8px", fontSize: "0.75rem", padding: "4px 10px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openProduct(p);
                     }}
                   >
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      width="800"
-                      height="600"
-                      loading={isLcp ? undefined : "lazy"}
-                      fetchpriority={isLcp ? "high" : undefined}
-                      decoding="async"
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "0.5rem",
-                        cursor: "zoom-in",
-                        aspectRatio: "800/600",
-                      }}
-                      onClick={() => {
-                        addToRecentlyViewed(p);
-                        openImage(p.images?.length ? p.images : [p.image], 0, "home", p);
-                      }}
-                    />
-                  </div>
-                  <h3 className="font-semibold">{p.title}</h3>
-                  <div className="text-sm text-slate-600 mt-1">
-                    <span className="font-semibold">Product Details: </span>
-                    {p.description?.slice(0, 50)}…
-                  </div>
-                  <div className="mt-3 flex items-center justify-between" style={{ marginBottom: "15px" }}>
-                    <div className="text-slate-700 font-medium">$ {p.ticketPrice} / ticket</div>
-                    <button
-                      className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                      onClick={() => openProduct(p)}
-                    >
-                      Enter
-                    </button>
-                  </div>
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "1px",
-                      background:
-                        "linear-gradient(90deg, rgba(255,0,0,0.4), rgba(255,136,0,0.4), rgba(255,255,0,0.4), rgba(0,255,0,0.3), rgba(0,136,255,0.4), rgba(68,0,255,0.4), rgba(255,0,0,0.4))",
-                      marginBottom: "16px",
-                    }}
-                  />
-                  {p.winner && (
-                    <div className="mt-3 text-sm text-green-700">
-                      Winner: {p.winner.name} ({p.winner.ticketNo})
-                    </div>
-                  )}
+                    Enter
+                  </button>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </main>
       );
