@@ -342,7 +342,7 @@ export default function App() {
                   marginTop: "20px",
                   backgroundColor: "#6495ED",
                   color: "#ffffff",
-                  padding: "9px 14px",
+                  padding: "8px 12px",
                   borderRadius: "10px",
                   border: "1px solid rgba(255,255,255,0.18)",
                   fontSize: "0.95rem",
