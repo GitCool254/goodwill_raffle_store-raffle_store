@@ -113,7 +113,7 @@ export default function Header({ setView, onMenuClick }) {
               className="font-semibold tracking-tight"
               style={{ fontSize: "18px", lineHeight: "1.3", color: "#1E3A8A" }}
             >
-              Save Smart with Second Chance 🛒
+              Save Smart with Second Chance
             </h2>
           </div>
 

@@ -754,7 +754,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
       {/* LEFT: JUMIA-STYLE GALLERY */}
       <div className="detail-gallery-column">
         {renderDesktopGallery()}
-        <div className="brand-slogan">Save Smart with Second Chance 🛒</div>
+        <div className="brand-slogan">Save Smart with Second Chance</div>
       </div>
 
       {/* RIGHT: PRODUCT INFORMATION */}
