@@ -340,7 +340,7 @@ export default function App() {
                 onClick={() => navigate("catalog")}
                 style={{
                   marginTop: "20px",
-                  backgroundColor: "#DCEEFF",
+                  backgroundColor: "87CEEB",
                   color: "#ffffff",
                   padding: "10px 18px",
                   borderRadius: "10px",
@@ -358,7 +358,7 @@ export default function App() {
                   e.currentTarget.style.boxShadow = "0 4px 10px rgba(15, 23, 42, 0.16)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#DCEEFF";
+                  e.currentTarget.style.backgroundColor = "87CEEB";
                   e.currentTarget.style.boxShadow = "0 2px 6px rgba(15, 23, 42, 0.12)";
                 }}
               >
