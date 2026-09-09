@@ -337,8 +337,20 @@ export default function App() {
           <div className="flex-1">
             <div className="mt-6 flex gap-3">
               <button
-                className="bg-white text-sky-700 px-4 py-2 rounded-lg font-semibold"
-                style={{ marginTop: "20px" }}
+                className="px-4 py-2 font-bold text-white"
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#1E3A8A",
+                  borderRadius: "9999px",
+                  fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                  fontWeight: 700,
+                  letterSpacing: "0.02em",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "background-color 0.2s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1E4A9A")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1E3A8A")}
                 onClick={() => navigate("catalog")}
               >
                 Explore Finds
