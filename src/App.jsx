@@ -12,7 +12,7 @@ import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
 import SearchBar from "./components/SearchBar";
 
-// Lazy‑load page components
+// Lazy-load page components
 const Detail = lazy(() => import("./components/Detail"));
 const Catalog = lazy(() => import("./components/Catalog"));
 const Address = lazy(() => import("./components/Address"));
@@ -337,21 +337,30 @@ export default function App() {
           <div className="flex-1">
             <div className="mt-6 flex gap-3">
               <button
-                className="px-4 py-2 font-bold text-white"
+                onClick={() => navigate("catalog")}
                 style={{
                   marginTop: "20px",
-                  backgroundColor: "#1E3A8A",
-                  borderRadius: "9999px",
-                  fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                  fontWeight: 700,
-                  letterSpacing: "0.02em",
-                  border: "none",
+                  backgroundColor: "#3b82f6",
+                  color: "#ffffff",
+                  padding: "10px 18px",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  fontSize: "0.95rem",
+                  fontWeight: "700",
+                  fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+                  letterSpacing: "0.01em",
                   cursor: "pointer",
-                  transition: "background-color 0.2s ease",
+                  boxShadow: "0 2px 6px rgba(15, 23, 42, 0.12)",
+                  transition: "background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1E4A9A")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1E3A8A")}
-                onClick={() => navigate("catalog")}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#60a5fa";
+                  e.currentTarget.style.boxShadow = "0 4px 10px rgba(15, 23, 42, 0.16)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#3b82f6";
+                  e.currentTarget.style.boxShadow = "0 2px 6px rgba(15, 23, 42, 0.12)";
+                }}
               >
                 Explore Finds
               </button>
