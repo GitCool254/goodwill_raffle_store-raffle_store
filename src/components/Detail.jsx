@@ -751,7 +751,6 @@ export default function Detail({ product, openImage, remainingTickets }) {
 
   const renderDesktopLayout = () => (
     <div className="detail-desktop-wrapper">
-      {/* LEFT: JUMIA-STYLE GALLERY */}
       <div className="detail-gallery-column">
         {renderDesktopGallery()}
         <div className="brand-slogan">Save Smart with Second Chance</div>
