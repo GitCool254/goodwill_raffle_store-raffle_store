@@ -734,23 +734,25 @@ export default function Detail({ product, openImage, remainingTickets }) {
           <button
             onClick={handleTicketDownload}
             disabled={hasDownloaded || isGenerating}
-            className={`mt-4 px-4 py-2 rounded ${
-              hasDownloaded
-                ? "bg-gray-400"
-                : isGenerating
-                ? "bg-yellow-500"
-                : "bg-sky-300"
-            }`}
             style={{
-              color: "#ffffff",
-              fontWeight: 600,
-              fontSize: "14px",
-              borderRadius: "10px",
+              marginTop: "16px",
+              padding: "9px 17px",
+              borderRadius: "9px",
               border: "none",
+              color: "#ffffff",
+              fontSize: "14px",
+              fontWeight: 600,
+              lineHeight: "1.2",
               cursor:
                 hasDownloaded || isGenerating
-                  ? "not-allowed"
+                  ? "default"
                   : "pointer",
+              backgroundColor: hasDownloaded
+                ? "#9ca3af"
+                : isGenerating
+                ? "#d4a017"
+                : "#4F81BD",
+              transition: "background-color 0.15s ease",
             }}
           >
             {hasDownloaded
