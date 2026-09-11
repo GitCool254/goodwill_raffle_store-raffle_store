@@ -10,6 +10,14 @@ import { useEffect, useState } from "react";
  *
  * The backend is the authoritative source of truth. This component
  * only renders the record it receives from the API.
+ *
+ * Possible ticket_status values returned by the backend:
+ *   - "ACTIVE"   → ticket is currently valid.
+ *   - "EXPIRED"  → ticket was valid previously but its validity
+ *                  period ended 48 hours after the raffle sold out.
+ *
+ * NOTE: an EXPIRED ticket is never reactivated. It will remain
+ * EXPIRED permanently.
  */
 export default function VerifyTicket({ token }) {
   const [loading, setLoading] = useState(true);
@@ -60,6 +68,8 @@ export default function VerifyTicket({ token }) {
     };
   }, [token, backendUrl]);
 
+  const isExpired = record?.ticket_status === "EXPIRED";
+
   return (
     <div
       style={{
@@ -94,7 +104,13 @@ export default function VerifyTicket({ token }) {
         >
           Ticket Verification
         </h1>
-        <p style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "20px" }}>
+        <p
+          style={{
+            fontSize: "0.85rem",
+            color: "#64748b",
+            marginBottom: "20px",
+          }}
+        >
           Goodwillstores Raffle Verification
         </p>
 
@@ -145,21 +161,40 @@ export default function VerifyTicket({ token }) {
 
         {!loading && record && (
           <>
-            <div
-              style={{
-                padding: "14px 16px",
-                borderRadius: "10px",
-                background: "#ecfdf5",
-                border: "1px solid #a7f3d0",
-                color: "#065f46",
-                fontSize: "0.95rem",
-                fontWeight: 600,
-                marginBottom: "18px",
-              }}
-            >
-              ✅ Ticket Verified
-            </div>
+            {/* -------- Top status banner -------- */}
+            {isExpired ? (
+              <div
+                style={{
+                  padding: "14px 16px",
+                  borderRadius: "10px",
+                  background: "#fff7ed",
+                  border: "1px solid #fdba74",
+                  color: "#9a3412",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  marginBottom: "18px",
+                }}
+              >
+                ⌛ Ticket Expired
+              </div>
+            ) : (
+              <div
+                style={{
+                  padding: "14px 16px",
+                  borderRadius: "10px",
+                  background: "#ecfdf5",
+                  border: "1px solid #a7f3d0",
+                  color: "#065f46",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  marginBottom: "18px",
+                }}
+              >
+                ✅ Ticket Verified
+              </div>
+            )}
 
+            {/* -------- Record details -------- */}
             <div
               style={{
                 textAlign: "left",
@@ -188,22 +223,41 @@ export default function VerifyTicket({ token }) {
               <Row
                 label="Status"
                 value={record.ticket_status || "ACTIVE"}
-                highlight
+                statusType={record.ticket_status || "ACTIVE"}
               />
             </div>
 
-            <p
-              style={{
-                marginTop: "16px",
-                fontSize: "0.78rem",
-                color: "#64748b",
-                fontStyle: "italic",
-              }}
-            >
-              This page confirms the ticket was issued by Goodwillstores. It
-              does not indicate a winning entry — winners are announced
-              separately during the official draw.
-            </p>
+            {/* -------- Contextual footer note -------- */}
+            {isExpired ? (
+              <p
+                style={{
+                  marginTop: "16px",
+                  fontSize: "0.82rem",
+                  color: "#7c2d12",
+                  lineHeight: 1.6,
+                  textAlign: "center",
+                }}
+              >
+                Thank you for joining this raffle — your support truly
+                mattered. Although your ticket is no longer eligible for
+                the current draw, we hope to see you back for the next
+                one. A new round of prizes will be announced soon, and we
+                would be delighted to have you participate again.
+              </p>
+            ) : (
+              <p
+                style={{
+                  marginTop: "16px",
+                  fontSize: "0.78rem",
+                  color: "#64748b",
+                  fontStyle: "italic",
+                }}
+              >
+                This page confirms the ticket was issued by Goodwillstores.
+                It does not indicate a winning entry — winners are announced
+                separately during the official draw.
+              </p>
+            )}
           </>
         )}
       </div>
@@ -211,7 +265,32 @@ export default function VerifyTicket({ token }) {
   );
 }
 
-function Row({ label, value, mono = false, highlight = false }) {
+/**
+ * Row
+ * ---
+ * Small helper that renders one labelled field.
+ *
+ * `statusType` (optional) is used only for the "Status" row so the
+ * highlight colour reflects ACTIVE (green) or EXPIRED (amber).
+ */
+function Row({ label, value, mono = false, statusType = null }) {
+  const isActive = statusType === "ACTIVE";
+  const isExpired = statusType === "EXPIRED";
+
+  let highlightColor = "#1e293b";
+  let fontWeight = 500;
+  let fontWeightLabel = 600;
+
+  if (isActive) {
+    highlightColor = "#047857";
+    fontWeight = 700;
+    fontWeightLabel = 700;
+  } else if (isExpired) {
+    highlightColor = "#b45309";
+    fontWeight = 700;
+    fontWeightLabel = 700;
+  }
+
   return (
     <div
       style={{
@@ -225,13 +304,15 @@ function Row({ label, value, mono = false, highlight = false }) {
       <span style={{ color: "#64748b", flex: "0 0 auto" }}>{label}:</span>
       <span
         style={{
-          fontWeight: highlight ? 700 : 500,
-          color: highlight ? "#047857" : "#1e293b",
+          fontWeight,
+          color: highlightColor,
           fontFamily: mono
             ? 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace'
             : "inherit",
           textAlign: "right",
           wordBreak: "break-word",
+          letterSpacing: isActive || isExpired ? "0.02em" : "normal",
+          fontWeight: isActive || isExpired ? fontWeightLabel : fontWeight,
         }}
       >
         {value ?? "—"}
