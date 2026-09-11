@@ -724,23 +724,42 @@ export default function Detail({ product, openImage, remainingTickets }) {
       )}
 
       {downloadReady && (
-        <button
-          onClick={handleTicketDownload}
-          disabled={hasDownloaded || isGenerating}
-          className={`mt-4 px-4 py-2 rounded text-white ${
-            hasDownloaded
-              ? "bg-gray-400"
-              : isGenerating
-              ? "bg-yellow-500"
-              : "bg-green-600"
-          }`}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+          }}
         >
-          {hasDownloaded
-            ? "Ticket Already Downloaded"
-            : isGenerating
-            ? "Generating Ticket..."
-            : "Download Ticket"}
-        </button>
+          <button
+            onClick={handleTicketDownload}
+            disabled={hasDownloaded || isGenerating}
+            className={`mt-4 px-4 py-2 rounded ${
+              hasDownloaded
+                ? "bg-gray-400"
+                : isGenerating
+                ? "bg-yellow-500"
+                : "bg-sky-300"
+            }`}
+            style={{
+              color: "#ffffff",
+              fontWeight: 600,
+              fontSize: "14px",
+              borderRadius: "10px",
+              border: "none",
+              cursor:
+                hasDownloaded || isGenerating
+                  ? "not-allowed"
+                  : "pointer",
+            }}
+          >
+            {hasDownloaded
+              ? "Ticket Already Downloaded"
+              : isGenerating
+              ? "Generating Ticket..."
+              : "Download Ticket"}
+          </button>
+        </div>
       )}
     </>
   );
