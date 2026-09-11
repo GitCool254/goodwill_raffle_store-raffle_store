@@ -12,7 +12,7 @@ import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
 import SearchBar from "./components/SearchBar";
 
-// Lazy-load page components
+// Lazy-loaded page components
 const Detail = lazy(() => import("./components/Detail"));
 const Catalog = lazy(() => import("./components/Catalog"));
 const Address = lazy(() => import("./components/Address"));
@@ -22,6 +22,7 @@ const MyTickets = lazy(() => import("./components/MyTickets"));
 const Donations = lazy(() => import("./components/Donations"));
 const TermsOfUse = lazy(() => import("./components/TermsOfUse"));
 const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const VerifyTicket = lazy(() => import("./components/VerifyTicket"));
 
 // Import product data
 import { sampleProducts, catalogItems } from "./data/products";
@@ -38,11 +39,11 @@ export default function App() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // --- State for WinnersDetail toggle ---
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
-
-  // --- Global search query (used only on home page) ---
   const [searchQuery, setSearchQuery] = useState("");
+
+  // --- Ticket verification ---
+  const [verifyToken, setVerifyToken] = useState(null);
 
   // -------------------- STATE --------------------
   const [products, setProducts] = useState(() => {
@@ -52,7 +53,9 @@ export default function App() {
         const parsed = JSON.parse(saved);
         const changed =
           parsed.length !== sampleProducts.length ||
-          parsed.some((p, i) => JSON.stringify(p) !== JSON.stringify(sampleProducts[i]));
+          parsed.some(
+            (p, i) => JSON.stringify(p) !== JSON.stringify(sampleProducts[i])
+          );
         if (!changed) return parsed;
       } catch {}
     }
@@ -85,7 +88,7 @@ export default function App() {
 
     const fetchAfterPaint = () => {
       const scheduleFetch = () => {
-        if ('requestIdleCallback' in window) {
+        if ("requestIdleCallback" in window) {
           window.requestIdleCallback(() => {
             if (!isMounted) return;
             setTimeout(() => {
@@ -100,7 +103,6 @@ export default function App() {
           }, 300);
         }
       };
-
       scheduleFetch();
     };
 
@@ -136,8 +138,8 @@ export default function App() {
     intervalId = setInterval(() => {
       if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (isMounted && !isNaN(data.remaining)) {
             setRemainingTickets(Number(data.remaining));
           }
@@ -145,7 +147,7 @@ export default function App() {
             setTicketsSold(Number(data.tickets_sold));
           }
         })
-        .catch(err => console.error("Ticket refresh failed:", err));
+        .catch((err) => console.error("Ticket refresh failed:", err));
     }, 30000);
 
     return () => {
@@ -172,7 +174,8 @@ export default function App() {
     }
 
     window.addEventListener("ticketsPurchased", handleTicketsPurchased);
-    return () => window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
+    return () =>
+      window.removeEventListener("ticketsPurchased", handleTicketsPurchased);
   }, []);
 
   useEffect(() => {
@@ -181,7 +184,8 @@ export default function App() {
 
   useEffect(() => {
     window.addEventListener("goMyTickets", () => navigate("myTickets"));
-    return () => window.removeEventListener("goMyTickets", () => setView("myTickets"));
+    return () =>
+      window.removeEventListener("goMyTickets", () => setView("myTickets"));
   }, []);
 
   // -------------------- URL / ROUTING --------------------
@@ -233,15 +237,29 @@ export default function App() {
     }
 
     setView(newView);
-    window.history.pushState({ view: newView, product: product || null }, "", path);
+    window.history.pushState(
+      { view: newView, product: product || null },
+      "",
+      path
+    );
   }
 
   function restoreViewFromPath(path) {
+    // ---- SPECIAL CASE: /verify-ticket/<token> ----
+    if (path.startsWith("/verify-ticket/")) {
+      const token = path.slice("/verify-ticket/".length);
+      setVerifyToken(token);
+      setView("verifyTicket");
+      setSelected(null);
+      return;
+    }
+
     if (path === "/") {
       setView("home");
       setSelected(null);
       return;
     }
+
     const viewName = pathToView[path];
     if (viewName) {
       setView(viewName);
@@ -308,7 +326,11 @@ export default function App() {
 
     if (product) {
       const slug = generateSlug(product.title);
-      window.history.pushState({ view: "image", productId: product.id }, "", `/${slug}`);
+      window.history.pushState(
+        { view: "image", productId: product.id },
+        "",
+        `/${slug}`
+      );
     } else {
       const path = viewToPath[returnView] || "/";
       window.history.pushState({ view: "image" }, "", path);
@@ -347,25 +369,28 @@ export default function App() {
                   border: "1px solid rgba(255,255,255,0.18)",
                   fontSize: "0.95rem",
                   fontWeight: "700",
-                  fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+                  fontFamily:
+                    'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                   letterSpacing: "0.01em",
                   cursor: "pointer",
                   boxShadow: "0 2px 6px rgba(15, 23, 42, 0.12)",
-                  transition: "background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
+                  transition:
+                    "background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "#60a5fa";
-                  e.currentTarget.style.boxShadow = "0 4px 10px rgba(15, 23, 42, 0.16)";
+                  e.currentTarget.style.boxShadow =
+                    "0 4px 10px rgba(15, 23, 42, 0.16)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = "#6495ED";
-                  e.currentTarget.style.boxShadow = "0 2px 6px rgba(15, 23, 42, 0.12)";
+                  e.currentTarget.style.boxShadow =
+                    "0 2px 6px rgba(15, 23, 42, 0.12)";
                 }}
               >
                 Explore Finds
               </button>
             </div>
-
             <div
               style={{
                 textAlign: "left",
@@ -388,16 +413,22 @@ export default function App() {
                   : "Loading ticket availability…"}
               </span>
             </div>
-
             <div
               className="text-xs text-slate-200"
-              style={{ textAlign: "left", marginTop: "4px", marginLeft: "0", marginBottom: "20px", letterSpacing: "0.03em" }}
+              style={{
+                textAlign: "left",
+                marginTop: "4px",
+                marginLeft: "0",
+                marginBottom: "20px",
+                letterSpacing: "0.03em",
+              }}
             >
               {ticketsSold !== null && (
-                <>✔ <strong>{ticketsSold}</strong> tickets sold so far</>
+                <>
+                  ✔ <strong>{ticketsSold}</strong> tickets sold so far
+                </>
               )}
             </div>
-
             {ticketStateLoaded && Number(remainingTickets) <= 0 && (
               <div
                 className="mt-3"
@@ -416,9 +447,9 @@ export default function App() {
                   borderRadius: "10px",
                 }}
               >
-                This raffle is now officially closed. We sincerely appreciate your participation
-                and continued support. Stay tuned — our next raffle opportunity will be
-                announced shortly.
+                This raffle is now officially closed. We sincerely appreciate
+                your participation and continued support. Stay tuned — our next
+                raffle opportunity will be announced shortly.
               </div>
             )}
           </div>
@@ -473,8 +504,10 @@ export default function App() {
       if (scale > 1 && naturalSize.width && containerRef.current) {
         const scaledWidth = naturalSize.width * scale;
         const scaledHeight = naturalSize.height * scale;
-        containerRef.current.scrollLeft = (scaledWidth - containerRef.current.clientWidth) / 2;
-        containerRef.current.scrollTop = (scaledHeight - containerRef.current.clientHeight) / 2;
+        containerRef.current.scrollLeft =
+          (scaledWidth - containerRef.current.clientWidth) / 2;
+        containerRef.current.scrollTop =
+          (scaledHeight - containerRef.current.clientHeight) / 2;
       }
     }, [scale, naturalSize]);
 
@@ -543,23 +576,10 @@ export default function App() {
     return (
       <>
         <style>{`
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-          .spinner {
-            width: 36px;
-            height: 36px;
-            animation: spin 1s linear infinite;
-          }
-          .ring {
-            fill: none;
-            stroke: #e0e0e0;
-            stroke-width: 4;
-          }
-          .star {
-            fill: #3b82f6;
-          }
+          @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          .spinner { width: 36px; height: 36px; animation: spin 1s linear infinite; }
+          .ring { fill: none; stroke: #e0e0e0; stroke-width: 4; }
+          .star { fill: #3b82f6; }
         `}</style>
         <div
           ref={containerRef}
@@ -578,14 +598,24 @@ export default function App() {
           }}
         >
           {isLoading && (
-            <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10001 }}>
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 10001,
+              }}
+            >
               <svg className="spinner" viewBox="0 0 50 50">
                 <circle className="ring" cx="25" cy="25" r="20" />
-                <path className="star" d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z" />
+                <path
+                  className="star"
+                  d="M25 12 L28 22 L39 22 L30 28 L33 38 L25 32 L17 38 L20 28 L11 22 L22 22 Z"
+                />
               </svg>
             </div>
           )}
-
           <button
             onClick={onBack}
             style={{
@@ -599,7 +629,6 @@ export default function App() {
           >
             ✕
           </button>
-
           {images.length > 1 && index > 0 && (
             <button
               onClick={prev}
@@ -621,7 +650,6 @@ export default function App() {
               ‹
             </button>
           )}
-
           {images.length > 1 && index < images.length - 1 && (
             <button
               onClick={next}
@@ -643,7 +671,6 @@ export default function App() {
               ›
             </button>
           )}
-
           <div
             style={{
               width: "100vw",
@@ -686,7 +713,6 @@ export default function App() {
                   zIndex: 1,
                 }}
               />
-
               <div
                 style={{
                   position: "fixed",
@@ -710,27 +736,45 @@ export default function App() {
     );
   }
 
-  // -------------------- HOME COMPONENT (restructured with Jumia-style rows) --------------------
+  // -------------------- HOME COMPONENT --------------------
   function Home({ searchQuery }) {
-    // Group catalog items by category
     const groupedItems = {};
-    catalogItems.forEach(item => {
+    catalogItems.forEach((item) => {
       if (!groupedItems[item.category]) {
         groupedItems[item.category] = [];
       }
       groupedItems[item.category].push(item);
     });
 
-    // Define category display order
-    const categoryOrder = ["Casual & Outdoor Wear", "Sports", "Electronics", "Furniture", "Household"];
+    const categoryOrder = [
+      "Casual & Outdoor Wear",
+      "Sports",
+      "Electronics",
+      "Furniture",
+      "Household",
+    ];
 
-    // Helper: render a horizontal scrollable row of product cards
     const renderProductRow = (title, products, seeAllLink = "/catalog") => {
       if (!products || products.length === 0) return null;
       return (
         <div style={{ marginBottom: "2rem" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#0f172a" }}>{title}</h2>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "#0f172a",
+              }}
+            >
+              {title}
+            </h2>
             <button
               onClick={() => navigate("catalog")}
               style={{
@@ -746,8 +790,20 @@ export default function App() {
               }}
             >
               See All
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path d="M9.5 18l6-6-6-6" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="currentColor"
+              >
+                <path
+                  d="M9.5 18l6-6-6-6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
@@ -801,20 +857,56 @@ export default function App() {
                       maxHeight: "100%",
                       objectFit: "contain",
                     }}
-                    onError={(e) => (e.target.src = "https://via.placeholder.com/200x150")}
+                    onError={(e) =>
+                      (e.target.src = "https://via.placeholder.com/200x150")
+                    }
                   />
                 </div>
                 <div style={{ width: "100%", textAlign: "left" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "#1e293b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "#1e293b",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     {item.title}
                   </div>
-                  <div style={{ fontSize: "0.75rem", color: "#475569", marginTop: "2px" }}>{item.category}</div>
-                  <div style={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155", marginTop: "4px" }}>
-                    $ {item.ticketPrice} <span style={{ fontSize: "0.65rem" }}>/ticket</span>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#475569",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {item.category}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: "#334155",
+                      marginTop: "4px",
+                    }}
+                  >
+                    $ {item.ticketPrice}{" "}
+                    <span style={{ fontSize: "0.65rem" }}>/ticket</span>
                   </div>
                   <button
                     className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                    style={{ marginTop: "8px", fontSize: "0.75rem", padding: "4px 10px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                    style={{
+                      marginTop: "8px",
+                      fontSize: "0.75rem",
+                      padding: "4px 10px",
+                      background: "#2563eb",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       openProduct(item);
@@ -830,24 +922,30 @@ export default function App() {
       );
     };
 
-    // If search query is present, show small product cards in a wrapped flex container
     const allProducts = [...products, ...catalogItems];
-    const filteredProducts = searchQuery.trim() === ""
-      ? null // we'll show rows
-      : allProducts.filter((p) => {
-          const q = searchQuery.toLowerCase().trim();
-          return (
-            p.title.toLowerCase().includes(q) ||
-            p.description?.toLowerCase().includes(q) ||
-            p.category?.toLowerCase().includes(q)
-          );
-        });
+    const filteredProducts =
+      searchQuery.trim() === ""
+        ? null
+        : allProducts.filter((p) => {
+            const q = searchQuery.toLowerCase().trim();
+            return (
+              p.title.toLowerCase().includes(q) ||
+              p.description?.toLowerCase().includes(q) ||
+              p.category?.toLowerCase().includes(q)
+            );
+          });
 
     if (filteredProducts !== null) {
-      // Show search results as small product cards (same as rows)
       return (
         <main className="max-w-6xl mx-auto p-6">
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "flex-start" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "16px",
+              justifyContent: "flex-start",
+            }}
+          >
             {filteredProducts.map((p) => (
               <div
                 key={p.id}
@@ -887,20 +985,56 @@ export default function App() {
                       maxHeight: "100%",
                       objectFit: "contain",
                     }}
-                    onError={(e) => (e.target.src = "https://via.placeholder.com/200x150")}
+                    onError={(e) =>
+                      (e.target.src = "https://via.placeholder.com/200x150")
+                    }
                   />
                 </div>
                 <div style={{ width: "100%", textAlign: "left" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "#1e293b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      color: "#1e293b",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     {p.title}
                   </div>
-                  <div style={{ fontSize: "0.75rem", color: "#475569", marginTop: "2px" }}>{p.category}</div>
-                  <div style={{ fontSize: "0.875rem", fontWeight: 500, color: "#334155", marginTop: "4px" }}>
-                    $ {p.ticketPrice} <span style={{ fontSize: "0.65rem" }}>/ticket</span>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#475569",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {p.category}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: "#334155",
+                      marginTop: "4px",
+                    }}
+                  >
+                    $ {p.ticketPrice}{" "}
+                    <span style={{ fontSize: "0.65rem" }}>/ticket</span>
                   </div>
                   <button
                     className="bg-sky-600 text-white px-3 py-1 rounded-lg"
-                    style={{ marginTop: "8px", fontSize: "0.75rem", padding: "4px 10px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                    style={{
+                      marginTop: "8px",
+                      fontSize: "0.75rem",
+                      padding: "4px 10px",
+                      background: "#2563eb",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       openProduct(p);
@@ -916,13 +1050,9 @@ export default function App() {
       );
     }
 
-    // No search: show Jumia-style rows
     return (
       <main className="max-w-6xl mx-auto p-6">
-        {/* Top Selling Items (sample products) */}
         {renderProductRow("Top Selling Items", products, "/catalog")}
-
-        {/* Category rows */}
         {categoryOrder.map((category) => {
           const items = groupedItems[category] || [];
           if (items.length === 0) return null;
@@ -933,19 +1063,21 @@ export default function App() {
   }
 
   // -------------------- MAIN RETURN --------------------
+  const isVerificationView = view === "verifyTicket";
+
   return (
     <>
       <Helmet>
         <title>Home – Goodwillstores</title>
-        <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores.Second Hand, First Choice." />
       </Helmet>
+
       <div
         className={`min-h-screen flex flex-col ${
           view === "image" ? "bg-black" : "bg-slate-50"
         }`}
       >
         {/* HEADER */}
-        {view !== "image" && (
+        {view !== "image" && !isVerificationView && (
           <Header
             setView={navigate}
             onMenuClick={() => setMenuOpen(true)}
@@ -953,7 +1085,7 @@ export default function App() {
           />
         )}
 
-        {view !== "image" && (
+        {view !== "image" && !isVerificationView && (
           <>
             {remainingTickets !== null && remainingTickets > 0 && (
               <HolidaySystem onNavigate={navigate} />
@@ -964,7 +1096,6 @@ export default function App() {
 
         {/* MAIN CONTENT */}
         <main className="flex-grow">
-          {/* 👇 Search bar – visible ONLY on home page, centered with margin 30px */}
           {view === "home" && (
             <div
               style={{
@@ -974,13 +1105,19 @@ export default function App() {
                 marginRight: "30px",
               }}
             >
-              <SearchBar placeholder="Search products" onSearch={setSearchQuery} />
+              <SearchBar
+                placeholder="Search products"
+                onSearch={setSearchQuery}
+              />
             </div>
           )}
 
           {view === "home" && (
             <>
-              <Hero remainingTickets={remainingTickets} ticketsSold={ticketsSold} />
+              <Hero
+                remainingTickets={remainingTickets}
+                ticketsSold={ticketsSold}
+              />
 
               {ticketStateLoaded && Number(remainingTickets) > 0 && (
                 <section
@@ -989,7 +1126,10 @@ export default function App() {
                 >
                   <div
                     className="bg-white rounded-xl p-6"
-                    style={{ border: "1.5px dotted #cbd5e1", backgroundColor: "#f8fafc" }}
+                    style={{
+                      border: "1.5px dotted #cbd5e1",
+                      backgroundColor: "#f8fafc",
+                    }}
                   >
                     <h2
                       className="font-semibold mb-4"
@@ -1000,7 +1140,12 @@ export default function App() {
 
                     <div
                       className="space-y-2 text-slate-700"
-                      style={{ fontSize: "0.9rem", textAlign: "left", marginLeft: "0", paddingLeft: "10px" }}
+                      style={{
+                        fontSize: "0.9rem",
+                        textAlign: "left",
+                        marginLeft: "0",
+                        paddingLeft: "10px",
+                      }}
                     >
                       <p>
                         • <strong>Location:</strong>{" "}
@@ -1025,7 +1170,8 @@ export default function App() {
                         • <strong>Date & Time:</strong> 31/August/2026, 0200PM
                       </p>
                       <p>
-                        • <strong>Fair Play:</strong> All tickets are digitally generated and remain valid until the official draw.
+                        • <strong>Fair Play:</strong> All tickets are digitally
+                        generated and remain valid until the official draw.
                       </p>
                     </div>
 
@@ -1033,7 +1179,8 @@ export default function App() {
                       className="text-slate-500 mt-4"
                       style={{ fontSize: "0.8rem", fontStyle: "italic" }}
                     >
-                      Winners are announced publicly on this website and contacted via the email used during ticket purchase.
+                      Winners are announced publicly on this website and
+                      contacted via the email used during ticket purchase.
                     </p>
                   </div>
                 </section>
@@ -1047,7 +1194,9 @@ export default function App() {
           )}
 
           {/* Lazy-loaded routes */}
-          <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
+          <Suspense
+            fallback={<div className="text-center py-12">Loading...</div>}
+          >
             {view === "detail" && selected && (
               <Detail
                 product={selected}
@@ -1063,15 +1212,28 @@ export default function App() {
             {view === "contact" && <Contact />}
             {view === "about" && <About navigate={navigate} />}
             {view === "donations" && <Donations />}
-            {view === "terms" && <TermsOfUse onBack={() => navigate("about")} />}
-            {view === "privacy" && <PrivacyPolicy onBack={() => navigate("about")} />}
+            {view === "terms" && (
+              <TermsOfUse onBack={() => navigate("about")} />
+            )}
+            {view === "privacy" && (
+              <PrivacyPolicy onBack={() => navigate("about")} />
+            )}
+
             {(view === "tickets" || view === "myTickets") && (
               <MyTickets openTicketProduct={openTicketProduct} />
+            )}
+
+            {isVerificationView && verifyToken && (
+              <VerifyTicket token={verifyToken} />
             )}
           </Suspense>
         </main>
 
-        <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} setView={navigate} />
+        <Menu
+          isOpen={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          setView={navigate}
+        />
 
         {view === "image" && activeImage && (
           <ImagePage
@@ -1087,42 +1249,45 @@ export default function App() {
 
         <br />
 
-        <footer
-          className="w-full text-center py-6"
-          style={{
-            background: "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
-            color: "white",
-          }}
-        >
-          <div className="mb-4">
-            <button
-              onClick={() => navigate("terms")}
-              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-              style={{ color: "white" }}
-            >
-              Terms of Use
-            </button>
-            <span className="mx-2 text-gray-400">|</span>
-            <button
-              onClick={() => navigate("privacy")}
-              className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
-              style={{ color: "white" }}
-            >
-              Privacy Policy
-            </button>
-            <span className="mx-2 text-gray-400">|</span>
-            <a
-              href="mailto:goodwillstores.support@gmail.com"
-              className="text-white hover:text-gray-300 text-sm font-medium transition"
-              style={{ color: "white" }}
-            >
-              Contact
-            </a>
-          </div>
-          <div className="text-white text-sm">
-            © {new Date().getFullYear()} Goodwillstores. All rights reserved.
-          </div>
-        </footer>
+        {!isVerificationView && (
+          <footer
+            className="w-full text-center py-6"
+            style={{
+              background:
+                "linear-gradient(180deg, #1E3A8A 0%, #E0F0FF 100%)",
+              color: "white",
+            }}
+          >
+            <div className="mb-4">
+              <button
+                onClick={() => navigate("terms")}
+                className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+                style={{ color: "white" }}
+              >
+                Terms of Use
+              </button>
+              <span className="mx-2 text-gray-400">|</span>
+              <button
+                onClick={() => navigate("privacy")}
+                className="text-white hover:text-gray-300 text-sm font-medium transition bg-transparent border-none cursor-pointer"
+                style={{ color: "white" }}
+              >
+                Privacy Policy
+              </button>
+              <span className="mx-2 text-gray-400">|</span>
+              <a
+                href="mailto:goodwillstores.support@gmail.com"
+                className="text-white hover:text-gray-300 text-sm font-medium transition"
+                style={{ color: "white" }}
+              >
+                Contact
+              </a>
+            </div>
+            <div className="text-white text-sm">
+              © {new Date().getFullYear()} Goodwillstores. All rights reserved.
+            </div>
+          </footer>
+        )}
       </div>
     </>
   );
