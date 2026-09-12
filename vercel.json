@@ -13,6 +13,19 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/4d-v15-drone-zeros-mini-quadcopter", "destination": "/4d-v15-drone",     "permanent": true },
+    { "source": "/coolster-3125cx-2-125cc",            "destination": "/coolster-3125cx-2", "permanent": true },
+    { "source": "/g1-virtual-reality-headset",         "destination": "/g1-vr-headset",     "permanent": true },
+    { "source": "/irest-massage-chair",                "destination": "/irest-massage-seat","permanent": true },
+    { "source": "/light-grey-sectional",               "destination": "/light-grey-set",    "permanent": true },
+    { "source": "/modern-l-shaped-sofa",               "destination": "/modern-sofa",       "permanent": true },
+    { "source": "/mokwheel-mesa-lite-e-bikes",         "destination": "/mesa-lite-e-bikes", "permanent": true },
+    { "source": "/sightmark-wraith-night-vision-scope","destination": "/sightmark-wraith-scope","permanent": true },
+    { "source": "/snoo-happiest-baby-bassinet",        "destination": "/baby-bassinet",     "permanent": true },
+    { "source": "/stunning-brand-broyhill-patio-set",  "destination": "/broyhill-patio-set","permanent": true },
+    { "source": "/treadmill-proform-carbon",           "destination": "/treadmill-proform", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(favicon\\.svg|favicon-.*\\.png|manifest\\.json|assets/.*)",
