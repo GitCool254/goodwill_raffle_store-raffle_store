@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "node_modules/.bin/vite build",
     "postbuild": "node scripts/prerender.mjs",
-    "postinstall": "playwright install chromium || true",
+    "postinstall": "if [ \"$(uname)\" = \"Linux\" ]; then playwright install-deps chromium && playwright install chromium; fi",
     "start": "node server/index.js",
     "sitemap": "node generate-sitemap.js",
     "prerender": "node scripts/prerender.mjs"
