@@ -3,8 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary meta -->
     <title>Goodwillstores</title>
     <meta name="description" content="Shop quality second-hand and used products at affordable prices. Discover great deals on electronics, furniture, appliances, sport and more at Goodwillstores. Second Hand, First Choice" />
+
+    <!-- Open Graph (used by Google to determine site name, and by social platforms) -->
+    <meta property="og:site_name" content="Goodwillstores" />
+    <meta property="og:title" content="Goodwillstores" />
+    <meta property="og:description" content="Shop quality second-hand and used products at affordable prices. Second Hand, First Choice" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://goodwillstores.vercel.app/" />
+    <meta property="og:image" content="https://goodwillstores.vercel.app/icon-tab.png" />
+
+    <!-- Twitter Card (complements Open Graph) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Goodwillstores" />
+    <meta name="twitter:description" content="Shop quality second-hand and used products at affordable prices. Second Hand, First Choice" />
+    <meta name="twitter:image" content="https://goodwillstores.vercel.app/icon-tab.png" />
 
     <!-- Favicon (tabs, bookmarks) -->
     <link rel="icon" type="image/png" href="/icon-tab.png?v=2026" />
@@ -87,6 +103,28 @@
 
     <!-- Manifest with version query to force refresh -->
     <link rel="manifest" href="/manifest.json?v=2026" />
+
+    <!-- 🔖 JSON-LD STRUCTURED DATA — strongest signal for Google site name -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Goodwillstores",
+        "alternateName": "Goodwill Stores",
+        "url": "https://goodwillstores.vercel.app/",
+        "description": "Shop quality second-hand and used products at affordable prices. Second Hand, First Choice",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Goodwillstores",
+          "url": "https://goodwillstores.vercel.app/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://goodwillstores.vercel.app/icon-tab.png"
+          }
+        }
+      }
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
