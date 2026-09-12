@@ -703,7 +703,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               Waiting for payment confirmation
             </span>
           </div>
-          <div className="text-xs text-slate-400">
+          <div className="text-xs items-center text-slate-400">
             Your ticket download will appear here after successful payment
           </div>
         </div>
