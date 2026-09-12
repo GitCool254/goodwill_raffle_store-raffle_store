@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 export default function Contact() {
   return (
@@ -8,6 +9,9 @@ export default function Contact() {
         <title>Contact Us – Goodwillstores</title>
         <meta name="description" content="Reach out to Goodwillstores for questions, support, or partnership inquiries. We’re here to help in your shopping experience." />
       </Helmet>
+
+      <CanonicalTag path="/contact" />
+
       <div
         className="max-w-3xl mx-auto p-6 text-left text-slate-700"
         style={{ backgroundColor: "#f8fafc" }}

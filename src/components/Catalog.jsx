@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 import { catalogItems } from "../data/products";
 
 export default function Catalog({ openProduct }) {
@@ -20,6 +21,9 @@ export default function Catalog({ openProduct }) {
         <title>Shop Products – Goodwillstores</title>
         <meta name="description" content="Browse our full catalog of quality second‑hand electronics, furniture, outdoor gear, and more. Enter affordable prices to buy great pre‑owned items." />
       </Helmet>
+
+      <CanonicalTag path="/catalog" />
+
       <div className="max-w-6xl mx-auto p-6" style={{ backgroundColor: "#f1f5f9" }}>
         <h1 className="text-xl font-bold mb-4" style={{ fontSize: "1.25rem" }}>Shop Products</h1>
         {/* SEARCH INPUT (full width) */}

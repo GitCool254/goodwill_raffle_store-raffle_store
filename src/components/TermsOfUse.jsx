@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 export default function TermsOfUse({ onBack }) {
   return (
@@ -8,6 +9,9 @@ export default function TermsOfUse({ onBack }) {
         <title>Terms of Use – Goodwillstores</title>
         <meta name="description" content="Read the Goodwillstores Terms of Use – the rules and guidelines for participating in our raffles, purchasing tickets, and using our platform." />
       </Helmet>
+
+      <CanonicalTag path="/terms" />
+
       <div
         className="max-w-4xl mx-auto p-8 text-left"
         style={{

@@ -1,10 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 import PayPalButton from "./PayPalButton";
 
 const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
+
+// Must match the slug generator used in App.jsx and generate-sitemap.js
+// so that canonical URLs align 1:1 with the sitemap entries.
+const generateSlug = (title) =>
+  (title || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
 export default function Detail({ product, openImage, remainingTickets }) {
   const ticket = product?._ticket || null;
@@ -703,7 +712,7 @@ export default function Detail({ product, openImage, remainingTickets }) {
               Waiting for payment confirmation
             </span>
           </div>
-          <div 
+          <div
             className="text-xs text-slate-400"
             style={{
               textAlign: "center",
@@ -1043,6 +1052,11 @@ export default function Detail({ product, openImage, remainingTickets }) {
     </>
   );
 
+  // ---- Canonical path for this product page ----
+  const canonicalPath = product
+    ? `/${generateSlug(product.title)}`
+    : "/";
+
   return (
     <>
       <Helmet>
@@ -1054,6 +1068,9 @@ export default function Detail({ product, openImage, remainingTickets }) {
           } at low ticket prices. Join the draw today!`}
         />
       </Helmet>
+
+      <CanonicalTag path={canonicalPath} />
+
       <div
         className={`detail-page-container ${
           isDesktop

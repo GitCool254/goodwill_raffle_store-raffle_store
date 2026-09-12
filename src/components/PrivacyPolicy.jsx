@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 export default function PrivacyPolicy({ onBack }) {
   return (
@@ -8,6 +9,9 @@ export default function PrivacyPolicy({ onBack }) {
         <title>Privacy Policy – Goodwillstores</title>
         <meta name="description" content="Learn how Goodwillstores collects, uses, and protects your personal information. Our privacy policy outlines your rights and our commitments." />
       </Helmet>
+
+      <CanonicalTag path="/privacy" />
+
       <div
         className="max-w-4xl mx-auto p-8 text-left"
         style={{

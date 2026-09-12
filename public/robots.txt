@@ -1,7 +1,6 @@
 # Allow all crawlers to index your site, except for /terms and /privacy
 User-agent: *
-Disallow: /terms
-Disallow: /privacy
+
 Allow: /
 
 # Point to your sitemap (you already have one)

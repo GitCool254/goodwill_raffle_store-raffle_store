@@ -11,6 +11,7 @@ import RecentWinners from "./components/RecentWinners";
 import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
 import SearchBar from "./components/SearchBar";
+import CanonicalTag from "./components/CanonicalTag";
 
 // Lazy-loaded page components
 const Detail = lazy(() => import("./components/Detail"));
@@ -1070,6 +1071,8 @@ export default function App() {
       <Helmet>
         <title>Home – Goodwillstores</title>
       </Helmet>
+
+      {view === "home" && <CanonicalTag path="/" />}
 
       <div
         className={`min-h-screen flex flex-col ${

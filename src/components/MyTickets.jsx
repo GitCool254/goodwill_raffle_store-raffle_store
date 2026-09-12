@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 import LabelWithBullet from "./LabelWithBullet";
 
 const FOCUS_BLUE = "#38bdf8"; // sky-400
@@ -303,6 +304,9 @@ export default function MyTickets() {
         <title>My Tickets – Goodwillstores</title>
         <meta name="description" content="View your raffle tickets, re‑download your tickets, and check your ticket status. Stay updated on your entries and potential wins." />
       </Helmet>
+
+      <CanonicalTag path="/tickets" />
+
       <div
         className="max-w-3xl mx-auto p-6 text-left"
         style={{ backgroundColor: "#f8fafc" }}

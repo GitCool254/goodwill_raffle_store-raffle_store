@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 export default function Donations() {
   const programs = [
@@ -178,6 +179,9 @@ export default function Donations() {
         <title>Donate & Impact – Goodwillstores</title>
         <meta name="description" content="Support community projects through Goodwillstores. Your donations and participation fund academic sponsorships, palliative care, and emergency relief." />
       </Helmet>
+
+      <CanonicalTag path="/donations" />
+
       <div className="max-w-6xl mx-auto p-6 bg-slate-50 min-h-screen">
         {/* Our Reach Section - Styled like program cards */}
         <div ref={sectionRef} className="mb-16">

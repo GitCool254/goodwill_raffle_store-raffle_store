@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 export default function About({ navigate }) {
   return (
@@ -8,6 +9,9 @@ export default function About({ navigate }) {
         <title>About Us – Goodwillstores</title>
         <meta name="description" content="Learn about Goodwillstores – our mission to provide affordable, quality second‑hand products. Discover our story and community impact." />
       </Helmet>
+
+      <CanonicalTag path="/about" />
+
       <div
         className="max-w-3xl mx-auto p-6 text-left"
         style={{
@@ -146,7 +150,7 @@ export default function About({ navigate }) {
           <li>
             <strong>Every Ticket Gives Back</strong> — Each raffle entry supports
             Goodwill Foundation, a church‑driven initiative focused on uplifting
-            under‑resourced and vulnerable communities through education, palliative care, and feeding programs. 
+            under‑resourced and vulnerable communities through education, palliative care, and feeding programs.
           </li>
         </ul>
 

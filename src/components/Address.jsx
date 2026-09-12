@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import CanonicalTag from "./CanonicalTag";
 
 function AddressLine({ line1, line2, enabled = true }) {
   if (!enabled) {
@@ -145,6 +146,9 @@ export default function Address() {
         <title>Our Store Locations – Goodwillstores</title>
         <meta name="description" content="Find Goodwillstores physical locations in the USA, Canada, Australia, and New Zealand. Visit us to browse quality second‑hand products and join our raffles." />
       </Helmet>
+
+      <CanonicalTag path="/address" />
+
       <div
         className="max-w-2xl mx-auto p-6"
         style={{ backgroundColor: "#f8fafc" }}
