@@ -1,14 +1,15 @@
 // scripts/prerender.mjs
 //
 // Prerenders every public route of the SPA into a fully-rendered
-// static HTML file so Googlebot (and other crawlers) receive real
-// content on the first request instead of an empty <div id="root"></div>.
+// static HTML file so Googlebot receives real content on the first
+// request instead of an empty <div id="root"></div>.
 //
-// Runs automatically on Vercel after `vite build` via the `postbuild` script.
-// It does NOT run on Termux (Playwright is unsupported on Android).
+// Uses @sparticuz/chromium + playwright-core so it works on Vercel's
+// minimal Linux build image (no apt-get, no system libs needed).
 
 import { preview } from "vite";
-import { chromium } from "playwright";
+import { chromium as playwright } from "playwright-core";
+import chromium from "@sparticuz/chromium";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -61,7 +62,14 @@ async function main() {
 
   const baseUrl = "http://127.0.0.1:4173";
 
-  const browser = await chromium.launch({ headless: true });
+  // Launch the serverless-optimized Chromium from @sparticuz/chromium.
+  // No system libraries needed — the binary is self-contained.
+  const browser = await playwright.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: true,
+  });
+
   const context = await browser.newContext();
   const page = await context.newPage();
 
@@ -75,7 +83,7 @@ async function main() {
       try {
         await page.goto(url, { waitUntil: "networkidle", timeout: 20000 });
       } catch {
-        // Fallback if the page never goes fully idle (e.g. long-polling).
+        // Fallback if the page never goes fully idle.
         await page.goto(url, { waitUntil: "load", timeout: 20000 });
       }
 
@@ -106,9 +114,6 @@ async function main() {
     `✅ Prerender complete — ${succeeded} succeeded, ${failed} failed`
   );
 
-  // Non-zero exit if EVERY route failed (prevents silently deploying an
-  // unprerendered build). Partial failures are tolerated so a single
-  // misbehaving route cannot block a deployment.
   if (succeeded === 0) {
     process.exit(1);
   }
