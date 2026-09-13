@@ -1091,7 +1091,10 @@ export default function App() {
         <title>Home – Goodwillstores</title>
       </Helmet>
 
-      {view === "home" && <CanonicalTag path="/" />}
+      {view === "home" &&
+        typeof window !== "undefined" &&
+        window.location.pathname === "/" && <CanonicalTag path="/" />
+      }
 
       <div
         className={`min-h-screen flex flex-col ${
