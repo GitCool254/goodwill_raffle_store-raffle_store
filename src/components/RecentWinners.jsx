@@ -1,32 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function RecentWinners() {
+export default function RecentWinners({ data }) {
   const [winners, setWinners] = useState([]);
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const animationRef = useRef(null);
 
   useEffect(() => {
+    // ---------------------------------------------
+    // CONTROLLED MODE:
+    // If a `data` prop is provided (even null while loading),
+    // we never fetch. We simply reflect the parent's data.
+    // ---------------------------------------------
+    if (data !== undefined) {
+      if (data === null) {
+        // Still loading — keep the component hidden and idle.
+        setShow(false);
+        setWinners([]);
+        return;
+      }
+      setShow(!!data.show);
+      setWinners(Array.isArray(data.winners) ? data.winners : []);
+      return;
+    }
+
+    // ---------------------------------------------
+    // UNCONTROLLED MODE (fallback):
+    // Only used if <RecentWinners /> is rendered without the `data` prop.
+    // Preserves backward compatibility with the old behavior.
+    // ---------------------------------------------
     const fetchWinners = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
-        const data = await res.json();
-        setShow(data.show);
-        setWinners(data.winners);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/recent_winners`
+        );
+        const json = await res.json();
+        setShow(json.show);
+        setWinners(json.winners || []);
       } catch (err) {
         console.error("Failed to fetch recent winners:", err);
         setShow(false);
         setWinners([]);
-      } finally {
-        setLoading(false);
       }
     };
 
-    // Defer the fetch to avoid blocking initial render
     const deferFetch = () => {
-      if ('requestIdleCallback' in window) {
+      if ("requestIdleCallback" in window) {
         window.requestIdleCallback(() => {
           setTimeout(fetchWinners, 300);
         });
@@ -36,12 +56,15 @@ export default function RecentWinners() {
     };
 
     deferFetch();
-  }, []);
+  }, [data]);
 
-  const statementText = "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
+  const statementText =
+    "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
   const winnerItems = winners.map(
     (w) =>
-      `${w.name} (${w.state}, ${w.country}) won: ${w.cash_out ? `$${w.prize} cash` : w.prize} – Ticket ${w.ticket_no}`
+      `${w.name} (${w.state}, ${w.country}) won: ${
+        w.cash_out ? `$${w.prize} cash` : w.prize
+      } – Ticket ${w.ticket_no}`
   );
   const winnerText = winnerItems.join("  •  ");
   const combinedMessage = `${statementText}  •  ${winnerText}...`;
@@ -53,7 +76,7 @@ export default function RecentWinners() {
 
   const handleAnimationEnd = () => {
     if (animationRef.current) {
-      animationRef.current.style.animation = 'none';
+      animationRef.current.style.animation = "none";
       setTimeout(() => {
         if (animationRef.current) {
           animationRef.current.style.animation = `scrollOnce ${animationDuration}s linear forwards`;
@@ -151,7 +174,6 @@ export default function RecentWinners() {
           border: none;
         }
 
-        /* Simple solid lines (2px, light gray) instead of rainbow gradient */
         .marquee-container::before,
         .marquee-container::after {
           content: '';
@@ -160,7 +182,7 @@ export default function RecentWinners() {
           right: 0;
           width: 100%;
           height: 0px;
-          background: #cbd5e1;  /* slate-300 – simple normal line */
+          background: #cbd5e1;
           pointer-events: none;
         }
 
@@ -189,15 +211,18 @@ export default function RecentWinners() {
                 className="scroll-once"
                 style={{
                   animation: `scrollOnce ${animationDuration}s linear forwards`,
-                  transform: 'translateX(100vw)'
+                  transform: "translateX(100vw)",
                 }}
                 onAnimationEnd={handleAnimationEnd}
               >
-                <div className="inline-flex items-center" style={{ fontSize: 0 }}>
+                <div
+                  className="inline-flex items-center"
+                  style={{ fontSize: 0 }}
+                >
                   <h3
                     ref={contentRef}
                     className="premium-title inline-block text-base"
-                    style={{ fontSize: '1rem', whiteSpace: 'pre' }}
+                    style={{ fontSize: "1rem", whiteSpace: "pre" }}
                     data-text={combinedMessage}
                   >
                     {combinedMessage}
