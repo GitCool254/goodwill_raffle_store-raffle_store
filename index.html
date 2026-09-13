@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!--
+      ⚡ FIX A + C
+      Preconnect + DNS-prefetch MUST be the very first elements inside <head>.
+      The browser starts DNS + TCP + TLS for these origins in parallel with
+      downloading the HTML, so /bootstrap and PayPal are ready instantly.
+    -->
+    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
+    <link rel="preconnect" href="https://www.paypal.com" crossorigin />
+    <link rel="preconnect" href="https://api-m.paypal.com" crossorigin />
+    <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -40,14 +51,6 @@
     <!-- Theme color for mobile browsers -->
     <meta name="theme-color" content="#1E3A8A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <!-- Preconnect to critical third-party origins -->
-    <link rel="preconnect" href="https://www.paypal.com" crossorigin />
-    <link rel="preconnect" href="https://api-m.paypal.com" crossorigin />
-    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
-
-    <!-- Preconnect DNS for the backend's DNS + TLS handshake -->
-    <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
     <!-- ⚡ CRITICAL CSS (inlined – ensures above‑the‑fold styles are applied immediately) -->
     <style>
