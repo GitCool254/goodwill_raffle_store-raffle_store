@@ -43,9 +43,6 @@ export default function App() {
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // --- NEW: recent winners payload from /bootstrap ---
-  const [recentWinnersData, setRecentWinnersData] = useState(null);
-
   // --- Ticket verification ---
   const [verifyToken, setVerifyToken] = useState(null);
 
@@ -85,7 +82,7 @@ export default function App() {
     localStorage.setItem("gw_products", JSON.stringify(products));
   }, [products]);
 
-  // -------------------- DEFERRED INITIAL FETCH (USES /bootstrap) --------------------
+  // -------------------- DEFERRED INITIAL FETCH --------------------
   useEffect(() => {
     let isMounted = true;
     let intervalId;
@@ -112,13 +109,14 @@ export default function App() {
 
     async function fetchInitialData() {
       try {
-        // --- Single combined request ---
-        const res = await fetch(`${backendUrl}/bootstrap`);
-        const bootstrap = await res.json();
+        const [ticketStateRes, toggleRes] = await Promise.all([
+          fetch(`${backendUrl}/ticket_state`),
+          fetch(`${backendUrl}/winners_detail_toggle`),
+        ]);
 
         if (!isMounted) return;
 
-        const ticketData = bootstrap.ticket_state || {};
+        const ticketData = await ticketStateRes.json();
         if (!isNaN(ticketData.remaining)) {
           setRemainingTickets(Number(ticketData.remaining));
         }
@@ -127,17 +125,12 @@ export default function App() {
         }
         setTicketStateLoaded(true);
 
-        setShowWinnersDetail(bootstrap.winners_toggle?.show ?? true);
-
-        // Hand the recent winners payload to <RecentWinners />
-        setRecentWinnersData(
-          bootstrap.recent_winners ?? { show: false, winners: [] }
-        );
+        const toggleData = await toggleRes.json();
+        setShowWinnersDetail(toggleData.show ?? true);
       } catch (err) {
-        console.error("Failed to fetch initial bootstrap data:", err);
+        console.error("Failed to fetch initial data:", err);
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
-        setRecentWinnersData({ show: false, winners: [] });
       }
     }
 
@@ -1079,20 +1072,9 @@ export default function App() {
         <title>Home – Goodwillstores</title>
       </Helmet>
 
-      {/*
-        Canonical tag – always reflects the current URL so Google
-        sees one canonical per route. Skipped only for the
-        full-screen image overlay (not indexable content).
-        The ticket verification page is marked noindex.
-      */}
-      {isVerificationView ? (
-        <CanonicalTag
-          path={`/verify-ticket/${verifyToken || ""}`}
-          noindex
-        />
-      ) : view !== "image" ? (
-        <CanonicalTag path={window.location.pathname} />
-      ) : null}
+      {view === "home" && window.location.pathname === "/" && (
+        <CanonicalTag path="/" />
+      )}
 
       <div
         className={`min-h-screen flex flex-col ${
@@ -1113,8 +1095,7 @@ export default function App() {
             {remainingTickets !== null && remainingTickets > 0 && (
               <HolidaySystem onNavigate={navigate} />
             )}
-            {/* Pass the bootstrap data to avoid an extra /recent_winners call */}
-            <RecentWinners data={recentWinnersData} />
+            <RecentWinners />
           </>
         )}
 
