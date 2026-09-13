@@ -1079,7 +1079,20 @@ export default function App() {
         <title>Home – Goodwillstores</title>
       </Helmet>
 
-      {view === "home" && <CanonicalTag path="/" />}
+      {/*
+        Canonical tag – always reflects the current URL so Google
+        sees one canonical per route. Skipped only for the
+        full-screen image overlay (not indexable content).
+        The ticket verification page is marked noindex.
+      */}
+      {isVerificationView ? (
+        <CanonicalTag
+          path={`/verify-ticket/${verifyToken || ""}`}
+          noindex
+        />
+      ) : view !== "image" ? (
+        <CanonicalTag path={window.location.pathname} />
+      ) : null}
 
       <div
         className={`min-h-screen flex flex-col ${
