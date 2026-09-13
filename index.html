@@ -41,13 +41,13 @@
     <meta name="theme-color" content="#1E3A8A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <!-- Preconnect to critical third‑party origins -->
+    <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.paypal.com" crossorigin />
     <link rel="preconnect" href="https://api-m.paypal.com" crossorigin />
+    <link rel="preconnect" href="https://goodwill-backend-kjn5.onrender.com" crossorigin />
 
-    <!-- Preload critical assets (start fetching early without blocking) -->
-    <link rel="preload" href="/assets/index-Jc9LRU1E.css" as="style" fetchpriority="high" />
-    <link rel="modulepreload" href="/src/main.jsx" as="script" fetchpriority="high" />
+    <!-- Preconnect DNS for the backend's DNS + TLS handshake -->
+    <link rel="dns-prefetch" href="https://goodwill-backend-kjn5.onrender.com" />
 
     <!-- ⚡ CRITICAL CSS (inlined – ensures above‑the‑fold styles are applied immediately) -->
     <style>
@@ -86,20 +86,6 @@
         position: relative;
       }
     </style>
-
-    <!-- 🚀 Deferred full CSS (loads after paint, never blocks rendering) -->
-    <script>
-      window.addEventListener('load', function() {
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        // Vite replaces this path with the correct hashed filename during build
-        link.href = '/assets/index-Jc9LRU1E.css';
-        document.head.appendChild(link);
-      });
-    </script>
-    <noscript>
-      <link rel="stylesheet" href="/assets/index-Jc9LRU1E.css" />
-    </noscript>
 
     <!-- Manifest with version query to force refresh -->
     <link rel="manifest" href="/manifest.json?v=2026" />
