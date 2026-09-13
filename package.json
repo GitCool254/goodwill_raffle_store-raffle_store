@@ -46,6 +46,7 @@
     "sharp": "^0.35.4",
     "svgo": "^4.1.0",
     "tailwindcss": "^4.1.15",
-    "vite-plugin-image-optimizer": "^2.0.3"
+    "vite-plugin-image-optimizer": "^2.0.3",
+    "vite-plugin-singlefile": "^2.3.3"
   }
 }

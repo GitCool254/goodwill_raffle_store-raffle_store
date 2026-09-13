@@ -304,7 +304,6 @@ function Row({ label, value, mono = false, statusType = null }) {
       <span style={{ color: "#64748b", flex: "0 0 auto" }}>{label}:</span>
       <span
         style={{
-          fontWeight,
           color: highlightColor,
           fontFamily: mono
             ? 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace'

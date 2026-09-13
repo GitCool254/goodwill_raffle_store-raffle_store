@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { viteSingleFile } from 'vite-plugin-singlefile'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -50,26 +51,23 @@ export default defineConfig({
     }),
     // Bundle visualizer – generates a report after build
     visualizer({
-      open: true, // automatically open report in browser
+      open: false, // do NOT auto-open during CI/Vercel builds
       gzipSize: true,
       brotliSize: true,
       filename: 'dist/stats.html', // output file
     }),
+    // Inline all CSS and JS into a single index.html so there are
+    // zero render-blocking CSS requests on the critical path.
+    viteSingleFile(),
   ],
 
   build: {
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Split vendor libraries into separate chunks
-          vendor: ['react', 'react-dom', 'react-helmet-async'],
-          // You can add more specific chunks if needed, e.g.:
-          // ui: ['some-ui-library'],
-        },
-      },
-    },
-    chunkSizeWarningLimit: 500, // increase warning limit if needed
+    // viteSingleFile needs these settings to be able to inline everything
+    cssCodeSplit: false,
+    assetsInlineLimit: 100000000,
+    chunkSizeWarningLimit: 100000000,
+    // manualChunks removed — incompatible with single-file bundling
   },
 
   server: {
