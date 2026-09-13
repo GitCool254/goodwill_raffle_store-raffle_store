@@ -1,50 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function RecentWinners({ data }) {
-  const [winners, setWinners] = useState([]);
-  const [show, setShow] = useState(false);
+export default function RecentWinners({ show: propShow, winners: propWinners }) {
+  // If the parent supplies both props, we trust them and skip our own fetch.
+  const useExternalData = propWinners !== undefined && propShow !== undefined;
+
+  const [internalWinners, setInternalWinners] = useState([]);
+  const [internalShow, setInternalShow] = useState(false);
+
+  // Final values used for rendering.
+  const winners = useExternalData ? propWinners : internalWinners;
+  const show = useExternalData ? propShow : internalShow;
+
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const animationRef = useRef(null);
 
+  // Fallback fetch — only when App.jsx does NOT supply data.
   useEffect(() => {
-    // ---------------------------------------------
-    // CONTROLLED MODE:
-    // If a `data` prop is provided (even null while loading),
-    // we never fetch. We simply reflect the parent's data.
-    // ---------------------------------------------
-    if (data !== undefined) {
-      if (data === null) {
-        // Still loading — keep the component hidden and idle.
-        setShow(false);
-        setWinners([]);
-        return;
-      }
-      setShow(!!data.show);
-      setWinners(Array.isArray(data.winners) ? data.winners : []);
-      return;
-    }
+    if (useExternalData) return;
 
-    // ---------------------------------------------
-    // UNCONTROLLED MODE (fallback):
-    // Only used if <RecentWinners /> is rendered without the `data` prop.
-    // Preserves backward compatibility with the old behavior.
-    // ---------------------------------------------
     const fetchWinners = async () => {
       try {
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/recent_winners`
         );
-        const json = await res.json();
-        setShow(json.show);
-        setWinners(json.winners || []);
+        const data = await res.json();
+        setInternalShow(data.show);
+        setInternalWinners(data.winners || []);
       } catch (err) {
         console.error("Failed to fetch recent winners:", err);
-        setShow(false);
-        setWinners([]);
+        setInternalShow(false);
+        setInternalWinners([]);
       }
     };
 
+    // Defer the fetch to avoid blocking initial render.
     const deferFetch = () => {
       if ("requestIdleCallback" in window) {
         window.requestIdleCallback(() => {
@@ -56,7 +46,7 @@ export default function RecentWinners({ data }) {
     };
 
     deferFetch();
-  }, [data]);
+  }, [useExternalData]);
 
   const statementText =
     "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
@@ -174,6 +164,7 @@ export default function RecentWinners({ data }) {
           border: none;
         }
 
+        /* Simple solid lines (0px height — kept for parity) */
         .marquee-container::before,
         .marquee-container::after {
           content: '';

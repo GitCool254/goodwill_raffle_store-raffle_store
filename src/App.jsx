@@ -43,6 +43,12 @@ export default function App() {
   const [showWinnersDetail, setShowWinnersDetail] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Recent winners payload delivered via /bootstrap
+  const [recentWinnersData, setRecentWinnersData] = useState({
+    show: false,
+    winners: [],
+  });
+
   // --- Ticket verification ---
   const [verifyToken, setVerifyToken] = useState(null);
 
@@ -83,6 +89,8 @@ export default function App() {
   }, [products]);
 
   // -------------------- DEFERRED INITIAL FETCH --------------------
+  // Now uses a SINGLE /bootstrap call that returns:
+  //   { ticket_state, winners_toggle, recent_winners }
   useEffect(() => {
     let isMounted = true;
     let intervalId;
@@ -109,14 +117,18 @@ export default function App() {
 
     async function fetchInitialData() {
       try {
-        const [ticketStateRes, toggleRes] = await Promise.all([
-          fetch(`${backendUrl}/ticket_state`),
-          fetch(`${backendUrl}/winners_detail_toggle`),
-        ]);
+        const bootstrapRes = await fetch(`${backendUrl}/bootstrap`);
+        const bootstrap = await bootstrapRes.json();
 
         if (!isMounted) return;
 
-        const ticketData = await ticketStateRes.json();
+        const ticketData = bootstrap.ticket_state || {};
+        const toggleData = bootstrap.winners_toggle || {};
+        const recentData = bootstrap.recent_winners || {
+          show: false,
+          winners: [],
+        };
+
         if (!isNaN(ticketData.remaining)) {
           setRemainingTickets(Number(ticketData.remaining));
         }
@@ -125,17 +137,24 @@ export default function App() {
         }
         setTicketStateLoaded(true);
 
-        const toggleData = await toggleRes.json();
         setShowWinnersDetail(toggleData.show ?? true);
+        setRecentWinnersData({
+          show: !!recentData.show,
+          winners: Array.isArray(recentData.winners)
+            ? recentData.winners
+            : [],
+        });
       } catch (err) {
-        console.error("Failed to fetch initial data:", err);
+        console.error("Failed to fetch bootstrap data:", err);
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
+        setRecentWinnersData({ show: false, winners: [] });
       }
     }
 
     fetchAfterPaint();
 
+    // Lightweight polling: only refresh the ticket_state slice.
     intervalId = setInterval(() => {
       if (!isMounted) return;
       fetch(`${backendUrl}/ticket_state`)
@@ -1072,9 +1091,7 @@ export default function App() {
         <title>Home – Goodwillstores</title>
       </Helmet>
 
-      {view === "home" && window.location.pathname === "/" && (
-        <CanonicalTag path="/" />
-      )}
+      {view === "home" && <CanonicalTag path="/" />}
 
       <div
         className={`min-h-screen flex flex-col ${
@@ -1095,7 +1112,10 @@ export default function App() {
             {remainingTickets !== null && remainingTickets > 0 && (
               <HolidaySystem onNavigate={navigate} />
             )}
-            <RecentWinners />
+            <RecentWinners
+              show={recentWinnersData.show}
+              winners={recentWinnersData.winners}
+            />
           </>
         )}
 
