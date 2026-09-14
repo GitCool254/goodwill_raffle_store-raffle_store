@@ -238,7 +238,7 @@ export default function VerifyTicket({ token }) {
                   textAlign: "center",
                 }}
               >
-                Thank you for participating in the raffle. We truly appreciate your support. Your ticket was not selected in the current draw and is no longer eligible for this raffle. We warmly invite you to join our upcoming raffle campaign for another opportunity to win. \nStay persistent. Every opportunity brings you closer to the next possibility.
+                Thank you for participating in the raffle. We truly appreciate your support. Your ticket was not selected in the current draw and is no longer eligible for this raffle. We warmly invite you to join our upcoming raffle campaign for another opportunity to win. <br /><strong>Stay persistent. Every opportunity brings you closer to the next possibility.</strong>
               </p>
             ) : (
               <p
