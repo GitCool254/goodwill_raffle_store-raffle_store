@@ -759,45 +759,51 @@ export default function MyTickets() {
 
             {/* ═══════════════════════════════════════════════════════════
                 CLAIMED TICKET SECTION
-                Shown only when the backend confirms the ticket has
-                been claimed (already won in a previous draw).
+                White container with shadow — matches the ticket
+                verification feature style.
                 ═══════════════════════════════════════════════════════════ */}
             {claimedTicket && isDrawDone && (
-              <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <div className="mt-4 p-4 bg-white rounded-xl shadow-md border border-slate-100">
                 {/* Header */}
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg">✅</span>
-                  <p className="text-sm font-semibold text-emerald-800">
+                  <p className="text-sm font-semibold text-slate-800">
                     Ticket Claimed
                   </p>
                 </div>
 
                 {/* Structured details */}
-                <div className="space-y-2 text-sm text-emerald-900">
+                <div className="space-y-2 text-sm text-slate-700">
                   <div className="flex">
-                    <span className="w-32 text-emerald-700">Ticket No:</span>
-                    <span className="font-mono">
+                    <span className="w-32 text-slate-500">Ticket No:</span>
+                    <span className="font-mono text-slate-800">
                       {claimedTicket.ticket_no}
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-emerald-700">Claimed by:</span>
-                    <span className="font-medium">{claimedTicket.name}</span>
+                    <span className="w-32 text-slate-500">Claimed by:</span>
+                    <span className="font-medium text-slate-800">
+                      {claimedTicket.name}
+                    </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-emerald-700">Prize won:</span>
-                    <span className="font-medium">{claimedTicket.prize}</span>
+                    <span className="w-32 text-slate-500">Prize won:</span>
+                    <span className="font-medium text-slate-800">
+                      {claimedTicket.prize}
+                    </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-emerald-700">
+                    <span className="w-32 text-slate-500">
                       Date claimed:
                     </span>
-                    <span>{claimedTicket.date_claimed || "—"}</span>
+                    <span className="text-slate-800">
+                      {claimedTicket.date_claimed || "—"}
+                    </span>
                   </div>
                 </div>
 
                 {/* Minimal, modern, professional closing note */}
-                <p className="text-xs text-emerald-700 mt-3 italic">
+                <p className="text-xs text-slate-500 mt-3 italic">
                   Thank you for being part of this campaign. A new raffle is
                   coming soon — we'd love to see you again.
                 </p>
@@ -805,36 +811,32 @@ export default function MyTickets() {
             )}
 
             {/* ───────────────────────────────────────────────────────────
-                APOLOGY NOTE — unchanged from before
-                Shown only after a check has been performed AND the
-                ticket was NOT found in the RecentWinners list.
+                APOLOGY NOTE
+                White container with shadow — matches the ticket
+                verification feature style.
                 ─────────────────────────────────────────────────────────── */}
             {ticketCheckPerformed && !claimedTicket && isDrawDone && (
               <div
-                className="mt-4 p-3 bg-amber-50 rounded-lg"
-                style={{
-                  fontSize: "1rem",
-                  color: "#64748b",
-                  marginBottom: "10px",
-                }}
+                className="mt-4 p-4 bg-white rounded-xl shadow-md border border-slate-100"
+                style={{ marginBottom: "10px" }}
               >
                 {/* Rainbow border line above the note */}
                 <div
                   style={{
                     width: "100%",
                     height: "2px",
-                    marginTop: "10px",
-                    marginBottom: "10px",
+                    marginTop: "4px",
+                    marginBottom: "14px",
                     background:
                       "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
                     backgroundSize: "200% auto",
                     animation: "rainbowMove 4s linear infinite",
                   }}
                 />
-                <p className="text-sm font-semibold text-amber-800">
+                <p className="text-sm font-semibold text-slate-800">
                   🙏 Not This Time
                 </p>
-                <p className="text-sm text-amber-700 mt-1">
+                <p className="text-sm text-slate-600 mt-1">
                   Thank you for your trust and participation. Your ticket number
                   wasn't selected in this draw, but your support makes our
                   programs possible. Stay tuned — a new raffle campaign begins
