@@ -10,11 +10,6 @@ const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
 
-// Unified font + color for the two result sections
-// (matches the ticket-verification page style)
-const RESULT_FONT =
-  "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-
 export default function MyTickets() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -249,19 +244,6 @@ export default function MyTickets() {
     }
   };
 
-  // Kept for compatibility, but no longer invoked from UI
-  async function handleCashOut(orderId, productMarketPrice) {
-    alert(
-      `You have chosen to cash out $${productMarketPrice} for order ${orderId}. This feature will be implemented with backend integration.`
-    );
-  }
-
-  async function handleClaimItem(orderId) {
-    alert(
-      `You have chosen to receive the prize item for order ${orderId}. Our team will contact you shortly.`
-    );
-  }
-
   // Referral handlers
   const fetchReferralCode = async () => {
     if (!email || !isValidEmail(email)) {
@@ -316,6 +298,20 @@ export default function MyTickets() {
       setReferralCode("");
     }
   }, [email]);
+
+  // Shared card style for the two ticket-status result sections
+  const resultCardStyle = {
+    backgroundColor: "#ffffff",
+    maxWidth: "480px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "20px",
+    marginBottom: "20px",
+    padding: "24px",
+    borderRadius: "16px",
+    boxShadow:
+      "0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05)",
+  };
 
   return (
     <>
@@ -510,19 +506,14 @@ export default function MyTickets() {
                         </p>
                         <div className="flex gap-3">
                           <button
-                            onClick={() => handleClaimItem(t.order_id)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                            disabled
+                            className="px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
                           >
                             Claim Item
                           </button>
                           <button
-                            onClick={() =>
-                              handleCashOut(
-                                t.order_id,
-                                t.product_market_price
-                              )
-                            }
-                            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                            disabled
+                            className="px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
                           >
                             Cash Out (${t.product_market_price})
                           </button>
@@ -703,7 +694,7 @@ export default function MyTickets() {
             grateful to have you with us. Best of luck!
           </p>
 
-          {/* Plain rows for claims — buttons disabled permanently (already claimed in past) */}
+          {/* Plain rows for claims */}
           <div className="space-y-3">
             <div className="flex items-center">
               <span
@@ -722,9 +713,8 @@ export default function MyTickets() {
                 Prize Item:
               </span>
               <button
-                type="button"
                 disabled
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-400 cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
               >
                 Claim Item
               </button>
@@ -738,9 +728,8 @@ export default function MyTickets() {
                 Cash Out Money:
               </span>
               <button
-                type="button"
                 disabled
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-400 cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed"
               >
                 Cash Out
               </button>
@@ -748,23 +737,18 @@ export default function MyTickets() {
 
             {/* ═══════════════════════════════════════════════════════════
                 CLAIMED TICKET SECTION
-                — Verify-page style (white container, shadow, unified font)
-                — marginTop/Bottom: 20px
+                White container + soft shadow (verification style).
+                Shows the claim that has already been made in the past.
                 ═══════════════════════════════════════════════════════════ */}
             {claimedTicket && isDrawDone && (
-              <div
-                className="border rounded-xl p-5 bg-white shadow-sm"
-                style={{
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  fontFamily: RESULT_FONT,
-                  color: "#334155",
-                }}
-              >
+              <div style={resultCardStyle}>
                 {/* Header */}
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">✅</span>
-                  <p className="text-sm font-semibold text-slate-800">
+                <div className="flex items-center gap-2 mb-4">
+                  <span style={{ fontSize: "1.25rem" }}>✅</span>
+                  <p
+                    className="text-slate-800"
+                    style={{ fontSize: "1rem", fontWeight: 600 }}
+                  >
                     Ticket Claimed
                   </p>
                 </div>
@@ -790,7 +774,9 @@ export default function MyTickets() {
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-slate-500">Date claimed:</span>
+                    <span className="w-32 text-slate-500">
+                      Date claimed:
+                    </span>
                     <span className="text-slate-800">
                       {claimedTicket.date_claimed || "—"}
                     </span>
@@ -798,7 +784,10 @@ export default function MyTickets() {
                 </div>
 
                 {/* Minimal, modern, professional closing note */}
-                <p className="text-xs text-slate-500 mt-4 italic">
+                <p
+                  className="mt-4 italic text-slate-500"
+                  style={{ fontSize: "0.75rem" }}
+                >
                   Thank you for being part of this campaign. A new raffle is
                   coming soon — we'd love to see you again.
                 </p>
@@ -806,53 +795,31 @@ export default function MyTickets() {
             )}
 
             {/* ───────────────────────────────────────────────────────────
-                NOT THIS TIME (NOT_SELECTED)
-                — Verify-page style (white container, shadow, unified font)
-                — marginTop/Bottom: 20px
+                NOT THIS TIME — apology note
+                Same white container + soft shadow style.
+                No colored border, no rainbow divider.
                 ─────────────────────────────────────────────────────────── */}
             {ticketCheckPerformed && !claimedTicket && isDrawDone && (
-              <div
-                className="border rounded-xl p-5 bg-white shadow-sm"
-                style={{
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  fontFamily: RESULT_FONT,
-                  color: "#334155",
-                }}
-              >
-                {/* Rainbow border line above the note */}
-                <div
-                  style={{
-                    width: "100%",
-                    height: "2px",
-                    marginBottom: "14px",
-                    background:
-                      "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
-                    backgroundSize: "200% auto",
-                    animation: "rainbowMove 4s linear infinite",
-                  }}
-                />
-                <p className="text-sm font-semibold text-slate-800">
+              <div style={resultCardStyle}>
+                <p
+                  className="text-slate-800 mb-2"
+                  style={{ fontSize: "1rem", fontWeight: 600 }}
+                >
                   🙏 Not This Time
                 </p>
-                <p className="text-sm text-slate-600 mt-1">
-                  Thank you for your trust and participation. Your ticket number
-                  wasn't selected in this draw, but your support makes our
-                  programs possible. Stay tuned — a new raffle campaign begins
-                  soon. We'd love to have you with us again.
+                <p
+                  className="text-slate-600"
+                  style={{ fontSize: "0.875rem", lineHeight: 1.6 }}
+                >
+                  Thank you for your trust and participation. Your ticket
+                  number wasn't selected in this draw, but your support makes
+                  our programs possible. Stay tuned — a new raffle campaign
+                  begins soon. We'd love to have you with us again.
                 </p>
               </div>
             )}
           </div>
         </div>
-
-        {/* Rainbow animation keyframes */}
-        <style>{`
-          @keyframes rainbowMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-          }
-        `}</style>
       </div>
     </>
   );
