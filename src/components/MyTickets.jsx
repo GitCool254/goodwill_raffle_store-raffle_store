@@ -756,25 +756,25 @@ export default function MyTickets() {
                 {/* Structured details */}
                 <div className="space-y-2 text-sm text-slate-700">
                   <div className="flex">
-                    <span className="w-32 text-slate-500">Ticket No:</span>
+                    <span className="w-32 text-slate-500" style={{ marginRight: "10px" }} >Ticket No:</span>
                     <span className="font-mono text-slate-800">
                       {claimedTicket.ticket_no}
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-slate-500">Claimed by:</span>
+                    <span className="w-32 text-slate-500" style={{ marginRight: "10px" }} >Claimed by:</span>
                     <span className="font-medium text-slate-800">
                       {claimedTicket.name}
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-slate-500">Prize won:</span>
+                    <span className="w-32 text-slate-500" style={{ marginRight: "10px" }} >Prize won:</span>
                     <span className="font-medium text-slate-800">
                       {claimedTicket.prize}
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-slate-500">
+                    <span className="w-32 text-slate-500" style={{ marginRight: "10px" }} >
                       Date claimed:
                     </span>
                     <span className="text-slate-800">
