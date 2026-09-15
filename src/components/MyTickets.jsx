@@ -18,21 +18,21 @@ export default function MyTickets() {
   const [orderId, setOrderId] = useState("");
   const [orderError, setOrderError] = useState("");
 
-  // New state for ticket number lookup
+  // Ticket number lookup state
   const [ticketNumber, setTicketNumber] = useState("");
   const [ticketNumberError, setTicketNumberError] = useState("");
   const [ticketNumberFocused, setTicketNumberFocused] = useState(false);
-  const [recentWinners, setRecentWinners] = useState([]);
-  const [matchedWinner, setMatchedWinner] = useState(null);
+  const [claimedTicket, setClaimedTicket] = useState(null); // was matchedWinner
   const [ticketCheckPerformed, setTicketCheckPerformed] = useState(false);
+  const [isCheckingTicket, setIsCheckingTicket] = useState(false);
 
-  // State for raffle status (to enable/disable ticket lookup)
+  // Raffle status (to enable/disable ticket lookup)
   const [remainingTickets, setRemainingTickets] = useState(null);
   const [ticketStateLoaded, setTicketStateLoaded] = useState(false);
 
   const [focusedField, setFocusedField] = useState(null);
 
-  // --- Referral states ---
+  // Referral states
   const [referralCode, setReferralCode] = useState("");
   const [referralCredits, setReferralCredits] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -53,24 +53,9 @@ export default function MyTickets() {
     fetchTicketState();
   }, []);
 
-  // Fetch recent winners on component mount
-  useEffect(() => {
-    const fetchRecentWinners = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recent_winners`);
-        const data = await res.json();
-        if (data.show && data.winners) {
-          setRecentWinners(data.winners);
-        }
-      } catch (err) {
-        console.error("Failed to fetch recent winners:", err);
-      }
-    };
-    fetchRecentWinners();
-  }, []);
-
   // Determine if the draw is done (no tickets remaining)
-  const isDrawDone = ticketStateLoaded && remainingTickets !== null && remainingTickets === 0;
+  const isDrawDone =
+    ticketStateLoaded && remainingTickets !== null && remainingTickets === 0;
 
   // Validate ticket number format: GWS-XXXXXXXX (case-insensitive, 8 alphanumeric)
   const isValidTicketFormat = (ticket) => {
@@ -93,9 +78,7 @@ export default function MyTickets() {
     }
 
     try {
-      const payload = {
-        email: email.trim().toLowerCase(),
-      };
+      const payload = { email: email.trim().toLowerCase() };
 
       const nonce = crypto.randomUUID();
       const payloadWithNonce = { ...payload, nonce };
@@ -111,9 +94,7 @@ export default function MyTickets() {
         body: JSON.stringify(payloadWithNonce),
       });
 
-      if (!res.ok) {
-        throw new Error("Fetch failed");
-      }
+      if (!res.ok) throw new Error("Fetch failed");
 
       const data = await res.json();
       setTickets(data.orders || []);
@@ -133,9 +114,7 @@ export default function MyTickets() {
     }
 
     try {
-      const payload = {
-        order_id: orderId.trim(),
-      };
+      const payload = { order_id: orderId.trim() };
 
       const nonce = crypto.randomUUID();
       const payloadWithNonce = { ...payload, nonce };
@@ -156,7 +135,6 @@ export default function MyTickets() {
 
       if (!res.ok) {
         let errorMsg = "Re-download failed. Please contact support.";
-
         try {
           const errJson = await res.json();
           if (res.status === 410 && errJson.error === "TICKET_EXPIRED") {
@@ -180,7 +158,6 @@ export default function MyTickets() {
         } catch {
           errorMsg = "Unexpected error occurred during re-download.";
         }
-
         setOrderError(errorMsg);
         return;
       }
@@ -204,19 +181,18 @@ export default function MyTickets() {
     }
   }
 
-  // Ticket number lookup handler with format validation
-  const handleTicketNumberLookup = (e) => {
+  // ----- Ticket number lookup (backend is the source of truth) -----
+  const handleTicketNumberLookup = async (e) => {
     e.preventDefault();
     setTicketNumberError("");
-    setMatchedWinner(null);
-    setTicketCheckPerformed(false); // Reset to false initially
+    setClaimedTicket(null);
+    setTicketCheckPerformed(false);
 
     if (!ticketNumber.trim()) {
       setTicketNumberError("Please enter a ticket number.");
       return;
     }
 
-    // Validate format
     if (!isValidTicketFormat(ticketNumber)) {
       setTicketNumberError(
         "Invalid ticket format. Please use format: GWS-XXXXXXXX (e.g., GWS-WA0P1KQ, case insensitive, 8 alphanumeric characters after the dash)."
@@ -224,42 +200,78 @@ export default function MyTickets() {
       return;
     }
 
-    // Only set ticketCheckPerformed to true when format is valid
-    setTicketCheckPerformed(true);
+    setIsCheckingTicket(true);
 
-    const normalizedTicket = ticketNumber.trim().toUpperCase();
-    const foundWinner = recentWinners.find(
-      (winner) => winner.ticket_no.toUpperCase() === normalizedTicket
-    );
+    try {
+      const normalizedTicket = ticketNumber.trim().toUpperCase();
 
-    if (foundWinner) {
-      setMatchedWinner(foundWinner);
-    } else {
-      setMatchedWinner(null);
+      const nonce = crypto.randomUUID();
+      const payloadWithNonce = { ticket_no: normalizedTicket, nonce };
+      const timestamp = Math.floor(Date.now() / 1000);
+
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/check_ticket_status`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Nonce": nonce,
+            "X-Timestamp": timestamp.toString(),
+          },
+          body: JSON.stringify(payloadWithNonce),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Ticket status check failed");
+      }
+
+      const data = await res.json();
+
+      // Backend is the source of truth
+      if (data.status === "CLAIMED" && data.winner) {
+        setClaimedTicket(data.winner);
+      } else {
+        setClaimedTicket(null);
+      }
+      setTicketCheckPerformed(true);
+    } catch (err) {
+      console.error("Ticket status check failed:", err);
+      setTicketNumberError(
+        "Could not verify this ticket right now. Please try again."
+      );
+    } finally {
+      setIsCheckingTicket(false);
     }
   };
 
-  // Cash-out option handler (placeholder)
   async function handleCashOut(orderId, productMarketPrice) {
-    alert(`You have chosen to cash out $${productMarketPrice} for order ${orderId}. This feature will be implemented with backend integration.`);
+    alert(
+      `You have chosen to cash out $${productMarketPrice} for order ${orderId}. This feature will be implemented with backend integration.`
+    );
   }
 
   async function handleClaimItem(orderId) {
-    alert(`You have chosen to receive the prize item for order ${orderId}. Our team will contact you shortly.`);
+    alert(
+      `You have chosen to receive the prize item for order ${orderId}. Our team will contact you shortly.`
+    );
   }
 
-  // --- Referral handlers ---
+  // Referral handlers
   const fetchReferralCode = async () => {
     if (!email || !isValidEmail(email)) {
       alert("Please enter a valid email address first.");
       return;
     }
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/generate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() })
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/referral/generate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        }
+      );
       const data = await res.json();
       if (data.code) {
         setReferralCode(data.code);
@@ -276,11 +288,14 @@ export default function MyTickets() {
   const fetchReferralRewards = async () => {
     if (!email || !isValidEmail(email)) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/referral/rewards`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() })
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/referral/rewards`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        }
+      );
       const data = await res.json();
       setReferralCredits(data.credits || 0);
     } catch (err) {
@@ -288,7 +303,6 @@ export default function MyTickets() {
     }
   };
 
-  // When email changes (and is valid), fetch rewards (credits)
   useEffect(() => {
     if (email && isValidEmail(email)) {
       fetchReferralRewards();
@@ -302,7 +316,10 @@ export default function MyTickets() {
     <>
       <Helmet>
         <title>My Tickets – Goodwillstores</title>
-        <meta name="description" content="View your raffle tickets, re‑download your tickets, and check your ticket status. Stay updated on your entries and potential wins." />
+        <meta
+          name="description"
+          content="View your raffle tickets, re‑download your tickets, and check your ticket status. Stay updated on your entries and potential wins."
+        />
       </Helmet>
 
       <CanonicalTag path="/tickets" />
@@ -311,10 +328,7 @@ export default function MyTickets() {
         className="max-w-3xl mx-auto p-6 text-left"
         style={{ backgroundColor: "#f8fafc" }}
       >
-        <h1
-          className="font-bold mb-4"
-          style={{ fontSize: "1.2rem" }}
-        >
+        <h1 className="font-bold mb-4" style={{ fontSize: "1.2rem" }}>
           🎟️ My Tickets
         </h1>
 
@@ -347,9 +361,7 @@ export default function MyTickets() {
             />
 
             {orderError && (
-              <div className="text-red-600 text-sm mb-2">
-                {orderError}
-              </div>
+              <div className="text-red-600 text-sm mb-2">{orderError}</div>
             )}
 
             <button
@@ -358,13 +370,7 @@ export default function MyTickets() {
             >
               Re-download by Order ID
             </button>
-            <p
-              className="mt-2"
-              style={{
-                fontSize: "0.75rem",
-                color: "#64748b",
-              }}
-            >
+            <p className="mt-2" style={{ fontSize: "0.75rem", color: "#64748b" }}>
               Maximum of 3 re-downloads per order.
             </p>
           </form>
@@ -373,15 +379,11 @@ export default function MyTickets() {
           <p className="text-sm text-slate-600">
             Enter the email address you used during ticket purchase to view all your generated tickets.
           </p>
-          {/* NEW NOTE: referral code info */}
           <p
             className="mt-1"
-            style={{
-              fontSize: "0.875rem",
-              color: "#64748b",
-            }}
+            style={{ fontSize: "0.875rem", color: "#64748b" }}
           >
-            ℹ️  Simply enter your email, then click "Get My Referral Code" below to receive your unique referral link.
+            ℹ️ Simply enter your email, then click "Get My Referral Code" below to receive your unique referral link.
           </p>
         </div>
 
@@ -413,9 +415,7 @@ export default function MyTickets() {
           />
 
           {error && (
-            <div className="text-red-600 text-sm mb-2">
-              {error}
-            </div>
+            <div className="text-red-600 text-sm mb-2">{error}</div>
           )}
 
           <button
@@ -428,7 +428,7 @@ export default function MyTickets() {
 
         <br />
 
-        {/* RESULTS - moved directly after the "View My Tickets" button */}
+        {/* RESULTS */}
         {tickets && (
           <>
             {tickets.length === 0 ? (
@@ -443,35 +443,45 @@ export default function MyTickets() {
                     className="border rounded-xl p-4 bg-white shadow-sm"
                     style={{ paddingLeft: "10px", marginTop: "20px" }}
                   >
-                    {/* ORDER ID */}
-                    <LabelWithBullet label="Order ID:" className="text-sm text-slate-800">
+                    <LabelWithBullet
+                      label="Order ID:"
+                      className="text-sm text-slate-800"
+                    >
                       {t.order_id}
                     </LabelWithBullet>
 
-                    {/* PRODUCT */}
                     {(t.product_name || t.product_id || t.product) && (
-                      <LabelWithBullet label="Product:" className="text-sm text-slate-700 mt-2">
+                      <LabelWithBullet
+                        label="Product:"
+                        className="text-sm text-slate-700 mt-2"
+                      >
                         {t.product_name || t.product_id || t.product}
                       </LabelWithBullet>
                     )}
 
-                    {/* MARKET PRICE (if winner) */}
                     {t.winner && t.product_market_price && (
-                      <LabelWithBullet label="Market value:" className="text-sm text-emerald-600 font-semibold mt-2">
+                      <LabelWithBullet
+                        label="Market value:"
+                        className="text-sm text-emerald-600 font-semibold mt-2"
+                      >
                         ${t.product_market_price}
                       </LabelWithBullet>
                     )}
 
-                    {/* QUANTITY */}
                     {typeof t.quantity === "number" && (
-                      <LabelWithBullet label="Quantity:" className="text-sm text-slate-700 mt-2">
+                      <LabelWithBullet
+                        label="Quantity:"
+                        className="text-sm text-slate-700 mt-2"
+                      >
                         {t.quantity}
                       </LabelWithBullet>
                     )}
 
-                    {/* TICKET NUMBERS */}
                     {Array.isArray(t.tickets) && t.tickets.length > 0 && (
-                      <LabelWithBullet label="Ticket No:" className="text-sm text-slate-700 mt-2">
+                      <LabelWithBullet
+                        label="Ticket No:"
+                        className="text-sm text-slate-700 mt-2"
+                      >
                         <div className="mt-1 flex flex-col gap-1">
                           {t.tickets.map((no, idx) => (
                             <span
@@ -485,7 +495,6 @@ export default function MyTickets() {
                       </LabelWithBullet>
                     )}
 
-                    {/* WINNER OPTIONS */}
                     {t.winner && (
                       <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
                         <p className="text-sm font-semibold text-yellow-800 mb-2">
@@ -502,7 +511,12 @@ export default function MyTickets() {
                             Claim Item
                           </button>
                           <button
-                            onClick={() => handleCashOut(t.order_id, t.product_market_price)}
+                            onClick={() =>
+                              handleCashOut(
+                                t.order_id,
+                                t.product_market_price
+                              )
+                            }
                             className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
                           >
                             Cash Out (${t.product_market_price})
@@ -511,9 +525,11 @@ export default function MyTickets() {
                       </div>
                     )}
 
-                    {/* DATE / TIME */}
                     {t.date && (
-                      <LabelWithBullet label="Generated on:" className="text-xs text-slate-500 mt-3">
+                      <LabelWithBullet
+                        label="Generated on:"
+                        className="text-xs text-slate-500 mt-3"
+                      >
                         {new Date(t.date).toLocaleString()}
                       </LabelWithBullet>
                     )}
@@ -532,9 +548,14 @@ export default function MyTickets() {
         </h2>
 
         {/* REFERRAL SECTION */}
-        <div className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200" style={{ paddingLeft: "5px", marginBottom: "10px" }}>
+        <div
+          className="mb-3 p-4 bg-blue-50 rounded-lg border border-blue-200"
+          style={{ paddingLeft: "5px", marginBottom: "10px" }}
+        >
           <p className="text-sm text-slate-600 mb-3">
-            Invite someone to join Goodwillstores. When they purchase <strong>3 or more tickets</strong>, you receive <strong>1 free ticket credit</strong>.
+            Invite someone to join Goodwillstores. When they purchase{" "}
+            <strong>3 or more tickets</strong>, you receive{" "}
+            <strong>1 free ticket credit</strong>.
           </p>
           {email ? (
             <>
@@ -549,14 +570,21 @@ export default function MyTickets() {
                 {referralCode && (
                   <>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-slate-700" style={{ marginRight: "5px" }}>Referral code:</span>
+                      <span
+                        className="text-sm font-medium text-slate-700"
+                        style={{ marginRight: "5px" }}
+                      >
+                        Referral code:
+                      </span>
                       <code className="bg-gray-100 px-2 py-1 rounded text-sm">
                         {referralCode}
                       </code>
                     </div>
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}?ref=${referralCode}`);
+                        navigator.clipboard.writeText(
+                          `${window.location.origin}?ref=${referralCode}`
+                        );
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2000);
                       }}
@@ -565,33 +593,35 @@ export default function MyTickets() {
                     >
                       {copied ? "Copied!" : "Copy link"}
                     </button>
-                    {/* Informative note after copy link */}
                     <p
                       className="mt-1"
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "#64748b",
-                      }}
+                      style={{ fontSize: "0.875rem", color: "#64748b" }}
                     >
-                      Share this link with friends to  earn free ticket credit!
+                      Share this link with friends to earn free ticket credit!
                     </p>
                   </>
                 )}
               </div>
               {referralCredits > 0 && (
                 <div className="text-sm text-emerald-700 font-medium">
-                  🎉 You have {referralCredits} free ticket credit(s)! Use them on your next purchase.
+                  🎉 You have {referralCredits} free ticket credit(s)! Use them
+                  on your next purchase.
                 </div>
               )}
             </>
           ) : (
-            <p className="text-sm text-slate-500">Enter your email above to get your referral code.</p>
+            <p className="text-sm text-slate-500">
+              Enter your email above to get your referral code.
+            </p>
           )}
         </div>
 
-        {/* TICKET NUMBER LOOKUP SECTION - Visible but disabled when draw not done */}
+        {/* TICKET NUMBER LOOKUP SECTION */}
         <div className="mb-8" style={{ marginTop: "30px" }}>
-          <h2 className="text-lg font-semibold mb-3" style={{ fontSize: "1.2rem" }}>
+          <h2
+            className="text-lg font-semibold mb-3"
+            style={{ fontSize: "1.2rem" }}
+          >
             Check Your Ticket Status
           </h2>
 
@@ -601,7 +631,8 @@ export default function MyTickets() {
               style={{ marginTop: "15px", marginBottom: "15px" }}
             >
               <p className="text-sm text-yellow-800">
-                ℹ️ The raffle draw has not yet taken place. Ticket status checking will be available after the draw is completed.
+                ℹ️ The raffle draw has not yet taken place. Ticket status
+                checking will be available after the draw is completed.
               </p>
             </div>
           )}
@@ -637,35 +668,38 @@ export default function MyTickets() {
             />
 
             {ticketNumberError && (
-              <div className="text-red-600 text-sm mb-2" style={{ marginTop: '10px', marginBottom: '10px' }}>
+              <div
+                className="text-red-600 text-sm mb-2"
+                style={{ marginTop: "10px", marginBottom: "10px" }}
+              >
                 {ticketNumberError}
               </div>
             )}
 
             <button
               type="submit"
-              disabled={!isDrawDone}
+              disabled={!isDrawDone || isCheckingTicket}
               className={`px-6 py-2 rounded-lg font-semibold transition ${
-                isDrawDone
+                isDrawDone && !isCheckingTicket
                   ? "bg-sky-600 text-white hover:bg-sky-700 cursor-pointer"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-              Check Ticket Number
+              {isCheckingTicket ? "Checking…" : "Check Ticket Number"}
             </button>
           </form>
 
-          {/* Instruction text with added space below */}
           <p
             className="mt-2 text-xs text-slate-600 mb-6 leading-relaxed"
             style={{ fontSize: "0.875rem", color: "#64748b" }}
           >
-            Please enter your ticket number to check if it has been selected. If selected, you may claim the prize item or its cash value. We're grateful to have you with us. Best of luck!
+            Please enter your ticket number to check if it has been selected. If
+            selected, you may claim the prize item or its cash value. We're
+            grateful to have you with us. Best of luck!
           </p>
 
           {/* Plain rows for claims */}
           <div className="space-y-3">
-            {/* Claims label row */}
             <div className="flex items-center">
               <span
                 className="w-24 text-sm font-medium text-slate-700"
@@ -675,7 +709,6 @@ export default function MyTickets() {
               </span>
             </div>
 
-            {/* Prize Item button row */}
             <div className="flex items-center" style={{ marginBottom: "5px" }}>
               <span
                 className="w-24 text-sm text-slate-600"
@@ -684,10 +717,12 @@ export default function MyTickets() {
                 Prize Item:
               </span>
               <button
-                onClick={() => matchedWinner && handleClaimItem(matchedWinner.ticket_no)}
-                disabled={!matchedWinner || !isDrawDone}
+                onClick={() =>
+                  claimedTicket && handleClaimItem(claimedTicket.ticket_no)
+                }
+                disabled={!claimedTicket || !isDrawDone}
                 className={`px-4 py-2 rounded-lg transition ${
-                  matchedWinner && isDrawDone
+                  claimedTicket && isDrawDone
                     ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
@@ -696,7 +731,6 @@ export default function MyTickets() {
               </button>
             </div>
 
-            {/* Cash Out Money button row */}
             <div className="flex items-center">
               <span
                 className="w-24 text-sm text-slate-600"
@@ -705,38 +739,84 @@ export default function MyTickets() {
                 Cash Out Money:
               </span>
               <button
-                onClick={() => matchedWinner && handleCashOut(matchedWinner.ticket_no, matchedWinner.prize)}
-                disabled={!matchedWinner || !isDrawDone}
+                onClick={() =>
+                  claimedTicket &&
+                  handleCashOut(claimedTicket.ticket_no, claimedTicket.prize)
+                }
+                disabled={!claimedTicket || !isDrawDone}
                 className={`px-4 py-2 rounded-lg transition ${
-                  matchedWinner && isDrawDone
+                  claimedTicket && isDrawDone
                     ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                Cash Out {matchedWinner && matchedWinner.cash_out ? `(${matchedWinner.prize})` : ""}
+                Cash Out{" "}
+                {claimedTicket && claimedTicket.cash_out
+                  ? `(${claimedTicket.prize})`
+                  : ""}
               </button>
             </div>
 
-            {/* Congratulatory message (only appears when a winning ticket is found) */}
-            {matchedWinner && isDrawDone && (
-              <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                <p className="text-sm font-semibold text-green-800">
-                  Congratulations! Your ticket number has been selected.
-                </p>
-                <p className="text-sm text-green-700 mt-1">
-                  You may now choose to claim the prize item or receive its cash value. Thank you for being part of this campaign — we look forward to seeing you in our upcoming raffles.
-                </p>
-                <p className="text-sm text-green-700 mt-1">
-                  You have won: {matchedWinner.cash_out ? `$${matchedWinner.prize} cash` : matchedWinner.prize}
+            {/* ═══════════════════════════════════════════════════════════
+                CLAIMED TICKET SECTION
+                Shown only when the backend confirms the ticket has
+                been claimed (already won in a previous draw).
+                ═══════════════════════════════════════════════════════════ */}
+            {claimedTicket && isDrawDone && (
+              <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+                {/* Header */}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">✅</span>
+                  <p className="text-sm font-semibold text-emerald-800">
+                    Ticket Claimed
+                  </p>
+                </div>
+
+                {/* Structured details */}
+                <div className="space-y-2 text-sm text-emerald-900">
+                  <div className="flex">
+                    <span className="w-32 text-emerald-700">Ticket No:</span>
+                    <span className="font-mono">
+                      {claimedTicket.ticket_no}
+                    </span>
+                  </div>
+                  <div className="flex">
+                    <span className="w-32 text-emerald-700">Claimed by:</span>
+                    <span className="font-medium">{claimedTicket.name}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="w-32 text-emerald-700">Prize won:</span>
+                    <span className="font-medium">{claimedTicket.prize}</span>
+                  </div>
+                  <div className="flex">
+                    <span className="w-32 text-emerald-700">
+                      Date claimed:
+                    </span>
+                    <span>{claimedTicket.date_claimed || "—"}</span>
+                  </div>
+                </div>
+
+                {/* Minimal, modern, professional closing note */}
+                <p className="text-xs text-emerald-700 mt-3 italic">
+                  Thank you for being part of this campaign. A new raffle is
+                  coming soon — we'd love to see you again.
                 </p>
               </div>
             )}
 
-            {/* Apology note when ticket not found (only after check AND valid format) */}
-            {ticketCheckPerformed && !matchedWinner && isDrawDone && (
+            {/* ───────────────────────────────────────────────────────────
+                APOLOGY NOTE — unchanged from before
+                Shown only after a check has been performed AND the
+                ticket was NOT found in the RecentWinners list.
+                ─────────────────────────────────────────────────────────── */}
+            {ticketCheckPerformed && !claimedTicket && isDrawDone && (
               <div
                 className="mt-4 p-3 bg-amber-50 rounded-lg"
-                style={{ fontSize: "1rem", color: "#64748b", marginBottom: "10px" }}
+                style={{
+                  fontSize: "1rem",
+                  color: "#64748b",
+                  marginBottom: "10px",
+                }}
               >
                 {/* Rainbow border line above the note */}
                 <div
@@ -745,7 +825,8 @@ export default function MyTickets() {
                     height: "2px",
                     marginTop: "10px",
                     marginBottom: "10px",
-                    background: "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
+                    background:
+                      "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
                     backgroundSize: "200% auto",
                     animation: "rainbowMove 4s linear infinite",
                   }}
@@ -754,15 +835,17 @@ export default function MyTickets() {
                   🙏 Not This Time
                 </p>
                 <p className="text-sm text-amber-700 mt-1">
-                  Thank you for your trust and participation. Your ticket number wasn't selected in this draw, but your support makes our programs possible.
-                  Stay tuned — a new raffle campaign begins soon. We'd love to have you with us again.
+                  Thank you for your trust and participation. Your ticket number
+                  wasn't selected in this draw, but your support makes our
+                  programs possible. Stay tuned — a new raffle campaign begins
+                  soon. We'd love to have you with us again.
                 </p>
               </div>
             )}
           </div>
         </div>
 
-        {/* Add rainbow animation keyframes */}
+        {/* Rainbow animation keyframes */}
         <style>{`
           @keyframes rainbowMove {
             0% { background-position: 0% 50%; }
