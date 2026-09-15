@@ -805,16 +805,14 @@ export default function MyTickets() {
                   className="text-slate-800 mb-2"
                   style={{ fontSize: "1rem", fontWeight: 600 }}
                 >
-                  🙏 Not This Time
+                  🙏 Thank You for Participating
                 </p>
                 <p
                   className="text-slate-600"
                   style={{ fontSize: "0.875rem", lineHeight: 1.6 }}
                 >
-                  Thank you for your trust and participation. Your ticket
-                  number wasn't selected in this draw, but your support makes
-                  our programs possible. Stay tuned — a new raffle campaign
-                  begins soon. We'd love to have you with us again.
+                  Thank you for your trust and participation. Although your ticket was not selected in this draw, we truly appreciate your support and being part of the Goodwillstores community.
+                  We warmly invite you to join our upcoming raffle campaign for another opportunity to win. <br /><strong>Stay persistent—every opportunity brings you closer to the next possibility.</strong>
                 </p>
               </div>
             )}
