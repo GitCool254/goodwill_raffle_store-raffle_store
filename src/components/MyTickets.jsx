@@ -10,6 +10,11 @@ const shakeStyle = {
   animation: "shake 0.35s ease-in-out",
 };
 
+// Unified font + color for the two result sections
+// (matches the ticket-verification page style)
+const RESULT_FONT =
+  "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
 export default function MyTickets() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -22,7 +27,7 @@ export default function MyTickets() {
   const [ticketNumber, setTicketNumber] = useState("");
   const [ticketNumberError, setTicketNumberError] = useState("");
   const [ticketNumberFocused, setTicketNumberFocused] = useState(false);
-  const [claimedTicket, setClaimedTicket] = useState(null); // was matchedWinner
+  const [claimedTicket, setClaimedTicket] = useState(null);
   const [ticketCheckPerformed, setTicketCheckPerformed] = useState(false);
   const [isCheckingTicket, setIsCheckingTicket] = useState(false);
 
@@ -228,7 +233,6 @@ export default function MyTickets() {
 
       const data = await res.json();
 
-      // Backend is the source of truth
       if (data.status === "CLAIMED" && data.winner) {
         setClaimedTicket(data.winner);
       } else {
@@ -245,6 +249,7 @@ export default function MyTickets() {
     }
   };
 
+  // Kept for compatibility, but no longer invoked from UI
   async function handleCashOut(orderId, productMarketPrice) {
     alert(
       `You have chosen to cash out $${productMarketPrice} for order ${orderId}. This feature will be implemented with backend integration.`
@@ -698,7 +703,7 @@ export default function MyTickets() {
             grateful to have you with us. Best of luck!
           </p>
 
-          {/* Plain rows for claims */}
+          {/* Plain rows for claims — buttons disabled permanently (already claimed in past) */}
           <div className="space-y-3">
             <div className="flex items-center">
               <span
@@ -717,15 +722,9 @@ export default function MyTickets() {
                 Prize Item:
               </span>
               <button
-                onClick={() =>
-                  claimedTicket && handleClaimItem(claimedTicket.ticket_no)
-                }
-                disabled={!claimedTicket || !isDrawDone}
-                className={`px-4 py-2 rounded-lg transition ${
-                  claimedTicket && isDrawDone
-                    ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
+                type="button"
+                disabled
+                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-400 cursor-not-allowed"
               >
                 Claim Item
               </button>
@@ -739,31 +738,29 @@ export default function MyTickets() {
                 Cash Out Money:
               </span>
               <button
-                onClick={() =>
-                  claimedTicket &&
-                  handleCashOut(claimedTicket.ticket_no, claimedTicket.prize)
-                }
-                disabled={!claimedTicket || !isDrawDone}
-                className={`px-4 py-2 rounded-lg transition ${
-                  claimedTicket && isDrawDone
-                    ? "bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
+                type="button"
+                disabled
+                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-400 cursor-not-allowed"
               >
-                Cash Out{" "}
-                {claimedTicket && claimedTicket.cash_out
-                  ? `(${claimedTicket.prize})`
-                  : ""}
+                Cash Out
               </button>
             </div>
 
             {/* ═══════════════════════════════════════════════════════════
                 CLAIMED TICKET SECTION
-                White container with shadow — matches the ticket
-                verification feature style.
+                — Verify-page style (white container, shadow, unified font)
+                — marginTop/Bottom: 20px
                 ═══════════════════════════════════════════════════════════ */}
             {claimedTicket && isDrawDone && (
-              <div className="mt-4 p-4 bg-white rounded-xl shadow-md border border-slate-100">
+              <div
+                className="border rounded-xl p-5 bg-white shadow-sm"
+                style={{
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                  fontFamily: RESULT_FONT,
+                  color: "#334155",
+                }}
+              >
                 {/* Header */}
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-lg">✅</span>
@@ -793,9 +790,7 @@ export default function MyTickets() {
                     </span>
                   </div>
                   <div className="flex">
-                    <span className="w-32 text-slate-500">
-                      Date claimed:
-                    </span>
+                    <span className="w-32 text-slate-500">Date claimed:</span>
                     <span className="text-slate-800">
                       {claimedTicket.date_claimed || "—"}
                     </span>
@@ -803,7 +798,7 @@ export default function MyTickets() {
                 </div>
 
                 {/* Minimal, modern, professional closing note */}
-                <p className="text-xs text-slate-500 mt-3 italic">
+                <p className="text-xs text-slate-500 mt-4 italic">
                   Thank you for being part of this campaign. A new raffle is
                   coming soon — we'd love to see you again.
                 </p>
@@ -811,21 +806,25 @@ export default function MyTickets() {
             )}
 
             {/* ───────────────────────────────────────────────────────────
-                APOLOGY NOTE
-                White container with shadow — matches the ticket
-                verification feature style.
+                NOT THIS TIME (NOT_SELECTED)
+                — Verify-page style (white container, shadow, unified font)
+                — marginTop/Bottom: 20px
                 ─────────────────────────────────────────────────────────── */}
             {ticketCheckPerformed && !claimedTicket && isDrawDone && (
               <div
-                className="mt-4 p-4 bg-white rounded-xl shadow-md border border-slate-100"
-                style={{ marginBottom: "10px" }}
+                className="border rounded-xl p-5 bg-white shadow-sm"
+                style={{
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                  fontFamily: RESULT_FONT,
+                  color: "#334155",
+                }}
               >
                 {/* Rainbow border line above the note */}
                 <div
                   style={{
                     width: "100%",
                     height: "2px",
-                    marginTop: "4px",
                     marginBottom: "14px",
                     background:
                       "linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,136,0,0.2), rgba(255,255,0,0.2), rgba(0,255,0,0.2), rgba(0,136,255,0.2), rgba(68,0,255,0.2), rgba(255,0,0,0.2))",
