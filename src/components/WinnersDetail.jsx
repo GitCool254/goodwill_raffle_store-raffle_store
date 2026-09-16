@@ -16,7 +16,7 @@ export default function WinnersDetail() {
     {
       name: "Liam J..",
       date: "30 July 2026",
-      ticketNo: "GWS-3B8381E",
+      ticketNo: "GWS-37377A9E",
       product: "Ballinasloe 3-piece Sectional",
       winnerImg: "",
       productImg: "/Ballinasloe_Liam.png",
