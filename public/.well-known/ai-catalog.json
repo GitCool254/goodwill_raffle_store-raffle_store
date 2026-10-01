@@ -1,0 +1,32 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Goodwillstores",
+    "identifier": "did:web:goodwillstores.vercel.app",
+    "documentationUrl": "https://goodwillstores.vercel.app/about",
+    "logoUrl": "https://goodwillstores.vercel.app/logo.png"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:goodwillstores.vercel.app:site:raffle-store",
+      "displayName": "Goodwillstores Raffle Store",
+      "type": "text/html",
+      "url": "https://goodwillstores.vercel.app/",
+      "description": "Online raffle platform offering curated pre-owned finds with transparent draws. Supports multiple countries including USA, Canada, and Australia."
+    },
+    {
+      "identifier": "urn:air:goodwillstores.vercel.app:page:tickets",
+      "displayName": "My Tickets & Ticket Status",
+      "type": "text/html",
+      "url": "https://goodwillstores.vercel.app/tickets",
+      "description": "View purchased raffle tickets, download tickets, and check ticket status."
+    },
+    {
+      "identifier": "urn:air:goodwillstores.vercel.app:page:donations",
+      "displayName": "Donations & Community Impact",
+      "type": "text/html",
+      "url": "https://goodwillstores.vercel.app/donations",
+      "description": "Support academic sponsorships, palliative care, and community projects through raffle participation."
+    }
+  ]
+}
