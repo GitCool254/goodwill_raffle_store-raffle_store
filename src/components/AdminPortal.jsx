@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FALLBACK_SAMPLE_PRODUCTS, FALLBACK_CATALOG_ITEMS } from "../data/products";
+import {
+  FALLBACK_SAMPLE_PRODUCTS,
+  FALLBACK_CATALOG_ITEMS,
+} from "../data/products";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_admin_token";
@@ -18,13 +21,15 @@ const EMPTY_PRODUCT = {
 };
 
 export default function AdminPortal() {
-  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY) || "");
+  const [token, setToken] = useState(
+    () => localStorage.getItem(TOKEN_KEY) || ""
+  );
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
 
-  const [tab, setTab] = useState("catalog"); // "featured" | "catalog"
+  const [tab, setTab] = useState("catalog");
   const [sampleProducts, setSampleProducts] = useState([]);
   const [catalogItems, setCatalogItems] = useState([]);
   const [draft, setDraft] = useState(EMPTY_PRODUCT);
@@ -51,7 +56,7 @@ export default function AdminPortal() {
       } else {
         setLoginError(data.error || "Login failed");
       }
-    } catch (err) {
+    } catch {
       setLoginError("Network error — check backend URL.");
     } finally {
       setLoggingIn(false);
@@ -61,21 +66,6 @@ export default function AdminPortal() {
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
     setToken("");
-  }
-
-  function seedFromDefaults() {
-    if (!confirm(
-      "This will replace the current admin lists with the built-in default products. " +
-      "You'll still need to click 'Save All' to persist them to the backend. Continue?"
-    )) return;
-
-    setSampleProducts(FALLBACK_SAMPLE_PRODUCTS);
-    setCatalogItems(FALLBACK_CATALOG_ITEMS);
-    setSaveMsg(
-      `✅ Loaded ${FALLBACK_SAMPLE_PRODUCTS.length} featured and ` +
-      `${FALLBACK_CATALOG_ITEMS.length} catalog items into admin. ` +
-      `Now click 'Save All' to persist them.`
-    );
   }
 
   // ---------------- LOAD PRODUCTS ----------------
@@ -102,6 +92,43 @@ export default function AdminPortal() {
     })();
   }, [token]);
 
+  // ---------------- SEED FROM DEFAULTS ----------------
+  function seedFromDefaults() {
+    const featCount = FALLBACK_SAMPLE_PRODUCTS.length;
+    const catCount = FALLBACK_CATALOG_ITEMS.length;
+
+    if (featCount === 0 && catCount === 0) {
+      alert(
+        "No fallback data available in products.js. " +
+          "Please check that FALLBACK_SAMPLE_PRODUCTS and FALLBACK_CATALOG_ITEMS are populated."
+      );
+      return;
+    }
+
+    if (
+      !confirm(
+        `Load ${featCount} featured and ${catCount} catalog items from products.js into the admin? ` +
+          `You still need to click "Save All" afterwards to persist to the backend.`
+      )
+    ) {
+      return;
+    }
+
+    setSampleProducts([...FALLBACK_SAMPLE_PRODUCTS]);
+    setCatalogItems([...FALLBACK_CATALOG_ITEMS]);
+    setSaveMsg(
+      `✅ Loaded ${featCount} featured and ${catCount} catalog items into admin. ` +
+        `Now click "Save All" to persist them to the backend.`
+    );
+  }
+
+  function clearLocalCache() {
+    localStorage.removeItem("gw_products_dynamic");
+    alert(
+      "Local product cache cleared. Refresh the main site if it still shows stale data."
+    );
+  }
+
   // ---------------- IMAGE UPLOAD ----------------
   async function uploadImage(file) {
     const fd = new FormData();
@@ -111,22 +138,25 @@ export default function AdminPortal() {
       headers: { "X-Admin-Token": token },
       body: fd,
     });
-    if (!res.ok) throw new Error("Upload failed");
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "Upload failed");
+    }
     const data = await res.json();
-    return data.url; // "/products/<filename>"
+    return data.url;
   }
 
-  async function handleImageFiles(e, targetField) {
+  async function handleImageFiles(e) {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
     try {
       const urls = [];
       for (const f of files) urls.push(await uploadImage(f));
-      if (targetField === "image") {
-        setDraft((d) => ({ ...d, image: urls[0], images: [urls[0], ...d.images.filter((u) => u !== d.image)] }));
-      } else {
-        setDraft((d) => ({ ...d, images: [...d.images, ...urls] }));
-      }
+      setDraft((d) => ({
+        ...d,
+        image: d.image || urls[0],
+        images: [...d.images, ...urls],
+      }));
     } catch (err) {
       alert("Image upload failed: " + err.message);
     }
@@ -140,7 +170,7 @@ export default function AdminPortal() {
     }));
   }
 
-  // ---------------- ADD / UPDATE ----------------
+  // ---------------- ADD / EDIT / DELETE ----------------
   function startEdit(item) {
     setDraft({ ...EMPTY_PRODUCT, ...item });
     setEditingId(item.id);
@@ -158,7 +188,8 @@ export default function AdminPortal() {
       return;
     }
     const list = tab === "featured" ? sampleProducts : catalogItems;
-    const setList = tab === "featured" ? setSampleProducts : setCatalogItems;
+    const setList =
+      tab === "featured" ? setSampleProducts : setCatalogItems;
 
     if (editingId) {
       setList(list.map((p) => (p.id === editingId ? { ...draft } : p)));
@@ -172,11 +203,12 @@ export default function AdminPortal() {
 
   function deleteItem(id) {
     if (!confirm("Delete this product?")) return;
-    if (tab === "featured") setSampleProducts((l) => l.filter((p) => p.id !== id));
+    if (tab === "featured")
+      setSampleProducts((l) => l.filter((p) => p.id !== id));
     else setCatalogItems((l) => l.filter((p) => p.id !== id));
   }
 
-  // ---------------- SAVE TO BACKEND ----------------
+  // ---------------- SAVE ALL ----------------
   async function saveAll() {
     setSaving(true);
     setSaveMsg("");
@@ -189,8 +221,14 @@ export default function AdminPortal() {
         },
         body: JSON.stringify({ sampleProducts, catalogItems }),
       });
-      if (!res.ok) throw new Error("Save failed");
-      setSaveMsg("✅ Saved successfully. Refresh the main site to see changes.");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Save failed");
+      }
+      setSaveMsg(
+        `✅ Saved ${sampleProducts.length} featured + ${catalogItems.length} catalog items to backend. ` +
+          `Refresh the main site to see the changes.`
+      );
     } catch (err) {
       setSaveMsg("❌ " + err.message);
     } finally {
@@ -198,7 +236,7 @@ export default function AdminPortal() {
     }
   }
 
-  // ---------------- UI ----------------
+  // ---------------- LOGIN SCREEN ----------------
   if (!token) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100 p-6">
@@ -206,7 +244,9 @@ export default function AdminPortal() {
           onSubmit={handleLogin}
           className="bg-white rounded-xl shadow-md p-6 w-full max-w-sm"
         >
-          <h1 className="text-lg font-semibold mb-4 text-slate-800">Admin Login</h1>
+          <h1 className="text-lg font-semibold mb-4 text-slate-800">
+            Admin Login
+          </h1>
           <input
             className="w-full border rounded px-3 py-2 mb-3"
             placeholder="Username"
@@ -235,22 +275,24 @@ export default function AdminPortal() {
     );
   }
 
+  // ---------------- MAIN ADMIN UI ----------------
   const activeList = tab === "featured" ? sampleProducts : catalogItems;
 
   return (
     <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Top bar */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <h1 className="text-2xl font-bold text-slate-800">Admin Portal</h1>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => {
-                localStorage.removeItem("gw_products_dynamic");
-                alert(
-                  "Local product cache cleared. Refresh the main site if it shows stale data."
-                );
-              }}
+              onClick={seedFromDefaults}
+              className="bg-amber-500 text-white px-4 py-2 rounded font-semibold hover:bg-amber-600"
+            >
+              Seed from Defaults
+            </button>
+            <button
+              onClick={clearLocalCache}
               className="bg-slate-200 text-slate-700 px-4 py-2 rounded font-semibold hover:bg-slate-300"
             >
               Clear Local Cache
@@ -272,20 +314,32 @@ export default function AdminPortal() {
         </div>
 
         {saveMsg && (
-          <div className="mb-4 text-sm text-slate-700">{saveMsg}</div>
+          <div className="mb-4 text-sm text-slate-700 bg-white border rounded p-3">
+            {saveMsg}
+          </div>
         )}
 
         {/* Tabs */}
         <div className="flex gap-2 mb-4">
           <button
-            onClick={() => { setTab("featured"); cancelEdit(); }}
-            className={`px-3 py-1 rounded ${tab === "featured" ? "bg-sky-600 text-white" : "bg-white"}`}
+            onClick={() => {
+              setTab("featured");
+              cancelEdit();
+            }}
+            className={`px-3 py-1 rounded ${
+              tab === "featured" ? "bg-sky-600 text-white" : "bg-white"
+            }`}
           >
             Featured ({sampleProducts.length})
           </button>
           <button
-            onClick={() => { setTab("catalog"); cancelEdit(); }}
-            className={`px-3 py-1 rounded ${tab === "catalog" ? "bg-sky-600 text-white" : "bg-white"}`}
+            onClick={() => {
+              setTab("catalog");
+              cancelEdit();
+            }}
+            className={`px-3 py-1 rounded ${
+              tab === "catalog" ? "bg-sky-600 text-white" : "bg-white"
+            }`}
           >
             Catalog ({catalogItems.length})
           </button>
@@ -294,7 +348,9 @@ export default function AdminPortal() {
         {/* Form */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-6">
           <h2 className="font-semibold mb-3 text-slate-800">
-            {editingId ? `Edit ${editingId}` : `Add to ${tab === "featured" ? "Featured" : "Catalog"}`}
+            {editingId
+              ? `Edit ${editingId}`
+              : `Add to ${tab === "featured" ? "Featured" : "Catalog"}`}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
@@ -321,21 +377,27 @@ export default function AdminPortal() {
               type="number"
               placeholder="Ticket Price"
               value={draft.ticketPrice}
-              onChange={(e) => setDraft({ ...draft, ticketPrice: Number(e.target.value) })}
+              onChange={(e) =>
+                setDraft({ ...draft, ticketPrice: Number(e.target.value) })
+              }
             />
             <input
               className="border rounded px-3 py-2"
               type="number"
               placeholder="Market Price"
               value={draft.marketPrice}
-              onChange={(e) => setDraft({ ...draft, marketPrice: Number(e.target.value) })}
+              onChange={(e) =>
+                setDraft({ ...draft, marketPrice: Number(e.target.value) })
+              }
             />
             <input
               className="border rounded px-3 py-2"
               type="number"
               placeholder="Total Tickets"
               value={draft.totalTickets}
-              onChange={(e) => setDraft({ ...draft, totalTickets: Number(e.target.value) })}
+              onChange={(e) =>
+                setDraft({ ...draft, totalTickets: Number(e.target.value) })
+              }
             />
           </div>
 
@@ -344,10 +406,11 @@ export default function AdminPortal() {
             rows={5}
             placeholder="Description"
             value={draft.description}
-            onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+            onChange={(e) =>
+              setDraft({ ...draft, description: e.target.value })
+            }
           />
 
-          {/* Image upload */}
           <div className="mb-3">
             <label className="block text-sm font-medium text-slate-700 mb-2">
               Images (upload multiple)
@@ -356,7 +419,7 @@ export default function AdminPortal() {
               type="file"
               accept="image/*"
               multiple
-              onChange={(e) => handleImageFiles(e, "images")}
+              onChange={handleImageFiles}
             />
             <div className="flex flex-wrap gap-2 mt-3">
               {draft.images.map((url) => (
@@ -411,13 +474,19 @@ export default function AdminPortal() {
                 <div className="flex items-center gap-3">
                   {item.image && (
                     <img
-                      src={item.image.startsWith("/") ? `${BACKEND}${item.image}` : item.image}
+                      src={
+                        item.image.startsWith("/")
+                          ? `${BACKEND}${item.image}`
+                          : item.image
+                      }
                       alt=""
                       className="w-12 h-12 object-cover rounded border"
                     />
                   )}
                   <div>
-                    <div className="font-medium text-slate-800">{item.title}</div>
+                    <div className="font-medium text-slate-800">
+                      {item.title}
+                    </div>
                     <div className="text-xs text-slate-500">
                       {item.id} · {item.category} · ${item.ticketPrice}/ticket
                     </div>
@@ -441,7 +510,7 @@ export default function AdminPortal() {
             ))}
             {!activeList.length && !loading && (
               <div className="text-sm text-slate-500">
-                No products yet. Add one above.
+                No products yet. Click <strong>Seed from Defaults</strong> above to load the built-in list.
               </div>
             )}
           </div>
