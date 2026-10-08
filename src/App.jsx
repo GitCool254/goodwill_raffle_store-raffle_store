@@ -12,6 +12,8 @@ import RecentlyViewed from "./components/RecentlyViewed";
 import WinnersDetail from "./components/WinnersDetail";
 import SearchBar from "./components/SearchBar";
 import CanonicalTag from "./components/CanonicalTag";
+import AdminPortal from "./components/AdminPortal";
+import { setDynamicProducts } from "./data/products";
 
 // Lazy-loaded page components
 const Detail = lazy(() => import("./components/Detail"));
@@ -29,6 +31,49 @@ const VerifyTicket = lazy(() => import("./components/VerifyTicket"));
 import { sampleProducts, catalogItems } from "./data/products";
 
 export default function App() {
+
+  // ---------------------------------------------------------
+  // ADMIN ROUTE
+  // If the URL path is /admin, render ONLY the admin portal.
+  // No header, menu, or footer. Completely isolated.
+  // ---------------------------------------------------------
+  const isAdminRoute =
+    typeof window !== "undefined" &&
+    window.location.pathname.replace(/\/$/, "") === "/admin";
+
+  // ---------------------------------------------------------
+  // PRODUCT BOOTSTRAP
+  // Fetch latest products once on boot and cache in localStorage
+  // so `src/data/products.js` picks them up on next render.
+  // Safe no-op if backend is unreachable.
+  // ---------------------------------------------------------
+  useEffect(() => {
+    if (isAdminRoute) return; // Admin page manages its own data
+    (async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/products`,
+          { cache: "no-store" }
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        if (
+          data &&
+          Array.isArray(data.sampleProducts) &&
+          Array.isArray(data.catalogItems) &&
+          (data.sampleProducts.length || data.catalogItems.length)
+        ) {
+          setDynamicProducts(data);
+        }
+      } catch (err) {
+        console.warn("Product bootstrap skipped:", err);
+      }
+    })();
+  }, [isAdminRoute]);
+
+  if (isAdminRoute) {
+    return <AdminPortal />;
+  }
   const DATA_VERSION = "v3";
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
