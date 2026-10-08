@@ -127,7 +127,7 @@ const FALLBACK_CATALOG = [
   },
 ];
 
-export const catalogItems = [
+const FALLBACK_CATALOG = [
   // ----- Casual & Outdoor Wear -----
   {
     id: "p1",
