@@ -85,7 +85,10 @@ const FALLBACK_SAMPLE = [
 // Paste the current catalogItems array here as the fallback.
 // (For brevity in this patch, we re-export whatever the user already had.
 //  Simply keep your existing catalogItems array and assign it to FALLBACK_CATALOG.)
-const FALLBACK_CATALOG = [ /* ⬅️ paste your existing catalogItems array here */ ];
+
+const FALLBACK_CATALOG = [
+  // ... your full catalogItems array here (20 items) ...
+];
 
 // -------- Resolved exports --------
 
