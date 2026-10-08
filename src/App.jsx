@@ -59,9 +59,8 @@ export default function App() {
         const data = await res.json();
         if (
           data &&
-          Array.isArray(data.sampleProducts) &&
-          Array.isArray(data.catalogItems) &&
-          (data.sampleProducts.length || data.catalogItems.length)
+          Array.isArray(data.sampleProducts) && data.sampleProducts.length > 0 &&
+          Array.isArray(data.catalogItems)   && data.catalogItems.length   > 0
         ) {
           setDynamicProducts(data);
         }

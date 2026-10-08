@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { sampleProducts as DEFAULT_FEATURED, catalogItems as DEFAULT_CATALOG } from "../data/products";
+import { FALLBACK_SAMPLE_PRODUCTS, FALLBACK_CATALOG_ITEMS } from "../data/products";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_admin_token";
@@ -69,9 +69,13 @@ export default function AdminPortal() {
       "You'll still need to click 'Save All' to persist them to the backend. Continue?"
     )) return;
 
-    setSampleProducts(DEFAULT_FEATURED);
-    setCatalogItems(DEFAULT_CATALOG);
-    setSaveMsg("✅ Defaults loaded into admin. Now click 'Save All' to persist them.");
+    setSampleProducts(FALLBACK_SAMPLE_PRODUCTS);
+    setCatalogItems(FALLBACK_CATALOG_ITEMS);
+    setSaveMsg(
+      `✅ Loaded ${FALLBACK_SAMPLE_PRODUCTS.length} featured and ` +
+      `${FALLBACK_CATALOG_ITEMS.length} catalog items into admin. ` +
+      `Now click 'Save All' to persist them.`
+    );
   }
 
   // ---------------- LOAD PRODUCTS ----------------
@@ -241,10 +245,15 @@ export default function AdminPortal() {
           <h1 className="text-2xl font-bold text-slate-800">Admin Portal</h1>
           <div className="flex gap-2">
             <button
-              onClick={seedFromDefaults}
-              className="bg-amber-500 text-white px-4 py-2 rounded font-semibold hover:bg-amber-600"
+              onClick={() => {
+                localStorage.removeItem("gw_products_dynamic");
+                alert(
+                  "Local product cache cleared. Refresh the main site if it shows stale data."
+                );
+              }}
+              className="bg-slate-200 text-slate-700 px-4 py-2 rounded font-semibold hover:bg-slate-300"
             >
-              Seed from Defaults
+              Clear Local Cache
             </button>
             <button
               onClick={saveAll}

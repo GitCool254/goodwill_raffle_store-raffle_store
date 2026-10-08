@@ -413,7 +413,21 @@ const FALLBACK_CATALOG = [
 
 // -------- Resolved exports --------
 
+// Raw fallback arrays — exported so the admin portal can import them
+// directly and bypass any stale localStorage cache.
+export const FALLBACK_SAMPLE_PRODUCTS = FALLBACK_SAMPLE;
+export const FALLBACK_CATALOG_ITEMS   = FALLBACK_CATALOG;
+
 const _dynamic = loadDynamic();
 
-export const sampleProducts = _dynamic?.sampleProducts ?? FALLBACK_SAMPLE;
-export const catalogItems    = _dynamic?.catalogItems    ?? FALLBACK_CATALOG;
+// Only trust the dynamic cache if the array is non-empty.
+// Guards against a previous broken save having poisoned localStorage.
+export const sampleProducts =
+  _dynamic && Array.isArray(_dynamic.sampleProducts) && _dynamic.sampleProducts.length > 0
+    ? _dynamic.sampleProducts
+    : FALLBACK_SAMPLE_PRODUCTS;
+
+export const catalogItems =
+  _dynamic && Array.isArray(_dynamic.catalogItems) && _dynamic.catalogItems.length > 0
+    ? _dynamic.catalogItems
+    : FALLBACK_CATALOG_ITEMS;
