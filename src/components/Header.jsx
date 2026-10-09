@@ -29,7 +29,7 @@ export default function Header({ setView, onMenuClick }) {
           content: '';
           position: absolute;
           inset: 0;
-          background-image: url('/logo.png');
+          background-image: url('/logo-icon.png');
           background-repeat: no-repeat;
           background-position: center;
           background-size: contain;
@@ -46,9 +46,9 @@ export default function Header({ setView, onMenuClick }) {
         }}
       >
         <div className="max-w-6xl mx-auto p-4">
-          {/* TOP ROW: Logo + Decorative Column + Title + Menu button */}
+          {/* TOP ROW: Logo-icon + Decorative Column + Title + Menu button */}
           <div className="flex items-center justify-between">
-            {/* Left group: logo, column, title */}
+            {/* Left group: logo-icon, column, title */}
             <div className="flex items-center" style={{ gap: '1rem' }}>
               <button
                 onClick={() => setView("home")}
@@ -56,7 +56,7 @@ export default function Header({ setView, onMenuClick }) {
                 aria-label="Go to home"
               >
                 <img
-                  src="/logo.png"
+                  src="/logo-icon.png"
                   alt="Goodwillstores logo"
                   className="h-[50px] w-[50px] object-contain rounded cursor-pointer"
                 />
