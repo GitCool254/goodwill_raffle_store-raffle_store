@@ -51,18 +51,37 @@ export default function App() {
     if (isAdminRoute) return; // Admin page manages its own data
     (async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/products`,
-          { cache: "no-store" }
-        );
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+        const res = await fetch(`${backendUrl}/products`, { cache: "no-store" });
         if (!res.ok) return;
+
         const data = await res.json();
+
+        // Prepend the backend domain to any admin-uploaded image URL.
+        // Only URLs starting with "/products/" are admin uploads — all other
+        // paths (e.g. "/Mini drone1.png") are served from the frontend's
+        // public folder and must NOT be prefixed.
+        const fixUrl = (u) =>
+          typeof u === "string" && u.startsWith("/products/")
+            ? `${backendUrl}${u}`
+            : u;
+
+        const normalize = (p) => ({
+          ...p,
+          image: fixUrl(p.image),
+          images: Array.isArray(p.images) ? p.images.map(fixUrl) : p.images,
+        });
+
+        const normalized = {
+          sampleProducts: data.sampleProducts.map(normalize),
+          catalogItems: data.catalogItems.map(normalize),
+        };
+
         if (
-          data &&
-          Array.isArray(data.sampleProducts) && data.sampleProducts.length > 0 &&
-          Array.isArray(data.catalogItems)   && data.catalogItems.length   > 0
+          normalized.sampleProducts.length > 0 &&
+          normalized.catalogItems.length > 0
         ) {
-          setDynamicProducts(data);
+          setDynamicProducts(normalized);
         }
       } catch (err) {
         console.warn("Product bootstrap skipped:", err);
