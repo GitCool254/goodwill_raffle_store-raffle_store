@@ -502,7 +502,14 @@ export default function AdminPortal() {
       <div style={S.container}>
         {/* Top bar */}
         <div style={S.topbar}>
-          <h1 style={S.title}>Admin Portal</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <img
+              src="/icon-tab.png"
+              alt="Goodwillstores logo"
+              style={{ height: 32, width: "auto", display: "block" }}
+            />
+            <h1 style={S.title}>Admin Portal</h1>
+          </div>
           <div style={S.buttonsRow}>
             {tab === "donations" ? (
               <button style={{ ...S.btn, ...S.btnAmber }} onClick={seedDonationsFromDefaults}>
