@@ -3,6 +3,7 @@ import {
   FALLBACK_SAMPLE_PRODUCTS,
   FALLBACK_CATALOG_ITEMS,
 } from "../data/products";
+import { FALLBACK_DONATION_PROGRAMS } from "../data/donations";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_admin_token";
@@ -203,6 +204,22 @@ export default function AdminPortal() {
     }
   }
 
+  function seedDonationsFromDefaults() {
+    const count = FALLBACK_DONATION_PROGRAMS.length;
+    if (count === 0) {
+      setMsg({ type: "error", text: "No fallback donation data found." });
+      return;
+    }
+    if (!confirm(`Load ${count} donation programs into the admin? You'll still need to click Save All.`)) {
+      return;
+    }
+    setDonations([...FALLBACK_DONATION_PROGRAMS]);
+    setMsg({
+      type: "info",
+      text: `Loaded ${count} donation programs into the form. Now click Save All to publish to the backend.`,
+    });
+  }
+  
   // ---- seed products ----
   function seedFromDefaults() {
     const feat = FALLBACK_SAMPLE_PRODUCTS.length;
@@ -487,7 +504,15 @@ export default function AdminPortal() {
         <div style={S.topbar}>
           <h1 style={S.title}>Admin Portal</h1>
           <div style={S.buttonsRow}>
-            <button style={{ ...S.btn, ...S.btnAmber }} onClick={seedFromDefaults}>Seed from Defaults</button>
+            {tab === "donations" ? (
+              <button style={{ ...S.btn, ...S.btnAmber }} onClick={seedDonationsFromDefaults}>
+                Seed Donations from Defaults
+              </button>
+            ) : (
+              <button style={{ ...S.btn, ...S.btnAmber }} onClick={seedFromDefaults}>
+                Seed from Defaults
+              </button>
+            )}
             <button style={{ ...S.btn, ...S.btnSlate }} onClick={clearLocalCache}>Clear Local Cache</button>
             <button
               style={{ ...S.btn, ...S.btnEmerald, ...(busy ? S.btnDisabled : {}) }}
