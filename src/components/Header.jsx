@@ -52,13 +52,34 @@ export default function Header({ setView, onMenuClick }) {
             <div className="flex items-center" style={{ gap: '1rem' }}>
               <button
                 onClick={() => setView("home")}
-                className="focus:outline-none active:opacity-80"
                 aria-label="Go to home"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  padding: 0,
+                  margin: 0,
+                  outline: "none",
+                  boxShadow: "none",
+                  cursor: "pointer",
+                  lineHeight: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  WebkitTapHighlightColor: "transparent",
+                }}
               >
                 <img
                   src="/logo-icon.png"
                   alt="Goodwillstores logo"
-                  className="h-[50px] w-[50px] object-contain rounded cursor-pointer"
+                  style={{
+                    height: 50,
+                    width: 50,
+                    objectFit: "contain",
+                    background: "transparent",
+                    border: "none",
+                    borderRadius: 0,
+                    display: "block",
+                  }}
                 />
               </button>
 
