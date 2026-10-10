@@ -72,13 +72,14 @@ export default function Header({ setView, onMenuClick }) {
                   src="/logo-icon.png"
                   alt="Goodwillstores logo"
                   style={{
-                    height: 50,
-                    width: 50,
+                    height: 100,
+                    width: 100,
                     objectFit: "contain",
                     background: "transparent",
                     border: "none",
                     borderRadius: 0,
                     display: "block",
+                    marginLeft: "10px",
                   }}
                 />
               </button>
