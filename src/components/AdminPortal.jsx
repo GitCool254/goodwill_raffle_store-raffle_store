@@ -712,7 +712,6 @@ export default function AdminPortal() {
           }}>
             <span>
               Signed in as <strong style={{ fontWeight: 700 }}>{me.username}</strong>
-              {me.role ? <span style={{ opacity: 0.85, marginLeft: 6 }}>· {me.role}</span> : null}
             </span>
             <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", opacity: 0.8, textTransform: "uppercase" }}>
               Admin

@@ -221,6 +221,30 @@ export default function TeamPortal() {
     } finally { setBusy(false); }
   }
 
+  async function handleEditPhone(id, name, currentPhone) {
+    const next = prompt(`New phone for "${name}" (E.164, e.g. +254712345678):`, currentPhone || "");
+    if (!next) return;
+    const trimmed = next.trim();
+    if (!/^\+\d{8,15}$/.test(trimmed)) {
+      setMsg({ type: "error", text: "Phone must be E.164 format (e.g. +254712345678)" });
+      return;
+    }
+    setBusy(true); setMsg(null);
+    try {
+      const res = await fetch(`${BACKEND}/team/users/${id}/phone`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Team-Token": token },
+        body: JSON.stringify({ phone: trimmed }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Set phone failed");
+      setMsg({ type: "success", text: `✅ Phone updated for ${name}` });
+      await loadUsers();
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally { setBusy(false); }
+  }
+
   function badgeFor(u) {
     if (u.is_root) return <span style={{ ...S.badge, ...S.badgeRoot }}>ROOT</span>;
     if (u.role === "superior") return <span style={{ ...S.badge, ...S.badgeSup }}>SUPERIOR</span>;
@@ -332,6 +356,7 @@ export default function TeamPortal() {
                       <button style={{ ...S.linkBtn, color: "#059669" }} onClick={() => toggleActive(u.id, "reactivate")} disabled={busy}>Reactivate</button>
                     )}
                     <button style={{ ...S.linkBtn, color: "#0284c7" }} onClick={() => handleSetPassword(u.id, u.username)} disabled={busy}>Set password</button>
+                    <button style={{ ...S.linkBtn, color: "#7c3aed" }} onClick={() => handleEditPhone(u.id, u.username, u.phone)} disabled={busy}>Edit phone</button>
                     <button style={{ ...S.linkBtn, color: "#dc2626" }} onClick={() => deleteUser(u.id, u.username)} disabled={busy || u.is_root}>Delete</button>
                   </div>
                 </div>
