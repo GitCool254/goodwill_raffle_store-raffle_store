@@ -148,7 +148,7 @@ export default function TeamPortal() {
     } finally { setBusy(false); }
   }
 
-  async function setPassword(id, name) {
+  async function handleSetPassword(id, name) {
     const pw = prompt(`New password for "${name}" (min 8 chars):`);
     if (!pw) return;
     if (pw.length < 8) { setMsg({ type: "error", text: "Password must be at least 8 characters" }); return; }
@@ -266,7 +266,7 @@ export default function TeamPortal() {
                     ) : (
                       <button style={{ ...S.linkBtn, color: "#059669" }} onClick={() => toggleActive(u.id, "reactivate")} disabled={busy}>Reactivate</button>
                     )}
-                    <button style={{ ...S.linkBtn, color: "#0284c7" }} onClick={() => setPassword(u.id, u.username)} disabled={busy}>Set password</button>
+                    <button style={{ ...S.linkBtn, color: "#0284c7" }} onClick={() => handleSetPassword(u.id, u.username)} disabled={busy}>Set password</button>
                     <button style={{ ...S.linkBtn, color: "#dc2626" }} onClick={() => deleteUser(u.id, u.username)} disabled={busy || u.is_root}>Delete</button>
                   </div>
                 </div>
