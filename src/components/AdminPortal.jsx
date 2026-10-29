@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FALLBACK_SAMPLE_PRODUCTS,
   FALLBACK_CATALOG_ITEMS,
@@ -7,6 +7,7 @@ import { FALLBACK_DONATION_PROGRAMS } from "../data/donations";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_admin_token";
+const IDLE_MS = 15 * 60 * 1000;  // 15-minute idle auto-logout
 
 function formatCountdown(secs) {
   const m = Math.floor(secs / 60);
@@ -98,6 +99,26 @@ export default function AdminPortal() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState(null);
+  const lastActivityMs = useRef(Date.now());
+
+  // Idle auto-logout (15 min of inactivity)
+  useEffect(() => {
+    if (!token) return;
+    lastActivityMs.current = Date.now();
+    const bump = () => { lastActivityMs.current = Date.now(); };
+    const events = ["mousedown", "mousemove", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, bump, { passive: true }));
+    const id = setInterval(() => {
+      if (Date.now() - lastActivityMs.current > IDLE_MS) {
+        clearInterval(id);
+        logout();
+      }
+    }, 30000);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, bump));
+      clearInterval(id);
+    };
+  }, [token]);
 
   // Fetch current identity on mount (and when token changes)
   useEffect(() => {
@@ -746,7 +767,50 @@ export default function AdminPortal() {
             >
               {busy ? "Saving…" : "Save All"}
             </button>
-            <button style={{ ...S.btn, ...S.btnSlate }} onClick={logout}>Logout</button>
+            <button
+              onClick={logout}
+              title="Sign out"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "8px 14px",
+                borderRadius: 8,
+                background: "#fff",
+                border: "1px solid #cbd5e1",
+                color: "#334155",
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#dc2626";
+                e.currentTarget.style.color = "#dc2626";
+                e.currentTarget.style.background = "#fef2f2";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#cbd5e1";
+                e.currentTarget.style.color = "#334155";
+                e.currentTarget.style.background = "#fff";
+              }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
+            </button>
           </div>
         </div>
 

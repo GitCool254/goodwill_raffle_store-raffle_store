@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_team_token";
+const IDLE_MS = 15 * 60 * 1000;  // 15-minute idle auto-logout
 
 function formatCountdown(secs) {
   const m = Math.floor(secs / 60);
@@ -53,6 +54,7 @@ export default function TeamPortal() {
   const [lockedUntil, setLockedUntil] = useState(null);
   const [secondsRemaining, setSecondsRemaining] = useState(0);
   const [me, setMe] = useState(null);
+  const lastActivityMs = useRef(Date.now());
   const [users, setUsers] = useState([]);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
@@ -80,6 +82,25 @@ export default function TeamPortal() {
       setAuditLoading(false);
     }
   }
+
+  // Idle auto-logout (15 min of inactivity)
+  useEffect(() => {
+    if (!token) return;
+    lastActivityMs.current = Date.now();
+    const bump = () => { lastActivityMs.current = Date.now(); };
+    const events = ["mousedown", "mousemove", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, bump, { passive: true }));
+    const id = setInterval(() => {
+      if (Date.now() - lastActivityMs.current > IDLE_MS) {
+        clearInterval(id);
+        logout();
+      }
+    }, 30000);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, bump));
+      clearInterval(id);
+    };
+  }, [token]);
 
   useEffect(() => { if (token) loadAudit(auditWindow); }, [token, auditWindow]);
 
@@ -299,7 +320,50 @@ export default function TeamPortal() {
             <span style={{ ...S.btn, ...S.btnSlate, cursor: "default" }}>
               {me?.username || "…"} · {me?.role || "…"}
             </span>
-            <button style={{ ...S.btn, ...S.btnSlate }} onClick={logout}>Logout</button>
+            <button
+              onClick={logout}
+              title="Sign out"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "8px 14px",
+                borderRadius: 8,
+                background: "#fff",
+                border: "1px solid #cbd5e1",
+                color: "#334155",
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#dc2626";
+                e.currentTarget.style.color = "#dc2626";
+                e.currentTarget.style.background = "#fef2f2";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#cbd5e1";
+                e.currentTarget.style.color = "#334155";
+                e.currentTarget.style.background = "#fff";
+              }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
+            </button>
           </div>
         </div>
 
@@ -397,7 +461,7 @@ export default function TeamPortal() {
           ) : auditEntries.length === 0 ? (
             <div style={S.empty}>No audit entries in the last {auditWindow}.</div>
           ) : (
-            <div style={{ overflowX: "auto", border: "1px solid #e2e8f0", borderRadius: 8 }}>
+            <div style={{ overflow: "auto", maxHeight: "780px", border: "1px solid #e2e8f0", borderRadius: 8 }}>
               <table style={{ width: "100%", minWidth: 900, borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
