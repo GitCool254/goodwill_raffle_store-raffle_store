@@ -61,6 +61,27 @@ export default function TeamPortal() {
   const [newPhone, setNewPhone] = useState("");
   const [newRole, setNewRole] = useState("employee");
   const [newPassword, setNewPassword] = useState("");
+  const [auditWindow, setAuditWindow] = useState("24h");
+  const [auditEntries, setAuditEntries] = useState([]);
+  const [auditLoading, setAuditLoading] = useState(false);
+
+  async function loadAudit(win) {
+    setAuditLoading(true);
+    try {
+      const res = await fetch(`${BACKEND}/team/audit?window=${win}`, {
+        headers: { "X-Team-Token": token },
+      });
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json();
+      setAuditEntries(Array.isArray(data.entries) ? data.entries : []);
+    } catch (err) {
+      setMsg({ type: "error", text: "Audit load failed: " + err.message });
+    } finally {
+      setAuditLoading(false);
+    }
+  }
+
+  useEffect(() => { if (token) loadAudit(auditWindow); }, [token, auditWindow]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -315,6 +336,83 @@ export default function TeamPortal() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+
+        {/* ========== AUDIT LOG ========== */}
+        <div style={S.card}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 16 }}>
+            <h2 style={{ ...S.sectionTitle, margin: 0 }}>Activity Audit Log</h2>
+            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+              {["24h", "3d", "7d", "14d"].map((w) => (
+                <button
+                  key={w}
+                  onClick={() => setAuditWindow(w)}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: 6,
+                    border: "1px solid " + (auditWindow === w ? "#0284c7" : "#e2e8f0"),
+                    background: auditWindow === w ? "#0284c7" : "#fff",
+                    color: auditWindow === w ? "#fff" : "#475569",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    cursor: "pointer",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  {w}
+                </button>
+              ))}
+            </div>
+          </div>
+          {auditLoading ? (
+            <div style={S.empty}>Loading audit trail…</div>
+          ) : auditEntries.length === 0 ? (
+            <div style={S.empty}>No audit entries in the last {auditWindow}.</div>
+          ) : (
+            <div style={{ overflowX: "auto", border: "1px solid #e2e8f0", borderRadius: 8 }}>
+              <table style={{ width: "100%", minWidth: 900, borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ background: "#f8fafc", borderBottom: "2px solid #e2e8f0" }}>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Time</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>User</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Role</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Action</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Target</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Detail</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>IP</th>
+                    <th style={{ padding: "10px 12px", textAlign: "left", fontWeight: 700, color: "#475569", whiteSpace: "nowrap" }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {auditEntries.map((e, i) => (
+                    <tr key={(e.ts || "") + i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "9px 12px", color: "#334155", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>
+                        {(() => { try { return new Date(e.ts).toLocaleString(); } catch { return e.ts; } })()}
+                      </td>
+                      <td style={{ padding: "9px 12px", fontWeight: 600, color: "#0f172a" }}>{e.actor}</td>
+                      <td style={{ padding: "9px 12px", color: "#64748b", textTransform: "capitalize" }}>{e.role}</td>
+                      <td style={{ padding: "9px 12px", color: "#0369a1", fontWeight: 600 }}>{e.action}</td>
+                      <td style={{ padding: "9px 12px", color: "#334155" }}>{e.target || "—"}</td>
+                      <td style={{ padding: "9px 12px", color: "#64748b", maxWidth: 260, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={e.detail || ""}>{e.detail || "—"}</td>
+                      <td style={{ padding: "9px 12px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12 }}>{e.ip || "—"}</td>
+                      <td style={{ padding: "9px 12px" }}>
+                        <span style={{
+                          display: "inline-block",
+                          padding: "2px 8px",
+                          borderRadius: 999,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          background: e.success ? "#dcfce7" : "#fee2e2",
+                          color: e.success ? "#166534" : "#991b1b",
+                        }}>{e.success ? "OK" : "FAIL"}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

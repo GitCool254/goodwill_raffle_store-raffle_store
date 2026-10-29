@@ -97,6 +97,20 @@ export default function AdminPortal() {
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY) || "");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [me, setMe] = useState(null);
+
+  // Fetch current identity on mount (and when token changes)
+  useEffect(() => {
+    if (!token) { setMe(null); return; }
+    (async () => {
+      try {
+        const res = await fetch(`${BACKEND}/team/me`, { headers: { "X-Admin-Token": token } });
+        if (!res.ok) return;
+        const data = await res.json();
+        setMe({ username: data.username, role: data.role, is_root: !!data.is_root });
+      } catch {}
+    })();
+  }, [token]);
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
   const [lockedUntil, setLockedUntil] = useState(null);
@@ -145,6 +159,7 @@ export default function AdminPortal() {
       if (res.ok && data.token) {
         localStorage.setItem(TOKEN_KEY, data.token);
         setToken(data.token);
+        setMe({ username: data.username, role: data.role, is_root: !!data.is_root });
         setLockedUntil(null);
         setSecondsRemaining(0);
       } else if (res.status === 429 && data.locked) {
@@ -180,8 +195,15 @@ export default function AdminPortal() {
   }, [lockedUntil]);
 
   function logout() {
+    if (token) {
+      fetch(`${BACKEND}/team/logout`, {
+        method: "POST",
+        headers: { "X-Admin-Token": token },
+      }).catch(() => {});
+    }
     localStorage.removeItem(TOKEN_KEY);
     setToken("");
+    setMe(null);
   }
 
   // ---- reset-password handlers ----
@@ -673,6 +695,30 @@ export default function AdminPortal() {
   return (
     <div style={S.page}>
       <div style={S.container}>
+        {me && me.username && (
+          <div style={{
+            background: "linear-gradient(135deg, #0369a1 0%, #0284c7 100%)",
+            color: "#fff",
+            borderRadius: 10,
+            padding: "10px 16px",
+            marginBottom: 14,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+            boxShadow: "0 2px 8px rgba(3,105,161,0.15)",
+            fontSize: 14,
+            fontWeight: 500,
+          }}>
+            <span>
+              Signed in as <strong style={{ fontWeight: 700 }}>{me.username}</strong>
+              {me.role ? <span style={{ opacity: 0.85, marginLeft: 6 }}>· {me.role}</span> : null}
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", opacity: 0.8, textTransform: "uppercase" }}>
+              Admin
+            </span>
+          </div>
+        )}
         {/* Top bar */}
         <div style={S.topbar}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
