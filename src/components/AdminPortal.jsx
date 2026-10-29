@@ -8,6 +8,12 @@ import { FALLBACK_DONATION_PROGRAMS } from "../data/donations";
 const BACKEND = import.meta.env.VITE_BACKEND_URL;
 const TOKEN_KEY = "gw_admin_token";
 
+function formatCountdown(secs) {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${m}m ${String(s).padStart(2, "0")}s`;
+}
+
 const EMPTY_PRODUCT = {
   id: "",
   title: "",
@@ -93,6 +99,8 @@ export default function AdminPortal() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
+  const [lockedUntil, setLockedUntil] = useState(null);
+  const [secondsRemaining, setSecondsRemaining] = useState(0);
 
   // Reset-password flow (OTP via SMSGate)
   const [resetMode, setResetMode] = useState(false);
@@ -124,6 +132,7 @@ export default function AdminPortal() {
   // ---- login ----
   async function handleLogin(e) {
     e.preventDefault();
+    if (lockedUntil && Date.now() < lockedUntil) return;
     setLoginError("");
     setLoggingIn(true);
     try {
@@ -136,6 +145,15 @@ export default function AdminPortal() {
       if (res.ok && data.token) {
         localStorage.setItem(TOKEN_KEY, data.token);
         setToken(data.token);
+        setLockedUntil(null);
+        setSecondsRemaining(0);
+      } else if (res.status === 429 && data.locked) {
+        const until = data.locked_until
+          ? new Date(data.locked_until).getTime()
+          : Date.now() + (data.seconds_remaining || 900) * 1000;
+        setLockedUntil(until);
+        setSecondsRemaining(data.seconds_remaining || Math.round((until - Date.now()) / 1000));
+        setLoginError(data.error || "Account locked.");
       } else {
         setLoginError(data.error || "Login failed");
       }
@@ -145,6 +163,21 @@ export default function AdminPortal() {
       setLoggingIn(false);
     }
   }
+
+  useEffect(() => {
+    if (!lockedUntil) return;
+    const tick = () => {
+      const remaining = Math.max(0, Math.round((lockedUntil - Date.now()) / 1000));
+      setSecondsRemaining(remaining);
+      if (remaining <= 0) {
+        setLockedUntil(null);
+        setLoginError("");
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [lockedUntil]);
 
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
@@ -609,9 +642,20 @@ export default function AdminPortal() {
             <label style={S.label}>Password</label>
             <input style={S.input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
           </div>
-          {loginError && <div style={{ ...S.msg, ...S.msgError, marginBottom: 12 }}>{loginError}</div>}
-          <button type="submit" disabled={loggingIn} style={{ ...S.btn, ...S.btnSky, width: "100%", ...(loggingIn ? S.btnDisabled : {}) }}>
-            {loggingIn ? "Signing in…" : "Sign in"}
+          {lockedUntil && secondsRemaining > 0 && (
+            <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "14px 16px", marginBottom: 14, display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <span style={{ fontSize: 18, lineHeight: 1 }}>🔒</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#991b1b", marginBottom: 4 }}>Account Locked</div>
+                <div style={{ fontSize: 13, color: "#7f1d1d", lineHeight: 1.5 }}>
+                  Too many failed login attempts. Try again in <strong>{formatCountdown(secondsRemaining)}</strong>.
+                </div>
+              </div>
+            </div>
+          )}
+          {loginError && !(lockedUntil && secondsRemaining > 0) && <div style={{ ...S.msg, ...S.msgError, marginBottom: 12 }}>{loginError}</div>}
+          <button type="submit" disabled={loggingIn || (lockedUntil && secondsRemaining > 0)} style={{ ...S.btn, ...S.btnSky, width: "100%", ...((loggingIn || (lockedUntil && secondsRemaining > 0)) ? S.btnDisabled : {}) }}>
+            {lockedUntil && secondsRemaining > 0 ? `Locked (${formatCountdown(secondsRemaining)})` : loggingIn ? "Signing in…" : "Sign in"}
           </button>
           <p style={{ textAlign: "center", marginTop: 14, marginBottom: 0, fontSize: 13 }}>
             <button type="button" onClick={() => { setResetMode(true); setResetMsg(null); setOtpUsername(username); }} style={{ background: "none", border: "none", cursor: "pointer", color: "#0284c7", fontWeight: 600, padding: 0, fontSize: 13 }}>
