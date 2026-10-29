@@ -94,6 +94,16 @@ export default function AdminPortal() {
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
 
+  // Reset-password flow (OTP via SMSGate)
+  const [resetMode, setResetMode] = useState(false);
+  const [resetStep, setResetStep] = useState(1);
+  const [otpUsername, setOtpUsername] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [resetPhoneMask, setResetPhoneMask] = useState("");
+  const [resetMsg, setResetMsg] = useState(null);
+  const [resetting, setResetting] = useState(false);
+
   const [tab, setTab] = useState("catalog"); // "featured" | "catalog" | "donations"
 
   const [sampleProducts, setSampleProducts] = useState([]);
@@ -139,6 +149,69 @@ export default function AdminPortal() {
   function logout() {
     localStorage.removeItem(TOKEN_KEY);
     setToken("");
+  }
+
+  // ---- reset-password handlers ----
+  async function handleRequestOtp(e) {
+    e.preventDefault();
+    setResetMsg(null);
+    setResetting(true);
+    try {
+      const res = await fetch(`${BACKEND}/auth/request-reset-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: otpUsername }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setResetMsg({ type: "error", text: data.error || "Could not send code" });
+      } else {
+        setResetPhoneMask(data.phone_masked || "");
+        setResetStep(2);
+        setResetMsg({ type: "info", text: data.message || "If this account exists, an OTP was sent." });
+      }
+    } catch {
+      setResetMsg({ type: "error", text: "Network error — check backend URL." });
+    } finally {
+      setResetting(false);
+    }
+  }
+
+  async function handleVerifyOtp(e) {
+    e.preventDefault();
+    setResetMsg(null);
+    setResetting(true);
+    try {
+      const res = await fetch(`${BACKEND}/auth/verify-reset-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: otpUsername, otp: otpCode, new_password: newPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setResetMsg({ type: "error", text: data.error || "Could not reset password" });
+      } else {
+        setResetMsg({ type: "success", text: data.message || "Password updated. You can log in now." });
+        setResetMode(false);
+        setResetStep(1);
+        setOtpCode("");
+        setNewPassword("");
+        setResetPhoneMask("");
+      }
+    } catch {
+      setResetMsg({ type: "error", text: "Network error — check backend URL." });
+    } finally {
+      setResetting(false);
+    }
+  }
+
+  function cancelReset() {
+    setResetMode(false);
+    setResetStep(1);
+    setOtpCode("");
+    setNewPassword("");
+    setResetMsg(null);
+    setResetPhoneMask("");
   }
 
   // ---- load all three ----
@@ -471,6 +544,57 @@ export default function AdminPortal() {
     }
   }
 
+  // ---- RESET PASSWORD CARD ----
+  if (!token && resetMode) {
+    return (
+      <div style={{ ...S.page, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ ...S.card, width: "100%", maxWidth: 400, marginBottom: 0 }}>
+          <h1 style={{ ...S.sectionTitle, fontSize: 20, textAlign: "center" }}>Reset Admin Password</h1>
+
+          {resetStep === 1 && (
+            <form onSubmit={handleRequestOtp}>
+              <p style={{ fontSize: 13, color: "#64748b", marginTop: 0, marginBottom: 14, lineHeight: 1.5 }}>
+                Enter your admin username. We will send a 6-digit code to the phone on file.
+              </p>
+              <div style={S.field}>
+                <label style={S.label}>Username</label>
+                <input style={S.input} value={otpUsername} onChange={(e) => setOtpUsername(e.target.value)} autoComplete="username" required />
+              </div>
+              {resetMsg && <div style={{ ...S.msg, ...(resetMsg.type === "error" ? S.msgError : resetMsg.type === "success" ? S.msgSuccess : S.msgInfo), marginBottom: 12 }}>{resetMsg.text}</div>}
+              <button type="submit" disabled={resetting} style={{ ...S.btn, ...S.btnSky, width: "100%", ...(resetting ? S.btnDisabled : {}) }}>
+                {resetting ? "Sending…" : "Send OTP"}
+              </button>
+            </form>
+          )}
+
+          {resetStep === 2 && (
+            <form onSubmit={handleVerifyOtp}>
+              <p style={{ fontSize: 13, color: "#64748b", marginTop: 0, marginBottom: 14, lineHeight: 1.5 }}>
+                OTP sent{resetPhoneMask ? ` to ${resetPhoneMask}` : ""}. Enter the code and your new password.
+              </p>
+              <div style={S.field}>
+                <label style={S.label}>OTP code</label>
+                <input style={S.input} value={otpCode} onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" autoComplete="one-time-code" required />
+              </div>
+              <div style={S.field}>
+                <label style={S.label}>New password (min 8 chars)</label>
+                <input style={S.input} type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} autoComplete="new-password" required />
+              </div>
+              {resetMsg && <div style={{ ...S.msg, ...(resetMsg.type === "error" ? S.msgError : resetMsg.type === "success" ? S.msgSuccess : S.msgInfo), marginBottom: 12 }}>{resetMsg.text}</div>}
+              <button type="submit" disabled={resetting} style={{ ...S.btn, ...S.btnEmerald, width: "100%", ...(resetting ? S.btnDisabled : {}) }}>
+                {resetting ? "Updating…" : "Update password"}
+              </button>
+            </form>
+          )}
+
+          <button type="button" onClick={cancelReset} style={{ ...S.btn, ...S.btnSlate, width: "100%", marginTop: 10 }}>
+            Back to sign in
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // ---- LOGIN SCREEN ----
   if (!token) {
     return (
@@ -489,6 +613,11 @@ export default function AdminPortal() {
           <button type="submit" disabled={loggingIn} style={{ ...S.btn, ...S.btnSky, width: "100%", ...(loggingIn ? S.btnDisabled : {}) }}>
             {loggingIn ? "Signing in…" : "Sign in"}
           </button>
+          <p style={{ textAlign: "center", marginTop: 14, marginBottom: 0, fontSize: 13 }}>
+            <button type="button" onClick={() => { setResetMode(true); setResetMsg(null); setOtpUsername(username); }} style={{ background: "none", border: "none", cursor: "pointer", color: "#0284c7", fontWeight: 600, padding: 0, fontSize: 13 }}>
+              Forgot password?
+            </button>
+          </p>
         </form>
       </div>
     );

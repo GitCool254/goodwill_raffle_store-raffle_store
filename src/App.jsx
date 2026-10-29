@@ -13,6 +13,7 @@ import WinnersDetail from "./components/WinnersDetail";
 import SearchBar from "./components/SearchBar";
 import CanonicalTag from "./components/CanonicalTag";
 import AdminPortal from "./components/AdminPortal";
+import TeamPortal from "./components/TeamPortal";
 import { setDynamicProducts } from "./data/products";
 
 // Lazy-loaded page components
@@ -37,9 +38,12 @@ export default function App() {
   // If the URL path is /admin, render ONLY the admin portal.
   // No header, menu, or footer. Completely isolated.
   // ---------------------------------------------------------
-  const isAdminRoute =
-    typeof window !== "undefined" &&
-    window.location.pathname.replace(/\/$/, "") === "/admin";
+  const _normPath =
+    typeof window !== "undefined"
+      ? window.location.pathname.replace(/\/$/, "")
+      : "";
+  const isAdminRoute = _normPath === "/admin";
+  const isTeamRoute = _normPath === "/Team" || _normPath === "/team";
 
   // ---------------------------------------------------------
   // PRODUCT BOOTSTRAP
@@ -48,7 +52,7 @@ export default function App() {
   // Safe no-op if backend is unreachable.
   // ---------------------------------------------------------
   useEffect(() => {
-    if (isAdminRoute) return; // Admin page manages its own data
+    if (isAdminRoute || isTeamRoute) return; // Admin / Team manage their own data
     (async () => {
       try {
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -87,10 +91,13 @@ export default function App() {
         console.warn("Product bootstrap skipped:", err);
       }
     })();
-  }, [isAdminRoute]);
+  }, [isAdminRoute, isTeamRoute]);
 
   if (isAdminRoute) {
     return <AdminPortal />;
+  }
+  if (isTeamRoute) {
+    return <TeamPortal />;
   }
   const DATA_VERSION = "v3";
 
