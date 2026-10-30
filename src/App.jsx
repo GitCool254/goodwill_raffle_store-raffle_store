@@ -117,7 +117,12 @@ export default function App() {
   const [recentWinnersData, setRecentWinnersData] = useState({
     show: false,
     winners: [],
+    title: "",
   });
+
+  // Campaign title + datetime (populated from /bootstrap)
+  const [campaignTitle, setCampaignTitle] = useState("");
+  const [campaignDatetime, setCampaignDatetime] = useState("");
 
   // --- Ticket verification ---
   const [verifyToken, setVerifyToken] = useState(null);
@@ -208,17 +213,22 @@ export default function App() {
         setTicketStateLoaded(true);
 
         setShowWinnersDetail(toggleData.show ?? true);
+        setCampaignTitle(ticketData.campaign_title || "");
+        setCampaignDatetime(ticketData.campaign_datetime || "");
         setRecentWinnersData({
           show: !!recentData.show,
           winners: Array.isArray(recentData.winners)
             ? recentData.winners
             : [],
+          title: recentData.title || "",
         });
       } catch (err) {
         console.error("Failed to fetch bootstrap data:", err);
         setTicketStateLoaded(true);
         setShowWinnersDetail(true);
-        setRecentWinnersData({ show: false, winners: [] });
+        setRecentWinnersData({ show: false, winners: [], title: "" });
+        setCampaignTitle("");
+        setCampaignDatetime("");
       }
     }
 
@@ -1188,6 +1198,7 @@ export default function App() {
             <RecentWinners
               show={recentWinnersData.show}
               winners={recentWinnersData.winners}
+              title={recentWinnersData.title}
             />
           </>
         )}
@@ -1233,7 +1244,7 @@ export default function App() {
                       className="font-semibold mb-4"
                       style={{ fontSize: "1.25rem", color: "#64748b" }}
                     >
-                      Raffle Event Details
+                      {campaignTitle || "Raffle Event Details"}
                     </h2>
 
                     <div
@@ -1265,7 +1276,16 @@ export default function App() {
                         </button>
                       </p>
                       <p>
-                        • <strong>Date & Time:</strong> 31/August/2026, 0200PM
+                        • <strong>Date & Time:</strong>{" "}
+                        {campaignDatetime
+                          ? new Date(campaignDatetime).toLocaleString("en-GB", {
+                              day: "2-digit",
+                              month: "long",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "31/August/2026, 0200PM"}
                       </p>
                       <p>
                         • <strong>Fair Play:</strong> All tickets are digitally

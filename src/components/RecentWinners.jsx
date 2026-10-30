@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function RecentWinners({ show: propShow, winners: propWinners }) {
+export default function RecentWinners({ show: propShow, winners: propWinners, title: propTitle }) {
   // If the parent supplies both props, we trust them and skip our own fetch.
   const useExternalData = propWinners !== undefined && propShow !== undefined;
 
   const [internalWinners, setInternalWinners] = useState([]);
   const [internalShow, setInternalShow] = useState(false);
+  const [internalTitle, setInternalTitle] = useState("");
 
   // Final values used for rendering.
   const winners = useExternalData ? propWinners : internalWinners;
   const show = useExternalData ? propShow : internalShow;
+  const title = useExternalData ? (propTitle || "") : internalTitle;
 
   const containerRef = useRef(null);
   const contentRef = useRef(null);
@@ -27,6 +29,7 @@ export default function RecentWinners({ show: propShow, winners: propWinners }) 
         const data = await res.json();
         setInternalShow(data.show);
         setInternalWinners(data.winners || []);
+        setInternalTitle(data.title || "");
       } catch (err) {
         console.error("Failed to fetch recent winners:", err);
         setInternalShow(false);
@@ -49,7 +52,9 @@ export default function RecentWinners({ show: propShow, winners: propWinners }) 
   }, [useExternalData]);
 
   const statementText =
-    "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
+    title && title.trim() !== ""
+      ? `❖❖❖ ${title} ❖❖❖`
+      : "❖❖❖ Empowerment Raffle Campaign 20/03/2026 - Winners ❖❖❖";
   const winnerItems = winners.map(
     (w) =>
       `${w.name} (${w.state}, ${w.country}) won: ${

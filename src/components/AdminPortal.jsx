@@ -167,11 +167,14 @@ export default function AdminPortal() {
   // Raffle campaign + UI toggles state
   const [raffleState, setRaffleState] = useState(null);
   const [raffleInitialInput, setRaffleInitialInput] = useState(250);
+  const [raffleTitleInput, setRaffleTitleInput] = useState("");
+  const [raffleDatetimeInput, setRaffleDatetimeInput] = useState("");
   const [uiToggles, setUiToggles] = useState(null);
   const [uiTogglesOverridden, setUiTogglesOverridden] = useState([]);
 
   // ---- Recent Winners editor state ----
   const [recentWinnersEdit, setRecentWinnersEdit] = useState([]);
+  const [recentWinnersTitle, setRecentWinnersTitle] = useState("");
   const [recentWinnersSaving, setRecentWinnersSaving] = useState(false);
 
   // ---- Winners Detail editor state ----
@@ -190,6 +193,7 @@ export default function AdminPortal() {
         if (rwRes.ok) {
           const rwd = await rwRes.json();
           setRecentWinnersEdit(Array.isArray(rwd.winners) ? rwd.winners : []);
+          setRecentWinnersTitle(rwd.title || "");
         }
         if (wdRes.ok) {
           const wdd = await wdRes.json();
@@ -206,7 +210,7 @@ export default function AdminPortal() {
       const res = await fetch(`${BACKEND}/admin/recent-winners-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Admin-Token": token },
-        body: JSON.stringify({ winners: recentWinnersEdit }),
+        body: JSON.stringify({ winners: recentWinnersEdit, title: recentWinnersTitle }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Save failed");
@@ -250,7 +254,7 @@ export default function AdminPortal() {
   }
 
   function addWinnersDetailRow() {
-    setWinnersDetailEdit([...winnersDetailEdit, { name: "", date: "", ticketNo: "", product: "", winnerImg: "", productImg: "", verified: true, countryFlag: "\U0001F1E6\U0001F1FA", location: "" }]);
+    setWinnersDetailEdit([...winnersDetailEdit, { name: "", date: "", ticketNo: "", product: "", productImg: "", verified: true, countryFlag: "\U0001F1E6\U0001F1FA", location: "" }]);
   }
 
   function removeWinnersDetailRow(idx) {
@@ -435,6 +439,8 @@ export default function AdminPortal() {
         if (!data.is_active && data.initial_tickets) {
           setRaffleInitialInput(data.initial_tickets);
         }
+        setRaffleTitleInput(data.campaign_title || "");
+        setRaffleDatetimeInput(data.campaign_datetime || "");
       } catch {}
     })();
   }, [token]);
@@ -466,7 +472,11 @@ export default function AdminPortal() {
       const res = await fetch(`${BACKEND}/admin/raffle/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Admin-Token": token },
-        body: JSON.stringify({ initial_tickets: n }),
+        body: JSON.stringify({
+          initial_tickets: n,
+          campaign_title: raffleTitleInput.trim(),
+          campaign_datetime: raffleDatetimeInput,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Start failed");
@@ -610,6 +620,36 @@ export default function AdminPortal() {
     });
     if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Upload failed");
     return (await res.json()).url;
+  }
+
+  async function uploadWinnerImage(file) {
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch(`${BACKEND}/admin/upload_winner_image`, {
+      method: "POST",
+      headers: { "X-Admin-Token": token },
+      body: fd,
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Upload failed");
+    return (await res.json()).url;
+  }
+
+  async function handleWinnersDetailImageUpload(idx, e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBusy(true);
+    try {
+      const url = await uploadWinnerImage(file);
+      setWinnersDetailEdit((prev) =>
+        prev.map((w, i) => (i === idx ? { ...w, productImg: url } : w))
+      );
+      setMsg({ type: "success", text: `✅ Image uploaded: ${url}` });
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally {
+      setBusy(false);
+      e.target.value = "";
+    }
   }
 
   async function handleProductImages(e) {
@@ -1397,6 +1437,25 @@ export default function AdminPortal() {
                 </div>
               </div>
               <div style={S.field}>
+                <label style={S.label}>Campaign Title</label>
+                <input
+                  style={S.input}
+                  type="text"
+                  placeholder="e.g. Empowerment Raffle Campaign 20/03/2026 - Winners"
+                  value={raffleTitleInput}
+                  onChange={(e) => setRaffleTitleInput(e.target.value)}
+                />
+              </div>
+              <div style={S.field}>
+                <label style={S.label}>Date & Time</label>
+                <input
+                  style={S.input}
+                  type="datetime-local"
+                  value={raffleDatetimeInput}
+                  onChange={(e) => setRaffleDatetimeInput(e.target.value)}
+                />
+              </div>
+              <div style={S.field}>
                 <label style={S.label}>Initial Tickets</label>
                 <input
                   style={S.input}
@@ -1471,6 +1530,16 @@ export default function AdminPortal() {
           <div style={{ ...S.msg, ...S.msgInfo, marginBottom: 16, fontSize: 13 }}>
             Public RecentWinners strip reflects saved entries. Empty list falls back to the 5 built-in defaults.
           </div>
+          <div style={S.field}>
+            <label style={S.label}>Strip Title (before winners)</label>
+            <input
+              style={S.input}
+              type="text"
+              placeholder="Empowerment Raffle Campaign 20/03/2026 - Winners"
+              value={recentWinnersTitle}
+              onChange={(e) => setRecentWinnersTitle(e.target.value)}
+            />
+          </div>
           {recentWinnersEdit.length === 0 && (
             <div style={S.empty}>No entries. Click "+ Add Winner" to start, or save to revert to defaults.</div>
           )}
@@ -1515,8 +1584,23 @@ export default function AdminPortal() {
                 <input style={S.input} placeholder="Date" value={w.date || ""} onChange={(e) => updateWinnersDetailField(idx, "date", e.target.value)} />
                 <input style={S.input} placeholder="Ticket no." value={w.ticketNo || ""} onChange={(e) => updateWinnersDetailField(idx, "ticketNo", e.target.value)} />
                 <input style={S.input} placeholder="Product" value={w.product || ""} onChange={(e) => updateWinnersDetailField(idx, "product", e.target.value)} />
-                <input style={S.input} placeholder="Winner img URL" value={w.winnerImg || ""} onChange={(e) => updateWinnersDetailField(idx, "winnerImg", e.target.value)} />
-                <input style={S.input} placeholder="Product img URL" value={w.productImg || ""} onChange={(e) => updateWinnersDetailField(idx, "productImg", e.target.value)} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <label style={{ fontSize: 11, color: "#64748b", fontWeight: 600 }}>Product Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleWinnersDetailImageUpload(idx, e)}
+                    style={{ fontSize: 12 }}
+                    disabled={busy}
+                  />
+                  {w.productImg && (
+                    <img
+                      src={w.productImg.startsWith("/winners/") ? `${BACKEND}${w.productImg}` : w.productImg}
+                      alt=""
+                      style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 4, border: "1px solid #e2e8f0" }}
+                    />
+                  )}
+                </div>
                 <input style={S.input} placeholder="Flag emoji" value={w.countryFlag || ""} onChange={(e) => updateWinnersDetailField(idx, "countryFlag", e.target.value)} />
                 <input style={S.input} placeholder="Location" value={w.location || ""} onChange={(e) => updateWinnersDetailField(idx, "location", e.target.value)} />
                 <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#475569" }}>
