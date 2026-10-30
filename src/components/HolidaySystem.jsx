@@ -18,6 +18,19 @@ export default function HolidaySystem({ onNavigate }) {
 
   const HOLIDAY_SYSTEM_ENABLED = true;
 
+  const [holidayConfig, setHolidayConfig] = useState(null);
+
+  useEffect(() => {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    if (!backendUrl) return;
+    let cancelled = false;
+    fetch(`${backendUrl}/holidays`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => { if (!cancelled && data) setHolidayConfig(data); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   const isMobile =
     typeof window !== "undefined" ? window.innerWidth < 768 : false;
 
@@ -55,49 +68,52 @@ export default function HolidaySystem({ onNavigate }) {
     easterMonday.setDate(easterSunday.getDate() + 1);
     easterMonday.setHours(23, 59, 59, 999);
 
-    return [
-      {
-        id: "blackfriday",
-        name: "Black Friday Raffle Days",
-        weeklyFriday: true,
-        countdown: true,
-      },
-      {
-        id: "christmas",
-        name: "Christmas Raffle Specials",
-        start: new Date(year, 1, 25),
-        end: new Date(year, 1, 26),
-      },
-      {
-        id: "newyear",
-        name: "New Year Celebration Draw",
-        start: new Date(year, 0, 1),
-        end: new Date(year, 0, 7),
-      },
-      {
-        id: "valentine",
-        name: "Valentine’s Special Raffles",
-        start: new Date(year, 1, 10),
-        end: new Date(year, 1, 14),
-      },
-      {
-        id: "easter",
-        name: "Easter Celebration Draw",
-        start: goodFriday,
-        end: easterMonday,
-        countdown: true,
-      },
-      // General holiday (e.g., Ramadan) – adjust dates as needed
-      {
-        id: "general",
-        name: "Labor's Day Special Raffle",
-        start: new Date(year, 3, 30),
-        end: new Date(year, 4, 1),
-        countdown: true,
-        useBlackFridayStyle: true,
-      },
-    ];
-  }, []);
+    const cfgH = (holidayConfig?.holidays) || {};
+    const isOn = (hid) => (cfgH[hid]?.enabled !== false);
+
+    const generalCfg = cfgH.general || {};
+    const genTitle = generalCfg.title || "Labor's Day Special Raffle";
+    let genStart = new Date(year, 3, 30);
+    let genEnd = new Date(year, 4, 1, 23, 59, 59);
+    if (generalCfg.startDate && generalCfg.endDate) {
+      try {
+        const s0 = new Date(generalCfg.startDate);
+        const e0 = new Date(generalCfg.endDate);
+        if (!isNaN(s0.getTime()) && !isNaN(e0.getTime())) {
+          s0.setHours(0, 0, 0, 0);
+          e0.setHours(23, 59, 59, 999);
+          genStart = s0;
+          genEnd = e0;
+        }
+      } catch {}
+    }
+
+    const list = [];
+    if (isOn("blackfriday")) list.push({
+      id: "blackfriday", name: "Black Friday Raffle Days", weeklyFriday: true, countdown: true,
+    });
+    if (isOn("christmas")) list.push({
+      id: "christmas", name: "Christmas Raffle Specials",
+      start: new Date(year, 11, 10), end: new Date(year, 11, 31, 23, 59, 59),
+    });
+    if (isOn("newyear")) list.push({
+      id: "newyear", name: "New Year Celebration Draw",
+      start: new Date(year, 0, 1), end: new Date(year, 0, 7),
+    });
+    if (isOn("valentine")) list.push({
+      id: "valentine", name: "Valentine's Special Raffles",
+      start: new Date(year, 1, 10), end: new Date(year, 1, 14),
+    });
+    if (isOn("easter")) list.push({
+      id: "easter", name: "Easter Celebration Draw",
+      start: goodFriday, end: easterMonday, countdown: true,
+    });
+    if (isOn("general")) list.push({
+      id: "general", name: genTitle,
+      start: genStart, end: genEnd, countdown: true, useBlackFridayStyle: true,
+    });
+    return list;
+  }, [holidayConfig]);
 
   // Helper: check if a date is within the next 2 days (inclusive)
   const isWithinNextTwoDays = (date) => {
@@ -326,7 +342,7 @@ export default function HolidaySystem({ onNavigate }) {
           transform: translateX(100vw);
         }
       `}</style>
-      {isWinter && <SnowLayer isMobile={isMobile} />}
+      {holidayConfig?.effects?.snowfall?.enabled === true && <SnowLayer isMobile={isMobile} />}
       <div className="holiday-slide">
         {activeHolidays.map((holiday) => (
           <HolidayBanner key={holiday.id} holiday={holiday} onNavigate={onNavigate} />

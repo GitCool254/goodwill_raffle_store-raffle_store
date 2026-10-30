@@ -66,6 +66,8 @@ export default function TeamPortal() {
   const [auditWindow, setAuditWindow] = useState("24h");
   const [auditEntries, setAuditEntries] = useState([]);
   const [auditLoading, setAuditLoading] = useState(false);
+  const [holidayCfg, setHolidayCfg] = useState(null);
+  const [holidayLoading, setHolidayLoading] = useState(false);
 
   async function loadAudit(win) {
     setAuditLoading(true);
@@ -80,6 +82,20 @@ export default function TeamPortal() {
       setMsg({ type: "error", text: "Audit load failed: " + err.message });
     } finally {
       setAuditLoading(false);
+    }
+  }
+
+  async function loadHolidays() {
+    setHolidayLoading(true);
+    try {
+      const res = await fetch(`${BACKEND}/team/holidays`, { headers: { "X-Team-Token": token } });
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json();
+      setHolidayCfg(data);
+    } catch (err) {
+      setMsg({ type: "error", text: "Holidays load failed: " + err.message });
+    } finally {
+      setHolidayLoading(false);
     }
   }
 
@@ -103,6 +119,7 @@ export default function TeamPortal() {
   }, [token]);
 
   useEffect(() => { if (token) loadAudit(auditWindow); }, [token, auditWindow]);
+  useEffect(() => { if (token) loadHolidays(); }, [token]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -264,6 +281,35 @@ export default function TeamPortal() {
     } catch (err) {
       setMsg({ type: "error", text: "❌ " + err.message });
     } finally { setBusy(false); }
+  }
+
+  async function postHolidays(payload) {
+    setBusy(true); setMsg(null);
+    try {
+      const res = await fetch(`${BACKEND}/team/holidays`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Team-Token": token },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed");
+      setHolidayCfg({ holidays: data.holidays, effects: data.effects });
+      setMsg({ type: "success", text: "✅ Holidays updated" });
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally { setBusy(false); }
+  }
+
+  async function toggleHoliday(hid, enabled) {
+    await postHolidays({ holidays: { [hid]: { enabled: !enabled } } });
+  }
+
+  async function updateGeneralHoliday(patch) {
+    await postHolidays({ holidays: { general: patch } });
+  }
+
+  async function toggleSnowfall(enabled) {
+    await postHolidays({ effects: { snowfall: { enabled: !enabled } } });
   }
 
   function badgeFor(u) {
@@ -502,6 +548,157 @@ export default function TeamPortal() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+        </div>
+
+        {/* ========== HOLIDAY CALENDAR ========== */}
+        <div style={S.card}>
+          <div style={{ marginBottom: 16 }}>
+            <h2 style={{ ...S.sectionTitle, margin: 0 }}>Holiday Calendar</h2>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "4px 0 0 0" }}>
+              Toggle holidays on or off. Disabled holidays will not show banners or offers on the main site.
+            </p>
+          </div>
+          {holidayLoading ? (
+            <div style={S.empty}>Loading holidays…</div>
+          ) : !holidayCfg ? (
+            <div style={S.empty}>No holiday data.</div>
+          ) : (
+            <div style={S.list}>
+              {[
+                { id: "blackfriday", label: "Black Friday", dateText: "Every Friday" },
+                { id: "christmas", label: "Christmas", dateText: "Dec 10 – Dec 31" },
+                { id: "newyear", label: "New Year", dateText: "Jan 1 – Jan 7" },
+                { id: "valentine", label: "Valentine's", dateText: "Feb 10 – Feb 14" },
+                { id: "easter", label: "Easter", dateText: "Good Friday – Easter Monday" },
+                { id: "general", label: "General Holiday", dateText: "Custom dates (ISO)" },
+              ].map((h) => {
+                const cfg = holidayCfg.holidays?.[h.id] || {};
+                const isEnabled = cfg.enabled !== false;
+                const isGeneral = h.id === "general";
+                return (
+                  <div key={h.id} style={{ border: "1px solid #e2e8f0", borderRadius: 10, padding: 14, background: "#fff" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 15, fontWeight: 600, color: "#0f172a" }}>{h.label}</div>
+                        <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{h.dateText}</div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleHoliday(h.id, isEnabled)}
+                        disabled={busy}
+                        title={isEnabled ? "Click to disable" : "Click to enable"}
+                        style={{
+                          width: 52, height: 28, borderRadius: 999, border: "none",
+                          background: isEnabled ? "#059669" : "#cbd5e1",
+                          position: "relative", cursor: busy ? "not-allowed" : "pointer",
+                          transition: "background 0.15s ease",
+                          opacity: busy ? 0.55 : 1, flexShrink: 0,
+                        }}
+                      >
+                        <span style={{
+                          position: "absolute", top: 3, left: isEnabled ? 27 : 3,
+                          width: 22, height: 22, borderRadius: "50%", background: "#fff",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.25)", transition: "left 0.15s ease",
+                        }} />
+                      </button>
+                    </div>
+                    {isGeneral && isEnabled && (
+                      <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px dashed #e2e8f0" }}>
+                        <div style={S.grid2}>
+                          <div style={S.field}>
+                            <label style={S.label}>Title</label>
+                            <input
+                              style={S.input}
+                              value={cfg.title || "Labor's Day Special Raffle"}
+                              onChange={(e) => setHolidayCfg((prev) => ({
+                                ...prev,
+                                holidays: { ...prev.holidays, general: { ...(prev.holidays?.general || {}), title: e.target.value } }
+                              }))}
+                              onBlur={(e) => updateGeneralHoliday({ title: e.target.value })}
+                            />
+                          </div>
+                          <div style={S.field}>
+                            <label style={S.label}>Start date (YYYY-MM-DD)</label>
+                            <input
+                              style={S.input}
+                              type="date"
+                              value={cfg.startDate || ""}
+                              onChange={(e) => updateGeneralHoliday({ startDate: e.target.value })}
+                            />
+                          </div>
+                          <div style={S.field}>
+                            <label style={S.label}>End date (YYYY-MM-DD)</label>
+                            <input
+                              style={S.input}
+                              type="date"
+                              value={cfg.endDate || ""}
+                              onChange={(e) => updateGeneralHoliday({ endDate: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ fontSize: 12, color: "#64748b", marginTop: -6 }}>
+                          Leave both dates empty to use defaults (Apr 30 – May 1). Dates are exact-year; edit each year.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+
+        {/* ========== SITE EFFECTS ========== */}
+        <div style={S.card}>
+          <div style={{ marginBottom: 16 }}>
+            <h2 style={{ ...S.sectionTitle, margin: 0 }}>Site Effects</h2>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "4px 0 0 0" }}>
+              Visual effects rendered across the main site.
+            </p>
+          </div>
+          {!holidayCfg ? (
+            <div style={S.empty}>Loading effects…</div>
+          ) : (
+            <div style={S.list}>
+              {(() => {
+                const sf = holidayCfg.effects?.snowfall || {};
+                const isOn = sf.enabled === true;
+                return (
+                  <div style={{ border: "1px solid #e2e8f0", borderRadius: 10, padding: 14, background: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 15, fontWeight: 600, color: "#0f172a", display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 18 }}>❄</span>
+                        Snowfall
+                      </div>
+                      <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
+                        Snow particles across the whole site. No scheduled range — controlled only by this toggle.
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleSnowfall(isOn)}
+                      disabled={busy}
+                      title={isOn ? "Click to turn off" : "Click to turn on"}
+                      style={{
+                        width: 52, height: 28, borderRadius: 999, border: "none",
+                        background: isOn ? "#0284c7" : "#cbd5e1",
+                        position: "relative", cursor: busy ? "not-allowed" : "pointer",
+                        transition: "background 0.15s ease",
+                        opacity: busy ? 0.55 : 1, flexShrink: 0,
+                      }}
+                    >
+                      <span style={{
+                        position: "absolute", top: 3, left: isOn ? 27 : 3,
+                        width: 22, height: 22, borderRadius: "50%", background: "#fff",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.25)", transition: "left 0.15s ease",
+                      }} />
+                    </button>
+                  </div>
+                );
+              })()}
             </div>
           )}
         </div>
