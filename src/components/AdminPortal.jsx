@@ -164,6 +164,12 @@ export default function AdminPortal() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  // Raffle campaign + UI toggles state
+  const [raffleState, setRaffleState] = useState(null);
+  const [raffleInitialInput, setRaffleInitialInput] = useState(250);
+  const [uiToggles, setUiToggles] = useState(null);
+  const [uiTogglesOverridden, setUiTogglesOverridden] = useState([]);
+
   // ---- login ----
   async function handleLogin(e) {
     e.preventDefault();
@@ -315,6 +321,110 @@ export default function AdminPortal() {
       }
     })();
   }, [token]);
+
+  // Fetch raffle campaign state
+  useEffect(() => {
+    if (!token) { setRaffleState(null); return; }
+    (async () => {
+      try {
+        const res = await fetch(`${BACKEND}/admin/raffle/state`, { headers: { "X-Admin-Token": token } });
+        if (!res.ok) return;
+        const data = await res.json();
+        setRaffleState(data);
+        if (!data.is_active && data.initial_tickets) {
+          setRaffleInitialInput(data.initial_tickets);
+        }
+      } catch {}
+    })();
+  }, [token]);
+
+  // Fetch UI toggles
+  useEffect(() => {
+    if (!token) { setUiToggles(null); setUiTogglesOverridden([]); return; }
+    (async () => {
+      try {
+        const res = await fetch(`${BACKEND}/admin/ui-toggles`, { headers: { "X-Admin-Token": token } });
+        if (!res.ok) return;
+        const data = await res.json();
+        setUiToggles(data.toggles || null);
+        setUiTogglesOverridden(data.overridden || []);
+      } catch {}
+    })();
+  }, [token]);
+
+  async function startCampaign() {
+    if (!token) return;
+    const n = parseInt(raffleInitialInput, 10);
+    if (!Number.isInteger(n) || n < 1 || n > 1000000) {
+      setMsg({ type: "error", text: "Initial tickets must be between 1 and 1,000,000" });
+      return;
+    }
+    if (!window.confirm(`Start a new campaign with ${n} tickets? This will reset the sales ledger for the new campaign (audit history preserved).`)) return;
+    setBusy(true);
+    try {
+      const res = await fetch(`${BACKEND}/admin/raffle/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ initial_tickets: n }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Start failed");
+      setMsg({ type: "success", text: `✅ Campaign started with ${n} tickets` });
+      const stateRes = await fetch(`${BACKEND}/admin/raffle/state`, { headers: { "X-Admin-Token": token } });
+      if (stateRes.ok) setRaffleState(await stateRes.json());
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function endCampaign() {
+    if (!token) return;
+    if (!window.confirm("End the current campaign? Remaining tickets will be set to 0.")) return;
+    setBusy(true);
+    try {
+      const res = await fetch(`${BACKEND}/admin/raffle/end`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "End failed");
+      setMsg({ type: "success", text: "✅ Campaign ended" });
+      const stateRes = await fetch(`${BACKEND}/admin/raffle/state`, { headers: { "X-Admin-Token": token } });
+      if (stateRes.ok) setRaffleState(await stateRes.json());
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function flipToggle(key, value) {
+    if (!token) return;
+    setBusy(true);
+    try {
+      const res = await fetch(`${BACKEND}/admin/ui-toggles`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ key, value }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Toggle failed");
+      setMsg({ type: "success", text: `✅ Toggle "${key}" set to ${value}` });
+      const togglesRes = await fetch(`${BACKEND}/admin/ui-toggles`, { headers: { "X-Admin-Token": token } });
+      if (togglesRes.ok) {
+        const td = await togglesRes.json();
+        setUiToggles(td.toggles || null);
+        setUiTogglesOverridden(td.overridden || []);
+      }
+    } catch (err) {
+      setMsg({ type: "error", text: "❌ " + err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
 
   // ---- persist products ----
   async function persistProducts(nextSample, nextCatalog) {
@@ -1148,8 +1258,110 @@ export default function AdminPortal() {
                 </div>
               )}
             </div>
-          </>
         )}
+
+        {/* ========== RAFFLE CAMPAIGN CONTROL ========== */}
+        <div style={S.card}>
+          <h2 style={S.sectionTitle}>Raffle Campaign</h2>
+          {!raffleState ? (
+            <div style={S.empty}>Loading campaign status…</div>
+          ) : raffleState.is_active ? (
+            <>
+              <div style={{ ...S.msg, ...S.msgSuccess, marginBottom: 16 }}>
+                <div style={{ fontWeight: 700, marginBottom: 4 }}>Campaign Active</div>
+                <div style={{ fontSize: 13, lineHeight: 1.6 }}>
+                  <div><strong>Remaining:</strong> {raffleState.remaining} of {raffleState.initial_tickets}</div>
+                  <div><strong>Tickets Sold:</strong> {raffleState.tickets_sold}</div>
+                  <div><strong>Started:</strong> {raffleState.campaign_start_date || "—"}</div>
+                </div>
+              </div>
+              <button
+                style={{ ...S.btn, background: "#dc2626", color: "#fff", ...(busy ? S.btnDisabled : {}) }}
+                onClick={endCampaign}
+                disabled={busy}
+              >
+                {busy ? "Ending…" : "End Campaign"}
+              </button>
+            </>
+          ) : (
+            <>
+              <div style={{ ...S.msg, ...S.msgInfo, marginBottom: 16 }}>
+                <div style={{ fontWeight: 700, marginBottom: 4 }}>Campaign Not Active</div>
+                <div style={{ fontSize: 13, lineHeight: 1.6 }}>
+                  {raffleState.sold_out_at
+                    ? `Previous campaign ended ${new Date(raffleState.sold_out_at).toLocaleString()}.`
+                    : "No campaign has been started yet."}
+                  <div style={{ marginTop: 6 }}>Starting a new campaign <strong>resets the sales ledger</strong> for the fresh campaign (audit history preserved).</div>
+                </div>
+              </div>
+              <div style={S.field}>
+                <label style={S.label}>Initial Tickets</label>
+                <input
+                  style={S.input}
+                  type="number"
+                  min="1"
+                  max="1000000"
+                  value={raffleInitialInput}
+                  onChange={(e) => setRaffleInitialInput(e.target.value)}
+                />
+              </div>
+              <button
+                style={{ ...S.btn, ...S.btnEmerald, ...(busy ? S.btnDisabled : {}) }}
+                onClick={startCampaign}
+                disabled={busy}
+              >
+                {busy ? "Starting…" : "Start Campaign"}
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* ========== SITE TOGGLES ========== */}
+        <div style={S.card}>
+          <h2 style={S.sectionTitle}>Site Toggles</h2>
+          <div style={{ ...S.msg, ...S.msgInfo, marginBottom: 16, fontSize: 13 }}>
+            Changes take effect for users on their next page load (existing browser caches preserved).
+          </div>
+          {!uiToggles ? (
+            <div style={S.empty}>Loading toggles…</div>
+          ) : (
+            <div style={S.list}>
+              {[
+                { key: "address_usa",        label: "USA Addresses" },
+                { key: "address_canada",     label: "Canada Addresses" },
+                { key: "address_australia",  label: "Australia Addresses" },
+                { key: "address_newzealand", label: "New Zealand Addresses" },
+                { key: "recent_winners",     label: "Recent Winners Section" },
+                { key: "winners_detail",     label: "Winners Detail Section" },
+              ].map(({ key, label }) => {
+                const enabled = !!uiToggles[key];
+                const isOverridden = uiTogglesOverridden.includes(key);
+                return (
+                  <div key={key} style={S.listItem}>
+                    <div style={S.listLeft}>
+                      <div style={S.listText}>
+                        <div style={S.listTitle}>
+                          {label}
+                          {isOverridden && (
+                            <span style={{ fontSize: 11, color: "#64748b", marginLeft: 8 }}>(admin override)</span>
+                          )}
+                        </div>
+                        <div style={S.listMeta}>{enabled ? "✅ Enabled" : "⛔ Disabled"}</div>
+                      </div>
+                    </div>
+                    <button
+                      style={{ ...S.btn, ...(enabled ? S.btnSlate : S.btnSky), ...(busy ? S.btnDisabled : {}) }}
+                      onClick={() => flipToggle(key, !enabled)}
+                      disabled={busy}
+                    >
+                      {busy ? "…" : enabled ? "Disable" : "Enable"}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
