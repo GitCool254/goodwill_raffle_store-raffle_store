@@ -1,69 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
+import { WINNERS_DETAIL_DEFAULTS } from "../data/winnersDefaults";
 
 export default function WinnersDetail() {
-  const winners = [
-    {
-      name: "Melissa D.",
-      date: "30 July 2026",
-      ticketNo: "GWS-240715B9",
-      product: "Larchmont Dining Set",
-      winnerImg: "",
-      productImg: "/Dining set_melissa.png",
-      verified: true,
-      countryFlag: "🇦🇺",
-      location: "Dodges Ferry TAS",
-    },
-    {
-      name: "Liam J..",
-      date: "30 July 2026",
-      ticketNo: "GWS-37377A9E",
-      product: "Ballinasloe 3-piece Sectional",
-      winnerImg: "",
-      productImg: "/Ballinasloe_Liam.png",
-      verified: true,
-      countryFlag: "🇦🇺",
-      location: "Albans VIC",
-    },
-    {
-      name: "Alexander G.",
-      date: "1 August 2026",
-      ticketNo: "GWS-74BD35F1",
-      product: "NSF Surf Betty",
-      winnerImg: "",
-      productImg: "/Surf Betty.png",
-      verified: true,
-      countryFlag: "🇦🇺",
-      location: "Dodges Ferry TAS",
-    },
-    {
-      name: "Mae W.",
-      date: "30 July 2026",
-      ticketNo: "GWS-8B43622A",
-      product: "Trek Marlin 5 Gen 2",
-      winnerImg: "",
-      productImg: "/Trek Marlin_mae.png",
-      verified: true,
-      countryFlag: "🇦🇺",
-      location: "Elanora QLD",
-    },
-    {
-      name: "Joshua T.",
-      date: "31 July 2026",
-      ticketNo: "GWS-C2C2621C",
-      product: "Venom X21(Dongfang DF50SRT)",
-      winnerImg: "",
-      productImg: "/Venom X21_Joshua.png",
-      verified: true,
-      countryFlag: "🇦🇺",
-      location: "Applecross WA",
-    },
-  ];
+  const [winners, setWinners] = useState(WINNERS_DETAIL_DEFAULTS);
 
   const [index, setIndex] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [animate, setAnimate] = useState(true);
   const [paused, setPaused] = useState(false);
   const [imgError, setImgError] = useState(false);
+
+  // Fetch admin-edited winners; fall back to hardcoded defaults on empty/error.
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/winners-detail-data`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const fetched = Array.isArray(data.winners) ? data.winners : [];
+        if (fetched.length > 0) {
+          setWinners(fetched);
+          setIndex(0);
+        }
+      } catch (e) {
+        console.warn("WinnersDetail fetch failed, using defaults:", e);
+      }
+    })();
+  }, []);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -87,7 +50,7 @@ export default function WinnersDetail() {
       }, 250);
     }, 4500);
     return () => clearInterval(interval);
-  }, [paused]);
+  }, [paused, winners]);
 
   useEffect(() => {
     setImgError(false);

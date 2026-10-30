@@ -170,6 +170,107 @@ export default function AdminPortal() {
   const [uiToggles, setUiToggles] = useState(null);
   const [uiTogglesOverridden, setUiTogglesOverridden] = useState([]);
 
+  // ---- Recent Winners editor state ----
+  const [recentWinnersEdit, setRecentWinnersEdit] = useState([]);
+  const [recentWinnersSaving, setRecentWinnersSaving] = useState(false);
+
+  // ---- Winners Detail editor state ----
+  const [winnersDetailEdit, setWinnersDetailEdit] = useState([]);
+  const [winnersDetailSaving, setWinnersDetailSaving] = useState(false);
+
+  // Fetch editor data (admin view) on token change
+  useEffect(() => {
+    if (!token) { setRecentWinnersEdit([]); setWinnersDetailEdit([]); return; }
+    (async () => {
+      try {
+        const [rwRes, wdRes] = await Promise.all([
+          fetch(`${BACKEND}/admin/recent-winners-data`, { headers: { "X-Admin-Token": token } }),
+          fetch(`${BACKEND}/admin/winners-detail-data`, { headers: { "X-Admin-Token": token } }),
+        ]);
+        if (rwRes.ok) {
+          const rwd = await rwRes.json();
+          setRecentWinnersEdit(Array.isArray(rwd.winners) ? rwd.winners : []);
+        }
+        if (wdRes.ok) {
+          const wdd = await wdRes.json();
+          setWinnersDetailEdit(Array.isArray(wdd.winners) ? wdd.winners : []);
+        }
+      } catch {}
+    })();
+  }, [token]);
+
+  async function saveRecentWinners() {
+    if (!token) return;
+    setRecentWinnersSaving(true);
+    try {
+      const res = await fetch(`${BACKEND}/admin/recent-winners-data`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ winners: recentWinnersEdit }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Save failed");
+      setMsg({ type: "success", text: `\u2705 Recent winners saved (${recentWinnersEdit.length} entries)` });
+    } catch (err) {
+      setMsg({ type: "error", text: "\u274c " + err.message });
+    } finally {
+      setRecentWinnersSaving(false);
+    }
+  }
+
+  async function saveWinnersDetail() {
+    if (!token) return;
+    setWinnersDetailSaving(true);
+    try {
+      const res = await fetch(`${BACKEND}/admin/winners-detail-data`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ winners: winnersDetailEdit }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Save failed");
+      setMsg({ type: "success", text: `\u2705 Winners detail saved (${winnersDetailEdit.length} entries)` });
+    } catch (err) {
+      setMsg({ type: "error", text: "\u274c " + err.message });
+    } finally {
+      setWinnersDetailSaving(false);
+    }
+  }
+
+  function addRecentWinnerRow() {
+    setRecentWinnersEdit([...recentWinnersEdit, { name: "", state: "", country: "Australia", prize: "", cash_out: false, date_claimed: "", ticket_no: "" }]);
+  }
+
+  function removeRecentWinnerRow(idx) {
+    setRecentWinnersEdit(recentWinnersEdit.filter((_, i) => i !== idx));
+  }
+
+  function updateRecentWinnerField(idx, field, value) {
+    setRecentWinnersEdit(recentWinnersEdit.map((w, i) => i === idx ? { ...w, [field]: value } : w));
+  }
+
+  function addWinnersDetailRow() {
+    setWinnersDetailEdit([...winnersDetailEdit, { name: "", date: "", ticketNo: "", product: "", winnerImg: "", productImg: "", verified: true, countryFlag: "\U0001F1E6\U0001F1FA", location: "" }]);
+  }
+
+  function removeWinnersDetailRow(idx) {
+    setWinnersDetailEdit(winnersDetailEdit.filter((_, i) => i !== idx));
+  }
+
+  function updateWinnersDetailField(idx, field, value) {
+    setWinnersDetailEdit(winnersDetailEdit.map((w, i) => i === idx ? { ...w, [field]: value } : w));
+  }
+
+  async function seedWinnersDetailDefaults() {
+    try {
+      const mod = await import("../data/winnersDefaults");
+      setWinnersDetailEdit(JSON.parse(JSON.stringify(mod.WINNERS_DETAIL_DEFAULTS)));
+      setMsg({ type: "info", text: "Seeded with defaults \u2014 click Save Winners Detail to persist." });
+    } catch (e) {
+      setMsg({ type: "error", text: "\u274c Could not load defaults: " + e.message });
+    }
+  }
+
   // ---- login ----
   async function handleLogin(e) {
     e.preventDefault();
@@ -1362,6 +1463,77 @@ export default function AdminPortal() {
               })}
             </div>
           )}
+        </div>
+
+        {/* ========== RECENT WINNERS EDITOR ========== */}
+        <div style={S.card}>
+          <h2 style={S.sectionTitle}>Recent Winners Editor ({recentWinnersEdit.length})</h2>
+          <div style={{ ...S.msg, ...S.msgInfo, marginBottom: 16, fontSize: 13 }}>
+            Public RecentWinners strip reflects saved entries. Empty list falls back to the 5 built-in defaults.
+          </div>
+          {recentWinnersEdit.length === 0 && (
+            <div style={S.empty}>No entries. Click "+ Add Winner" to start, or save to revert to defaults.</div>
+          )}
+          {recentWinnersEdit.map((w, idx) => (
+            <div key={idx} style={{ ...S.listItem, flexWrap: "wrap", gap: 8, alignItems: "stretch" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 8, flex: 1, minWidth: 0 }}>
+                <input style={S.input} placeholder="Name" value={w.name || ""} onChange={(e) => updateRecentWinnerField(idx, "name", e.target.value)} />
+                <input style={S.input} placeholder="State/Region" value={w.state || ""} onChange={(e) => updateRecentWinnerField(idx, "state", e.target.value)} />
+                <input style={S.input} placeholder="Country" value={w.country || ""} onChange={(e) => updateRecentWinnerField(idx, "country", e.target.value)} />
+                <input style={S.input} placeholder="Prize" value={w.prize || ""} onChange={(e) => updateRecentWinnerField(idx, "prize", e.target.value)} />
+                <input style={S.input} placeholder="Date claimed" value={w.date_claimed || ""} onChange={(e) => updateRecentWinnerField(idx, "date_claimed", e.target.value)} />
+                <input style={S.input} placeholder="Ticket no." value={w.ticket_no || ""} onChange={(e) => updateRecentWinnerField(idx, "ticket_no", e.target.value)} />
+                <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#475569" }}>
+                  <input type="checkbox" checked={!!w.cash_out} onChange={(e) => updateRecentWinnerField(idx, "cash_out", e.target.checked)} />
+                  Cash out
+                </label>
+              </div>
+              <button style={{ ...S.linkBtn, color: "#dc2626" }} onClick={() => removeRecentWinnerRow(idx)}>Remove</button>
+            </div>
+          ))}
+          <div style={{ marginTop: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button style={{ ...S.btn, ...S.btnSlate }} onClick={addRecentWinnerRow}>+ Add Winner</button>
+            <button style={{ ...S.btn, ...S.btnEmerald, ...(recentWinnersSaving ? S.btnDisabled : {}) }} onClick={saveRecentWinners} disabled={recentWinnersSaving}>
+              {recentWinnersSaving ? "Saving\u2026" : "Save Recent Winners"}
+            </button>
+          </div>
+        </div>
+
+        {/* ========== WINNERS DETAIL EDITOR ========== */}
+        <div style={S.card}>
+          <h2 style={S.sectionTitle}>Winners Detail Editor ({winnersDetailEdit.length})</h2>
+          <div style={{ ...S.msg, ...S.msgInfo, marginBottom: 16, fontSize: 13 }}>
+            Drives the WinnersDetail carousel. Empty list shows the built-in 5-item default set.
+          </div>
+          {winnersDetailEdit.length === 0 && (
+            <div style={S.empty}>No custom winners. Public component falls back to hardcoded defaults. Use "Seed Defaults" to populate with the default 5, then edit.</div>
+          )}
+          {winnersDetailEdit.map((w, idx) => (
+            <div key={idx} style={{ ...S.listItem, flexWrap: "wrap", gap: 8, alignItems: "stretch" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 8, flex: 1, minWidth: 0 }}>
+                <input style={S.input} placeholder="Name" value={w.name || ""} onChange={(e) => updateWinnersDetailField(idx, "name", e.target.value)} />
+                <input style={S.input} placeholder="Date" value={w.date || ""} onChange={(e) => updateWinnersDetailField(idx, "date", e.target.value)} />
+                <input style={S.input} placeholder="Ticket no." value={w.ticketNo || ""} onChange={(e) => updateWinnersDetailField(idx, "ticketNo", e.target.value)} />
+                <input style={S.input} placeholder="Product" value={w.product || ""} onChange={(e) => updateWinnersDetailField(idx, "product", e.target.value)} />
+                <input style={S.input} placeholder="Winner img URL" value={w.winnerImg || ""} onChange={(e) => updateWinnersDetailField(idx, "winnerImg", e.target.value)} />
+                <input style={S.input} placeholder="Product img URL" value={w.productImg || ""} onChange={(e) => updateWinnersDetailField(idx, "productImg", e.target.value)} />
+                <input style={S.input} placeholder="Flag emoji" value={w.countryFlag || ""} onChange={(e) => updateWinnersDetailField(idx, "countryFlag", e.target.value)} />
+                <input style={S.input} placeholder="Location" value={w.location || ""} onChange={(e) => updateWinnersDetailField(idx, "location", e.target.value)} />
+                <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#475569" }}>
+                  <input type="checkbox" checked={!!w.verified} onChange={(e) => updateWinnersDetailField(idx, "verified", e.target.checked)} />
+                  Verified
+                </label>
+              </div>
+              <button style={{ ...S.linkBtn, color: "#dc2626" }} onClick={() => removeWinnersDetailRow(idx)}>Remove</button>
+            </div>
+          ))}
+          <div style={{ marginTop: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button style={{ ...S.btn, ...S.btnSlate }} onClick={addWinnersDetailRow}>+ Add Winner</button>
+            <button style={{ ...S.btn, ...S.btnSlate }} onClick={seedWinnersDetailDefaults}>Seed Defaults</button>
+            <button style={{ ...S.btn, ...S.btnEmerald, ...(winnersDetailSaving ? S.btnDisabled : {}) }} onClick={saveWinnersDetail} disabled={winnersDetailSaving}>
+              {winnersDetailSaving ? "Saving\u2026" : "Save Winners Detail"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
